@@ -2,13 +2,13 @@
   "schema_version": 1,
   "goal_id": "braise-ten-paths-v1",
   "project_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b",
-  "status": "running",
+  "status": "scheduled",
   "plan": "docs/program/BRAISE-PLAN.md",
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B0",
-  "next_action": "Relever la référence V1, figer les identités et mappings historiques avant toute extension, puis définir les contrats partagés sans changer le comportement.",
+  "next_phase": "B1",
+  "next_action": "Vérifier et provisionner le binding R2 réel du même Site, produire les artefacts V1 segmentés et le lecteur versionné, puis comparer au même oracle. Si R2 bloque, avancer B3 indépendamment.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,25 +32,29 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B0-86bf522c-57d5-4a71-a6a6-486bcf4e0c52",
-    "acquired_at": "2026-09-07T22:42:15.673601+00:00",
-    "expires_at": "2026-09-07T23:32:15.673601+00:00",
-    "base_commit": "8b61d19ec93d29fd4b2398a7294eb93564df7801",
-    "phase": "B0"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
       "title": "Référence et contrats",
       "depends_on": [],
-      "status": "in_progress",
-      "evidence": [],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B0-DELIVERY.md",
+        "docs/program/B0-MEASUREMENTS.json",
+        "tests/fixtures/v1-reference.json",
+        "tests/fixtures/v1-saves.json",
+        "16 tests passed; TypeScript passed; production build passed",
+        "Pinned V1 oracle reproduced byte-for-byte",
+        "Independent gpt-6-astra max review: no blocking issue"
+      ],
       "blockers": [],
-      "implementation": "in_progress",
-      "automated_checks": "not_run",
+      "implementation": "completed",
+      "automated_checks": "passed",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "not_published",
+      "verified_source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd",
+      "completed_at": "2026-09-07T22:55:57.353853+00:00"
     },
     {
       "id": "B1",
@@ -58,7 +62,7 @@
       "depends_on": [
         "B0"
       ],
-      "status": "planned",
+      "status": "ready",
       "evidence": [],
       "blockers": [],
       "implementation": "not_started",
@@ -89,7 +93,7 @@
       "depends_on": [
         "B0"
       ],
-      "status": "planned",
+      "status": "ready",
       "evidence": [],
       "blockers": [],
       "implementation": "not_started",
@@ -256,12 +260,34 @@
     "product_code_changed": false,
     "browser_qa_performed": false
   },
-  "last_checkpoint": "P0-plan-registered",
+  "last_checkpoint": "B0-compatibility-verified",
   "delivery": {
-    "implementation": "not_started",
-    "automated_checks": "baseline_previously_passed",
+    "implementation": "in_progress",
+    "automated_checks": "B0_passed",
     "browser_validation": "not_requested",
     "publication": "v1_owner_private",
     "commercial_activation": "not_configured"
+  },
+  "last_verified_source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd",
+  "last_run": {
+    "completed_at": "2026-09-07T22:55:57.353853+00:00",
+    "phase": "B0",
+    "progress": true,
+    "source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd",
+    "delegation": {
+      "orchestrator": {
+        "model": "gpt-6-astra",
+        "reasoning_effort": "max"
+      },
+      "specialists": [
+        {
+          "mission": "V1 compatibility research",
+          "model": "gpt-6-astra",
+          "reasoning_effort": "low"
+        }
+      ]
+    },
+    "main_model_override_performed": false,
+    "lease_owner": "braise-B0-86bf522c-57d5-4a71-a6a6-486bcf4e0c52"
   }
 }
