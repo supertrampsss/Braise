@@ -1,3 +1,4 @@
+import { samePuzzleRef } from "@/lib/game-contracts";
 import { evaluateWord, findWord, getPuzzle, nextHint, normalizeWord } from "@/lib/semantic";
 import type { Mode } from "@/lib/game-types";
 
@@ -32,14 +33,18 @@ export async function POST(request: Request) {
     if (!body || !validMode(body.mode) || (body.mode !== "daily" && !validSeed(body.seed))) return reply({ error: "La partie n’est pas valide. Rechargez le jeu." }, 400);
     const { publicPuzzle, targetIndex } = getPuzzle(body.mode, body.seed);
     if (body.puzzleId !== publicPuzzle.id) return reply({ error: "Un nouveau mot quotidien est arrivé. Cliquez sur Quotidien pour commencer." }, 409);
+    // Unversioned requests remain the original V1 protocol, for already-open tabs.
+    if (Object.hasOwn(body, "puzzleRef") && !samePuzzleRef(body.puzzleRef, publicPuzzle.ref)) {
+      return reply({ error: "La version de cette partie ne correspond plus. Rechargez le jeu pour reprendre." }, 409);
+    }
     if (body.action === "hint") {
       if (!Number.isInteger(body.hintLevel) || body.hintLevel < 0 || body.hintLevel > 2 || !Array.isArray(body.guesses) || body.guesses.length < 5 || body.guesses.length > 3000 || !body.guesses.every((word: unknown) => typeof word === "string" && word.length <= 50)) return reply({ error: "Les indices sont disponibles après cinq essais, trois fois par partie." }, 400);
       const hint = nextHint(targetIndex, body.hintLevel, body.guesses);
-      return hint ? reply(hint) : reply({ error: "Votre meilleure piste est déjà toute proche. Essayez ses variantes ou ses synonymes." }, 400);
+      return hint ? reply({ ...hint, puzzleRef: publicPuzzle.ref }) : reply({ error: "Votre meilleure piste est déjà toute proche. Essayez ses variantes ou ses synonymes." }, 400);
     }
     if (body.action !== "guess" || typeof body.word !== "string" || body.word.length > 50 || !/^[\p{L}]+(?:['-][\p{L}]+)*$/u.test(normalizeWord(body.word))) return reply({ error: "Proposez un seul mot français, sans chiffre ni espace." }, 400);
     const index = findWord(body.word);
     if (index === undefined) return reply({ error: "Ce mot n’est pas dans le dictionnaire de Braise. Essayez le singulier ou l’infinitif, avec les accents." }, 422);
-    return reply(evaluateWord(targetIndex, index));
+    return reply({ ...evaluateWord(targetIndex, index), puzzleRef: publicPuzzle.ref });
   } catch { return reply({ error: "La proposition n’a pas pu être lue. Réessayez." }, 400); }
 }

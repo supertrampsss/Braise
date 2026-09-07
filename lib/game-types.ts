@@ -1,6 +1,7 @@
+import type { PuzzleRef, WordEvaluation } from "./game-contracts";
 export type Mode = "daily" | "free" | "challenge";
-export type Guess = { word: string; temperature: number; rank: number; found: boolean; hint?: boolean; order: number };
-export type Puzzle = { id: string; mode: Mode; seed: string; date: string; number: number; vocabularySize: number; resetAt: string };
+export type Guess = WordEvaluation & { hint?: boolean; order: number };
+export type Puzzle = { id: string; mode: Mode; seed: string; date: string; number: number; vocabularySize: number; resetAt: string; ref: PuzzleRef };
 export type SavedGame = { guesses: Guess[]; pins: string[]; hints: number; startedAt: number; solvedAt?: number };
 export type Win = { id: string; date: string; mode: Mode; tries: number; hints: number };
 export type Profile = { wins: Win[]; guesses: number; sound: boolean };

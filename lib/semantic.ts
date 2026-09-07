@@ -1,9 +1,12 @@
 // Server-only data path. Never import this module into a client component.
 import dataset from "@/data/semantic-fr.json";
-import type { Mode, Puzzle } from "./game-types";
+import type { Mode } from "./game-types";
+import { getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
+export { parisDate, nextParisMidnight } from "./calendar";
 
 const words: string[] = dataset.words;
 const targets = dataset.puzzles;
+const legacyTargetIndexes = resolveLegacyTargetIndexes(targets);
 const wordIndex = new Map(words.map((word, i) => [word, i]));
 const fold = (word: string) => word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/œ/g, "oe").replace(/æ/g, "ae");
 const aliases = new Map<string, number | null>();
@@ -20,33 +23,12 @@ export function findWord(input: string): number | undefined {
   const alias = aliases.get(fold(word));
   return alias === null ? undefined : alias;
 }
-export function parisDate(now = new Date()) {
-  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
-  return `${parts.find(p => p.type === "year")!.value}-${parts.find(p => p.type === "month")!.value}-${parts.find(p => p.type === "day")!.value}`;
-}
-export function nextParisMidnight(now = new Date()) {
-  // Binary search the next local date transition, including 23/25-hour DST days.
-  const today = parisDate(now);
-  let lo = now.getTime(); let hi = lo + 27 * 3600000;
-  while (hi - lo > 1000) { const mid = Math.floor((lo + hi) / 2); if (parisDate(new Date(mid)) === today) lo = mid; else hi = mid; }
-  return new Date(Math.ceil(hi / 1000) * 1000).toISOString();
-}
-function seedHash(seed: string) { let h = 2166136261; for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return h >>> 0; }
 export function getPuzzle(mode: Mode, seed = "", now = new Date()) {
-  const date = parisDate(now);
-  const day = Math.floor((Date.parse(`${date}T00:00:00Z`) - Date.parse("2026-09-07T00:00:00Z")) / 86400000);
-  const daily = mode === "daily";
-  const effectiveSeed = daily ? date : seed;
-  // 37 and 120 are coprime: each daily target appears once per 120-day cycle.
-  const targetIndex = daily ? ((day * 37 + 23) % targets.length + targets.length) % targets.length : seedHash(effectiveSeed) % targets.length;
-  const publicPuzzle: Puzzle = {
-    id: daily ? `daily-${date}` : `free-${effectiveSeed}`,
-    mode, seed: effectiveSeed, date, number: daily ? Math.max(1, day + 1) : targetIndex + 1,
-    vocabularySize: words.length, resetAt: nextParisMidnight(now),
-  };
-  return { publicPuzzle, targetIndex };
+  const { publicPuzzle, legacyIndex } = getLegacyPuzzle(mode, seed, now);
+  return { publicPuzzle, targetIndex: legacyTargetIndexes[legacyIndex] };
 }
-// A bounded cache keeps the 128MB Worker budget independent of the target count.
+// Only decoded targets are bounded here; the full encoded V1 JSON still occupies memory.
+// B1 replaces that retained matrix with versioned shards and a byte-bounded cache.
 const scoreCache = new Map<number, { scores: Int16Array; ranks: Uint32Array; order: number[] }>();
 function targetScores(targetIndex: number) {
   const hit = scoreCache.get(targetIndex);

@@ -46,3 +46,8 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/GOAL.md` : contrat de reprise autonome et conditions d’arrêt.
 - `docs/program/EXECUTION.json` : état vérifiable du programme.
 - `docs/program/BASELINE.json` : référence du corpus et des identités V1 à préserver.
+- `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
+
+Le calendrier et les seeds V1 sont désormais isolés du futur catalogue. Les références de partie versionnées sont exposées et contrôlées par l'API, avec maintien des requêtes V1 sans référence. Les lecteurs de sauvegarde utilisés par l'interface sont couverts par des fixtures synthétiques aux scores réels.
+
+Pour reconstruire l'oracle historique, lancer `node scripts/capture-v1-fixtures.mjs`, puis `npm test`. Il repart du commit V1 conservé dans Git. Pour la comparaison mémoire locale, lancer ensuite `node scripts/measure-v1.mjs`. Les mesures Node ne valent pas validation de la limite mémoire du Worker.

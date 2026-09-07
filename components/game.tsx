@@ -9,22 +9,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { getStreak, warmth, type Guess, type Mode, type Profile, type Puzzle, type SavedGame } from "@/lib/game-types";
 
+import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame, restoreLegacyProfile } from "@/lib/legacy-storage";
+import { samePuzzleRef, type EvaluationResponse } from "@/lib/game-contracts";
+
 type Modal = "help" | "stats" | "challenge" | "privacy" | "about" | "share" | null;
-const EMPTY_PROFILE: Profile = { wins: [], guesses: 0, sound: false };
-const EMPTY_GAME: SavedGame = { guesses: [], pins: [], hints: 0, startedAt: 0 };
-const STORAGE_PREFIX = "braise.v1.";
-function readLocal<T>(key: string, fallback: T): T {
-  try { const value = localStorage.getItem(STORAGE_PREFIX + key); return value ? JSON.parse(value) : fallback; } catch { return fallback; }
-}
-function writeLocal(key: string, value: unknown) {
-  try { localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value)); return true; } catch { return false; }
-}
-function validGame(value: SavedGame) {
-  return value && Array.isArray(value.guesses) && value.guesses.every(g => g && typeof g.word === "string" && Number.isFinite(g.temperature) && Number.isFinite(g.rank) && Number.isInteger(g.order) && typeof g.found === "boolean") && Array.isArray(value.pins) && value.pins.length <= 3 && value.pins.every(p => typeof p === "string") && Number.isInteger(value.hints) && value.hints >= 0 && value.hints <= 3;
-}
-function validProfile(value: Profile) {
-  return value && Array.isArray(value.wins) && value.wins.every(w => w && typeof w.id === "string" && /^\d{4}-\d{2}-\d{2}$/.test(w.date) && ["daily", "free", "challenge"].includes(w.mode) && Number.isInteger(w.tries) && Number.isInteger(w.hints)) && Number.isFinite(value.guesses) && value.guesses >= 0 && typeof value.sound === "boolean";
-}
 function freshSeed() { return String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647); }
 function playTone(won: boolean) {
   try {
@@ -86,8 +74,7 @@ export default function Game() {
       const data = await response.json() as Puzzle & { error?: string };
       if (!response.ok) throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant.");
       if (request !== requestRef.current) return false;
-      const stored = readLocal<SavedGame>(`game.${data.id}`, EMPTY_GAME);
-      setGame(validGame(stored) ? { ...stored, startedAt: stored.startedAt || Date.now() } : { ...EMPTY_GAME, startedAt: Date.now() });
+      setGame(restoreLegacyGame(data.id));
       setMode(nextMode); setPuzzle(data);
       const url = new URL(window.location.href);
       if (nextMode === "challenge") url.searchParams.set("defi", data.seed);
@@ -102,8 +89,7 @@ export default function Game() {
   }
 
   useEffect(() => {
-    const stored = readLocal<Profile>("profile", EMPTY_PROFILE);
-    if (validProfile(stored)) setProfile(stored);
+    setProfile(restoreLegacyProfile());
     const challenge = new URLSearchParams(window.location.search).get("defi");
     if (challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge);
     else void loadPuzzle("daily");
@@ -140,12 +126,13 @@ export default function Game() {
     submitting.current = true; setBusy(true); setError("");
     const request = requestRef.current;
     try {
-      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, puzzleId: puzzle.id, word, action: isHint ? "hint" : "guess", hintLevel: game.hints, guesses: isHint ? game.guesses.map(g => g.word) : undefined }) });
-      const data = await response.json() as Omit<Guess, "order"> & { error?: string };
+      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: isHint ? "hint" : "guess", hintLevel: game.hints, guesses: isHint ? game.guesses.map(g => g.word) : undefined }) });
+      const data = await response.json() as EvaluationResponse & { error?: string };
       if (request !== requestRef.current) return;
       if (!response.ok) throw new Error(data.error || "Impossible d’analyser ce mot.");
+      if (!samePuzzleRef(data.puzzleRef, puzzle.ref)) throw new Error("La réponse ne correspond pas à cette partie. Rechargez le jeu.");
       if (game.guesses.some(g => g.word === data.word)) { setError(`« ${data.word} » est déjà dans vos essais.`); return; }
-      const guess: Guess = { ...data, order: game.guesses.length + 1, hint: isHint };
+      const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint: isHint };
       const next = { ...game, guesses: [...game.guesses, guess], hints: game.hints + (isHint ? 1 : 0), ...(data.found ? { solvedAt: Date.now() } : {}) };
       saveGame(next);
       if (!isHint) setInput(current => current.trim().toLocaleLowerCase("fr") === word ? "" : current);

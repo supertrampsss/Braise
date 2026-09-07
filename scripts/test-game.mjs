@@ -1,8 +1,10 @@
 import { build } from 'esbuild';
-import { mkdir, rm } from 'node:fs/promises';
+import { mkdir, readdir, rm } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 await mkdir('work/tests', { recursive: true });
-await build({ entryPoints: ['tests/game.test.ts'], outfile: 'work/tests/game.test.mjs', bundle: true, platform: 'node', format: 'esm', target: 'node22', logLevel: 'warning' });
-const result = spawnSync(process.execPath, ['--test', 'work/tests/game.test.mjs'], { stdio: 'inherit' });
-await rm('work/tests/game.test.mjs');
+const tests = (await readdir('tests')).filter(name => name.endsWith('.test.ts')).sort();
+await build({ entryPoints: tests.map(name => 'tests/' + name), outdir: 'work/tests', outExtension: { '.js': '.mjs' }, bundle: true, platform: 'node', format: 'esm', target: 'node22', logLevel: 'warning' });
+const outputs = tests.map(name => 'work/tests/' + name.replace(/\.ts$/, '.mjs'));
+const result = spawnSync(process.execPath, ['--test', '--test-concurrency=1', ...outputs], { stdio: 'inherit' });
+await Promise.all(outputs.map(file => rm(file)));
 process.exitCode = result.status ?? 1;
