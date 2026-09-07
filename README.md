@@ -39,3 +39,10 @@ La version initiale est publiée en accès privé. Les liens de défis deviendro
 ## Vérification
 
 Tests automatisés du calendrier Paris (y compris changements d'heure), rotation des 120 cibles, victoire, score sémantique, indices, validation API et séries. Construction de production et vérification TypeScript. Aucun test visuel dans un navigateur n'a été effectué lors de la création.
+
+## Programme des dix évolutions
+
+- `docs/program/BRAISE-PLAN.md` : plan intégré, douze missions, dépendances et critères de livraison.
+- `docs/program/GOAL.md` : contrat de reprise autonome et conditions d’arrêt.
+- `docs/program/EXECUTION.json` : état vérifiable du programme.
+- `docs/program/BASELINE.json` : référence du corpus et des identités V1 à préserver.

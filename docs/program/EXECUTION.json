@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "goal_id": "braise-ten-paths-v1",
+  "project_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b",
+  "status": "planned",
+  "plan": "docs/program/BRAISE-PLAN.md",
+  "contract": "docs/program/GOAL.md",
+  "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
+  "audience": "owner_private",
+  "next_phase": "B0",
+  "next_action": "Relever la référence V1, figer les identités et mappings historiques avant toute extension, puis définir les contrats partagés sans changer le comportement.",
+  "planning_models": {
+    "orchestrator": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max"
+    },
+    "specialists": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "low",
+      "missions": 12
+    },
+    "scheduled_run_model_override_supported": false
+  },
+  "scheduler": {
+    "provider": "automations",
+    "native_goal_available": false,
+    "status": "not_created",
+    "automation_id": null,
+    "cadence": "hourly",
+    "stop_after_same_blocker_without_progress": 2
+  },
+  "lease": null,
+  "phases": [
+    {
+      "id": "B0",
+      "title": "Référence et contrats",
+      "depends_on": [],
+      "status": "ready",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B1",
+      "title": "Versions et stockage sémantique",
+      "depends_on": [
+        "B0"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published",
+      "external_dependencies": [
+        "R2 binding provisioned and accessible"
+      ]
+    },
+    {
+      "id": "B2",
+      "title": "Catalogue et calendrier",
+      "depends_on": [
+        "B1"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B3",
+      "title": "Design vivant et socle publicitaire",
+      "depends_on": [
+        "B0"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B4",
+      "title": "Progression, archives et migration",
+      "depends_on": [
+        "B1",
+        "B3"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B5",
+      "title": "Collections et expéditions",
+      "depends_on": [
+        "B2",
+        "B4"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B6",
+      "title": "Identité et parties serveur",
+      "depends_on": [
+        "B1",
+        "B4"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published",
+      "external_dependencies": [
+        "D1 binding provisioned and accessible"
+      ]
+    },
+    {
+      "id": "B7",
+      "title": "Cercles et duels",
+      "depends_on": [
+        "B2",
+        "B6"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B8",
+      "title": "Laboratoire",
+      "depends_on": [
+        "B2",
+        "B4"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B9",
+      "title": "Studio créateurs",
+      "depends_on": [
+        "B5",
+        "B6"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    },
+    {
+      "id": "B10",
+      "title": "Distribution",
+      "depends_on": [
+        "B3",
+        "B6"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published",
+      "external_dependencies": [
+        "controlled test origin for iframe qualification"
+      ]
+    },
+    {
+      "id": "B11",
+      "title": "Consolidation et publication privée",
+      "depends_on": [
+        "B5",
+        "B7",
+        "B8",
+        "B9",
+        "B10"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    }
+  ],
+  "conditional_work": [
+    {
+      "id": "C1",
+      "title": "Activation commerciale et partenaires",
+      "status": "external_dependencies",
+      "requires": [
+        "configuration régie et consentement réels",
+        "audience de publication couverte par autorisation",
+        "origines partenaires effectives si intégration réelle"
+      ]
+    },
+    {
+      "id": "C2",
+      "title": "Duels directs et chaîne généralisée",
+      "status": "conditional",
+      "requires": [
+        "preuve de demande et capacités de coordination",
+        "graphe et contenus validés"
+      ]
+    }
+  ],
+  "blockers": [],
+  "consecutive_runs_without_progress": 0,
+  "planning_evidence": {
+    "specialist_missions_completed": 12,
+    "orchestrator_review": "completed_with_corrections_applied",
+    "product_code_changed": false,
+    "browser_qa_performed": false
+  },
+  "last_checkpoint": null,
+  "delivery": {
+    "implementation": "not_started",
+    "automated_checks": "baseline_previously_passed",
+    "browser_validation": "not_requested",
+    "publication": "v1_owner_private",
+    "commercial_activation": "not_configured"
+  }
+}
