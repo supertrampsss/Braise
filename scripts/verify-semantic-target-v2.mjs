@@ -6,7 +6,8 @@ import { pathToFileURL } from "node:url";
 import { gunzipSync } from "node:zlib";
 import {
   SCORE_BUCKETS, SCORE_CONTRACT, SCORE_MAX, SCORE_MIN,
-  corpusEntries, loadActiveCorpus, scoreIndex, sha256, stableJson, vectorNorm,
+  acquireTargetCacheGuard, assertTargetCacheGuard, corpusEntries, loadActiveCorpus,
+  releaseTargetCacheGuard, scoreIndex, sha256, stableJson, vectorNorm,
 } from "./semantic-target-v2-common.mjs";
 
 const PAGE_HEADER_BYTES = 64;
@@ -74,10 +75,11 @@ async function findTarget(corpusDir, corpusManifest, targetId) {
   throw new Error("Target id is absent from corpus segments");
 }
 
-/** @param {{corpusDir:string, outputDir:string, targetId:number, manifestName?:string|null, expectedManifestSha256?:string|null}} options */
-export async function verifySemanticTarget({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null }) {
+/** Internal entry point for a caller that already owns the cache guard. */
+export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null }, cacheGuard) {
   corpusDir = resolve(corpusDir); outputDir = resolve(outputDir);
   const corpus = await loadActiveCorpus(corpusDir); const targetDir = join(outputDir, corpus.manifest.corpusId, "targets", String(targetId).padStart(10, "0"));
+  assertTargetCacheGuard(cacheGuard, join(outputDir, corpus.manifest.corpusId, "targets"));
   let active = null;
   if (!manifestName) { active = JSON.parse(await readFile(join(targetDir, "active.json"), "utf8")); manifestName = active.manifest; expectedManifestSha256 = active.manifestSha256; }
   if (basename(manifestName) !== manifestName || !/^[0-9a-f]{64}$/.test(expectedManifestSha256)) throw new Error("Target manifest reference is invalid");
@@ -116,6 +118,17 @@ export async function verifySemanticTarget({ corpusDir, outputDir, targetId, man
   } finally {
     await records.return?.().catch(() => {}); try { database?.close(); } catch {} await rm(databasePath, { force: true });
   }
+}
+
+/** @param {{corpusDir:string, outputDir:string, targetId:number, manifestName?:string|null, expectedManifestSha256?:string|null, testHoldAfterCacheLockMs?:number}} options */
+export async function verifySemanticTarget(options) {
+  const corpusDir = resolve(options.corpusDir); const outputDir = resolve(options.outputDir);
+  const corpus = await loadActiveCorpus(corpusDir); const targetsRoot = join(outputDir, corpus.manifest.corpusId, "targets");
+  const cacheGuard = acquireTargetCacheGuard(targetsRoot, "shared");
+  try {
+    if (options.testHoldAfterCacheLockMs > 0) await new Promise(resolveDelay => setTimeout(resolveDelay, options.testHoldAfterCacheLockMs));
+    return await verifySemanticTargetUnderGuard({ ...options, corpusDir, outputDir }, cacheGuard);
+  } finally { releaseTargetCacheGuard(cacheGuard); }
 }
 
 function parseArgs(argv) {

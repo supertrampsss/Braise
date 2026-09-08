@@ -6,8 +6,9 @@ import { pathToFileURL } from "node:url";
 import { gzipSync } from "node:zlib";
 import {
   SCORE_BUCKETS, SCORE_CONTRACT, SCORE_MAX, SCORE_MIN,
-  corpusEntries, durableWrite, installImmutable, loadActiveCorpus,
+  acquireTargetCacheGuard, corpusEntries, durableWrite, installImmutable, loadActiveCorpus,
   quantizedCosine, scoreIndex, sha256, stableJson, vectorNorm,
+  releaseTargetCacheGuard,
 } from "./semantic-target-v2-common.mjs";
 
 export const DEFAULT_TARGET_PAGE_ENTRIES = 65_536;
@@ -60,20 +61,24 @@ async function releaseLock(lock) {
   finally { try { lock.guard.exec("ROLLBACK"); } catch {} try { lock.guard.close(); } catch {} }
 }
 
-function acquireCacheGuard(targetsRoot) {
-  let guard;
-  try { guard = new DatabaseSync(join(targetsRoot, ".cache-guard.sqlite")); guard.exec("PRAGMA busy_timeout=0; BEGIN EXCLUSIVE; CREATE TABLE IF NOT EXISTS cache_guard(id INTEGER PRIMARY KEY);"); return guard; }
-  catch { try { guard?.close(); } catch {} throw new Error(`Another target build owns the bounded cache at ${targetsRoot}`); }
-}
-
-function releaseCacheGuard(guard) { if (!guard) return; try { guard.exec("ROLLBACK"); } catch {} try { guard.close(); } catch {} }
-
 async function enforceCacheQuota(targetsRoot, targetId, maxCachedTargets) {
-  const currentName = String(targetId).padStart(10, "0"); const occupied = [];
+  const currentName = String(targetId).padStart(10, "0"); const occupied = []; let currentTombstone = false;
   for (const entry of await readdir(targetsRoot, { withFileTypes: true })) {
-    if (!entry.isDirectory() || !/^\d{10}$/.test(entry.name)) continue;
+    const canonical = /^\d{10}$/.test(entry.name); const tombstone = /^\.evicted-\d{10}-[0-9a-f-]{36}$/.test(entry.name);
+    if (!canonical && !tombstone) continue;
+    if (!entry.isDirectory() || entry.isSymbolicLink()) throw new Error(`Unsafe target cache entry: ${entry.name}`);
+    if (tombstone && entry.name.startsWith(`.evicted-${currentName}-`)) currentTombstone = true;
     occupied.push(entry.name);
   }
+  let journals = [];
+  try { journals = await readdir(join(targetsRoot, ".evictions"), { withFileTypes: true }); }
+  catch (error) { if (error?.code !== "ENOENT") throw error; }
+  for (const entry of journals) {
+    if (!entry.isFile() || !/^eviction-[0-9a-f-]{36}\.json$/.test(entry.name)) continue;
+    let journal; try { journal = JSON.parse(await readFile(join(targetsRoot, ".evictions", entry.name), "utf8")); } catch { throw new Error(`Unsafe eviction journal: ${entry.name}`); }
+    if (journal.complete !== true && journal.targetName === currentName) currentTombstone = true;
+  }
+  if (currentTombstone) throw new Error(`Target ${targetId} has an interrupted eviction that must be resumed explicitly`);
   if (!occupied.includes(currentName) && occupied.length >= maxCachedTargets) throw new Error(`Target cache quota reached (${maxCachedTargets}); evict a staged target explicitly before generating another`);
 }
 
@@ -144,7 +149,7 @@ export async function buildSemanticTarget({
   const config = { schemaVersion: 1, formatVersion: 2, pageEntries, contract: SCORE_CONTRACT, contractHash, corpusId: manifest.corpusId, corpusManifestSha256: manifestSha256, semanticSha256: manifest.semanticSha256, targetId };
   const configHash = sha256(stableJson(config));
   const targetsRoot = join(outputDir, manifest.corpusId, "targets"); await mkdir(targetsRoot, { recursive: true });
-  const cacheGuard = acquireCacheGuard(targetsRoot);
+  const cacheGuard = acquireTargetCacheGuard(targetsRoot, "exclusive");
   const targetDir = join(targetsRoot, String(targetId).padStart(10, "0")); const pageDir = join(targetDir, "pages");
   let lock;
   const checkpointPath = join(targetDir, "checkpoint.json"); const scorePath = join(targetDir, "scores.tmp");
@@ -159,8 +164,8 @@ export async function buildSemanticTarget({
     if (checkpoint?.complete === true) {
       if (checkpoint.configHash !== configHash) throw new Error("Completed target does not match corpus, target or configuration");
       const active = JSON.parse(await readFile(join(targetDir, "active.json"), "utf8"));
-      const { verifySemanticTarget } = await import("./verify-semantic-target-v2.mjs");
-      const verified = await verifySemanticTarget({ corpusDir, outputDir, targetId });
+      const { verifySemanticTargetUnderGuard } = await import("./verify-semantic-target-v2.mjs");
+      const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId }, cacheGuard);
       if (verified.dictionarySize !== manifest.stats.accepted || active.targetId !== targetId) throw new Error("Completed target verification failed");
       await rm(scorePath, { force: true });
       return JSON.parse(await readFile(join(targetDir, active.manifest), "utf8"));
@@ -227,8 +232,8 @@ export async function buildSemanticTarget({
     const manifestBytes = Buffer.from(`${JSON.stringify(targetManifest, null, 2)}\n`); const targetManifestSha256 = sha256(manifestBytes);
     const manifestName = `manifest-${configHash.slice(0, 16)}-${targetManifestSha256.slice(0, 16)}.json`;
     await installImmutable(join(targetDir, manifestName), manifestBytes);
-    const { verifySemanticTarget } = await import("./verify-semantic-target-v2.mjs");
-    const verified = await verifySemanticTarget({ corpusDir, outputDir, targetId, manifestName, expectedManifestSha256: targetManifestSha256 });
+    const { verifySemanticTargetUnderGuard } = await import("./verify-semantic-target-v2.mjs");
+    const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId, manifestName, expectedManifestSha256: targetManifestSha256 }, cacheGuard);
     if (verified.dictionarySize !== manifest.stats.accepted || verified.targetId !== targetId) throw new Error("Independent target verification did not cover the corpus");
     await durableWrite(join(targetDir, "active.json"), `${JSON.stringify({ schemaVersion: 1, targetId, corpusId: manifest.corpusId, manifest: manifestName, manifestSha256: targetManifestSha256 }, null, 2)}\n`);
     checkpoint.complete = true; checkpoint.manifest = manifestName; checkpoint.manifestSha256 = targetManifestSha256;
@@ -239,7 +244,7 @@ export async function buildSemanticTarget({
     try { await scoreHandle?.close(); } catch {}
     try { orderDatabase?.close(); } catch {}
     await releaseLock(lock);
-    releaseCacheGuard(cacheGuard);
+    releaseTargetCacheGuard(cacheGuard);
   }
 }
 

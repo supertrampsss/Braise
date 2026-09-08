@@ -13,6 +13,8 @@
 - Vérifier les modifications de calendrier, normalisation et API avec npm test.
 - Vérifier une génération V2 avec `npm run semantic:v2:verify -- --source <fichier.vec> --output <staging>` ; les sorties sous `work/` restent non publiées.
 - Une cible BRV2 se prépare localement avec `npm run semantic:v2:target:build -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>` puis se contrôle avec `npm run semantic:v2:target:verify`. Ne jamais activer une cible avant couverture et vérification exhaustives de ses scores, rangs et ordre.
+- L'index exact BRV2 se construit avec `npm run semantic:v2:index:build -- --corpus <staging-corpus> --output <staging-cibles>` puis se vérifie avec `npm run semantic:v2:index:verify`. Il ne fait aucun rapprochement approximatif V1.
+- Une cible de staging complète se retire uniquement avec `npm run semantic:v2:target:evict -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>`. Ne jamais supprimer manuellement un dossier cible ou une tombstone d'éviction.
 - Le staging des cibles reste borné par un quota global sérialisé. Une cible interrompue réserve aussi une place. Ne pas contourner ce quota en lançant plusieurs générateurs ou en copiant des colonnes hors du staging versionné.
 - Vérifier TypeScript et la construction après une modification du code.
 - Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.

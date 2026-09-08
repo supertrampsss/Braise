@@ -1,12 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
 import { buildSemanticCorpus } from "../scripts/build-semantic-corpus-v2.mjs";
 import { buildSemanticTarget, TargetBuildInterrupted } from "../scripts/build-semantic-target-v2.mjs";
 import { verifySemanticTarget } from "../scripts/verify-semantic-target-v2.mjs";
+import { evictSemanticTarget } from "../scripts/evict-semantic-target-v2.mjs";
 
 async function workspace() {
   const root = await mkdtemp(join(tmpdir(), "braise-target-v2-"));
@@ -131,5 +132,65 @@ test("an interrupted target reserves its bounded cache slot before the first che
     await assert.rejects(buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 1, maxCachedTargets: 1 }), /cache quota reached/);
     await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, maxCachedTargets: 1 });
     await verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 });
+  } finally { await remove(paths.root); }
+});
+
+test("explicit eviction is verified, frees one slot and regenerates identical immutable pages", async () => {
+  const paths = await workspace();
+  try {
+    await writeFile(paths.source, fixture); await buildSemanticCorpus({ sourcePath: paths.source, outputDir: paths.corpus, segmentEntries: 2 });
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, maxCachedTargets: 2 });
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 1, maxCachedTargets: 2 });
+    const before = await decodedTarget(paths, 0);
+    const result = await evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 });
+    assert.equal(result.evicted, true);
+    await assert.rejects(verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 }), /ENOENT|no such file/i);
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 2, maxCachedTargets: 2 });
+    await evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 2 });
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, maxCachedTargets: 2 });
+    const after = await decodedTarget(paths, 0);
+    assert.equal(after.active.manifestSha256, before.active.manifestSha256);
+    assert.deepEqual(after.manifest.valuePages.map((page: { objectSha256: string }) => page.objectSha256), before.manifest.valuePages.map((page: { objectSha256: string }) => page.objectSha256));
+  } finally { await remove(paths.root); }
+});
+
+test("eviction never removes a target while a verified reader owns the shared guard", async () => {
+  const paths = await workspace();
+  try {
+    await writeFile(paths.source, fixture); await buildSemanticCorpus({ sourcePath: paths.source, outputDir: paths.corpus, segmentEntries: 2 });
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 });
+    const reader = verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, testHoldAfterCacheLockMs: 100 });
+    await new Promise(resolveDelay => setTimeout(resolveDelay, 20));
+    await assert.rejects(evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 }), /cache operation owns/);
+    assert.equal((await reader).targetId, 0);
+    assert.equal((await evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 })).evicted, true);
+  } finally { await remove(paths.root); }
+});
+
+test("shared verification accepts the empty legacy cache guard created by B1c", async () => {
+  const paths = await workspace();
+  try {
+    await writeFile(paths.source, fixture); await buildSemanticCorpus({ sourcePath: paths.source, outputDir: paths.corpus, segmentEntries: 2 });
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 });
+    const corpusActive = JSON.parse(await readFile(join(paths.corpus, "active.json"), "utf8")); const corpusManifest = JSON.parse(await readFile(join(paths.corpus, corpusActive.manifest), "utf8"));
+    await writeFile(join(paths.targets, corpusManifest.corpusId, "targets", ".cache-guard.sqlite"), Buffer.alloc(0));
+    assert.equal((await verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 })).targetId, 0);
+  } finally { await remove(paths.root); }
+});
+
+test("interrupted eviction remains counted and resumes before another cache mutation", async () => {
+  const paths = await workspace();
+  try {
+    await writeFile(paths.source, fixture); await buildSemanticCorpus({ sourcePath: paths.source, outputDir: paths.corpus, segmentEntries: 2 });
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, maxCachedTargets: 1 });
+    await assert.rejects(evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, testStopAfterRename: true }), /Test interruption/);
+    await assert.rejects(buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, maxCachedTargets: 2 }), /interrupted eviction/);
+    await assert.rejects(buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 1, maxCachedTargets: 1 }), /cache quota reached/);
+    const corpusActive = JSON.parse(await readFile(join(paths.corpus, "active.json"), "utf8")); const corpusManifest = JSON.parse(await readFile(join(paths.corpus, corpusActive.manifest), "utf8")); const targetsRoot = join(paths.targets, corpusManifest.corpusId, "targets");
+    const tombstone = (await readdir(targetsRoot)).find(name => name.startsWith(".evicted-0000000000-")); assert.ok(tombstone); await rm(join(targetsRoot, tombstone), { recursive: true });
+    await assert.rejects(buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, maxCachedTargets: 2 }), /interrupted eviction/);
+    assert.equal((await evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 })).evicted, false);
+    await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 1, maxCachedTargets: 1 });
+    await verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 1 });
   } finally { await remove(paths.root); }
 });

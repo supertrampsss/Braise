@@ -30,6 +30,10 @@ Le pipeline local B1b prépare le futur corpus complet sans modifier V1. `npm ru
 
 Le lot B1c ajoute la génération locale d'une cible arbitraire : `npm run semantic:v2:target:build -- --corpus work/semantic-v2 --output work/semantic-targets-v2 --target-id <id>`. Il calcule le cosinus réel sur les vecteurs float32, quantifie selon un contrat figé, puis écrit des pages bornées de scores int16, rangs uint32 et ordre stable uint32. `npm run semantic:v2:target:verify` recalcule exhaustivement la cible avant son activation locale. Un quota global, fixé à huit cibles par défaut, empêche le staging de devenir une matrice quadratique durable. Les interruptions réservent leur place et peuvent reprendre sans adopter une queue non checkpointée.
 
+Le lot B1d ajoute l'index de présence exact `BPI2`. `npm run semantic:v2:index:build -- --corpus work/semantic-v2 --output work/semantic-targets-v2` reprend chaque identité BRV2, la range dans deux niveaux de préfixes SHA-256 et n'active l'index local qu'après vérification exhaustive de la bijection mot-identifiant. `npm run semantic:v2:index:verify` contrôle tous les objets ; la lecture ponctuelle ne charge qu'une racine bornée, une page de préfixe et une feuille bornée. La canonisation reste celle de BRV2 et ne réutilise jamais les alias approximatifs V1.
+
+`npm run semantic:v2:target:evict -- --corpus work/semantic-v2 --output work/semantic-targets-v2 --target-id <id>` vérifie une cible complète avant son retrait. Génération, vérification et éviction partagent un verrou lecteur/mutateur. Le renommage atomique et le journal reprenable empêchent une suppression interrompue de libérer ou de recréer silencieusement un emplacement.
+
 Ces commandes restent des outils de staging. Les fixtures prouvent qu'un identifiant quelconque peut être cible et que les rangs dépassant 65 535 sont conservés, mais elles ne prouvent pas que le dictionnaire complet réel a été chargé. Le corpus réel, son index de présence serveur, les cibles effectivement préparées et la qualification R2/Worker restent nécessaires avant activation produit.
 
 ## État et publicité
@@ -60,6 +64,7 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
 - `docs/program/B1B-CORPUS-DIRECTIVE.md` : exigence de dictionnaire complet et critères d'acceptation du futur corpus.
 - `docs/program/B1C-DELIVERY.md` : générateur paginé d'une cible BRV2, classement exact et staging global borné.
+- `docs/program/B1D-DELIVERY.md` : index lexical exact BPI2 et éviction coordonnée du cache de cibles.
 - `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
 - `docs/program/B4A-DELIVERY.md` : profil local V2, migration sauvegardée et convergence entre onglets.
 - `docs/program/B4B-DELIVERY.md` : archives jouables, calendrier Paris contrôlé et progression non rétroactive.

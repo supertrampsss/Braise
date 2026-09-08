@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { open, readFile, rename, stat, unlink } from "node:fs/promises";
 import { basename, join } from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { gunzipSync } from "node:zlib";
 
 export const TARGET_MAGIC = "BRT2";
@@ -139,3 +140,28 @@ export function scoreIndex(score) {
 }
 
 export async function safeUnlink(path) { try { await unlink(path); } catch (error) { if (error?.code !== "ENOENT") throw error; } }
+
+export function acquireTargetCacheGuard(targetsRoot, mode = "exclusive") {
+  if (mode !== "exclusive" && mode !== "shared") throw new Error("Target cache guard mode is invalid");
+  let database;
+  try {
+    database = new DatabaseSync(join(targetsRoot, ".cache-guard.sqlite"));
+    database.exec("PRAGMA busy_timeout=0;");
+    if (mode === "exclusive") database.exec("CREATE TABLE IF NOT EXISTS cache_guard(id INTEGER PRIMARY KEY); BEGIN EXCLUSIVE;");
+    else database.exec("BEGIN; SELECT count(*) FROM sqlite_master;");
+    return { database, mode, targetsRoot };
+  } catch {
+    try { database?.close(); } catch {}
+    throw new Error(`Another target cache operation owns ${targetsRoot}`);
+  }
+}
+
+export function releaseTargetCacheGuard(guard) {
+  if (!guard) return;
+  try { guard.database.exec("ROLLBACK"); } catch {}
+  try { guard.database.close(); } catch {}
+}
+
+export function assertTargetCacheGuard(guard, targetsRoot) {
+  if (!guard || guard.targetsRoot !== targetsRoot || !guard.database || !["shared", "exclusive"].includes(guard.mode)) throw new Error("A matching target cache guard is required");
+}
