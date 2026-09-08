@@ -22,6 +22,7 @@
     "semantic:v2:evidence:verify": "node scripts/editorial-evidence-v2.mjs verify",
     "semantic:v2:catalogue:build": "node scripts/build-editorial-catalogue-v2.mjs",
     "semantic:v2:catalogue:verify": "node scripts/verify-editorial-catalogue-v2.mjs",
+    "qa:hosted:private": "node scripts/qualify-hosted-private.mjs",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "node scripts/test-game.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
