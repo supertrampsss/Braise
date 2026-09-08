@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "scope": "local-real-corpus-not-product-active",
+  "measuredAt": "2026-09-08T08:45:11.508Z",
+  "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "source": {
+    "path": "wiki.fr.vec",
+    "sha256": "bc68b0703375da9e81c3c11d0c28f3f8375dd944c209e697c4075e579455ac2a",
+    "bytes": 3027096151,
+    "declaredRows": 1152449,
+    "dimensions": 300,
+    "provenance": "fastText Wikipedia French vectors",
+    "license": "CC BY-SA 3.0"
+  },
+  "stats": {
+    "rowsRead": 1152449,
+    "accepted": 1013881,
+    "excluded": {
+      "malformed": 11460,
+      "invalid_utf8": 0,
+      "line_too_long": 0,
+      "non_lexical": 114754,
+      "dimension_mismatch": 9534,
+      "non_finite": 0,
+      "zero_norm": 0,
+      "duplicate": 2820
+    },
+    "segmentCount": 248
+  },
+  "config": {
+    "schemaVersion": 1,
+    "format": "BRV2",
+    "formatVersion": 2,
+    "filterVersion": "fr-lexicon-v2",
+    "canonicalization": "trim-lowercase-fr-NFC-smart-apostrophe",
+    "tokenPattern": "^[a-zàâäçéèêëîïôöùûüÿœæ]+(?:[-'][a-zàâäçéèêëîïôöùûüÿœæ]+)*$",
+    "duplicatePolicy": "first-valid-source-row",
+    "vectorEncoding": "float32-little-endian",
+    "vectorNormalization": "scaled-L2-float64-then-validated-float32",
+    "idOrder": "accepted-source-order-u32",
+    "dimensions": 300,
+    "segmentEntries": 4096,
+    "maxSegmentRawBytes": 8388608,
+    "maxLineBytes": 65536,
+    "provenance": "fastText Wikipedia French vectors",
+    "license": "CC BY-SA 3.0"
+  },
+  "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+  "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+  "ingestionWallSeconds": 323.341,
+  "independentVerificationWallSeconds": 159.826,
+  "index": {
+    "entries": 1013881,
+    "prefixPages": 256,
+    "leaves": 65536,
+    "wallSeconds": 111.424
+  },
+  "targets": [
+    {
+      "id": 0,
+      "entries": 1013881,
+      "valuePages": 16,
+      "orderPages": 16,
+      "wallSeconds": 39.49
+    },
+    {
+      "id": 1013880,
+      "entries": 1013881,
+      "valuePages": 16,
+      "orderPages": 16,
+      "wallSeconds": 63.626
+    }
+  ],
+  "reader": {
+    "scope": "real-corpus-local-transport-not-hosted-R2",
+    "pins": {
+      "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+      "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+      "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+      "dictionarySize": 1013881,
+      "index": {
+        "key": "fr-fasttext-complete-bc68b0703375-0f34b2449278/presence/manifest-e89d3e3c6a84a7ee-77178f6fc85de9d5.json",
+        "sha256": "77178f6fc85de9d5523db3f13141b751abdeb1c6b2d3ad6a4d020346a795c426"
+      },
+      "targets": {
+        "0": {
+          "key": "fr-fasttext-complete-bc68b0703375-0f34b2449278/targets/0000000000/manifest-bbb793e95af2e299-0d521c5d62f0d7f8.json",
+          "sha256": "0d521c5d62f0d7f810d88644caaf6d4967f023a3fd789ce8fc45e0c82a1ccfa9"
+        },
+        "1013880": {
+          "key": "fr-fasttext-complete-bc68b0703375-0f34b2449278/targets/0001013880/manifest-549eb4756ec31dd5-fa85b3ab64e7dcbb.json",
+          "sha256": "fa85b3ab64e7dcbb74b89761ac4b4fa28c840af90be95f0fb54038a25475fcd0"
+        }
+      }
+    },
+    "samples": [
+      {
+        "id": 0,
+        "word": "de",
+        "values": [
+          {
+            "target": 0,
+            "temperature": 100,
+            "rank": 1,
+            "found": true
+          },
+          {
+            "target": 1013880,
+            "temperature": 24.57,
+            "rank": 130663,
+            "found": false
+          }
+        ]
+      },
+      {
+        "id": 65536,
+        "word": "grison",
+        "values": [
+          {
+            "target": 0,
+            "temperature": 23.17,
+            "rank": 136590,
+            "found": false
+          },
+          {
+            "target": 1013880,
+            "temperature": 6.74,
+            "rank": 983480,
+            "found": false
+          }
+        ]
+      },
+      {
+        "id": 506940,
+        "word": "dujuan",
+        "values": [
+          {
+            "target": 0,
+            "temperature": 15.73,
+            "rank": 661092,
+            "found": false
+          },
+          {
+            "target": 1013880,
+            "temperature": 21.92,
+            "rank": 229314,
+            "found": false
+          }
+        ]
+      },
+      {
+        "id": 1013880,
+        "word": "concentrat",
+        "values": [
+          {
+            "target": 0,
+            "temperature": 24.57,
+            "rank": 84441,
+            "found": false
+          },
+          {
+            "target": 1013880,
+            "temperature": 100,
+            "rank": 1,
+            "found": true
+          }
+        ]
+      }
+    ],
+    "loads": 19,
+    "loadedBytes": 2406837,
+    "elapsedMs": 6828,
+    "maxRssKiB": 163224
+  }
+}

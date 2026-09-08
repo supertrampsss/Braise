@@ -502,3 +502,13 @@ h1 > span { color: #ff754d; }
 .two-braises-history th, .two-braises-history td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #ffffff18; }
 .two-braises-history small { display: block; font-size: 12px; }
 .laboratory-card select { min-height: 44px; padding: 8px; background: #242522; color: #f4f1e8; border: 1px solid #ffffff30; border-radius: 8px; font-size: 16px; }
+.laboratory-card form:not(.guess-form) { display: grid; gap: 12px; margin: 24px 0; }
+.laboratory-card label { display: grid; gap: 8px; margin-block: 12px; color: #ded8df; font-size: 14px; }
+.laboratory-card input, .laboratory-card select { width: 100%; min-width: 0; min-height: 44px; box-sizing: border-box; border: 1px solid #ffffff30; border-radius: 10px; background: #242329; color: #f4f1e8; padding: 10px 12px; font: inherit; font-size: 16px; }
+.laboratory-card .guess-form input { background: transparent; border: 0; padding: 8px 10px; }
+.laboratory-card input:focus-visible, .laboratory-card select:focus-visible { outline: 2px solid #ff754d; outline-offset: 3px; }
+.laboratory-card input[readonly] { font-size: 13px; font-family: ui-monospace, monospace; }
+.laboratory-card .text-action, .laboratory-card summary { min-height: 44px; padding-block: 12px; }
+.laboratory-card details { border-top: 1px solid #ffffff12; margin-top: 16px; padding-top: 4px; }
+.laboratory-card li { margin-block: 12px; overflow-wrap: anywhere; }
+.laboratory-card button:disabled { opacity: .5; cursor: not-allowed; }
