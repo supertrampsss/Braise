@@ -46,7 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": { "owner": "root-b2f-bounded-rotation", "expires_at": "2026-09-08T16:45:00Z", "phase": "B2" },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -127,24 +127,26 @@
         "docs/program/B2D-MEASUREMENTS.json",
         "docs/program/B2E-DELIVERY.md",
         "docs/program/B2E-MEASUREMENTS.json",
+        "docs/program/B2F-DELIVERY.md",
+        "docs/program/B2F-MEASUREMENTS.json",
         "400 distinct corpus identities reviewed lexically by agents",
-        "Thirty-two immutable content-addressed proofs across twenty-five target identities validated against the complete corpus",
+        "Forty immutable content-addressed proofs across thirty-three target identities validated against the complete corpus",
         "One real verified target eviction preserved its approval and the freed slot generated target 2122",
         "Seven historical twelve-neighbor proofs extended to sixty-four neighbors after eviction without changing their parent files",
-        "Twenty-five approved targets after two independent reviews and one disagreement arbitration in B2e",
+        "Thirty-two approved targets and one conservative rejection after two independent reviews in B2f",
         "147 tests passed; TypeScript passed; production build passed; real catalogue exhaustive verification passed",
-        "Independent gpt-6-astra max review: eight new proofs, prior history and empty staging verified; no remaining B2e blocker"
+        "Independent gpt-6-astra max review: eight new proofs, prior history and empty staging verified; no remaining B2f blocker"
       ],
       "blockers": [
-        "340 further approved targets are required before a 365-day edition can be created; 375 are required for the main 400-target acceptance goal",
+        "333 further approved targets are required before a 365-day edition can be created; 368 are required for the main 400-target acceptance goal",
         "R2 and Worker runtime qualification remain required before product activation"
       ],
-      "implementation": "inactive_editorial_workbench_400_reviewed_25_approved_25_targets_32_immutable_proofs",
-      "automated_checks": "147_tests_typecheck_build_and_25_real_evidence_catalogue_exhaustive_verification_passed_global_lint_existing_debt_recorded",
+      "implementation": "inactive_editorial_workbench_400_reviewed_32_approved_33_targets_40_immutable_proofs",
+      "automated_checks": "147_tests_typecheck_build_and_33_real_evidence_catalogue_exhaustive_verification_passed_global_lint_existing_debt_recorded",
       "browser_validation": "not_requested",
       "publication": "not_published",
       "catalogue_requirement": "365 distinct approved targets with durable lexical, neighborhood, hint and numerical evidence bound to the verified complete corpus",
-      "verified_source_commit": "fed7e7e69bce7ac18f08b415f503af6b0b1f73b3"
+      "verified_source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7"
     },
     {
       "id": "B3",
@@ -394,36 +396,36 @@
       "quadratic_matrix": false
     },
     "editorial_workbench": {
-      "evidence": "docs/program/B2E-DELIVERY.md",
-      "measurements": "docs/program/B2E-MEASUREMENTS.json",
+      "evidence": "docs/program/B2F-DELIVERY.md",
+      "measurements": "docs/program/B2F-MEASUREMENTS.json",
       "selected": 400,
       "lexically_reviewed": 400,
       "verified_staging_columns": 0,
-      "verified_archived_evidence": 25,
-      "durable_evidence_dossiers": 25,
-      "immutable_proof_files": 32,
-      "approved": 25,
-      "rejected_pending_broader_evidence": 0,
-      "remaining_approvals_for_calendar": 340,
-      "remaining_approvals_for_main_target": 375,
+      "verified_archived_evidence": 33,
+      "durable_evidence_dossiers": 33,
+      "immutable_proof_files": 40,
+      "approved": 32,
+      "rejected_pending_broader_evidence": 1,
+      "remaining_approvals_for_calendar": 333,
+      "remaining_approvals_for_main_target": 368,
       "calendar_created": false,
       "product_active": false
     }
   },
-  "last_checkpoint": "B2E-multitheme-batch-25-approved",
+  "last_checkpoint": "B2F-multitheme-batch-32-approved",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "147_tests_typecheck_build_passed_B2e_25_real_evidence_and_catalogue_independently_verified_global_lint_existing_debt_recorded",
+    "automated_checks": "147_tests_typecheck_build_passed_B2f_33_real_evidence_and_catalogue_independently_verified_global_lint_existing_debt_recorded",
     "browser_validation": "not_requested",
     "publication": "v5_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "fed7e7e69bce7ac18f08b415f503af6b0b1f73b3",
+  "last_verified_source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
   "last_run": {
-    "completed_at": "2026-09-08T14:30:20.000Z",
+    "completed_at": "2026-09-08T15:27:08.000Z",
     "phase": "B2",
     "progress": true,
-    "source_commit": "fed7e7e69bce7ac18f08b415f503af6b0b1f73b3",
+    "source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
     "publication": {
       "status": "not_published"
     },
