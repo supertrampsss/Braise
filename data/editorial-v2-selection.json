@@ -862,6 +862,226 @@
       "reviewedAt": "2026-09-08T19:58:55.000Z",
       "rationale": "Deux relectures indépendantes confirment le rôle symbolique, une apparence et une action familière, sans variante de la cible.",
       "evidenceSha256": "14afd3394efa1d98dbd4fa67688b0f4ab4545481fecf1c895b82328dcebfa3d5"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "chêne",
+        "charpente",
+        "sciure"
+      ],
+      "rationale": "Deux relectures indépendantes valident une essence, un usage de construction et un résidu, trois indices familiers et complémentaires malgré quelques formes parasites.",
+      "targetId": 493,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "9daa437fe0459f56b9a0471943e43656d8198b8ec282b3a40e06359ec84f842e"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "planète",
+        "glaise",
+        "tremblement"
+      ],
+      "rationale": "Deux relectures indépendantes valident la cible malgré ses sens multiples. Les indices retenus couvrent astronomie, matière et phénomène naturel ; les dérivés et concaténations sont exclus.",
+      "targetId": 372,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "d09be32b7de6c6e72f59cabc8e057ef976c01b3b3c4960b6da15b2ce8883ce2b"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "hockey",
+        "patinoire",
+        "patinage"
+      ],
+      "rationale": "Deux relectures ont divergé ; arbitrage indépendant maximal favorable conformément aux précédents : sport, lieu et activité sont distincts, familiers et pertinents. La concentration thématique est conservée comme réserve, sans ajouter de critère absent du plan.",
+      "targetId": 848,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "6ce7fffc56374443bc51c25b992b61d0e115f072afce61bbcf984cdc54c02d67"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "localité",
+        "bourgade",
+        "hameau"
+      ],
+      "rationale": "Deux relectures ont divergé ; arbitrage indépendant maximal favorable : catégorie générale et deux formes de peuplement offrent trois indices naturels et distincts, malgré leur proximité et les nombreux toponymes parasites.",
+      "targetId": 198,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "e9d28ea2135977ad497f629f9761893ba5b07757f40efb9388993cef9e514b98"
+    },
+    {
+      "decision": "rejected",
+      "hints": [],
+      "rationale": "Les deux relectures rejettent ce voisinage : collections et louvre sont accessibles, mais aucun troisième indice aussi familier et non dérivé ne se dégage ; artothèque est spécialisé et carnavalet moins connu.",
+      "targetId": 327,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "0c62f387bdf6e481c284a8b0e90fbd1b5f258ac24e6f6e1f606c6ffdd0783066"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "immeuble",
+        "restaurant",
+        "auberge"
+      ],
+      "rationale": "Deux relectures indépendantes valident bâtiment, service associé et hébergement voisin. Ces trois indices familiers sont présents et non dérivés de la cible.",
+      "targetId": 865,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "8724bd8f04980f9d3452836d7486391bb54afba9b6c14beb3a6eadcccd570831"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "clinique",
+        "pédiatrique",
+        "soignant"
+      ],
+      "rationale": "Deux relectures indépendantes valident le voisinage médical malgré les dérivés parasites. Les indices retenus couvrent établissement, spécialité et personnel, dans trois familles lexicales distinctes.",
+      "targetId": 1467,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "42136dbdf4fc706e799b564de7313bc4fe0ff96ba7b390af9e2e2e24a9ee410a"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "passagers",
+        "atterrissage",
+        "tarmac"
+      ],
+      "rationale": "Deux relectures indépendantes retiennent voyageurs, opération aérienne et infrastructure : trois indices présents, distincts et accessibles.",
+      "targetId": 1627,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "623b554c273312342b79ce8cf0576c54846d356f753995fac21c1b012b45fc97"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "hélicoptère",
+        "décollage",
+        "planeur"
+      ],
+      "rationale": "Deux relectures indépendantes valident deux appareils familiers et une action caractéristique, sans dérivé de la cible ni vocabulaire technique inaccessible.",
+      "targetId": 1504,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "d85a9fe200f3fdfd2b15967863772c444803a2c4aaa62e6508200b6660b43713"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "glossaire",
+        "lexique",
+        "larousse"
+      ],
+      "rationale": "Deux relectures indépendantes valident deux répertoires de vocabulaire et une référence éditoriale connue, trois indices familiers et non dérivés de la cible.",
+      "targetId": 1629,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "44c2b677d4932a564568794de93240314839e0ac6e696cbec7b7af90ff808850"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "station",
+        "rames",
+        "souterrain"
+      ],
+      "rationale": "Deux relectures indépendantes valident le voisinage. Les indices retenus relient point d’arrêt, véhicules et environnement, sans reprendre de dérivé de la cible.",
+      "targetId": 1817,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "8a9382d1336823a40ca85fdfcd8bcae2a5211cc6fac4002ac0bc27abd02aad90"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "roman",
+        "préface",
+        "manuscrit"
+      ],
+      "rationale": "Deux relectures indépendantes valident plusieurs pistes littéraires accessibles. Le trio retenu associe genre, partie de l’ouvrage et état du texte, sans dérivé de la cible.",
+      "targetId": 410,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "45199548193104551bef13b62fff7caebb58ffab2c1f0b3ea175ec32eeaba585"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "passagers",
+        "gare",
+        "locomotive"
+      ],
+      "rationale": "Deux relectures indépendantes retiennent personnes transportées, lieu d’arrêt et élément moteur, trois notions familières et distinctes.",
+      "targetId": 1235,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "98638c79ca9a3b0258bb7ec67840998f05622fc115f89520133447da1eef6069"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "parents",
+        "enfant",
+        "père"
+      ],
+      "rationale": "Deux relectures indépendantes valident catégorie familiale, filiation et rôle parental complémentaire, trois indices familiers, distincts et non dérivés.",
+      "targetId": 467,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "46341391f9f7847599b807a34932455ac17544f630204bc3f630c6cc075c7549"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "parents",
+        "bébé",
+        "adolescent"
+      ],
+      "rationale": "Deux relectures indépendantes valident lien familial et deux étapes de croissance, trois indices accessibles présents littéralement.",
+      "targetId": 885,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "0dae936252fc346a6f62529523071454ec6ee4ba6a27ad125f72805e5daa7509"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "technicien",
+        "concepteur",
+        "inventeur"
+      ],
+      "rationale": "Deux relectures indépendantes valident le voisinage technique. Les indices retenus relient compétence technique, conception et invention, trois notions familières sans dérivé de la cible.",
+      "targetId": 1640,
+      "actor": "astra-b2h-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T21:17:29.657Z",
+      "evidenceSha256": "255e5020823643ab491ca1e017131e13fc245f4082e38339795e602a43e478e1"
     }
   ],
   "reviews": [
