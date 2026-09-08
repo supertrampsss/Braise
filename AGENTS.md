@@ -12,6 +12,8 @@
 - Conserver l'attribution et la licence CC BY-SA des données.
 - Vérifier les modifications de calendrier, normalisation et API avec npm test.
 - Vérifier une génération V2 avec `npm run semantic:v2:verify -- --source <fichier.vec> --output <staging>` ; les sorties sous `work/` restent non publiées.
+- Une cible BRV2 se prépare localement avec `npm run semantic:v2:target:build -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>` puis se contrôle avec `npm run semantic:v2:target:verify`. Ne jamais activer une cible avant couverture et vérification exhaustives de ses scores, rangs et ordre.
+- Le staging des cibles reste borné par un quota global sérialisé. Une cible interrompue réserve aussi une place. Ne pas contourner ce quota en lançant plusieurs générateurs ou en copiant des colonnes hors du staging versionné.
 - Vérifier TypeScript et la construction après une modification du code.
 - Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.
 - Préserver `braise.v1.profile` et sa copie brute. Toute progression V2 passe par `lib/profile-storage.ts`, avec un événement stable par fait réel, sans réécriture additive du solde V1.

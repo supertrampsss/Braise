@@ -28,6 +28,10 @@ Le pipeline local B1b prépare le futur corpus complet sans modifier V1. `npm ru
 
 `npm run semantic:v2:verify -- --source <fichier.vec> --output work/semantic-v2` relit indépendamment toute la source et tous les segments, contrôle chaque association mot/vecteur, les exclusions, les empreintes et l'inventaire sémantique. Le pointeur `active.json` n'est créé qu'après cette vérification. Les tests synthétiques dépassent 50 000 lignes mais ne signifient pas que la source réelle complète a déjà été ingérée. Cette ingestion, la génération des scores/rangs par cible et la qualification R2/Worker restent à effectuer avant activation produit.
 
+Le lot B1c ajoute la génération locale d'une cible arbitraire : `npm run semantic:v2:target:build -- --corpus work/semantic-v2 --output work/semantic-targets-v2 --target-id <id>`. Il calcule le cosinus réel sur les vecteurs float32, quantifie selon un contrat figé, puis écrit des pages bornées de scores int16, rangs uint32 et ordre stable uint32. `npm run semantic:v2:target:verify` recalcule exhaustivement la cible avant son activation locale. Un quota global, fixé à huit cibles par défaut, empêche le staging de devenir une matrice quadratique durable. Les interruptions réservent leur place et peuvent reprendre sans adopter une queue non checkpointée.
+
+Ces commandes restent des outils de staging. Les fixtures prouvent qu'un identifiant quelconque peut être cible et que les rangs dépassant 65 535 sont conservés, mais elles ne prouvent pas que le dictionnaire complet réel a été chargé. Le corpus réel, son index de présence serveur, les cibles effectivement préparées et la qualification R2/Worker restent nécessaires avant activation produit.
+
 ## État et publicité
 
 Les parties, les pistes, le son et les victoires sont locaux au navigateur. Le profil V2 reprend la progression V1 après une copie de secours vérifiée et ses événements convergent entre les onglets du même navigateur. Un export JSON lisible permet de copier manuellement le profil, ses récompenses et ses préférences vers un autre appareil ; l’import prévisualise la fusion, exige une confirmation et ne déplace pas les parties en cours ni les épingles. Les archives ouvrent les mots passés depuis le lancement, avec la même partie sauvegardée que le quotidien correspondant. Une réussite tardive reste une archive et ne réécrit pas la série historique. Trois objectifs repartent chaque lundi à l’heure de Paris et débloquent des styles permanents, sans visionnage publicitaire ni avantage de jeu. Aucun compte ni synchronisation automatique multi-appareil. Cet historique reste personnel et non compétitif. Les défis partagent une seed et se comparent par leurs résultats, sans classement en direct.
@@ -55,6 +59,7 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
 - `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
 - `docs/program/B1B-CORPUS-DIRECTIVE.md` : exigence de dictionnaire complet et critères d'acceptation du futur corpus.
+- `docs/program/B1C-DELIVERY.md` : générateur paginé d'une cible BRV2, classement exact et staging global borné.
 - `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
 - `docs/program/B4A-DELIVERY.md` : profil local V2, migration sauvegardée et convergence entre onglets.
 - `docs/program/B4B-DELIVERY.md` : archives jouables, calendrier Paris contrôlé et progression non rétroactive.

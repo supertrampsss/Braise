@@ -185,8 +185,12 @@ function parseVectorLine(bytes, dimensions) {
 
 function rawSegmentSize(entries, dimensions) {
   const wordsBytes = entries.reduce((total, entry) => total + 4 + Buffer.byteLength(entry.word), 0);
+  return rawSegmentSizeFrom(entries.length, wordsBytes, dimensions);
+}
+
+function rawSegmentSizeFrom(entryCount, wordsBytes, dimensions) {
   const vectorsOffset = HEADER_BYTES + wordsBytes + ((4 - (wordsBytes % 4)) % 4);
-  return vectorsOffset + entries.length * dimensions * 4;
+  return vectorsOffset + entryCount * dimensions * 4;
 }
 
 function buildSegment(entries, dimensions, configHash) {
@@ -360,7 +364,7 @@ export async function buildSemanticCorpus({
     iterator = boundedLines(sourcePath, maxLineBytes)[Symbol.asyncIterator]();
     const repeatedHeader = await iterator.next();
     if (repeatedHeader.done || repeatedHeader.value.tooLong || repeatedHeader.value.endOffset !== first.value.endOffset) throw new Error("Source header changed before ingestion");
-    let pending = [];
+    let pending = []; let pendingWordsBytes = 0;
     const flush = async sourceRow => {
       if (!pending.length) return;
       const raw = buildSegment(pending, header.dimensions, configHash);
@@ -373,7 +377,7 @@ export async function buildSemanticCorpus({
       const segment = { file, dimensions: header.dimensions, firstId: pending[0].id, count: pending.length, firstSourceRow: pending[0].sourceRow, lastSourceRow: pending.at(-1).sourceRow, rawBytes: raw.length, compressedBytes: compressed.length, rawSha256, objectSha256 };
       checkpoint.segments.push(segment); checkpoint.rowsSeen = sourceRow; checkpoint.nextWordId = checkpoint.accepted;
       await durableWrite(join(outputDir, "checkpoint.json"), `${JSON.stringify(checkpoint, null, 2)}\n`);
-      pending = [];
+      pending = []; pendingWordsBytes = 0;
       if (testStopAfterSegments === checkpoint.segments.length) throw new CorpusBuildInterrupted("Test interruption after checkpoint");
     };
     let sourceRow = 0;
@@ -394,9 +398,10 @@ export async function buildSemanticCorpus({
         if (result.changes === 0) checkpoint.excluded.duplicate++;
         else {
           const entry = { id: checkpoint.accepted, sourceRow, word: parsed.word, vector: parsed.vector };
-          if (pending.length && (pending.length >= segmentEntries || rawSegmentSize([...pending, entry], header.dimensions) > maxSegmentRawBytes)) await flush(sourceRow - 1);
+          const entryWordsBytes = 4 + Buffer.byteLength(entry.word);
+          if (pending.length && (pending.length >= segmentEntries || rawSegmentSizeFrom(pending.length + 1, pendingWordsBytes + entryWordsBytes, header.dimensions) > maxSegmentRawBytes)) await flush(sourceRow - 1);
           if (rawSegmentSize([entry], header.dimensions) > maxSegmentRawBytes) throw new Error(`Single entry exceeds segment byte budget at source row ${sourceRow}`);
-          pending.push(entry); checkpoint.accepted++; checkpoint.nextWordId = checkpoint.accepted;
+          pending.push(entry); pendingWordsBytes += entryWordsBytes; checkpoint.accepted++; checkpoint.nextWordId = checkpoint.accepted;
           const wordBytes = Buffer.from(entry.word); const length = Buffer.alloc(4); length.writeUInt32LE(wordBytes.length);
           semanticHash.update(length).update(wordBytes).update(entry.vector);
         }
