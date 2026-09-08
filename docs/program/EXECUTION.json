@@ -111,7 +111,12 @@
     "main_model_override_performed": false
   },
   "last_verified_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
-  "lease": null,
+  "lease": {
+    "owner": "root-b2j-hosted-qualification",
+    "acquired_at": "2026-09-08T22:47:28.000Z",
+    "expires_at": "2026-09-09T00:17:28.000Z",
+    "base_commit": "3477dc827832af94a8a39ca1bf6e2bb6a891b401"
+  },
   "next_action": "Poursuivre les rotations bornées jusqu'à 365 cibles approuvées pour le calendrier et 400 pour l'objectif principal. Remplacer ou réexaminer avec de nouvelles preuves les trois candidats rejetés pour atteindre 400 approbations. Produire ensuite le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Préserver l'interface publiée ; les dix maquettes restent des propositions.",
   "next_phase": "B2",
   "phases": [
