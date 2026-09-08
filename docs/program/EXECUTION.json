@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B4",
-  "next_action": "Implémenter le profil local versionné et sa migration idempotente avec copie de secours, sans dépendre du R2 non qualifié ni transformer l'historique personnel en résultat compétitif.",
+  "next_action": "Implémenter les archives passées avec validation serveur, refus des dates futures, distinction entre date du puzzle et date de réalisation, puis couvrir les transitions DST de Paris.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B4-20260908T004312Z",
-    "acquired_at": "2026-09-08T00:43:12Z",
-    "expires_at": "2026-09-08T02:04:24Z",
-    "base_commit": "d840430a6a491b3d0e654d0140918d37bb32da77",
-    "phase": "B4"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -136,13 +130,21 @@
         "B1",
         "B3"
       ],
-      "status": "ready",
-      "evidence": [],
+      "status": "partial",
+      "evidence": [
+        "docs/program/B4A-DELIVERY.md",
+        "V1 profile preserved with exact immutable backup before migration",
+        "Append-only V2 response batches and events converge between same-browser tabs",
+        "Memory-only progress is retained and retried when local storage recovers",
+        "38 tests passed; TypeScript passed; production build passed",
+        "Independent gpt-6-astra max review: no remaining local blocking issue"
+      ],
       "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "implementation": "b4a_completed",
+      "automated_checks": "passed",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "not_published",
+      "verified_source_commit": "46430c1f4155b7d9775f49c575f5379469127fda"
     },
     {
       "id": "B5",
@@ -288,20 +290,20 @@
     "product_code_changed": true,
     "browser_qa_performed": false
   },
-  "last_checkpoint": "B3-design-verified",
+  "last_checkpoint": "B4a-local-profile-verified",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed_B3_passed",
+    "automated_checks": "B0_passed_B1a_local_passed_B3_passed_B4a_passed",
     "browser_validation": "not_requested",
     "publication": "v1_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "987ec6015574a1b452560153b269d1eb4c30f6ac",
+  "last_verified_source_commit": "46430c1f4155b7d9775f49c575f5379469127fda",
   "last_run": {
-    "completed_at": "2026-09-08T00:35:57.380Z",
-    "phase": "B3",
+    "completed_at": "2026-09-08T01:30:26.087Z",
+    "phase": "B4",
     "progress": true,
-    "source_commit": "987ec6015574a1b452560153b269d1eb4c30f6ac",
+    "source_commit": "46430c1f4155b7d9775f49c575f5379469127fda",
     "delegation": {
       "orchestrator": {
         "model": "gpt-6-astra",
@@ -309,23 +311,23 @@
       },
       "specialists": [
         {
-          "mission": "Design and motion review",
+          "mission": "V1 migration and concurrency review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "Inactive advertising foundation review",
+          "mission": "B4 local progression UX review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "B3 quality and test review",
+          "mission": "B4 storage and regression review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B3-20260908T001349Z"
+    "lease_owner": "braise-B4-20260908T004312Z"
   }
 }
