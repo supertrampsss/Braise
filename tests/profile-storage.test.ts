@@ -8,6 +8,10 @@ import {
   PROFILE_V2_BASE_PREFIX,
   PROFILE_V2_BATCH_PREFIX,
   PROFILE_V2_EVENT_PREFIX,
+  PROFILE_V2_IMPORT_PREFIX,
+  createLocalProfileExport,
+  importLocalProfile,
+  inspectLocalProfileImport,
   isProfileStorageKey,
   loadLocalProfile,
   profileActivitiesForGame,
@@ -226,6 +230,354 @@ test("append-only events converge across tabs without duplicate guesses or victo
   setLocalSound(false, "2026-09-08T00:00:04.000Z", "tab-b", storage);
   assert.equal(loadLocalProfile(storage).profile.sound, false);
   assert.equal([...storage.values.keys()].filter(key => key.startsWith(PROFILE_V2_BATCH_PREFIX) || key.startsWith(PROFILE_V2_EVENT_PREFIX)).length, 4);
+});
+
+test("a migrated profile exports in clear and imports atomically into a fresh profile", () => {
+  const raw = saves.fixtures[0].storage["braise.v1.profile"];
+  const source = new MemoryStorage([["braise.v1.profile", raw]]);
+  const sourceSnapshot = loadLocalProfile(source);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  assert.match(exported.text, /"format": "braise-personal-profile"/);
+  assert.match(exported.filename, /^braise-profil-2026-09-08\.json$/);
+
+  const destination = new MemoryStorage();
+  const fresh = loadLocalProfile(destination);
+  assert.equal(fresh.status, "ready");
+  const beforePreview = new Map(destination.values);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(preview.status, "ready");
+  assert.deepEqual(destination.values, beforePreview);
+  assert.ok(preview.planId);
+
+  const imported = importLocalProfile(exported.text, preview.planId!, destination, fresh, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(imported.persisted, true);
+  assert.deepEqual(imported.snapshot?.profile, sourceSnapshot.profile);
+  assert.equal(destination.getItem("braise.v1.profile"), null);
+  assert.equal([...destination.values.keys()].filter(key => key.startsWith(PROFILE_V2_IMPORT_PREFIX)).length, 1);
+});
+
+test("reimporting the same profile is idempotent and does not create more records", () => {
+  const source = new MemoryStorage();
+  let sourceSnapshot = loadLocalProfile(source);
+  sourceSnapshot = setLocalSound(true, "2026-09-08T00:10:00.000Z", "exported", source, sourceSnapshot);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+
+  const destination = new MemoryStorage();
+  loadLocalProfile(destination);
+  const firstPreview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.ok(firstPreview.planId);
+  assert.equal(importLocalProfile(exported.text, firstPreview.planId!, destination, undefined, new Date("2026-09-08T02:00:00.000Z")).persisted, true);
+  const recordCount = destination.values.size;
+  for (let repeat = 0; repeat < 10; repeat += 1) {
+    const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+    assert.equal(preview.status, "unchanged");
+    assert.ok(preview.planId);
+    const result = importLocalProfile(exported.text, preview.planId!, destination, undefined, new Date("2026-09-08T02:00:00.000Z"));
+    assert.equal(result.persisted, true);
+    assert.equal(destination.values.size, recordCount);
+  }
+});
+
+test("fresh profile imports preserve both sides and reconcile preferences deterministically", () => {
+  const source = new MemoryStorage();
+  let sourceSnapshot = loadLocalProfile(source);
+  sourceSnapshot = setLocalSound(true, "2026-09-08T00:10:00.000Z", "source", source, sourceSnapshot);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+
+  const destination = new MemoryStorage();
+  let destinationSnapshot = loadLocalProfile(destination);
+  destinationSnapshot = setLocalSound(false, "2026-09-08T00:20:00.000Z", "destination", destination, destinationSnapshot);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(preview.addedActivities, 1);
+  assert.ok(preview.planId);
+  const result = importLocalProfile(exported.text, preview.planId!, destination, destinationSnapshot, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(result.persisted, true);
+  assert.equal(result.snapshot?.profile.sound, false);
+  assert.deepEqual(new Set(result.snapshot?.activityIds), new Set(["sound:source", "sound:destination"]));
+});
+
+test("different V1 histories conflict without writing any import record", () => {
+  const source = new MemoryStorage([["braise.v1.profile", JSON.stringify({ wins: [], guesses: 1, sound: false })]]);
+  const destination = new MemoryStorage([["braise.v1.profile", JSON.stringify({ wins: [], guesses: 2, sound: false })]]);
+  const exported = createLocalProfileExport(loadLocalProfile(source), new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  loadLocalProfile(destination);
+  const before = new Map(destination.values);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(preview.status, "conflict");
+  assert.deepEqual(destination.values, before);
+  assert.equal([...destination.values.keys()].some(key => key.startsWith(PROFILE_V2_IMPORT_PREFIX)), false);
+});
+
+test("a concurrent local change makes a confirmed import stale before any write", () => {
+  const source = new MemoryStorage();
+  let sourceSnapshot = loadLocalProfile(source);
+  sourceSnapshot = setLocalSound(true, "2026-09-08T00:10:00.000Z", "source", source, sourceSnapshot);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  let destinationSnapshot = loadLocalProfile(destination);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.ok(preview.planId);
+  destinationSnapshot = setLocalSound(false, "2026-09-08T00:20:00.000Z", "concurrent", destination, destinationSnapshot);
+  const beforeConfirm = new Map(destination.values);
+  const result = importLocalProfile(exported.text, preview.planId!, destination, destinationSnapshot, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(result.status, "stale");
+  assert.equal(result.persisted, false);
+  assert.deepEqual(destination.values, beforeConfirm);
+});
+
+test("invalid and future transfer files are rejected without touching local progress", () => {
+  const source = new MemoryStorage();
+  let sourceSnapshot = loadLocalProfile(source);
+  sourceSnapshot = setLocalSound(true, "2026-09-08T00:10:00.000Z", "future", source, sourceSnapshot);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  loadLocalProfile(destination);
+  const before = new Map(destination.values);
+  assert.equal(inspectLocalProfileImport(exported.text.slice(0, -5), destination, new Date("2026-09-08T02:00:00.000Z")).status, "invalid");
+  const future = JSON.parse(exported.text);
+  future.activities[0].occurredAt = "2027-09-08T00:10:00.000Z";
+  assert.equal(inspectLocalProfileImport(JSON.stringify(future), destination, new Date("2026-09-08T02:00:00.000Z")).status, "invalid");
+  future.extra = true;
+  assert.equal(inspectLocalProfileImport(JSON.stringify(future), destination, new Date("2026-09-08T02:00:00.000Z")).status, "invalid");
+  assert.deepEqual(destination.values, before);
+});
+
+test("a failed atomic import reports unavailability and keeps the previous snapshot", () => {
+  const source = new MemoryStorage();
+  let sourceSnapshot = loadLocalProfile(source);
+  sourceSnapshot = setLocalSound(true, "2026-09-08T00:10:00.000Z", "source", source, sourceSnapshot);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  const fallback = loadLocalProfile(destination);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.ok(preview.planId);
+  const before = new Map(destination.values);
+  destination.failWrites = true;
+  const result = importLocalProfile(exported.text, preview.planId!, destination, fallback, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(result.status, "unavailable");
+  assert.equal(result.persisted, false);
+  assert.deepEqual(result.snapshot?.profile, fallback.profile);
+  assert.deepEqual(destination.values, before);
+});
+
+test("an import preserves and atomically persists progress that was only in memory", () => {
+  const source = new MemoryStorage();
+  const exported = createLocalProfileExport(loadLocalProfile(source), new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  const durable = loadLocalProfile(destination);
+  destination.failWrites = true;
+  const pending = setLocalSound(true, "2026-09-08T00:10:00.000Z", "pending", destination, durable);
+  assert.equal(pending.pendingActivities.length, 1);
+  destination.failWrites = false;
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"), pending);
+  assert.equal(preview.status, "unchanged");
+  assert.ok(preview.planId);
+  const result = importLocalProfile(exported.text, preview.planId!, destination, pending, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(result.persisted, true);
+  assert.equal(result.snapshot?.profile.sound, true);
+  assert.equal(result.snapshot?.pendingActivities.length, 0);
+  assert.ok(result.snapshot?.activityIds.includes("sound:pending"));
+});
+
+test("an unmigrated V1 destination is a real boundary and conflicts before any write", () => {
+  const source = new MemoryStorage([["braise.v1.profile", JSON.stringify({ wins: [], guesses: 10, sound: false })]]);
+  const destination = new MemoryStorage([["braise.v1.profile", JSON.stringify({ wins: [], guesses: 20, sound: false })]]);
+  const exported = createLocalProfileExport(loadLocalProfile(source), new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const before = new Map(destination.values);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(preview.status, "conflict");
+  assert.deepEqual(destination.values, before);
+});
+
+test("a missing historical backup remains a conflict", () => {
+  const raw = JSON.stringify({ wins: [], guesses: 3, sound: true });
+  const storage = new MemoryStorage([["braise.v1.profile", raw]]);
+  const migrated = loadLocalProfile(storage);
+  assert.equal(migrated.status, "migrated");
+  storage.values.delete("braise.v1.profile");
+  for (const key of [...storage.values.keys()]) if (key.startsWith(PROFILE_V1_BACKUP_PREFIX)) storage.values.delete(key);
+  const result = loadLocalProfile(storage);
+  assert.equal(result.status, "conflict");
+  assert.equal(result.persisted, false);
+});
+
+test("a recovered daily win played through archives remains transferable", () => {
+  const source = new MemoryStorage();
+  const initial = loadLocalProfile(source);
+  const archive = puzzle("daily-2026-09-07", "archive");
+  archive.ref.context = "archive";
+  archive.ref.calendar = { version: "paris-daily-v1", date: "2026-09-07" };
+  const won: SavedGame = {
+    guesses: [guess("réponse", 1, true)], pins: [], hints: 0, startedAt: 1,
+    solvedAt: Date.parse("2026-09-08T00:00:01.000Z"), completedMode: "daily", profileV2StartIndex: 0,
+  };
+  const snapshot = recordLocalGameProgress(archive, won, source, initial);
+  const exported = createLocalProfileExport(snapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  loadLocalProfile(destination);
+  assert.equal(inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z")).status, "ready");
+});
+
+test("hostile JSON values and forged weekly rewards return controlled rejection", () => {
+  const source = new MemoryStorage();
+  const exported = createLocalProfileExport(loadLocalProfile(source), new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  loadLocalProfile(destination);
+  const hostile = JSON.parse(exported.text);
+  hostile.sourceStatus = { toString: null };
+  assert.doesNotThrow(() => inspectLocalProfileImport(JSON.stringify(hostile), destination, new Date("2026-09-08T02:00:00.000Z")));
+  assert.equal(inspectLocalProfileImport(JSON.stringify(hostile), destination, new Date("2026-09-08T02:00:00.000Z")).status, "invalid");
+
+  const forged = JSON.parse(exported.text);
+  forged.activities = [{
+    schemaVersion: 2,
+    id: "weekly-reward:weekly-ritual-v1:2026-09-07:explore-15",
+    type: "weeklyRewardEarned",
+    rewardId: "weekly-ritual-v1:2026-09-07:explore-15",
+    value: "copper",
+    occurredAt: "2026-09-08T00:00:00.000Z",
+    provenance: "personal-local",
+  }];
+  forged.summary.activities = 1;
+  assert.equal(inspectLocalProfileImport(JSON.stringify(forged), destination, new Date("2026-09-08T02:00:00.000Z")).status, "invalid");
+});
+
+test("exports refuse ignored records and transfer limits use UTF-8 bytes", () => {
+  const storage = new MemoryStorage();
+  loadLocalProfile(storage);
+  storage.setItem(`${PROFILE_V2_EVENT_PREFIX}broken`, "{broken");
+  const partial = loadLocalProfile(storage);
+  assert.equal(partial.ignoredEvents, 1);
+  assert.equal(createLocalProfileExport(partial, new Date("2026-09-08T01:00:00.000Z")).ok, false);
+
+  const unicodeOversize = `${"é".repeat(4_300_000)}{}`;
+  assert.ok(unicodeOversize.length < 8 * 1024 * 1024);
+  const preview = inspectLocalProfileImport(unicodeOversize, new MemoryStorage(), new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(preview.status, "invalid");
+  assert.match(preview.reason, /8 Mio/);
+});
+
+test("memory-only V1 migration exports a valid recovery file", () => {
+  const raw = JSON.stringify({ wins: [], guesses: 7, sound: true });
+  const source = new MemoryStorage([["braise.v1.profile", raw]]);
+  source.failWrites = true;
+  const memory = loadLocalProfile(source);
+  assert.equal(memory.status, "memory-only");
+  const exported = createLocalProfileExport(memory, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  const destination = new MemoryStorage();
+  loadLocalProfile(destination);
+  assert.equal(inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z")).status, "ready");
+});
+
+test("a permanent reward keeps its historical proof through reconciliation and transfer", () => {
+  const storage = new MemoryStorage();
+  loadLocalProfile(storage);
+  const archiveRef = {
+    contractVersion: 1 as const, id: "daily-2026-08-30", corpusVersion: "fr-fasttext-30000-v1", rulesVersion: "classic-v1",
+    context: "archive" as const, variant: "classic" as const, calendar: { version: "paris-daily-v1", date: "2026-08-30" },
+  };
+  const dailyRef = { ...archiveRef, context: "daily" as const };
+  const freeRef = {
+    contractVersion: 1 as const, id: "free-1234", corpusVersion: "fr-fasttext-30000-v1", rulesVersion: "classic-v1",
+    context: "free" as const, variant: "classic" as const, calendar: null,
+  };
+  const archiveWin = { schemaVersion: 2, id: "win:daily-2026-08-30", type: "puzzleWon", puzzleRef: archiveRef, win: { id: "daily-2026-08-30", date: "2026-08-30", mode: "archive", tries: 4, hints: 0, completedAt: "2026-08-31T10:00:00.000Z" }, occurredAt: "2026-08-31T10:00:00.000Z", provenance: "personal-local" };
+  const dailyWin = { schemaVersion: 2, id: "win:daily-2026-08-30", type: "puzzleWon", puzzleRef: dailyRef, win: { id: "daily-2026-08-30", date: "2026-08-30", mode: "daily", tries: 4, hints: 0, completedAt: "2026-08-30T20:00:00.000Z" }, occurredAt: "2026-08-30T20:00:00.000Z", provenance: "personal-local" };
+  const freeWin = { schemaVersion: 2, id: "win:free-1234", type: "puzzleWon", puzzleRef: freeRef, win: { id: "free-1234", date: "2026-08-31", mode: "free", tries: 5, hints: 0, completedAt: "2026-08-31T11:00:00.000Z" }, occurredAt: "2026-08-31T11:00:00.000Z", provenance: "personal-local" };
+  const rewardId = "weekly-ritual-v1:2026-08-31:clear-2";
+  const reward = { schemaVersion: 2, id: `weekly-reward:${rewardId}`, type: "weeklyRewardEarned", rewardId, value: "solar", occurredAt: "2026-08-31T11:01:00.000Z", provenance: "personal-local" };
+  for (const [key, value] of [["archive", archiveWin], ["free", freeWin], ["reward", reward], ["daily", dailyWin]] as const) {
+    storage.setItem(`${PROFILE_V2_EVENT_PREFIX}${key}`, JSON.stringify(value));
+  }
+  const reconciled = loadLocalProfile(storage);
+  assert.equal(reconciled.profile.wins.find(win => win.id === "daily-2026-08-30")?.mode, "daily");
+  const exported = createLocalProfileExport(reconciled, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+  assert.match(exported.text, /"evidence"/);
+  const destination = new MemoryStorage();
+  loadLocalProfile(destination);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(preview.status, "ready");
+  assert.ok(preview.planId);
+  const imported = importLocalProfile(exported.text, preview.planId!, destination, undefined, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(imported.persisted, true);
+  assert.ok(imported.snapshot?.activityIds.includes(`weekly-reward:${rewardId}`));
+});
+
+test("the final merged bundle is byte-bounded before storage is changed", () => {
+  const source = new MemoryStorage();
+  let sourceSnapshot = loadLocalProfile(source);
+  sourceSnapshot = setLocalSound(true, "2026-09-08T00:10:00.000Z", "small", source, sourceSnapshot);
+  const exported = createLocalProfileExport(sourceSnapshot, new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(exported.ok, true);
+  if (!exported.ok) return;
+
+  const hugeLegacy = JSON.stringify({ wins: [], guesses: 2, sound: false, padding: "é".repeat(4_300_000) });
+  const destination = new MemoryStorage([["braise.v1.profile", hugeLegacy]]);
+  const fallback = loadLocalProfile(destination);
+  const preview = inspectLocalProfileImport(exported.text, destination, new Date("2026-09-08T02:00:00.000Z"), fallback);
+  assert.equal(preview.status, "ready");
+  assert.ok(preview.planId);
+  const beforeImportKeys = [...destination.values.keys()].filter(key => key.startsWith(PROFILE_V2_IMPORT_PREFIX));
+  const result = importLocalProfile(exported.text, preview.planId!, destination, fallback, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(result.status, "unavailable");
+  assert.equal(result.persisted, false);
+  assert.match(result.reason, /8 Mio/);
+  assert.deepEqual([...destination.values.keys()].filter(key => key.startsWith(PROFILE_V2_IMPORT_PREFIX)), beforeImportKeys);
+});
+
+test("a pending preferred win keeps the imported reward proof it replaces", () => {
+  const source = new MemoryStorage();
+  const blank = createLocalProfileExport(loadLocalProfile(source), new Date("2026-09-08T01:00:00.000Z"));
+  assert.equal(blank.ok, true);
+  if (!blank.ok) return;
+  const file = JSON.parse(blank.text);
+  const archiveRef = { contractVersion: 1, id: "daily-2026-08-30", corpusVersion: "fr-fasttext-30000-v1", rulesVersion: "classic-v1", context: "archive", variant: "classic", calendar: { version: "paris-daily-v1", date: "2026-08-30" } };
+  const freeRef = { contractVersion: 1, id: "free-1234", corpusVersion: "fr-fasttext-30000-v1", rulesVersion: "classic-v1", context: "free", variant: "classic", calendar: null };
+  const archiveWin = { schemaVersion: 2, id: "win:daily-2026-08-30", type: "puzzleWon", puzzleRef: archiveRef, win: { id: "daily-2026-08-30", date: "2026-08-30", mode: "archive", tries: 1, hints: 0, completedAt: "2026-08-31T10:00:00.000Z" }, occurredAt: "2026-08-31T10:00:00.000Z", provenance: "personal-local" };
+  const freeWin = { schemaVersion: 2, id: "win:free-1234", type: "puzzleWon", puzzleRef: freeRef, win: { id: "free-1234", date: "2026-08-31", mode: "free", tries: 1, hints: 0, completedAt: "2026-08-31T11:00:00.000Z" }, occurredAt: "2026-08-31T11:00:00.000Z", provenance: "personal-local" };
+  const rewardId = "weekly-ritual-v1:2026-08-31:clear-2";
+  file.activities = [archiveWin, freeWin, { schemaVersion: 2, id: `weekly-reward:${rewardId}`, type: "weeklyRewardEarned", rewardId, value: "solar", occurredAt: "2026-08-31T11:01:00.000Z", provenance: "personal-local" }];
+  file.summary = { guesses: 0, wins: 2, activities: 3 };
+  const text = JSON.stringify(file);
+
+  const destination = new MemoryStorage();
+  const durable = loadLocalProfile(destination);
+  destination.failWrites = true;
+  const daily = puzzle("daily-2026-08-30");
+  const pending = recordLocalGameProgress(daily, { guesses: [{ ...guess("réponse", 1, true), acceptedAt: "2026-08-30T20:00:00.000Z" }], pins: [], hints: 0, startedAt: 1, solvedAt: Date.parse("2026-08-30T20:00:00.000Z"), completedMode: "daily", profileV2StartIndex: 0 }, destination, durable);
+  destination.failWrites = false;
+  const preview = inspectLocalProfileImport(text, destination, new Date("2026-09-08T02:00:00.000Z"), pending);
+  assert.equal(preview.status, "ready");
+  assert.ok(preview.planId);
+  const result = importLocalProfile(text, preview.planId!, destination, pending, new Date("2026-09-08T02:00:00.000Z"));
+  assert.equal(result.persisted, true);
+  assert.ok(result.snapshot?.activityIds.includes(`weekly-reward:${rewardId}`));
 });
 
 test("game reconciliation records only post-migration attempts and is repeatable", () => {

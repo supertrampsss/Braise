@@ -16,6 +16,7 @@
 - Une archive accepte uniquement une date civile passée depuis l’époque V1, validée côté serveur. Elle conserve l’identité `daily-YYYY-MM-DD`, utilise le contexte `archive` et ne prolonge jamais rétroactivement la série quotidienne.
 - Les objectifs hebdomadaires dérivent uniquement des événements V2 horodatés et des victoires effectives avec `completedAt`. Ne jamais dater artificiellement le solde V1 ni compter un rejeu d’archive déjà acquis.
 - Les éditions d’objectifs et leurs récompenses sont immuables. Les cosmétiques restent locaux, permanents, sans avantage de jeu et sans dépendance publicitaire.
+- L’export de profil reste lisible, versionné et limité au profil. L’import affiche un aperçu sans écriture, exige une confirmation, conserve les faits locaux et refuse avant mutation toute frontière V1 incompatible, récompense non prouvée ou référence de partie incohérente.
 - Garder les effets visuels transitoires hors des sauvegardes et les déclencher uniquement depuis une réponse acceptée de la partie courante.
 - Les annonces sont réservées, aucune régie ne doit être activée avec des identifiants fictifs.
 - Toute publicité passe par lib/advertising.ts ; sans configuration commerciale réelle, la décision reste skip/not-configured.

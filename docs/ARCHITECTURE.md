@@ -5,6 +5,7 @@
 - `components/game.tsx` : interface et orchestration des parties locales.
 - `components/ad-placement.tsx` : réservation publicitaire statique, séparée du jeu.
 - `components/weekly-ritual.tsx` : affichage des trois objectifs et choix des styles accessibles.
+- `components/profile-transfer.tsx` : export du profil et parcours d’import prévisualisé puis confirmé.
 - `lib/game-feedback.ts` : événements visuels transitoires, identifiés et jamais persistés.
 - `lib/advertising.ts` : décision publicitaire pure, actuellement non configurée et toujours ignorée.
 - `lib/legacy-storage.ts` : lecture, validation et écriture compatibles avec les clés `braise.v1.*`.
@@ -42,6 +43,10 @@ L’édition `weekly-ritual-v1` contient exactement trois objectifs : propositio
 
 Les récompenses sont des identités déterministes `version de règles + lundi + objectif`, projetées depuis les faits canoniques. Dès qu’une identité est prouvée, un événement `weeklyRewardEarned` la matérialise sans crédit additionnel, bouton, annonce ou dépendance publicitaire. Cette preuve append-only empêche une réconciliation ultérieure de retirer un acquis. Leur union sur toutes les semaines débloque durablement trois cosmétiques, même lorsque les compteurs de la semaine courante repartent à zéro. Seule la préférence d’apparence produit un événement `cosmeticChanged`, résolu par date et identité comme le son. Une valeur inconnue ou un style non acquis reste sans effet. Les thèmes modifient l’ambiance de marque et l’emblème, jamais les températures, rangs, indices, erreurs ou victoires.
 
+Le transfert de profil emploie une enveloppe JSON lisible `braise-personal-profile` version 1. Elle contient la base historique exacte, son éventuelle source V1 brute et l’union canonique des faits de profil, y compris ceux temporairement gardés en mémoire. Elle exclut explicitement les parties en cours et les épingles. Un profil qui contient un enregistrement ignoré, un conflit ou une version future ne produit pas d’export incomplet présenté comme sûr.
+
+La lecture d’un fichier importé est stricte et sans écriture : schéma exact, taille UTF-8 maximale, dates non futures, références de parties V1 cohérentes et récompenses hebdomadaires prouvées par les faits du fichier. L’aperçu compare une empreinte de révision du stockage et des faits en mémoire. La confirmation revalide cette empreinte ; un changement concurrent impose un nouvel aperçu. La fusion ajoute un seul lot `braise.v2.profile.import.*` adressé par son contenu, sans supprimer ni réécrire les clés locales. Ce lot porte l’union nécessaire pour ne pas perdre un fait seulement en mémoire et devient visible d’un bloc aux autres onglets. Un autre historique V1 est refusé avant toute mutation. Réimporter le même contenu reste idempotent.
+
 Le coût sémantique ne dépend pas d'un fournisseur d'IA payant : les scores sont déjà calculés. Le format BRZ1 contient, par cible, scores, rangs de compétition et ordre stable. Chaque segment compressé et décompressé est contrôlé par taille, en-tête et SHA-256 avant admission. Le cache LRU conserve au plus 4 Mio de tableaux décodés, quatre lectures actives et huit chargements uniques au total. Les requêtes simultanées du même objet partagent une promesse.
 
 Tant que `.openai/hosting.json` conserve `r2: null`, le lecteur emploie explicitement les mêmes segments immuables comme assets du Site. Si un binding R2 est configuré, il devient la source exclusive : binding absent, objet manquant, lecture échouée ou corruption produisent une indisponibilité 503, jamais un score de remplacement ni un repli silencieux vers les assets. La configuration et la qualification d'un R2 réel restent nécessaires pour terminer B1.
@@ -60,7 +65,7 @@ Le champ reste modifiable pendant l'analyse. Les rappels de focus sont annulés 
 
 Le son est désactivé par défaut. `prefers-reduced-motion` réduit les animations. Aucune dépendance externe de police, vidéo ou image n'est nécessaire au premier écran.
 
-La fenêtre de progression indique le format local, la présence effective de la copie de secours et les styles réellement accessibles. Les erreurs de stockage, données illisibles, formats futurs et conflits V1 restent visibles sans bloquer le jeu. Une migration réussie ne produit ni récompense ni célébration. Les onglets actualisent silencieusement les compteurs, le son et le style, sans toucher à la saisie ou à la fenêtre ouverte. La carte hebdomadaire garde les trois objectifs visibles sans ajouter d’étape au jeu ; les états terminés, verrouillés et équipés sont écrits en toutes lettres.
+La fenêtre de progression indique le format local, la présence effective de la copie de secours et les styles réellement accessibles. Elle propose un téléchargement en un clic et un import en deux étapes : choix du fichier, puis confirmation après résumé. Les erreurs de stockage, données illisibles, formats futurs et conflits V1 restent visibles sans bloquer le jeu. Une migration ou un import réussi ne produit ni récompense ni célébration. Les onglets actualisent silencieusement les compteurs, le son et le style, sans toucher à la saisie ou à la fenêtre ouverte. La carte hebdomadaire garde les trois objectifs visibles sans ajouter d’étape au jeu ; les états terminés, verrouillés et équipés sont écrits en toutes lettres.
 
 ## Publicité
 
@@ -68,7 +73,7 @@ La fenêtre de progression indique le format local, la présence effective de la
 
 ## Limites de cette version
 
-Le profil local reste modifiable par l'utilisateur et sa progression n’est partagée qu’entre les onglets du même navigateur. La suppression des données du navigateur efface aussi le journal V2 et sa copie de secours. Les parties elles-mêmes restent dans leurs clés V1 et ne sont pas encore une autorité transactionnelle multi-onglets. Ne pas en faire un classement officiel. Le dictionnaire Wikipédia comprend parfois des noms propres ou emprunts. La matrice de 120 cibles est un corpus initial à élargir pour une exploitation pérenne.
+Le profil local reste modifiable par l'utilisateur et n’est synchronisé automatiquement qu’entre les onglets du même navigateur. Le fichier d’export permet une copie manuelle mais ne constitue ni une identité ni une preuve compétitive. La suppression des données du navigateur efface aussi le journal V2 et sa copie de secours. Les parties elles-mêmes restent dans leurs clés V1 et ne sont pas encore une autorité transactionnelle multi-onglets. Ne pas en faire un classement officiel. Le dictionnaire Wikipédia comprend parfois des noms propres ou emprunts. La matrice de 120 cibles est un corpus initial à élargir pour une exploitation pérenne.
 
 La marque, le domaine commercial, l'audience publique, la régie et le consentement publicitaire n'ont pas été provisionnés. Les contrats d'API actuels n'ont pas besoin de D1, R2 ou d'identité utilisateur.
 
