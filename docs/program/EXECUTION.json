@@ -7,8 +7,8 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B5",
-  "next_action": "Implémenter six expéditions avec étapes protégées, reprise et bilan. Les cinq collections B5b sont disponibles sur V1 avec victoires partagées explicites. Continuer ensuite laboratoire, social, studio et distribution, puis dictionnaire complet.",
+  "next_phase": "B6",
+  "next_action": "Implémenter et qualifier D1, identité invitée et parties serveur, puis cercles/duels/studio/distribution ; dictionnaire complet après les fonctionnalités.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,7 +46,11 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": { "owner": "root-expeditions-20260908", "expires_at": "2026-09-08T09:00:00Z", "phase": "B5" },
+  "lease": {
+    "owner": "root-expeditions-20260908",
+    "expires_at": "2026-09-08T09:00:00Z",
+    "phase": "B6"
+  },
   "phases": [
     {
       "id": "B0",
@@ -191,19 +195,20 @@
         "B2",
         "B4"
       ],
-      "status": "partial",
+      "status": "verified",
       "evidence": [
         "docs/program/B5A-DELIVERY.md",
         "111 tests passed; TypeScript and production build passed",
         "docs/program/B5B-DELIVERY.md",
-        "112 tests, TypeScript and production build passed"
+        "112 tests, TypeScript and production build passed",
+        "docs/program/B5C-DELIVERY.md"
       ],
       "blockers": [],
-      "implementation": "five_collections_on_v1_challenges_expeditions_pending",
-      "automated_checks": "passed",
+      "implementation": "completed_personal_local",
+      "automated_checks": "121_tests_typecheck_build_passed",
       "browser_validation": "not_requested",
-      "publication": "not_published",
-      "verified_source_commit": "706700155424d5932c903d7d4a188152486e4f95"
+      "publication": "published_owner_private_v3",
+      "verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26"
     },
     {
       "id": "B6",
@@ -245,13 +250,16 @@
         "B2",
         "B4"
       ],
-      "status": "planned",
-      "evidence": [],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B8-DELIVERY.md"
+      ],
       "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "implementation": "completed_personal_local",
+      "automated_checks": "121_tests_typecheck_build_passed",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "published_owner_private_v3",
+      "verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26"
     },
     {
       "id": "B9",
@@ -352,15 +360,15 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B5b-five-collections",
+  "last_checkpoint": "B5c-B8-private-v3",
   "delivery": {
     "implementation": "in_progress",
     "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
     "browser_validation": "not_requested",
-    "publication": "v2_owner_private",
+    "publication": "v3_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "706700155424d5932c903d7d4a188152486e4f95",
+  "last_verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26",
   "last_run": {
     "completed_at": "2026-09-08T07:07:13.763Z",
     "phase": "B5",
