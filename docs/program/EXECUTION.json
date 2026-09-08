@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B6",
-  "next_action": "Implémenter et qualifier D1, identité invitée et parties serveur, puis cercles/duels/studio/distribution ; dictionnaire complet après les fonctionnalités.",
+  "next_action": "Terminer révocation/récupération et contrôles atomiques de création, puis provisionner et qualifier D1 réel avant activation de /espace. Poursuivre cercles, duels, studio et distribution, puis dictionnaire complet.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,11 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "root-expeditions-20260908",
-    "expires_at": "2026-09-08T09:00:00Z",
-    "phase": "B6"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -217,16 +213,23 @@
         "B1",
         "B4"
       ],
-      "status": "planned",
-      "evidence": [],
-      "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "status": "partial",
+      "evidence": [
+        "docs/program/B6A-DELIVERY.md",
+        "125 tests passed; TypeScript and production build passed",
+        "gpt-6-astra max source-only review: no local blocker"
+      ],
+      "blockers": [
+        "Real D1 and hosted-route qualification pending"
+      ],
+      "implementation": "guest_sessions_and_atomic_server_games_local",
+      "automated_checks": "125_tests_typecheck_build_passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
       "external_dependencies": [
         "D1 binding provisioned and accessible"
-      ]
+      ],
+      "verified_source_commit": "fd47ee5d9eedd63a5e3f307854f4bbc9ab7c0389"
     },
     {
       "id": "B7",
@@ -360,7 +363,7 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B5c-B8-private-v3",
+  "last_checkpoint": "B6a-server-foundation",
   "delivery": {
     "implementation": "in_progress",
     "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
@@ -368,14 +371,14 @@
     "publication": "v3_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26",
+  "last_verified_source_commit": "fd47ee5d9eedd63a5e3f307854f4bbc9ab7c0389",
   "last_run": {
-    "completed_at": "2026-09-08T07:07:13.763Z",
-    "phase": "B5",
+    "completed_at": "2026-09-08T07:44:30.343Z",
+    "phase": "B6",
     "progress": true,
-    "source_commit": "706700155424d5932c903d7d4a188152486e4f95",
+    "source_commit": "fd47ee5d9eedd63a5e3f307854f4bbc9ab7c0389",
     "publication": {
-      "status": "not_published_this_slice"
+      "status": "B5_B8_published_private_v3_B6_not_published"
     },
     "main_model_override_performed": false
   }
