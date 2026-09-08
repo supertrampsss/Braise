@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 32,
-    "approved": 32
+    "neighborhoodEvidenceReady": 39,
+    "approved": 39
   },
   "entries": [
     {
@@ -3147,16 +3147,282 @@
       },
       "word": "nature",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 17588,
+            "word": "natures"
+          },
+          {
+            "id": 635099,
+            "word": "asknature"
+          },
+          {
+            "id": 824686,
+            "word": "minature"
+          },
+          {
+            "id": 457603,
+            "word": "natureserve"
+          },
+          {
+            "id": 813035,
+            "word": "natureman"
+          },
+          {
+            "id": 505468,
+            "word": "naturex"
+          },
+          {
+            "id": 771693,
+            "word": "enature"
+          },
+          {
+            "id": 438156,
+            "word": "naturen"
+          },
+          {
+            "id": 50928,
+            "word": "naturalité"
+          },
+          {
+            "id": 578599,
+            "word": "sauvenature"
+          },
+          {
+            "id": 919627,
+            "word": "treknature"
+          },
+          {
+            "id": 381304,
+            "word": "lanature"
+          },
+          {
+            "id": 313579,
+            "word": "natureparif"
+          },
+          {
+            "id": 423875,
+            "word": "naturée"
+          },
+          {
+            "id": 451211,
+            "word": "natured"
+          },
+          {
+            "id": 700808,
+            "word": "capenature"
+          },
+          {
+            "id": 447024,
+            "word": "naturante"
+          },
+          {
+            "id": 975637,
+            "word": "naturé"
+          },
+          {
+            "id": 567432,
+            "word": "promonature"
+          },
+          {
+            "id": 18443,
+            "word": "finalité"
+          },
+          {
+            "id": 343240,
+            "word": "inobservation"
+          },
+          {
+            "id": 644122,
+            "word": "éthicité"
+          },
+          {
+            "id": 333485,
+            "word": "inconnaissance"
+          },
+          {
+            "id": 880642,
+            "word": "naturellesous"
+          },
+          {
+            "id": 964441,
+            "word": "métaconnaissance"
+          },
+          {
+            "id": 149708,
+            "word": "écopotentialité"
+          },
+          {
+            "id": 2854,
+            "word": "conservation"
+          },
+          {
+            "id": 68801,
+            "word": "contingence"
+          },
+          {
+            "id": 133915,
+            "word": "immanent"
+          },
+          {
+            "id": 29779,
+            "word": "rationalité"
+          },
+          {
+            "id": 36443,
+            "word": "raisonnée"
+          },
+          {
+            "id": 82374,
+            "word": "matérialité"
+          },
+          {
+            "id": 221098,
+            "word": "façonnement"
+          },
+          {
+            "id": 28452,
+            "word": "contemplation"
+          },
+          {
+            "id": 845097,
+            "word": "sicknature"
+          },
+          {
+            "id": 41918,
+            "word": "intrinsèquement"
+          },
+          {
+            "id": 102815,
+            "word": "dénature"
+          },
+          {
+            "id": 190382,
+            "word": "immuabilité"
+          },
+          {
+            "id": 3563,
+            "word": "naturelles"
+          },
+          {
+            "id": 687254,
+            "word": "ratiocination"
+          },
+          {
+            "id": 454605,
+            "word": "surnature"
+          },
+          {
+            "id": 98097,
+            "word": "potentialité"
+          },
+          {
+            "id": 534346,
+            "word": "physicalité"
+          },
+          {
+            "id": 44647,
+            "word": "individualité"
+          },
+          {
+            "id": 42927,
+            "word": "spontanéité"
+          },
+          {
+            "id": 999093,
+            "word": "naturalsciences"
+          },
+          {
+            "id": 17297,
+            "word": "fondamentalement"
+          },
+          {
+            "id": 340306,
+            "word": "immanentes"
+          },
+          {
+            "id": 236532,
+            "word": "idéalité"
+          },
+          {
+            "id": 414237,
+            "word": "déterminative"
+          },
+          {
+            "id": 598407,
+            "word": "organicité"
+          },
+          {
+            "id": 840943,
+            "word": "visionature"
+          },
+          {
+            "id": 285231,
+            "word": "inobservable"
+          },
+          {
+            "id": 36270,
+            "word": "affective"
+          },
+          {
+            "id": 100766,
+            "word": "immanence"
+          },
+          {
+            "id": 758269,
+            "word": "naturele"
+          },
+          {
+            "id": 214871,
+            "word": "natureza"
+          },
+          {
+            "id": 43914,
+            "word": "inhérente"
+          },
+          {
+            "id": 305887,
+            "word": "environnementalement"
+          },
+          {
+            "id": 609793,
+            "word": "naturans"
+          },
+          {
+            "id": 712780,
+            "word": "sylvocynégétique"
+          },
+          {
+            "id": 425145,
+            "word": "substantialité"
+          },
+          {
+            "id": 371302,
+            "word": "inaltérabilité"
+          },
+          {
+            "id": 495118,
+            "word": "ination"
+          }
+        ],
+        "targetManifestSha256": "bf7d2f49a954182fe0466f02f3bff63de08a3d250d9618e6655e4dace4cc6dcf",
+        "evidenceSha256": "26c3dfd2b3d39d3a7f3201f964c9373157e97164cc7f4cd2af2fa745801079f4"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes rejettent un voisinage dominé par les concaténations, variantes et notions abstraites. Aucun trio d’indices familiers, variés et suffisamment naturel ne peut être retenu honnêtement.",
+        "evidenceSha256": "26c3dfd2b3d39d3a7f3201f964c9373157e97164cc7f4cd2af2fa745801079f4"
+      }
     },
     {
       "targetId": 493,
@@ -3239,16 +3505,286 @@
       },
       "word": "ville",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 666,
+            "word": "villes"
+          },
+          {
+            "id": 21617,
+            "word": "bourgade"
+          },
+          {
+            "id": 735,
+            "word": "capitale"
+          },
+          {
+            "id": 838,
+            "word": "cité"
+          },
+          {
+            "id": 16332,
+            "word": "faubourgs"
+          },
+          {
+            "id": 12101,
+            "word": "portuaire"
+          },
+          {
+            "id": 457876,
+            "word": "municipalitépréfecture"
+          },
+          {
+            "id": 72440,
+            "word": "bourgades"
+          },
+          {
+            "id": 3238,
+            "word": "environs"
+          },
+          {
+            "id": 89350,
+            "word": "mégapole"
+          },
+          {
+            "id": 923487,
+            "word": "bourgada"
+          },
+          {
+            "id": 687856,
+            "word": "parisagglomération"
+          },
+          {
+            "id": 36941,
+            "word": "urbanisée"
+          },
+          {
+            "id": 15145,
+            "word": "agglomérations"
+          },
+          {
+            "id": 13958,
+            "word": "jumelée"
+          },
+          {
+            "id": 56069,
+            "word": "conurbation"
+          },
+          {
+            "id": 4918,
+            "word": "garnison"
+          },
+          {
+            "id": 26593,
+            "word": "environnante"
+          },
+          {
+            "id": 4392,
+            "word": "natale"
+          },
+          {
+            "id": 9070,
+            "word": "fortifiée"
+          },
+          {
+            "id": 927643,
+            "word": "municipalitédepuis"
+          },
+          {
+            "id": 503646,
+            "word": "aglomération"
+          },
+          {
+            "id": 7213,
+            "word": "citadelle"
+          },
+          {
+            "id": 596,
+            "word": "municipalité"
+          },
+          {
+            "id": 645,
+            "word": "agglomération"
+          },
+          {
+            "id": 1086,
+            "word": "localité"
+          },
+          {
+            "id": 140,
+            "word": "région"
+          },
+          {
+            "id": 32069,
+            "word": "commerçante"
+          },
+          {
+            "id": 20265,
+            "word": "frontalière"
+          },
+          {
+            "id": 3989,
+            "word": "banlieue"
+          },
+          {
+            "id": 19783,
+            "word": "alentour"
+          },
+          {
+            "id": 18331,
+            "word": "assiégée"
+          },
+          {
+            "id": 15836,
+            "word": "environnantes"
+          },
+          {
+            "id": 651655,
+            "word": "creapole"
+          },
+          {
+            "id": 20985,
+            "word": "résidentielle"
+          },
+          {
+            "id": 6802,
+            "word": "remparts"
+          },
+          {
+            "id": 608,
+            "word": "quartier"
+          },
+          {
+            "id": 110203,
+            "word": "altstadt"
+          },
+          {
+            "id": 260619,
+            "word": "nomterritoire"
+          },
+          {
+            "id": 3470,
+            "word": "forteresse"
+          },
+          {
+            "id": 375790,
+            "word": "municipalites"
+          },
+          {
+            "id": 839254,
+            "word": "hourgade"
+          },
+          {
+            "id": 261,
+            "word": "habitants"
+          },
+          {
+            "id": 149778,
+            "word": "urbanise"
+          },
+          {
+            "id": 2509,
+            "word": "quartiers"
+          },
+          {
+            "id": 905112,
+            "word": "villeserin"
+          },
+          {
+            "id": 469236,
+            "word": "ritzville"
+          },
+          {
+            "id": 10003,
+            "word": "périphérie"
+          },
+          {
+            "id": 1858,
+            "word": "bourg"
+          },
+          {
+            "id": 45010,
+            "word": "urbanisé"
+          },
+          {
+            "id": 6261,
+            "word": "peuplée"
+          },
+          {
+            "id": 495717,
+            "word": "municipalisée"
+          },
+          {
+            "id": 985015,
+            "word": "quartierlorge"
+          },
+          {
+            "id": 289829,
+            "word": "municipalite"
+          },
+          {
+            "id": 80184,
+            "word": "avoisinante"
+          },
+          {
+            "id": 931145,
+            "word": "citadela"
+          },
+          {
+            "id": 3477,
+            "word": "localités"
+          },
+          {
+            "id": 937857,
+            "word": "stadtcasino"
+          },
+          {
+            "id": 280632,
+            "word": "agglopole"
+          },
+          {
+            "id": 13200,
+            "word": "balnéaire"
+          },
+          {
+            "id": 63690,
+            "word": "commerçantes"
+          },
+          {
+            "id": 73463,
+            "word": "mégalopole"
+          },
+          {
+            "id": 8111,
+            "word": "faubourg"
+          },
+          {
+            "id": 156697,
+            "word": "villesuiv"
+          }
+        ],
+        "targetManifestSha256": "fa73e0cc629936702dbd16f216bc9efad773e26a640e2a46c9e4a2a2c667caf0",
+        "evidenceSha256": "fba6a13f994d47f6f8ced118eb6fd36c4f0a9c8b88c05330b601798deb677e18"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "capitale",
+          "quartier",
+          "habitants"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes retiennent un rôle urbain, une subdivision et la population. Les trois notions sont courantes, complémentaires et non dérivées.",
+        "evidenceSha256": "fba6a13f994d47f6f8ced118eb6fd36c4f0a9c8b88c05330b601798deb677e18"
+      }
     },
     {
       "targetId": 198,
@@ -3331,16 +3867,286 @@
       },
       "word": "château",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 554393,
+            "word": "rchâteau"
+          },
+          {
+            "id": 867910,
+            "word": "hâteau"
+          },
+          {
+            "id": 3882,
+            "word": "châteaux"
+          },
+          {
+            "id": 12182,
+            "word": "chateau"
+          },
+          {
+            "id": 540492,
+            "word": "trichâteau"
+          },
+          {
+            "id": 1000125,
+            "word": "tréchâteau"
+          },
+          {
+            "id": 961875,
+            "word": "ponchâteau"
+          },
+          {
+            "id": 7307,
+            "word": "donjon"
+          },
+          {
+            "id": 974414,
+            "word": "châteaustléon"
+          },
+          {
+            "id": 611073,
+            "word": "châteu"
+          },
+          {
+            "id": 367600,
+            "word": "fonchâteau"
+          },
+          {
+            "id": 26643,
+            "word": "castrale"
+          },
+          {
+            "id": 252610,
+            "word": "penchâteau"
+          },
+          {
+            "id": 111492,
+            "word": "chateaux"
+          },
+          {
+            "id": 537678,
+            "word": "mmchâteau"
+          },
+          {
+            "id": 390454,
+            "word": "hateau"
+          },
+          {
+            "id": 277692,
+            "word": "salmchâteau"
+          },
+          {
+            "id": 3777,
+            "word": "manoir"
+          },
+          {
+            "id": 913161,
+            "word": "boischâteau"
+          },
+          {
+            "id": 233609,
+            "word": "châtelais"
+          },
+          {
+            "id": 19055,
+            "word": "douves"
+          },
+          {
+            "id": 20546,
+            "word": "seigneurial"
+          },
+          {
+            "id": 85307,
+            "word": "gentilhommière"
+          },
+          {
+            "id": 197223,
+            "word": "gentilhommières"
+          },
+          {
+            "id": 204966,
+            "word": "montmuran"
+          },
+          {
+            "id": 260279,
+            "word": "châteaumur"
+          },
+          {
+            "id": 18497,
+            "word": "seigneuriale"
+          },
+          {
+            "id": 186952,
+            "word": "châteauceaux"
+          },
+          {
+            "id": 438112,
+            "word": "châteaufer"
+          },
+          {
+            "id": 6557,
+            "word": "logis"
+          },
+          {
+            "id": 988560,
+            "word": "centerchâteau"
+          },
+          {
+            "id": 996176,
+            "word": "châteaufromont"
+          },
+          {
+            "id": 3470,
+            "word": "forteresse"
+          },
+          {
+            "id": 370584,
+            "word": "châteaupanne"
+          },
+          {
+            "id": 377562,
+            "word": "chateauversailles"
+          },
+          {
+            "id": 18910,
+            "word": "châtelain"
+          },
+          {
+            "id": 914435,
+            "word": "châtelaison"
+          },
+          {
+            "id": 275688,
+            "word": "montmurat"
+          },
+          {
+            "id": 62968,
+            "word": "chenonceau"
+          },
+          {
+            "id": 743202,
+            "word": "câteau"
+          },
+          {
+            "id": 3566,
+            "word": "ruines"
+          },
+          {
+            "id": 489528,
+            "word": "châteaupers"
+          },
+          {
+            "id": 293988,
+            "word": "châtelaines"
+          },
+          {
+            "id": 76210,
+            "word": "châteauvieux"
+          },
+          {
+            "id": 819092,
+            "word": "châteaude"
+          },
+          {
+            "id": 23861,
+            "word": "bâtisse"
+          },
+          {
+            "id": 228004,
+            "word": "châteaumorand"
+          },
+          {
+            "id": 82966,
+            "word": "châteaufort"
+          },
+          {
+            "id": 72162,
+            "word": "castral"
+          },
+          {
+            "id": 382065,
+            "word": "montmuzard"
+          },
+          {
+            "id": 158226,
+            "word": "tournoël"
+          },
+          {
+            "id": 412332,
+            "word": "châteauvilain"
+          },
+          {
+            "id": 730806,
+            "word": "montgontier"
+          },
+          {
+            "id": 980386,
+            "word": "montguiot"
+          },
+          {
+            "id": 20040,
+            "word": "pigeonnier"
+          },
+          {
+            "id": 42854,
+            "word": "visitable"
+          },
+          {
+            "id": 887355,
+            "word": "châteauschwendi"
+          },
+          {
+            "id": 606114,
+            "word": "donjonné"
+          },
+          {
+            "id": 915305,
+            "word": "bouchateau"
+          },
+          {
+            "id": 683440,
+            "word": "châteaugontier"
+          },
+          {
+            "id": 3482,
+            "word": "seigneurie"
+          },
+          {
+            "id": 908723,
+            "word": "baronnière"
+          },
+          {
+            "id": 21033,
+            "word": "orangerie"
+          },
+          {
+            "id": 607329,
+            "word": "châteigneraie"
+          }
+        ],
+        "targetManifestSha256": "fdcda3d83907f2cfe812355137ec07c8d1d83f58854471fe57e2e5a6df509127",
+        "evidenceSha256": "75e0f77225bce8bd00b2396cc23adbaf2f8cf92726dbf4116acb143aba4fc23f"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "donjon",
+          "douves",
+          "seigneurie"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes confirment deux éléments architecturaux et un contexte historique précis, malgré les concaténations parasites du voisinage.",
+        "evidenceSha256": "75e0f77225bce8bd00b2396cc23adbaf2f8cf92726dbf4116acb143aba4fc23f"
+      }
     },
     {
       "targetId": 199,
@@ -4046,16 +4852,286 @@
       },
       "word": "drapeau",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 808843,
+            "word": "drapeaunc"
+          },
+          {
+            "id": 795898,
+            "word": "rapeau"
+          },
+          {
+            "id": 8411,
+            "word": "drapeaux"
+          },
+          {
+            "id": 861424,
+            "word": "allemanddrapeau"
+          },
+          {
+            "id": 457699,
+            "word": "crapeau"
+          },
+          {
+            "id": 409841,
+            "word": "portedrapeau"
+          },
+          {
+            "id": 5341,
+            "word": "flag"
+          },
+          {
+            "id": 4396,
+            "word": "emblème"
+          },
+          {
+            "id": 18648,
+            "word": "tricolore"
+          },
+          {
+            "id": 869089,
+            "word": "ensigne"
+          },
+          {
+            "id": 35050,
+            "word": "ensign"
+          },
+          {
+            "id": 2284,
+            "word": "blason"
+          },
+          {
+            "id": 16611,
+            "word": "étendard"
+          },
+          {
+            "id": 5591,
+            "word": "armoiries"
+          },
+          {
+            "id": 911468,
+            "word": "papeau"
+          },
+          {
+            "id": 94787,
+            "word": "svgborder"
+          },
+          {
+            "id": 217966,
+            "word": "drape"
+          },
+          {
+            "id": 6564,
+            "word": "hymne"
+          },
+          {
+            "id": 188776,
+            "word": "armoirie"
+          },
+          {
+            "id": 48842,
+            "word": "étendards"
+          },
+          {
+            "id": 434067,
+            "word": "rapeaud"
+          },
+          {
+            "id": 1000147,
+            "word": "armoiriesdu"
+          },
+          {
+            "id": 21061,
+            "word": "logotype"
+          },
+          {
+            "id": 8325,
+            "word": "insigne"
+          },
+          {
+            "id": 38685,
+            "word": "hissé"
+          },
+          {
+            "id": 809240,
+            "word": "drapes"
+          },
+          {
+            "id": 982588,
+            "word": "drapel"
+          },
+          {
+            "id": 24829,
+            "word": "emblèmes"
+          },
+          {
+            "id": 854980,
+            "word": "létendard"
+          },
+          {
+            "id": 919126,
+            "word": "tricolors"
+          },
+          {
+            "id": 40726,
+            "word": "attribute"
+          },
+          {
+            "id": 446805,
+            "word": "capeau"
+          },
+          {
+            "id": 487789,
+            "word": "vexillologue"
+          },
+          {
+            "id": 824632,
+            "word": "armoirial"
+          },
+          {
+            "id": 22247,
+            "word": "écusson"
+          },
+          {
+            "id": 10592,
+            "word": "bannière"
+          },
+          {
+            "id": 736823,
+            "word": "pxarmoiries"
+          },
+          {
+            "id": 86367,
+            "word": "fanions"
+          },
+          {
+            "id": 330680,
+            "word": "tricolori"
+          },
+          {
+            "id": 1118,
+            "word": "svg"
+          },
+          {
+            "id": 29089,
+            "word": "bannières"
+          },
+          {
+            "id": 590376,
+            "word": "ensigns"
+          },
+          {
+            "id": 126356,
+            "word": "kanaky"
+          },
+          {
+            "id": 55617,
+            "word": "gammée"
+          },
+          {
+            "id": 180020,
+            "word": "emblême"
+          },
+          {
+            "id": 910521,
+            "word": "armoirienunavut"
+          },
+          {
+            "id": 48009,
+            "word": "banderole"
+          },
+          {
+            "id": 169235,
+            "word": "flagge"
+          },
+          {
+            "id": 649941,
+            "word": "drapetsona"
+          },
+          {
+            "id": 924613,
+            "word": "vexillologues"
+          },
+          {
+            "id": 396178,
+            "word": "ensigné"
+          },
+          {
+            "id": 34273,
+            "word": "cocarde"
+          },
+          {
+            "id": 44087,
+            "word": "tricolores"
+          },
+          {
+            "id": 110032,
+            "word": "vexillologie"
+          },
+          {
+            "id": 547573,
+            "word": "étendart"
+          },
+          {
+            "id": 276986,
+            "word": "vexillologique"
+          },
+          {
+            "id": 5295,
+            "word": "devise"
+          },
+          {
+            "id": 680281,
+            "word": "drapent"
+          },
+          {
+            "id": 111149,
+            "word": "logotypes"
+          },
+          {
+            "id": 51967,
+            "word": "arborer"
+          },
+          {
+            "id": 18561,
+            "word": "blasons"
+          },
+          {
+            "id": 702572,
+            "word": "draped"
+          },
+          {
+            "id": 804948,
+            "word": "patriotiqueordre"
+          },
+          {
+            "id": 1082,
+            "word": "logo"
+          }
+        ],
+        "targetManifestSha256": "81b94feec864bd896561ab3c11254dfb9ae620ac9fba9df3fb1624f3abd75810",
+        "evidenceSha256": "14afd3394efa1d98dbd4fa67688b0f4ab4545481fecf1c895b82328dcebfa3d5"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "emblème",
+          "tricolore",
+          "hissé"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes confirment le rôle symbolique, une apparence et une action familière, sans variante de la cible.",
+        "evidenceSha256": "14afd3394efa1d98dbd4fa67688b0f4ab4545481fecf1c895b82328dcebfa3d5"
+      }
     },
     {
       "targetId": 1797,
@@ -4069,16 +5145,286 @@
       },
       "word": "voiture",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 817702,
+            "word": "voiturer"
+          },
+          {
+            "id": 937207,
+            "word": "mavoiture"
+          },
+          {
+            "id": 2780,
+            "word": "voitures"
+          },
+          {
+            "id": 818949,
+            "word": "voituret"
+          },
+          {
+            "id": 36486,
+            "word": "camionnette"
+          },
+          {
+            "id": 87756,
+            "word": "voiturette"
+          },
+          {
+            "id": 78529,
+            "word": "décapotable"
+          },
+          {
+            "id": 765904,
+            "word": "minivoiture"
+          },
+          {
+            "id": 70387,
+            "word": "fourgonnette"
+          },
+          {
+            "id": 3030,
+            "word": "véhicule"
+          },
+          {
+            "id": 319523,
+            "word": "décapotables"
+          },
+          {
+            "id": 709631,
+            "word": "antivoiture"
+          },
+          {
+            "id": 727891,
+            "word": "covoiture"
+          },
+          {
+            "id": 8360,
+            "word": "camion"
+          },
+          {
+            "id": 49587,
+            "word": "automobiliste"
+          },
+          {
+            "id": 675818,
+            "word": "voiturin"
+          },
+          {
+            "id": 270754,
+            "word": "voiturage"
+          },
+          {
+            "id": 55479,
+            "word": "voiturettes"
+          },
+          {
+            "id": 89276,
+            "word": "camionnettes"
+          },
+          {
+            "id": 21317,
+            "word": "cabriolet"
+          },
+          {
+            "id": 179747,
+            "word": "fourgonnettes"
+          },
+          {
+            "id": 1009154,
+            "word": "cabrioler"
+          },
+          {
+            "id": 83251,
+            "word": "garée"
+          },
+          {
+            "id": 26170,
+            "word": "fourgon"
+          },
+          {
+            "id": 519078,
+            "word": "fourgonette"
+          },
+          {
+            "id": 115765,
+            "word": "carrossée"
+          },
+          {
+            "id": 67899,
+            "word": "portière"
+          },
+          {
+            "id": 462631,
+            "word": "carrosser"
+          },
+          {
+            "id": 643634,
+            "word": "automobilepilote"
+          },
+          {
+            "id": 13253,
+            "word": "carrosserie"
+          },
+          {
+            "id": 30527,
+            "word": "jeep"
+          },
+          {
+            "id": 520653,
+            "word": "décapotée"
+          },
+          {
+            "id": 455191,
+            "word": "covoiturer"
+          },
+          {
+            "id": 10340,
+            "word": "cabine"
+          },
+          {
+            "id": 1234,
+            "word": "automobile"
+          },
+          {
+            "id": 895214,
+            "word": "automobilist"
+          },
+          {
+            "id": 176780,
+            "word": "carrossé"
+          },
+          {
+            "id": 755865,
+            "word": "décapoté"
+          },
+          {
+            "id": 866111,
+            "word": "whomobile"
+          },
+          {
+            "id": 782612,
+            "word": "utomobile"
+          },
+          {
+            "id": 14009,
+            "word": "berline"
+          },
+          {
+            "id": 23106,
+            "word": "motocyclette"
+          },
+          {
+            "id": 36370,
+            "word": "roadster"
+          },
+          {
+            "id": 414392,
+            "word": "camionneuse"
+          },
+          {
+            "id": 9703,
+            "word": "chauffeur"
+          },
+          {
+            "id": 9880,
+            "word": "porsche"
+          },
+          {
+            "id": 286872,
+            "word": "motorwagen"
+          },
+          {
+            "id": 113358,
+            "word": "automobili"
+          },
+          {
+            "id": 58204,
+            "word": "roulante"
+          },
+          {
+            "id": 157956,
+            "word": "vélomobile"
+          },
+          {
+            "id": 155161,
+            "word": "automobil"
+          },
+          {
+            "id": 34055,
+            "word": "automobilistes"
+          },
+          {
+            "id": 91736,
+            "word": "voiturier"
+          },
+          {
+            "id": 85030,
+            "word": "cyclomoteur"
+          },
+          {
+            "id": 18928,
+            "word": "motos"
+          },
+          {
+            "id": 2461,
+            "word": "véhicules"
+          },
+          {
+            "id": 562228,
+            "word": "camionette"
+          },
+          {
+            "id": 98089,
+            "word": "cabriolets"
+          },
+          {
+            "id": 511097,
+            "word": "recarrossée"
+          },
+          {
+            "id": 523841,
+            "word": "motorhome"
+          },
+          {
+            "id": 7036,
+            "word": "automobiles"
+          },
+          {
+            "id": 960292,
+            "word": "récarrossée"
+          },
+          {
+            "id": 45778,
+            "word": "motocyclettes"
+          },
+          {
+            "id": 256604,
+            "word": "camionnage"
+          }
+        ],
+        "targetManifestSha256": "a4d328ab7a95aa3c6bd59b1a530f7fc362e7d21d1e9543b980b4cd17ba746d78",
+        "evidenceSha256": "90d7c932c4ad25908f0e3667d52b9912434df0c189a7dbe38f2274e4dbbd95a9"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "véhicule",
+          "portière",
+          "chauffeur"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes valident une catégorie, un élément matériel et une personne associée, sans reprendre de variante de la cible.",
+        "evidenceSha256": "90d7c932c4ad25908f0e3667d52b9912434df0c189a7dbe38f2274e4dbbd95a9"
+      }
     },
     {
       "targetId": 1836,
@@ -4092,16 +5438,286 @@
       },
       "word": "bateau",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 1523,
+            "word": "navire"
+          },
+          {
+            "id": 13116,
+            "word": "voilier"
+          },
+          {
+            "id": 4064,
+            "word": "bateaux"
+          },
+          {
+            "id": 23255,
+            "word": "embarcation"
+          },
+          {
+            "id": 18814,
+            "word": "canot"
+          },
+          {
+            "id": 14815,
+            "word": "barque"
+          },
+          {
+            "id": 100112,
+            "word": "chavire"
+          },
+          {
+            "id": 37989,
+            "word": "naviguant"
+          },
+          {
+            "id": 38345,
+            "word": "remorqueur"
+          },
+          {
+            "id": 21064,
+            "word": "embarcations"
+          },
+          {
+            "id": 21978,
+            "word": "goélette"
+          },
+          {
+            "id": 53330,
+            "word": "cotre"
+          },
+          {
+            "id": 19637,
+            "word": "voiliers"
+          },
+          {
+            "id": 44771,
+            "word": "chalutier"
+          },
+          {
+            "id": 12420,
+            "word": "paquebot"
+          },
+          {
+            "id": 131192,
+            "word": "caboteur"
+          },
+          {
+            "id": 286265,
+            "word": "catboat"
+          },
+          {
+            "id": 39034,
+            "word": "chaloupe"
+          },
+          {
+            "id": 13341,
+            "word": "mâts"
+          },
+          {
+            "id": 16736,
+            "word": "yacht"
+          },
+          {
+            "id": 698086,
+            "word": "avire"
+          },
+          {
+            "id": 78138,
+            "word": "goélettes"
+          },
+          {
+            "id": 35491,
+            "word": "sloop"
+          },
+          {
+            "id": 59814,
+            "word": "baleinier"
+          },
+          {
+            "id": 100231,
+            "word": "gréé"
+          },
+          {
+            "id": 657980,
+            "word": "navireà"
+          },
+          {
+            "id": 62976,
+            "word": "navigua"
+          },
+          {
+            "id": 859269,
+            "word": "embarcable"
+          },
+          {
+            "id": 797708,
+            "word": "embarca"
+          },
+          {
+            "id": 84890,
+            "word": "naviguait"
+          },
+          {
+            "id": 970788,
+            "word": "canoteur"
+          },
+          {
+            "id": 31253,
+            "word": "gréement"
+          },
+          {
+            "id": 90403,
+            "word": "chavirer"
+          },
+          {
+            "id": 86151,
+            "word": "vraquier"
+          },
+          {
+            "id": 264130,
+            "word": "bâteau"
+          },
+          {
+            "id": 25072,
+            "word": "navigue"
+          },
+          {
+            "id": 56109,
+            "word": "ketch"
+          },
+          {
+            "id": 59595,
+            "word": "chaloupes"
+          },
+          {
+            "id": 288947,
+            "word": "chavirement"
+          },
+          {
+            "id": 28284,
+            "word": "canots"
+          },
+          {
+            "id": 1008165,
+            "word": "naviguable"
+          },
+          {
+            "id": 912816,
+            "word": "navigues"
+          },
+          {
+            "id": 106359,
+            "word": "hunier"
+          },
+          {
+            "id": 605291,
+            "word": "naviguais"
+          },
+          {
+            "id": 60945,
+            "word": "remorqueurs"
+          },
+          {
+            "id": 30110,
+            "word": "radeau"
+          },
+          {
+            "id": 762378,
+            "word": "batboat"
+          },
+          {
+            "id": 50968,
+            "word": "navigué"
+          },
+          {
+            "id": 146953,
+            "word": "chaviré"
+          },
+          {
+            "id": 57894,
+            "word": "accoster"
+          },
+          {
+            "id": 1490,
+            "word": "navires"
+          },
+          {
+            "id": 622729,
+            "word": "catboats"
+          },
+          {
+            "id": 192446,
+            "word": "remorquant"
+          },
+          {
+            "id": 107772,
+            "word": "thonier"
+          },
+          {
+            "id": 48174,
+            "word": "amarré"
+          },
+          {
+            "id": 64688,
+            "word": "accostage"
+          },
+          {
+            "id": 252775,
+            "word": "hydroglisseur"
+          },
+          {
+            "id": 8458,
+            "word": "naufrage"
+          },
+          {
+            "id": 634231,
+            "word": "naviguée"
+          },
+          {
+            "id": 42986,
+            "word": "catamaran"
+          },
+          {
+            "id": 46827,
+            "word": "galion"
+          },
+          {
+            "id": 36788,
+            "word": "remorqué"
+          },
+          {
+            "id": 14888,
+            "word": "épave"
+          },
+          {
+            "id": 9896,
+            "word": "cargo"
+          }
+        ],
+        "targetManifestSha256": "0627f7045ab164b760d3eebfb147f082165eb86a98d20a60e8b78abb54f1dd18",
+        "evidenceSha256": "add9163fd21141c0ea816b7cbeb13f5867c7cdba4e17d109417e81f9dae0091d"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "voilier",
+          "accoster",
+          "naufrage"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes retiennent un type, une action et un événement nautique familiers et complémentaires.",
+        "evidenceSha256": "add9163fd21141c0ea816b7cbeb13f5867c7cdba4e17d109417e81f9dae0091d"
+      }
     },
     {
       "targetId": 1504,
@@ -4575,16 +6191,286 @@
       },
       "word": "père",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 2777,
+            "word": "oncle"
+          },
+          {
+            "id": 598,
+            "word": "frère"
+          },
+          {
+            "id": 16514,
+            "word": "paternel"
+          },
+          {
+            "id": 224,
+            "word": "fils"
+          },
+          {
+            "id": 18568,
+            "word": "adoptif"
+          },
+          {
+            "id": 3413,
+            "word": "aîné"
+          },
+          {
+            "id": 467,
+            "word": "mère"
+          },
+          {
+            "id": 3619,
+            "word": "neveu"
+          },
+          {
+            "id": 14509,
+            "word": "ainé"
+          },
+          {
+            "id": 17072,
+            "word": "paternelle"
+          },
+          {
+            "id": 25255,
+            "word": "oncles"
+          },
+          {
+            "id": 3579,
+            "word": "cousin"
+          },
+          {
+            "id": 5151,
+            "word": "cadet"
+          },
+          {
+            "id": 10928,
+            "word": "gendre"
+          },
+          {
+            "id": 12260,
+            "word": "maternel"
+          },
+          {
+            "id": 1294,
+            "word": "sœur"
+          },
+          {
+            "id": 49909,
+            "word": "paternels"
+          },
+          {
+            "id": 1969,
+            "word": "mari"
+          },
+          {
+            "id": 58704,
+            "word": "adoptifs"
+          },
+          {
+            "id": 1460,
+            "word": "parents"
+          },
+          {
+            "id": 421,
+            "word": "fille"
+          },
+          {
+            "id": 8848,
+            "word": "nièce"
+          },
+          {
+            "id": 714,
+            "word": "épouse"
+          },
+          {
+            "id": 27143,
+            "word": "adoptive"
+          },
+          {
+            "id": 39408,
+            "word": "aïeul"
+          },
+          {
+            "id": 6635,
+            "word": "tante"
+          },
+          {
+            "id": 15121,
+            "word": "fiancé"
+          },
+          {
+            "id": 8746,
+            "word": "aînée"
+          },
+          {
+            "id": 449043,
+            "word": "paternellement"
+          },
+          {
+            "id": 19042,
+            "word": "fratrie"
+          },
+          {
+            "id": 48372,
+            "word": "remariée"
+          },
+          {
+            "id": 4062,
+            "word": "époux"
+          },
+          {
+            "id": 150273,
+            "word": "trisaïeul"
+          },
+          {
+            "id": 23262,
+            "word": "prénommé"
+          },
+          {
+            "id": 691113,
+            "word": "pèrede"
+          },
+          {
+            "id": 88651,
+            "word": "paternelles"
+          },
+          {
+            "id": 46367,
+            "word": "tantes"
+          },
+          {
+            "id": 58336,
+            "word": "puîné"
+          },
+          {
+            "id": 705466,
+            "word": "trisaïeuls"
+          },
+          {
+            "id": 1156,
+            "word": "ami"
+          },
+          {
+            "id": 2005,
+            "word": "beau"
+          },
+          {
+            "id": 574795,
+            "word": "ternel"
+          },
+          {
+            "id": 17754,
+            "word": "neveux"
+          },
+          {
+            "id": 421520,
+            "word": "trisaïeule"
+          },
+          {
+            "id": 132468,
+            "word": "bisaïeul"
+          },
+          {
+            "id": 3595,
+            "word": "garçon"
+          },
+          {
+            "id": 319787,
+            "word": "prénomma"
+          },
+          {
+            "id": 9800,
+            "word": "fiancée"
+          },
+          {
+            "id": 9242,
+            "word": "cousine"
+          },
+          {
+            "id": 37665,
+            "word": "filleul"
+          },
+          {
+            "id": 32982,
+            "word": "ainée"
+          },
+          {
+            "id": 160358,
+            "word": "prénommait"
+          },
+          {
+            "id": 662861,
+            "word": "grandpère"
+          },
+          {
+            "id": 6695,
+            "word": "épousé"
+          },
+          {
+            "id": 42833,
+            "word": "épousée"
+          },
+          {
+            "id": 17756,
+            "word": "précepteur"
+          },
+          {
+            "id": 17195,
+            "word": "veuf"
+          },
+          {
+            "id": 48963,
+            "word": "nièces"
+          },
+          {
+            "id": 584320,
+            "word": "parternel"
+          },
+          {
+            "id": 1004217,
+            "word": "bisaïeuls"
+          },
+          {
+            "id": 84272,
+            "word": "gendres"
+          },
+          {
+            "id": 3912,
+            "word": "héritier"
+          },
+          {
+            "id": 633092,
+            "word": "quadrisaïeul"
+          },
+          {
+            "id": 49125,
+            "word": "remarié"
+          }
+        ],
+        "targetManifestSha256": "79c1a746d9eb6664a5db147e1ca1260bba2c24e97a4268a81bad431bc2f2ab79",
+        "evidenceSha256": "912b2a9c9e24fd6394bee31048e56ad67ecc4eeaea51464a85004b119749dcc9"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "fils",
+          "mari",
+          "adoptif"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes valident deux liens familiaux et une qualification distincte. Les dérivés paternels sont écartés.",
+        "evidenceSha256": "912b2a9c9e24fd6394bee31048e56ad67ecc4eeaea51464a85004b119749dcc9"
+      }
     },
     {
       "targetId": 467,
@@ -4736,16 +6622,286 @@
       },
       "word": "professeur",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 726833,
+            "word": "professeurr"
+          },
+          {
+            "id": 24076,
+            "word": "professeure"
+          },
+          {
+            "id": 860128,
+            "word": "universitésprofesseur"
+          },
+          {
+            "id": 3837,
+            "word": "enseignant"
+          },
+          {
+            "id": 232974,
+            "word": "professeures"
+          },
+          {
+            "id": 16543,
+            "word": "enseigna"
+          },
+          {
+            "id": 708014,
+            "word": "avocatprofesseur"
+          },
+          {
+            "id": 12218,
+            "word": "agrégé"
+          },
+          {
+            "id": 9440,
+            "word": "enseigné"
+          },
+          {
+            "id": 529508,
+            "word": "universitésdirecteur"
+          },
+          {
+            "id": 199,
+            "word": "université"
+          },
+          {
+            "id": 815899,
+            "word": "économisteprofesseur"
+          },
+          {
+            "id": 9314,
+            "word": "émérite"
+          },
+          {
+            "id": 5991,
+            "word": "chercheur"
+          },
+          {
+            "id": 17244,
+            "word": "enseignante"
+          },
+          {
+            "id": 53062,
+            "word": "enseignera"
+          },
+          {
+            "id": 646813,
+            "word": "proffesseur"
+          },
+          {
+            "id": 7638,
+            "word": "recteur"
+          },
+          {
+            "id": 5065,
+            "word": "professeurs"
+          },
+          {
+            "id": 560317,
+            "word": "professera"
+          },
+          {
+            "id": 2100,
+            "word": "faculté"
+          },
+          {
+            "id": 4094,
+            "word": "diplômé"
+          },
+          {
+            "id": 30634,
+            "word": "enseignait"
+          },
+          {
+            "id": 5473,
+            "word": "chaire"
+          },
+          {
+            "id": 3117,
+            "word": "enseigne"
+          },
+          {
+            "id": 918108,
+            "word": "curieuniversité"
+          },
+          {
+            "id": 1008342,
+            "word": "professuer"
+          },
+          {
+            "id": 410820,
+            "word": "sorbonneuniversité"
+          },
+          {
+            "id": 94680,
+            "word": "professer"
+          },
+          {
+            "id": 8733,
+            "word": "enseigner"
+          },
+          {
+            "id": 793587,
+            "word": "breslauuniversité"
+          },
+          {
+            "id": 471916,
+            "word": "fesseur"
+          },
+          {
+            "id": 765692,
+            "word": "leydeuniversité"
+          },
+          {
+            "id": 935404,
+            "word": "versaillesprofesseur"
+          },
+          {
+            "id": 962674,
+            "word": "grazuniversité"
+          },
+          {
+            "id": 956134,
+            "word": "cracovieuniversité"
+          },
+          {
+            "id": 475722,
+            "word": "enseign"
+          },
+          {
+            "id": 51048,
+            "word": "doctorant"
+          },
+          {
+            "id": 46871,
+            "word": "professorat"
+          },
+          {
+            "id": 918878,
+            "word": "profess"
+          },
+          {
+            "id": 977742,
+            "word": "sorbonneécole"
+          },
+          {
+            "id": 469202,
+            "word": "supérieureuniversité"
+          },
+          {
+            "id": 3384,
+            "word": "doctorat"
+          },
+          {
+            "id": 940050,
+            "word": "berneuniversité"
+          },
+          {
+            "id": 6904,
+            "word": "doyen"
+          },
+          {
+            "id": 48391,
+            "word": "professe"
+          },
+          {
+            "id": 1148,
+            "word": "étudiant"
+          },
+          {
+            "id": 846460,
+            "word": "hopkinsuniversité"
+          },
+          {
+            "id": 2581,
+            "word": "étudie"
+          },
+          {
+            "id": 357603,
+            "word": "harvarduniversité"
+          },
+          {
+            "id": 971716,
+            "word": "giessenuniversité"
+          },
+          {
+            "id": 627282,
+            "word": "professora"
+          },
+          {
+            "id": 746538,
+            "word": "bâleuniversité"
+          },
+          {
+            "id": 952237,
+            "word": "saduniversité"
+          },
+          {
+            "id": 742186,
+            "word": "tübingenuniversité"
+          },
+          {
+            "id": 510849,
+            "word": "princetonuniversité"
+          },
+          {
+            "id": 827588,
+            "word": "bonnuniversité"
+          },
+          {
+            "id": 444878,
+            "word": "yaleuniversité"
+          },
+          {
+            "id": 140821,
+            "word": "doctorante"
+          },
+          {
+            "id": 447342,
+            "word": "göttingenuniversité"
+          },
+          {
+            "id": 138559,
+            "word": "professorale"
+          },
+          {
+            "id": 688601,
+            "word": "cnrsuniversité"
+          },
+          {
+            "id": 892306,
+            "word": "varsovieuniversité"
+          },
+          {
+            "id": 10147,
+            "word": "étudia"
+          }
+        ],
+        "targetManifestSha256": "fc0ec5879603d1d64b07118d3d4eb17b71a7c84ed4137106c52ef43dbcc9dd09",
+        "evidenceSha256": "f05f4e16a1ba50bfe502ba8bca689ae323648f5edf97bcbb7175fa9e369ba2cd"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "enseignant",
+          "université",
+          "étudiant"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2g-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T19:58:55.000Z",
+        "rationale": "Deux relectures indépendantes retiennent le métier voisin, l’institution et la personne enseignée, trois indices accessibles malgré le bruit des concaténations.",
+        "evidenceSha256": "f05f4e16a1ba50bfe502ba8bca689ae323648f5edf97bcbb7175fa9e369ba2cd"
+      }
     },
     {
       "targetId": 1421,

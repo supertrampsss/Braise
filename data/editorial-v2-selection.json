@@ -782,6 +782,86 @@
       "reviewedAt": "2026-09-08T15:09:11.000Z",
       "rationale": "Deux relectures indépendantes valident un contexte de compétition et deux disciplines reconnaissables. Les formes dérivées de la cible sont exclues.",
       "evidenceSha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3"
+    },
+    {
+      "targetId": 703,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes rejettent un voisinage dominé par les concaténations, variantes et notions abstraites. Aucun trio d’indices familiers, variés et suffisamment naturel ne peut être retenu honnêtement.",
+      "evidenceSha256": "26c3dfd2b3d39d3a7f3201f964c9373157e97164cc7f4cd2af2fa745801079f4"
+    },
+    {
+      "targetId": 69,
+      "decision": "approved",
+      "hints": ["capitale", "quartier", "habitants"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un rôle urbain, une subdivision et la population. Les trois notions sont courantes, complémentaires et non dérivées.",
+      "evidenceSha256": "fba6a13f994d47f6f8ced118eb6fd36c4f0a9c8b88c05330b601798deb677e18"
+    },
+    {
+      "targetId": 239,
+      "decision": "approved",
+      "hints": ["donjon", "douves", "seigneurie"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes confirment deux éléments architecturaux et un contexte historique précis, malgré les concaténations parasites du voisinage.",
+      "evidenceSha256": "75e0f77225bce8bd00b2396cc23adbaf2f8cf92726dbf4116acb143aba4fc23f"
+    },
+    {
+      "targetId": 1797,
+      "decision": "approved",
+      "hints": ["véhicule", "portière", "chauffeur"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes valident une catégorie, un élément matériel et une personne associée, sans reprendre de variante de la cible.",
+      "evidenceSha256": "90d7c932c4ad25908f0e3667d52b9912434df0c189a7dbe38f2274e4dbbd95a9"
+    },
+    {
+      "targetId": 1836,
+      "decision": "approved",
+      "hints": ["voilier", "accoster", "naufrage"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un type, une action et un événement nautique familiers et complémentaires.",
+      "evidenceSha256": "add9163fd21141c0ea816b7cbeb13f5867c7cdba4e17d109417e81f9dae0091d"
+    },
+    {
+      "targetId": 252,
+      "decision": "approved",
+      "hints": ["fils", "mari", "adoptif"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes valident deux liens familiaux et une qualification distincte. Les dérivés paternels sont écartés.",
+      "evidenceSha256": "912b2a9c9e24fd6394bee31048e56ad67ecc4eeaea51464a85004b119749dcc9"
+    },
+    {
+      "targetId": 606,
+      "decision": "approved",
+      "hints": ["enseignant", "université", "étudiant"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes retiennent le métier voisin, l’institution et la personne enseignée, trois indices accessibles malgré le bruit des concaténations.",
+      "evidenceSha256": "f05f4e16a1ba50bfe502ba8bca689ae323648f5edf97bcbb7175fa9e369ba2cd"
+    },
+    {
+      "targetId": 1660,
+      "decision": "approved",
+      "hints": ["emblème", "tricolore", "hissé"],
+      "actor": "astra-b2g-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T19:58:55.000Z",
+      "rationale": "Deux relectures indépendantes confirment le rôle symbolique, une apparence et une action familière, sans variante de la cible.",
+      "evidenceSha256": "14afd3394efa1d98dbd4fa67688b0f4ab4545481fecf1c895b82328dcebfa3d5"
     }
   ],
   "reviews": [
