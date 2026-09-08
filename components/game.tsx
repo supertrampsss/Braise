@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { ArrowDownUp, ArrowRight, Award, CalendarDays, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Snowflake, Sparkles, Target, Trophy, Users, Volume2, VolumeX, X, Zap } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -8,13 +8,15 @@ import { Progress } from "@/components/ui/progress";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import AdPlacement from "@/components/ad-placement";
+import { CosmeticPicker, WeeklyRitualCard } from "@/components/weekly-ritual";
 import { getStreak, warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
 import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
-import { isProfileStorageKey, recordLocalGameProgress, refreshLocalProfile, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
+import { isProfileStorageKey, recordLocalGameProgress, refreshLocalProfile, setLocalCosmetic, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
 import { archiveDateStatus, LEGACY_ARCHIVE_START_DATE, latestArchiveDate, parisDate } from "@/lib/calendar";
+import { COSMETICS, projectWeeklyRitual, type CosmeticId } from "@/lib/weekly-ritual";
 
 type Modal = "help" | "stats" | "challenge" | "privacy" | "about" | "share" | null;
 function freshSeed() { return String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647); }
@@ -85,6 +87,11 @@ export default function Game() {
   const level = Math.floor(xp / 500) + 1;
   const today = now ? parisDate(new Date(now)) : "";
   const streak = today ? getStreak(profile.wins, today) : 0;
+  const ritual = useMemo(
+    () => now ? projectWeeklyRitual(profileSnapshot?.activities ?? [], profile.wins, new Date()) : null,
+    [profileSnapshot, today],
+  );
+  const selectedCosmetic = ritual?.selectedCosmetic ?? "classic";
   const archiveMax = now ? latestArchiveDate(new Date(now)) : LEGACY_ARCHIVE_START_DATE;
   const tabMode = mode === "archive" ? "daily" : mode;
   const countdown = puzzle && now ? Math.max(0, new Date(puzzle.resetAt).getTime() - now) : 0;
@@ -212,6 +219,13 @@ export default function Game() {
     setProfileSnapshot(next);
     if (!next.persisted) setStorageWarning(true);
   }
+  function selectCosmetic(value: CosmeticId) {
+    if (!ritual?.unlockedCosmetics.includes(value)) return;
+    const next = setLocalCosmetic(value, new Date().toISOString(), crypto.randomUUID(), undefined, profileSnapshot ?? undefined);
+    setProfileSnapshot(next);
+    if (!next.persisted) setStorageWarning(true);
+    toast.success(`${COSMETICS.find(cosmetic => cosmetic.id === value)?.name ?? "Style"} équipé.`);
+  }
   async function changeMode(value: string) {
     if (busy) return;
     if (value === "challenge") { setModal("challenge"); return; }
@@ -308,7 +322,7 @@ export default function Game() {
     await copy(url.toString(), "Lien du défi copié. Envoyez-le à vos amis !");
   }
 
-  return <div className="app-shell">
+  return <div className={`app-shell cosmetic-${selectedCosmetic}`}>
     <Toaster position="bottom-center" theme="dark" />
     <a className="skip-link" href="#game-board">Aller au jeu</a>
     <header className="site-header">
@@ -361,6 +375,8 @@ export default function Game() {
         <aside className="side-column">
           <section className="progress-card"><div className="section-topline"><span className="card-eyebrow">VOTRE ÉTINCELLE</span><span className="small-icon"><Zap size={17} /></span></div><div className="player-level"><span className="level-emblem"><Flame size={27} /></span><div><h2>{level < 3 ? "L’étincelle" : level < 7 ? "La flamme" : "Le brasier"}</h2><span>Niveau {level} · {xp.toLocaleString("fr-FR")} XP</span></div></div><Progress className="xp-track" value={(xp % 500) / 5} aria-label="Progression vers le prochain niveau" aria-valuetext={`${xp % 500} sur 500 XP`} /><div className="xp-caption"><span>{500 - xp % 500} XP avant le niveau {level + 1}</span><Sparkles size={12} /></div><div className="personal-stats"><div><strong>{profile.wins.length}</strong><span>Mots trouvés</span></div><div><strong>{streak}<Flame size={15} /></strong><span>Jours de série</span></div></div><button className="text-action" onClick={() => setModal("stats")}>Ma progression<ArrowRight size={16} /></button></section>
 
+          {ritual && <WeeklyRitualCard projection={ritual} />}
+
           <section className="notebook-card"><div className="section-topline"><h2><Pin size={17} />Mon carnet</h2><span className="muted-count">{game.pins.length}/3</span></div><p>Gardez vos pistes pour rebondir.</p><div className="notebook-pins">{game.pins.map(word => <button key={word} disabled={busy || loading} onClick={() => pin(word)} title="Détacher cette piste">{word}<X size={13} /></button>)}{Array.from({ length: 3 - game.pins.length }, (_, i) => <span className="empty-pin" key={i}><Plus size={14} /></span>)}</div>{!game.pins.length && <span className="notebook-note">Épinglez un mot dans vos explorations.</span>}</section>
 
           <section className="tip-card"><span className="tip-icon"><Lightbulb size={20} /></span><div><span className="card-eyebrow">LE DÉCLIC</span><h3>Pensez autour du mot.</h3><p>« Plage » peut être proche de « vacances ». Les mots partagent un univers, pas forcément une définition.</p></div></section>
@@ -378,7 +394,7 @@ export default function Game() {
 
     <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog"><DialogHeader><span className="modal-symbol">{modal === "stats" ? <Trophy /> : modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "help" ? "Un mot. Et le déclic." : modal === "stats" ? "Votre feu prend." : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : "Bienvenue chez Braise."}</DialogTitle><DialogDescription>{modal === "help" ? "La règle tient en trois petites étapes." : modal === "stats" ? "Votre progression personnelle, enregistrée dans ce navigateur." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : "Un jeu de proximité sémantique, en français."}</DialogDescription></DialogHeader>
       {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations. Après 5 essais, vous disposez de 3 indices gratuits. Ils sont signalés dans le résultat partagé.</p></div></li></ol><div className="modal-note">La température traduit une proximité calculée, pas une probabilité. Un contraire peut être proche. Les accents manquants sont acceptés si le mot est identifiable.</div><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer<ArrowRight size={18} /></button></>}
-      {modal === "stats" && <><div className="modal-stats"><div><strong>{profile.wins.length}</strong><span>mots trouvés</span></div><div><strong>{streak}</strong><span>jours de série</span></div><div><strong>{profile.guesses}</strong><span>mots proposés</span></div></div><div className="achievement-list">{[{ icon: Flame, name: "Première étincelle", text: "Trouvez votre premier mot", done: profile.wins.length >= 1 }, { icon: Target, name: "L’intuition juste", text: "Trouvez un mot en 10 essais maximum, sans indice", done: profile.wins.some(w => w.tries <= 10 && w.hints === 0) }, { icon: Award, name: "Ça devient un rituel", text: "Réussissez 3 quotidiens de suite", done: streak >= 3 }, { icon: Trophy, name: "Gardien du feu", text: "Trouvez 10 mots", done: profile.wins.length >= 10 }].map(a => <div className={a.done ? "achievement unlocked" : "achievement"} key={a.name}><a.icon size={23} /><div><h3>{a.name}</h3><p>{a.text}</p></div>{a.done ? <CheckCheck size={18} /> : <LockKeyhole size={16} />}</div>)}</div><p className="modal-note">+2 XP par proposition, +150 XP par victoire. Les indices ne rapportent pas d’XP. La série compte les défis quotidiens réussis, à l’heure de Paris.</p><section className="local-save-status" aria-label="Sauvegarde locale"><h3>Sauvegarde locale</h3><p>{profileSnapshot?.persisted ? `Enregistrée dans ce navigateur · format v${profileSnapshot.formatVersion}` : "Sauvegarde indisponible dans ce navigateur"}</p>{profileSnapshot?.status === "migrated" && <span>Votre ancienne progression a été reprise.</span>}{profileSnapshot?.backupConfirmed && <span>Une copie de secours de l’ancien format est conservée ici.</span>}{profileSnapshot?.persisted && <span>Les onglets de Braise dans ce navigateur partagent cette progression.</span>}</section></>}
+      {modal === "stats" && <><div className="modal-stats"><div><strong>{profile.wins.length}</strong><span>mots trouvés</span></div><div><strong>{streak}</strong><span>jours de série</span></div><div><strong>{profile.guesses}</strong><span>mots proposés</span></div></div><div className="achievement-list">{[{ icon: Flame, name: "Première étincelle", text: "Trouvez votre premier mot", done: profile.wins.length >= 1 }, { icon: Target, name: "L’intuition juste", text: "Trouvez un mot en 10 essais maximum, sans indice", done: profile.wins.some(w => w.tries <= 10 && w.hints === 0) }, { icon: Award, name: "Ça devient un rituel", text: "Réussissez 3 quotidiens de suite", done: streak >= 3 }, { icon: Trophy, name: "Gardien du feu", text: "Trouvez 10 mots", done: profile.wins.length >= 10 }].map(a => <div className={a.done ? "achievement unlocked" : "achievement"} key={a.name}><a.icon size={23} /><div><h3>{a.name}</h3><p>{a.text}</p></div>{a.done ? <CheckCheck size={18} /> : <LockKeyhole size={16} />}</div>)}</div><p className="modal-note">+2 XP par proposition, +150 XP par victoire. Les indices ne rapportent pas d’XP. La série compte les défis quotidiens réussis, à l’heure de Paris.</p>{ritual && <CosmeticPicker projection={ritual} disabled={busy || loading} onSelect={selectCosmetic} />}<section className="local-save-status" aria-label="Sauvegarde locale"><h3>Sauvegarde locale</h3><p>{profileSnapshot?.persisted ? `Enregistrée dans ce navigateur · format v${profileSnapshot.formatVersion}` : "Sauvegarde indisponible dans ce navigateur"}</p>{profileSnapshot?.status === "migrated" && <span>Votre ancienne progression a été reprise.</span>}{profileSnapshot?.backupConfirmed && <span>Une copie de secours de l’ancien format est conservée ici.</span>}{profileSnapshot?.persisted && <span>Les onglets de Braise dans ce navigateur partagent cette progression.</span>}</section></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
       {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Vos essais, victoires, pistes et préférences sont enregistrés dans ce navigateur. Les onglets de Braise y partagent la même progression ; elle n’est pas synchronisée entre navigateurs ou appareils. Effacer les données du site efface également cette progression et les éventuelles copies de secours locales. Ces données constituent un historique personnel, pas des résultats compétitifs vérifiés.</p><h3>Le calcul des mots</h3><p>Vos propositions sont envoyées au serveur pour calculer leur proximité. Braise ne les enregistre pas dans une base de joueurs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Aucun réseau publicitaire ni outil d’analyse tiers n’est activé dans cette version. L’espace affiché est réservé. Aucun cookie publicitaire n’est déposé.</p><h3>Repartir de zéro</h3><p>Vous pouvez supprimer les données de ce site dans les réglages de votre navigateur. Cela efface votre progression locale.</p></div>}
       {modal === "about" && <div className="legal-copy"><p>Braise reprend le plaisir de chercher un mot par son contexte, popularisé par <a href="https://semantle.com" target="_blank" rel="noreferrer">Semantle</a> et <a href="https://cemantix.certitudes.org" target="_blank" rel="noreferrer">Cémantix</a>. C’est un projet indépendant.</p><h3>De vrais liens entre les mots</h3><p>Les températures reposent sur les vecteurs français <a href="https://fasttext.cc/docs/en/pretrained-vectors.html" target="_blank" rel="noreferrer">fastText de Meta</a>, entraînés sur Wikipédia, sous licence <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noreferrer">CC BY-SA 3.0</a>. Les scores sont pré-calculés par similarité cosinus.</p><p>{puzzle ? puzzle.vocabularySize.toLocaleString("fr-FR") : "Des milliers de"} mots sont disponibles. Certains mots rares ou fléchis peuvent manquer. Le rang porte sur ce vocabulaire, pas sur toute la langue française.</p><h3>Le quotidien et le mode libre</h3><p>Le mot quotidien change à minuit à Paris. Le quotidien parcourt une collection de 120 mots. Le mode libre puise dans cette même collection : une répétition reste possible.</p><a href="/semantic-data.json" className="data-link" download>Télécharger les données dérivées et leur attribution<ArrowRight size={15} /></a></div>}

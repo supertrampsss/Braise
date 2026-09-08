@@ -1,8 +1,15 @@
 // No semantic data: shared Paris calendar helpers remain cheap to import.
 export const LEGACY_ARCHIVE_START_DATE = "2026-09-07";
 
+const PARIS_DATE_FORMATTER = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
 export function parisDate(now = new Date()) {
-  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+  const parts = PARIS_DATE_FORMATTER.formatToParts(now);
   return `${parts.find(p => p.type === "year")!.value}-${parts.find(p => p.type === "month")!.value}-${parts.find(p => p.type === "day")!.value}`;
 }
 

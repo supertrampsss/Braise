@@ -2,6 +2,7 @@ import type { PuzzleRef } from "./game-contracts";
 import type { Profile, Puzzle, SavedGame, Win } from "./game-types";
 import { parisDate } from "./calendar";
 import { EMPTY_PROFILE, LEGACY_STORAGE_PREFIX } from "./legacy-storage";
+import { isCosmeticId, projectWeeklyRitual, weeklyRewardCosmetic, type CosmeticId } from "./weekly-ritual";
 
 export const PROFILE_SCHEMA_VERSION = 2 as const;
 export const PROFILE_V2_BASE_PREFIX = "braise.v2.profile.base.";
@@ -58,7 +59,26 @@ type SoundActivity = {
   provenance: "personal-local";
 };
 
-export type ProfileActivity = GuessActivity | WinActivity | SoundActivity;
+type CosmeticActivity = {
+  schemaVersion: typeof PROFILE_SCHEMA_VERSION;
+  id: string;
+  type: "cosmeticChanged";
+  value: CosmeticId;
+  occurredAt: string;
+  provenance: "personal-local";
+};
+
+type WeeklyRewardActivity = {
+  schemaVersion: typeof PROFILE_SCHEMA_VERSION;
+  id: string;
+  type: "weeklyRewardEarned";
+  rewardId: string;
+  value: CosmeticId;
+  occurredAt: string;
+  provenance: "personal-local";
+};
+
+export type ProfileActivity = GuessActivity | WinActivity | SoundActivity | CosmeticActivity | WeeklyRewardActivity;
 type ProfileBatch = {
   schemaVersion: typeof PROFILE_SCHEMA_VERSION;
   id: string;
@@ -75,6 +95,7 @@ export type ProfileSnapshot = {
   eventCount: number;
   ignoredEvents: number;
   activityIds: string[];
+  activities: ProfileActivity[];
   pendingActivities: ProfileActivity[];
 };
 
@@ -87,6 +108,7 @@ const EMPTY_SNAPSHOT: ProfileSnapshot = {
   eventCount: 0,
   ignoredEvents: 0,
   activityIds: [],
+  activities: [],
   pendingActivities: [],
 };
 
@@ -206,6 +228,14 @@ function parseActivity(value: unknown): ProfileActivity | null {
   if (value.type === "soundChanged") {
     return exactKeys(value, ["schemaVersion", "id", "type", "value", "occurredAt", "provenance"]) && typeof value.value === "boolean" ? value as SoundActivity : null;
   }
+  if (value.type === "cosmeticChanged") {
+    return exactKeys(value, ["schemaVersion", "id", "type", "value", "occurredAt", "provenance"]) && isCosmeticId(value.value) ? value as CosmeticActivity : null;
+  }
+  if (value.type === "weeklyRewardEarned") {
+    const cosmetic = weeklyRewardCosmetic(value.rewardId);
+    return exactKeys(value, ["schemaVersion", "id", "type", "rewardId", "value", "occurredAt", "provenance"]) &&
+      cosmetic !== null && value.value === cosmetic && value.id === `weekly-reward:${value.rewardId}` ? value as WeeklyRewardActivity : null;
+  }
   if (!parsePuzzleRef(value.puzzleRef)) return null;
   if (value.type === "guessAccepted") {
     return exactKeys(value, ["schemaVersion", "id", "type", "puzzleRef", "word", "order", "occurredAt", "provenance"]) &&
@@ -221,7 +251,7 @@ function parseBatch(value: unknown): ProfileBatch | null {
   if (!isRecord(value) || !exactKeys(value, ["schemaVersion", "id", "type", "activities"]) || value.schemaVersion !== PROFILE_SCHEMA_VERSION ||
       value.type !== "gameProgress" || typeof value.id !== "string" || !value.id || !Array.isArray(value.activities)) return null;
   const activities = value.activities.map(parseActivity);
-  if (activities.some(activity => !activity || activity.type === "soundChanged")) return null;
+  if (activities.some(activity => !activity || activity.type !== "guessAccepted" && activity.type !== "puzzleWon")) return null;
   return { schemaVersion: PROFILE_SCHEMA_VERSION, id: value.id, type: "gameProgress", activities: activities as Array<GuessActivity | WinActivity> };
 }
 
@@ -308,7 +338,7 @@ function snapshotFrom(base: ProfileBaseV2, storage: ProfileStorage, status: Prof
   for (const activity of listed.activities) {
     if (activity.type === "guessAccepted") guesses += 1;
     else if (activity.type === "puzzleWon") wins = stableWin(wins, activity.win);
-    else {
+    else if (activity.type === "soundChanged") {
       const stamp = `${activity.occurredAt}:${activity.id}`;
       if (stamp > soundStamp) { sound = activity.value; soundStamp = stamp; }
     }
@@ -323,6 +353,7 @@ function snapshotFrom(base: ProfileBaseV2, storage: ProfileStorage, status: Prof
     eventCount: listed.activities.length,
     ignoredEvents: listed.ignored,
     activityIds: listed.activities.map(activity => activity.id),
+    activities: listed.activities,
     pendingActivities: [],
   };
 }
@@ -337,10 +368,13 @@ function memorySnapshot(base: ProfileBaseV2, backupConfirmed: boolean): ProfileS
 
 function applyActivitiesInMemory(snapshot: ProfileSnapshot, activities: ProfileActivity[]): ProfileSnapshot {
   const knownIds = new Set(snapshot.activityIds);
+  const canonicalActivities = new Map(snapshot.activities.map(activity => [activity.id, activity]));
   const pending = new Map<string, ProfileActivity>();
   for (const activity of snapshot.pendingActivities) {
     const existing = pending.get(activity.id);
-    pending.set(activity.id, existing ? preferredActivity(existing, activity) : activity);
+    const selected = existing ? preferredActivity(existing, activity) : activity;
+    pending.set(activity.id, selected);
+    canonicalActivities.set(activity.id, selected);
   }
   let profile: Profile = { ...snapshot.profile, wins: [...snapshot.profile.wins] };
   for (const activity of activities) {
@@ -348,6 +382,7 @@ function applyActivitiesInMemory(snapshot: ProfileSnapshot, activities: ProfileA
     if (pendingActivity) {
       const selected = preferredActivity(pendingActivity, activity);
       pending.set(activity.id, selected);
+      canonicalActivities.set(activity.id, selected);
       if (selected.type === "puzzleWon") profile = { ...profile, wins: stableWin(profile.wins, selected.win) };
       continue;
     }
@@ -356,18 +391,19 @@ function applyActivitiesInMemory(snapshot: ProfileSnapshot, activities: ProfileA
         const before = profile.wins.find(win => win.id === activity.win.id);
         const wins = stableWin(profile.wins, activity.win);
         const after = wins.find(win => win.id === activity.win.id);
-        if (JSON.stringify(before) !== JSON.stringify(after)) { profile = { ...profile, wins }; pending.set(activity.id, activity); }
+        if (JSON.stringify(before) !== JSON.stringify(after)) { profile = { ...profile, wins }; pending.set(activity.id, activity); canonicalActivities.set(activity.id, activity); }
       }
       continue;
     }
     knownIds.add(activity.id);
     pending.set(activity.id, activity);
+    canonicalActivities.set(activity.id, activity);
     if (activity.type === "guessAccepted") profile = { ...profile, guesses: profile.guesses + 1 };
     else if (activity.type === "puzzleWon") profile = { ...profile, wins: stableWin(profile.wins, activity.win) };
-    else profile = { ...profile, sound: activity.value };
+    else if (activity.type === "soundChanged") profile = { ...profile, sound: activity.value };
   }
   const status = ["conflict", "corrupt", "unsupported"].includes(snapshot.status) ? snapshot.status : "memory-only";
-  return { ...snapshot, profile, status, persisted: false, eventCount: knownIds.size, activityIds: [...knownIds], pendingActivities: [...pending.values()] };
+  return { ...snapshot, profile, status, persisted: false, eventCount: knownIds.size, activityIds: [...knownIds], activities: [...canonicalActivities.values()], pendingActivities: [...pending.values()] };
 }
 
 function listBaseCandidates(storage: ProfileStorage) {
@@ -477,7 +513,28 @@ function persistActivities(storage: ProfileStorage | undefined, activities: Prof
 }
 
 export function refreshLocalProfile(fallback?: ProfileSnapshot, storage?: ProfileStorage) {
-  return persistActivities(storage, [], fallback);
+  const snapshot = persistActivities(storage, [], fallback);
+  return checkpointWeeklyRewards(snapshot, storage);
+}
+
+function checkpointWeeklyRewards(snapshot: ProfileSnapshot, storage?: ProfileStorage, occurredAt = new Date().toISOString()) {
+  const projection = projectWeeklyRitual(snapshot.activities, snapshot.profile.wins, new Date(occurredAt));
+  const known = new Set(snapshot.activities.flatMap(activity => activity.type === "weeklyRewardEarned" ? [activity.rewardId] : []));
+  const activities = projection.earnedRewardIds.flatMap(rewardId => {
+    if (known.has(rewardId)) return [];
+    const value = weeklyRewardCosmetic(rewardId);
+    if (!value) return [];
+    return [{
+      schemaVersion: PROFILE_SCHEMA_VERSION,
+      id: `weekly-reward:${rewardId}`,
+      type: "weeklyRewardEarned" as const,
+      rewardId,
+      value,
+      occurredAt,
+      provenance: "personal-local" as const,
+    }];
+  });
+  return activities.length ? persistActivities(storage, activities, snapshot) : snapshot;
 }
 
 function persistGameActivities(storage: ProfileStorage | undefined, activities: Array<GuessActivity | WinActivity>, fallback?: ProfileSnapshot): ProfileSnapshot {
@@ -549,7 +606,8 @@ export function profileActivitiesForGame(puzzle: Puzzle, game: SavedGame): Profi
 }
 
 export function recordLocalGameProgress(puzzle: Puzzle, game: SavedGame, storage?: ProfileStorage, fallback?: ProfileSnapshot) {
-  return persistGameActivities(storage, profileActivitiesForGame(puzzle, game) as Array<GuessActivity | WinActivity>, fallback);
+  const snapshot = persistGameActivities(storage, profileActivitiesForGame(puzzle, game) as Array<GuessActivity | WinActivity>, fallback);
+  return checkpointWeeklyRewards(snapshot, storage);
 }
 
 export function setLocalSound(value: boolean, occurredAt: string, operationId: string, storage?: ProfileStorage, fallback?: ProfileSnapshot) {
@@ -557,6 +615,19 @@ export function setLocalSound(value: boolean, occurredAt: string, operationId: s
     schemaVersion: PROFILE_SCHEMA_VERSION,
     id: `sound:${operationId}`,
     type: "soundChanged",
+    value,
+    occurredAt,
+    provenance: "personal-local",
+  };
+  return persistActivities(storage, [activity], fallback);
+}
+
+export function setLocalCosmetic(value: CosmeticId, occurredAt: string, operationId: string, storage?: ProfileStorage, fallback?: ProfileSnapshot) {
+  if (!isCosmeticId(value)) return persistActivities(storage, [], fallback);
+  const activity: CosmeticActivity = {
+    schemaVersion: PROFILE_SCHEMA_VERSION,
+    id: `cosmetic:${operationId}`,
+    type: "cosmeticChanged",
     value,
     occurredAt,
     provenance: "personal-local",

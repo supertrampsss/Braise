@@ -13,6 +13,7 @@ import {
   profileActivitiesForGame,
   recordLocalGameProgress,
   refreshLocalProfile,
+  setLocalCosmetic,
   setLocalSound,
   type ProfileStorage,
 } from "../lib/profile-storage";
@@ -260,4 +261,67 @@ test("profile keys are explicitly recognizable for cross-tab refresh", () => {
   assert.equal(isProfileStorageKey("braise.v1.game.daily-2026-09-08"), false);
   assert.equal(isProfileStorageKey("braise.v1.profile"), true);
   assert.equal(isProfileStorageKey(null), true);
+});
+
+test("cosmetic preferences converge without changing historical progress", () => {
+  const storage = new MemoryStorage();
+  const initial = loadLocalProfile(storage);
+  const first = setLocalCosmetic("copper", "2026-09-08T10:00:00.000Z", "tab-a", storage, initial);
+  const second = setLocalCosmetic("classic", "2026-09-08T11:00:00.000Z", "tab-b", storage, first);
+  const restored = loadLocalProfile(storage);
+  assert.equal(restored.persisted, true);
+  assert.equal(restored.profile.guesses, 0);
+  assert.deepEqual(restored.profile.wins, []);
+  assert.equal(restored.profile.sound, false);
+  assert.deepEqual(restored.activities.filter(activity => activity.type === "cosmeticChanged").map(activity => activity.value), ["copper", "classic"]);
+
+  storage.failWrites = true;
+  const pending = setLocalCosmetic("copper", "2026-09-08T12:00:00.000Z", "tab-c", storage, second);
+  assert.equal(pending.persisted, false);
+  assert.equal(pending.pendingActivities.filter(activity => activity.type === "cosmeticChanged").length, 1);
+  storage.failWrites = false;
+  const recovered = refreshLocalProfile(pending, storage);
+  assert.equal(recovered.persisted, true);
+  assert.equal(recovered.pendingActivities.length, 0);
+  assert.equal(recovered.activities.filter(activity => activity.type === "cosmeticChanged").length, 3);
+});
+
+test("invalid cosmetic events are ignored instead of changing sound or progress", () => {
+  const storage = new MemoryStorage();
+  loadLocalProfile(storage);
+  storage.setItem(`${PROFILE_V2_EVENT_PREFIX}invalid-cosmetic`, JSON.stringify({
+    schemaVersion: 2,
+    id: "cosmetic:invalid",
+    type: "cosmeticChanged",
+    value: "unknown",
+    occurredAt: "2026-09-08T10:00:00.000Z",
+    provenance: "personal-local",
+  }));
+  const snapshot = loadLocalProfile(storage);
+  assert.equal(snapshot.status, "partial");
+  assert.equal(snapshot.profile.sound, false);
+  assert.equal(snapshot.profile.guesses, 0);
+  assert.equal(snapshot.activities.length, 0);
+});
+
+test("completed weekly objectives materialize one durable reward identity", () => {
+  const storage = new MemoryStorage();
+  loadLocalProfile(storage);
+  const current = puzzle("free-weekly", "free");
+  const game: SavedGame = {
+    guesses: Array.from({ length: 15 }, (_, index) => guess(`mot-${index}`, index + 1)),
+    pins: [],
+    hints: 0,
+    startedAt: 1,
+    profileV2StartIndex: 0,
+  };
+  const first = recordLocalGameProgress(current, game, storage);
+  const rewards = first.activities.filter(activity => activity.type === "weeklyRewardEarned");
+  assert.equal(rewards.length, 1);
+  assert.equal(rewards[0].value, "copper");
+  assert.equal(rewards[0].id, `weekly-reward:${rewards[0].rewardId}`);
+
+  recordLocalGameProgress(current, game, storage, first);
+  const restored = refreshLocalProfile(undefined, storage);
+  assert.equal(restored.activities.filter(activity => activity.type === "weeklyRewardEarned").length, 1);
 });

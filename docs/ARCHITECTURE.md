@@ -4,10 +4,12 @@
 
 - `components/game.tsx` : interface et orchestration des parties locales.
 - `components/ad-placement.tsx` : réservation publicitaire statique, séparée du jeu.
+- `components/weekly-ritual.tsx` : affichage des trois objectifs et choix des styles accessibles.
 - `lib/game-feedback.ts` : événements visuels transitoires, identifiés et jamais persistés.
 - `lib/advertising.ts` : décision publicitaire pure, actuellement non configurée et toujours ignorée.
 - `lib/legacy-storage.ts` : lecture, validation et écriture compatibles avec les clés `braise.v1.*`.
 - `lib/profile-storage.ts` : profil personnel V2, migration V1 non destructive, secours brut et journal d’événements append-only.
+- `lib/weekly-ritual.ts` : édition hebdomadaire immuable, calendrier du lundi, projection des faits et récompenses cosmétiques.
 - `lib/game-contracts.ts` : références publiques versionnées, résultat sémantique et contrats des extensions.
 - `lib/game-types.ts` : contrat partagé et calcul de série.
 - `lib/calendar.ts` : date et prochain minuit à Paris, sans données sémantiques.
@@ -36,6 +38,10 @@ La base V2 contient une fois le solde historique et les victoires V1 dédupliqu�
 
 Une partie modifiée après la migration porte `profileV2StartIndex`. Cet index de tableau, indépendant des anciens numéros d’essai, exclut les essais déjà compris dans le solde V1 et permet de rejouer sans doublon les opérations V2 connues. La synchronisation de la progression écoute les changements de stockage, les effacements et les écritures V1 tardives, puis relit au retour de visibilité. Les activités temporairement gardées en mémoire sont conservées entre les commandes et retentées. Cette synchronisation ne déclenche jamais d’effet visuel, de son, de toast ou de focus. Les contrats de contenu, progression et publicité préparent les extensions ; leurs types ne signifient pas que ces fonctions sont déjà implémentées.
 
+L’édition `weekly-ritual-v1` contient exactement trois objectifs : propositions acceptées hors indices, jours civils actifs et victoires sans indice. Une semaine est identifiée par son lundi civil à Paris et se termine le dimanche, sans calcul en blocs de 168 heures. Les compteurs utilisent `occurredAt` pour les propositions et `completedAt` sur la victoire effective dédupliquée. Le solde V1, dépourvu de date réelle, ne reçoit aucun progrès hebdomadaire inventé ; le rejeu d’une archive déjà gagnée ne compte pas comme une nouvelle victoire.
+
+Les récompenses sont des identités déterministes `version de règles + lundi + objectif`, projetées depuis les faits canoniques. Dès qu’une identité est prouvée, un événement `weeklyRewardEarned` la matérialise sans crédit additionnel, bouton, annonce ou dépendance publicitaire. Cette preuve append-only empêche une réconciliation ultérieure de retirer un acquis. Leur union sur toutes les semaines débloque durablement trois cosmétiques, même lorsque les compteurs de la semaine courante repartent à zéro. Seule la préférence d’apparence produit un événement `cosmeticChanged`, résolu par date et identité comme le son. Une valeur inconnue ou un style non acquis reste sans effet. Les thèmes modifient l’ambiance de marque et l’emblème, jamais les températures, rangs, indices, erreurs ou victoires.
+
 Le coût sémantique ne dépend pas d'un fournisseur d'IA payant : les scores sont déjà calculés. Le format BRZ1 contient, par cible, scores, rangs de compétition et ordre stable. Chaque segment compressé et décompressé est contrôlé par taille, en-tête et SHA-256 avant admission. Le cache LRU conserve au plus 4 Mio de tableaux décodés, quatre lectures actives et huit chargements uniques au total. Les requêtes simultanées du même objet partagent une promesse.
 
 Tant que `.openai/hosting.json` conserve `r2: null`, le lecteur emploie explicitement les mêmes segments immuables comme assets du Site. Si un binding R2 est configuré, il devient la source exclusive : binding absent, objet manquant, lecture échouée ou corruption produisent une indisponibilité 503, jamais un score de remplacement ni un repli silencieux vers les assets. La configuration et la qualification d'un R2 réel restent nécessaires pour terminer B1.
@@ -54,7 +60,7 @@ Le champ reste modifiable pendant l'analyse. Les rappels de focus sont annulés 
 
 Le son est désactivé par défaut. `prefers-reduced-motion` réduit les animations. Aucune dépendance externe de police, vidéo ou image n'est nécessaire au premier écran.
 
-La fenêtre de progression indique le format local et la présence effective de la copie de secours. Les erreurs de stockage, données illisibles, formats futurs et conflits V1 restent visibles sans bloquer le jeu. Une migration réussie ne produit ni récompense ni célébration. Les onglets actualisent silencieusement les compteurs et le son, sans toucher à la saisie ou à la fenêtre ouverte.
+La fenêtre de progression indique le format local, la présence effective de la copie de secours et les styles réellement accessibles. Les erreurs de stockage, données illisibles, formats futurs et conflits V1 restent visibles sans bloquer le jeu. Une migration réussie ne produit ni récompense ni célébration. Les onglets actualisent silencieusement les compteurs, le son et le style, sans toucher à la saisie ou à la fenêtre ouverte. La carte hebdomadaire garde les trois objectifs visibles sans ajouter d’étape au jeu ; les états terminés, verrouillés et équipés sont écrits en toutes lettres.
 
 ## Publicité
 
