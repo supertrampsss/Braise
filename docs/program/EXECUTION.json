@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B1",
-  "next_action": "Terminer l’ingestion réelle exhaustive en cours puis vérifier index et cibles réels. B7/B9 et distribution locale publiés en privé v5. Qualifications HTTP authentifiées et inter-origines restent distinctes.",
+  "next_action": "Corpus complet ingéré et vérifié. Finaliser catalogue éditorial B2, puis transfert durable et qualification réelle R2/Worker avant activation V2. Huit colonnes de staging déjà préparées, respecter le quota. Qualifications HTTP authentifiées et inter-origines restent distinctes.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,7 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": { "owner": "root-complete-program", "expires_at": "2026-09-08T12:00:00Z", "phase": "B6" },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -97,14 +97,13 @@
       "blockers": [
         "Real R2 binding is not provisioned or qualified",
         "Cloudflare Worker runtime memory remains unqualified",
-        "Complete fastText source has not been ingested in this environment",
-        "Real full-corpus measurements remain"
+        "Durable transfer and product activation remain; local full-source ingestion and measurements passed"
       ],
-      "implementation": "b1a_completed_b1b_ingestion_b1c_targets_b1d_index_and_eviction_local_verified",
-      "automated_checks": "local_ingestion_target_index_and_eviction_pipelines_passed",
+      "implementation": "complete_real_source_index_eight_targets_and_bounded_reader_verified_locally",
+      "automated_checks": "140_tests_typecheck_build_passed_real_corpus_independently_verified",
       "browser_validation": "not_requested",
       "publication": "b1a_published_owner_private_v2",
-      "verified_source_commit": "471efdcd3d78230a8fefd3f11903bffca8171011",
+      "verified_source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0",
       "external_dependencies": [
         "R2 binding provisioned and accessible"
       ]
@@ -349,7 +348,15 @@
     "browser_qa_performed": false
   },
   "catalogue_directive": {
-    "status": "ingestion_target_index_and_eviction_pipelines_local_verified_source_pending",
+    "status": "complete_real_source_verified_locally_runtime_activation_pending",
+    "staging": {
+      "evidence": "docs/program/B1E-DELIVERY.md",
+      "measurements": "docs/program/B1E-MEASUREMENTS.json",
+      "source_rows_read": 1152449,
+      "dictionary_entries": 1013881,
+      "independently_verified_target_ids": [0,1013880,281,2106,916,223,1080,1344],
+      "product_active": false
+    },
     "specification": "docs/program/B1B-CORPUS-DIRECTIVE.md",
     "current": {
       "source_rows_read": 50000,
@@ -366,7 +373,7 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B7-B9-B10-private-v5",
+  "last_checkpoint": "B1E-real-corpus-local-verified",
   "delivery": {
     "implementation": "in_progress",
     "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
@@ -374,12 +381,12 @@
     "publication": "v5_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "f5c791fa7e969c97bfb4ca40b16b3d7f3e582a4f",
+  "last_verified_source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0",
   "last_run": {
-    "completed_at": "2026-09-08T07:48:33.545Z",
-    "phase": "B6",
+    "completed_at": "2026-09-08T08:55:00.000Z",
+    "phase": "B1",
     "progress": true,
-    "source_commit": "f5c791fa7e969c97bfb4ca40b16b3d7f3e582a4f",
+    "source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0",
     "publication": {
       "status": "not_published"
     },
