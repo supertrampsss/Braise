@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B5",
-  "next_action": "Poursuivre B5 : étendre les collections éditoriales sur V1 puis implémenter les expéditions avec reprise. La collection Nature B5a réutilise les défis et leur progression personnelle. Le dictionnaire complet vient après les fonctionnalités.",
+  "next_action": "Implémenter six expéditions avec étapes protégées, reprise et bilan. Les cinq collections B5b sont disponibles sur V1 avec victoires partagées explicites. Continuer ensuite laboratoire, social, studio et distribution, puis dictionnaire complet.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,7 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {"owner":"braise-b5b-collections","acquired_at":"2026-09-08T07:04:53.717Z","expires_at":"2026-09-08T08:04:53.717Z","base_commit":"7c40190c5dfccaaa1ac98ed096c689a249351703","phase":"B5"},
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -194,14 +194,16 @@
       "status": "partial",
       "evidence": [
         "docs/program/B5A-DELIVERY.md",
-        "111 tests passed; TypeScript and production build passed"
+        "111 tests passed; TypeScript and production build passed",
+        "docs/program/B5B-DELIVERY.md",
+        "112 tests, TypeScript and production build passed"
       ],
       "blockers": [],
-      "implementation": "nature_collection_on_v1_challenges",
+      "implementation": "five_collections_on_v1_challenges_expeditions_pending",
       "automated_checks": "passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
-      "verified_source_commit": "02648400839878356dea40114d9c9b73b21b0a94"
+      "verified_source_commit": "706700155424d5932c903d7d4a188152486e4f95"
     },
     {
       "id": "B6",
@@ -350,7 +352,7 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B5a-nature-collection",
+  "last_checkpoint": "B5b-five-collections",
   "delivery": {
     "implementation": "in_progress",
     "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
@@ -358,12 +360,12 @@
     "publication": "v2_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "02648400839878356dea40114d9c9b73b21b0a94",
+  "last_verified_source_commit": "706700155424d5932c903d7d4a188152486e4f95",
   "last_run": {
-    "completed_at": "2026-09-08T07:02:34.542Z",
+    "completed_at": "2026-09-08T07:07:13.763Z",
     "phase": "B5",
     "progress": true,
-    "source_commit": "02648400839878356dea40114d9c9b73b21b0a94",
+    "source_commit": "706700155424d5932c903d7d4a188152486e4f95",
     "publication": {
       "status": "not_published_this_slice"
     },
