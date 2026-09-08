@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B4",
-  "next_action": "Implémenter les archives passées avec validation serveur, refus des dates futures, distinction entre date du puzzle et date de réalisation, puis couvrir les transitions DST de Paris.",
+  "next_action": "Implémenter les objectifs hebdomadaires à partir du lundi de Paris avec trois objectifs variés, des récompenses dédupliquées et indépendantes de la publicité, puis ajouter les cosmétiques permanents.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B4b-20260908T014126Z",
-    "acquired_at": "2026-09-08T01:41:26Z",
-    "expires_at": "2026-09-08T02:31:26Z",
-    "base_commit": "e990f68e172f0bf83a8a54598b0d06ddb4467b67",
-    "phase": "B4"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -139,18 +133,22 @@
       "status": "partial",
       "evidence": [
         "docs/program/B4A-DELIVERY.md",
+        "docs/program/B4B-DELIVERY.md",
         "V1 profile preserved with exact immutable backup before migration",
         "Append-only V2 response batches and events converge between same-browser tabs",
         "Memory-only progress is retained and retried when local storage recovers",
-        "38 tests passed; TypeScript passed; production build passed",
+        "Past archives are server-validated and reproduce the exact V1 daily puzzle identity",
+        "Archive completion is timestamped separately and never backfills the daily streak",
+        "Daily and archive wins for the same puzzle are deterministically deduplicated",
+        "47 tests passed; TypeScript passed; production build passed",
         "Independent gpt-6-astra max review: no remaining local blocking issue"
       ],
       "blockers": [],
-      "implementation": "b4a_completed",
+      "implementation": "b4a_b4b_completed",
       "automated_checks": "passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
-      "verified_source_commit": "46430c1f4155b7d9775f49c575f5379469127fda"
+      "verified_source_commit": "9486101ad33b07d47bc5ce6bf5ef1bac83d75c62"
     },
     {
       "id": "B5",
@@ -296,20 +294,20 @@
     "product_code_changed": true,
     "browser_qa_performed": false
   },
-  "last_checkpoint": "B4a-local-profile-verified",
+  "last_checkpoint": "B4b-archives-verified",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed_B3_passed_B4a_passed",
+    "automated_checks": "B0_passed_B1a_local_passed_B3_passed_B4a_passed_B4b_passed",
     "browser_validation": "not_requested",
     "publication": "v1_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "46430c1f4155b7d9775f49c575f5379469127fda",
+  "last_verified_source_commit": "9486101ad33b07d47bc5ce6bf5ef1bac83d75c62",
   "last_run": {
-    "completed_at": "2026-09-08T01:30:26.087Z",
+    "completed_at": "2026-09-08T02:13:14.131Z",
     "phase": "B4",
     "progress": true,
-    "source_commit": "46430c1f4155b7d9775f49c575f5379469127fda",
+    "source_commit": "9486101ad33b07d47bc5ce6bf5ef1bac83d75c62",
     "delegation": {
       "orchestrator": {
         "model": "gpt-6-astra",
@@ -317,23 +315,23 @@
       },
       "specialists": [
         {
-          "mission": "V1 migration and concurrency review",
+          "mission": "Archive calendar and Paris DST review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "B4 local progression UX review",
+          "mission": "Archive UX and accessibility review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "B4 storage and regression review",
+          "mission": "Archive API, storage and regression review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B4-20260908T004312Z"
+    "lease_owner": "braise-B4b-20260908T014126Z"
   }
 }
