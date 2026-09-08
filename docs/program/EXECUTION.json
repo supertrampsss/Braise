@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B2",
-  "next_action": "Confirmer d'abord la synchronisation du checkpoint de restauration si le serveur Git Sites reste indisponible, puis vérifier bail et présence du staging restauré. Reprendre les rotations bornées avec preuves à 64 voisins jusqu'à 365 cibles approuvées et 400 pour l'objectif principal, produire le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Poursuivre les lots indépendants si cette infrastructure externe reste indisponible.",
+  "next_action": "Reprendre le catalogue et la qualification R2/Worker après vérification du bail et du staging. Préserver la navigation simplifiée Jouer, Explorer, Progression demandée par Antoine.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,7 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {"owner":"root-interface-simplification","expires_at":"2026-09-08T21:30:00Z","phase":"B3-UX"},
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -264,8 +264,14 @@
         "B6"
       ],
       "status": "implemented_validation_pending",
-      "evidence": ["docs/program/B7-DELIVERY.md", "138 tests, TypeScript and production build passed", "Astra review blockers corrected"],
-      "blockers": ["Hosted authenticated route/concurrency qualification pending"],
+      "evidence": [
+        "docs/program/B7-DELIVERY.md",
+        "138 tests, TypeScript and production build passed",
+        "Astra review blockers corrected"
+      ],
+      "blockers": [
+        "Hosted authenticated route/concurrency qualification pending"
+      ],
       "implementation": "completed_on_verified_V1",
       "automated_checks": "passed_local_sqlite",
       "browser_validation": "not_requested",
@@ -297,8 +303,13 @@
         "B6"
       ],
       "status": "implemented_validation_pending",
-      "evidence": ["docs/program/B9-DELIVERY.md", "138 tests, TypeScript and production build passed"],
-      "blockers": ["Hosted authenticated route qualification pending"],
+      "evidence": [
+        "docs/program/B9-DELIVERY.md",
+        "138 tests, TypeScript and production build passed"
+      ],
+      "blockers": [
+        "Hosted authenticated route qualification pending"
+      ],
       "implementation": "completed_on_verified_V1",
       "automated_checks": "passed_local_sqlite",
       "browser_validation": "not_requested",
@@ -312,8 +323,13 @@
         "B6"
       ],
       "status": "partial",
-      "evidence": ["docs/program/B10A-DELIVERY.md", "Offline and embed contract unit tests passed"],
-      "blockers": ["Controlled separate test origin and browser qualification unavailable"],
+      "evidence": [
+        "docs/program/B10A-DELIVERY.md",
+        "Offline and embed contract unit tests passed"
+      ],
+      "blockers": [
+        "Controlled separate test origin and browser qualification unavailable"
+      ],
       "implementation": "offline_and_same_origin_embed_implemented",
       "automated_checks": "passed_local",
       "browser_validation": "not_requested",
@@ -333,7 +349,11 @@
         "B10"
       ],
       "status": "partial",
-      "evidence": ["docs/program/RECOVERY-DELIVERY.md", "docs/program/RECOVERY-MEASUREMENTS.json", "GITHUB-DATA-ASSETS.md"],
+      "evidence": [
+        "docs/program/RECOVERY-DELIVERY.md",
+        "docs/program/RECOVERY-MEASUREMENTS.json",
+        "GITHUB-DATA-ASSETS.md"
+      ],
       "blockers": [],
       "implementation": "intermediate_private_publication_and_incomplete_github_snapshot_documented",
       "automated_checks": "exact_corpus_index_and_editorial_recovery_passed_final_programme_gates_pending",
@@ -377,7 +397,16 @@
       "measurements": "docs/program/B1E-MEASUREMENTS.json",
       "source_rows_read": 1152449,
       "dictionary_entries": 1013881,
-      "independently_verified_target_ids": [0,1013880,281,2106,916,223,1080,1344],
+      "independently_verified_target_ids": [
+        0,
+        1013880,
+        281,
+        2106,
+        916,
+        223,
+        1080,
+        1344
+      ],
       "product_active": false
     },
     "specification": "docs/program/B1B-CORPUS-DIRECTIVE.md",
@@ -412,7 +441,7 @@
       "product_active": false
     }
   },
-  "last_checkpoint": "recovery-exact-corpus-github-v6",
+  "last_checkpoint": "interface-simplification-v7",
   "recovery": {
     "evidence": "docs/program/RECOVERY-DELIVERY.md",
     "measurements": "docs/program/RECOVERY-MEASUREMENTS.json",
@@ -422,7 +451,7 @@
     "staged_target_columns": 0,
     "work_outputs_durably_backed_up": false,
     "source_read_retries": "three_HTTP_500_responses_before_checkpoint_push_attempt",
-    "next_resume_must_confirm_canonical_checkpoint": true
+    "next_resume_must_confirm_canonical_checkpoint": false
   },
   "source_distribution": {
     "canonical": "Sites source repository, complete V1 assets and original history preserved",
@@ -444,12 +473,12 @@
     },
     "private_site": {
       "status": "succeeded",
-      "version": 6,
-      "source_commit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
-      "deployment_id": "appgdep_6aa03b5159048191af3127e9683225f7",
-      "version_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b~appgver_cbc62ac5ce688191ba13f32dd1161e24",
+      "version": 7,
+      "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96",
+      "deployment_id": "appgdep_6aa0567545c08191b840eed244589925",
+      "version_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b~appgver_eb5305327df4819199d70c94f66fdd0d",
       "url": "https://braise-mots.yellow-drake-7186.chatgpt.site",
-      "deployment_updated_at": "2026-09-08T16:45:18.161740+00:00",
+      "deployment_updated_at": "2026-09-08T18:40:03.662432+00:00",
       "audience_changed": false,
       "corpus_v2_active": false
     }
@@ -458,18 +487,25 @@
     "implementation": "in_progress",
     "automated_checks": "147_tests_typecheck_build_passed_B2f_33_real_evidence_and_catalogue_independently_verified_global_lint_existing_debt_recorded",
     "browser_validation": "not_requested",
-    "publication": "v6_owner_private",
+    "publication": "v7_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
+  "last_verified_source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96",
   "last_run": {
-    "completed_at": "2026-09-08T18:05:10.000Z",
-    "phase": "B11-recovery",
+    "completed_at": "2026-09-08T18:40:03.662432+00:00",
+    "phase": "B3-UX",
     "progress": true,
-    "source_commit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
+    "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96",
     "publication": {
-      "status": "not_published"
+      "status": "succeeded",
+      "version": 7
     },
     "main_model_override_performed": false
+  },
+  "interface_revision": {
+    "evidence": "docs/program/UI-SIMPLIFICATION.md",
+    "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96",
+    "checks": "147 tests, TypeScript and production build passed; eight existing ESLint diagnostics unchanged",
+    "browser_validation": "not_requested"
   }
 }

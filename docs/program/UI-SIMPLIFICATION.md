@@ -27,7 +27,7 @@ Aucune validation navigateur ni capture n'a été demandée ou effectuée. Les c
 
 ## Publication et suite
 
-Publication privée prévue sur le Site existant, après construction et push exacts. Le checkpoint suivant enregistre la confirmation effective. Le miroir GitHub conserve ses exclusions de données documentées.
+Publication privée v7 confirmée le 8 septembre 2026 à 18:40:03 UTC, source `4f7852afd69f05593d8e02a33f08b0e781dbcb96`, déploiement `appgdep_6aa0567545c08191b840eed244589925`, statut succeeded. Même URL et audience. Le miroir GitHub conserve ses exclusions de données documentées.
 
 La refonte est une priorité explicite de l'utilisateur. Après sa livraison, reprendre le programme moteur/catalogue sans réintroduire les fonctions secondaires devant la saisie.
 
