@@ -29,7 +29,12 @@ export function writeLocal(key: string, value: unknown, storage?: LocalWriter) {
 
 export function restoreLegacyGame(puzzleId: string, now = Date.now(), storage?: LocalReader): SavedGame {
   const stored = readLocal<unknown>(`game.${puzzleId}`, EMPTY_GAME, storage);
-  return validLegacyGame(stored) ? { ...stored, startedAt: stored.startedAt || now } : { ...EMPTY_GAME, startedAt: now };
+  if (!validLegacyGame(stored)) return { ...EMPTY_GAME, startedAt: now };
+  const marker = Number.isSafeInteger(stored.profileV2StartIndex) && Number(stored.profileV2StartIndex) >= 0 && Number(stored.profileV2StartIndex) <= stored.guesses.length ? stored.profileV2StartIndex : undefined;
+  const restored = { ...stored, startedAt: stored.startedAt || now };
+  if (marker === undefined) delete restored.profileV2StartIndex;
+  else restored.profileV2StartIndex = marker;
+  return restored;
 }
 
 export function restoreLegacyProfile(storage?: LocalReader): Profile {

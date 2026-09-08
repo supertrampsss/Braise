@@ -8,11 +8,12 @@ import { Progress } from "@/components/ui/progress";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import AdPlacement from "@/components/ad-placement";
-import { getStreak, warmth, type Guess, type Mode, type Profile, type Puzzle, type SavedGame } from "@/lib/game-types";
+import { getStreak, warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
-import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame, restoreLegacyProfile } from "@/lib/legacy-storage";
+import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
 import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
+import { isProfileStorageKey, recordLocalGameProgress, refreshLocalProfile, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
 
 type Modal = "help" | "stats" | "challenge" | "privacy" | "about" | "share" | null;
 function freshSeed() { return String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647); }
@@ -36,7 +37,7 @@ export default function Game() {
   const [mode, setMode] = useState<Mode>("daily");
   const [puzzle, setPuzzle] = useState<Puzzle | null>(null);
   const [game, setGame] = useState<SavedGame>(EMPTY_GAME);
-  const [profile, setProfile] = useState<Profile>(EMPTY_PROFILE);
+  const [profileSnapshot, setProfileSnapshot] = useState<ProfileSnapshot | null>(null);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -60,6 +61,7 @@ export default function Game() {
   const victoryRef = useRef<HTMLHeadingElement>(null);
   modalRef.current = modal;
 
+  const profile = profileSnapshot?.profile ?? EMPTY_PROFILE;
   const best = game.guesses.reduce<Guess | null>((winner, guess) => !winner || guess.temperature > winner.temperature ? guess : winner, null);
   const solved = Boolean(game.guesses.some(g => g.found));
   const temperature = best?.temperature ?? 0;
@@ -123,8 +125,14 @@ export default function Game() {
       const data = await response.json() as Puzzle & { error?: string };
       if (!response.ok) throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant.");
       if (request !== requestRef.current) return false;
-      setGame(restoreLegacyGame(data.id));
+      const restored = restoreLegacyGame(data.id);
+      setGame(restored);
       setMode(nextMode); setPuzzle(data);
+      if (restored.profileV2StartIndex !== undefined) {
+        const reconciled = recordLocalGameProgress(data, restored, undefined, profileSnapshot ?? undefined);
+        setProfileSnapshot(reconciled);
+        if (!reconciled.persisted) setStorageWarning(true);
+      }
       const url = new URL(window.location.href);
       if (nextMode === "challenge") url.searchParams.set("defi", data.seed);
       else url.searchParams.delete("defi");
@@ -138,7 +146,12 @@ export default function Game() {
   }
 
   useEffect(() => {
-    setProfile(restoreLegacyProfile());
+    const refreshProfile = (preservePending = true) => setProfileSnapshot(current => refreshLocalProfile(preservePending ? current ?? undefined : undefined));
+    refreshProfile();
+    const onStorage = (event: StorageEvent) => { if (isProfileStorageKey(event.key)) refreshProfile(event.key !== null); };
+    const onVisibility = () => { if (document.visibilityState === "visible") refreshProfile(); };
+    window.addEventListener("storage", onStorage);
+    document.addEventListener("visibilitychange", onVisibility);
     const challenge = new URLSearchParams(window.location.search).get("defi");
     if (challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge);
     else void loadPuzzle("daily");
@@ -149,6 +162,8 @@ export default function Game() {
       submitting.current = false;
       clearInterval(tick);
       clearDeferredUi();
+      window.removeEventListener("storage", onStorage);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
@@ -163,7 +178,11 @@ export default function Game() {
     setGame(next);
     if (puzzle && !writeLocal(`game.${puzzle.id}`, next)) setStorageWarning(true);
   }
-  function saveProfile(next: Profile) { setProfile(next); if (!writeLocal("profile", next)) setStorageWarning(true); }
+  function saveSound(value: boolean) {
+    const next = setLocalSound(value, new Date().toISOString(), crypto.randomUUID(), undefined, profileSnapshot ?? undefined);
+    setProfileSnapshot(next);
+    if (!next.persisted) setStorageWarning(true);
+  }
   async function changeMode(value: string) {
     if (busy) return;
     if (value === "challenge") { setModal("challenge"); return; }
@@ -191,18 +210,19 @@ export default function Game() {
       if (!response.ok) throw new Error(data.error || "Impossible d’analyser ce mot.");
       if (!samePuzzleRef(data.puzzleRef, puzzle.ref)) throw new Error("La réponse ne correspond pas à cette partie. Rechargez le jeu.");
       if (game.guesses.some(g => g.word === data.word)) { setError(`« ${data.word} » est déjà dans vos essais.`); return; }
-      const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint: isHint };
-      const next = { ...game, guesses: [...game.guesses, guess], hints: game.hints + (isHint ? 1 : 0), ...(data.found ? { solvedAt: Date.now() } : {}) };
-      saveGame(next);
+      const acceptedAt = new Date().toISOString();
+      const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint: isHint, acceptedAt };
+      const next = { ...game, guesses: [...game.guesses, guess], hints: game.hints + (isHint ? 1 : 0), profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt) } : {}) };
       setInput(current => inputAfterAcceptedGuess(current, isHint, inputRevisionRef.current, submittedRevision));
       const nextFeedback = createGameFeedback(best?.temperature ?? null, guess, puzzle.ref);
       showFeedback(nextFeedback);
-      const nextProfile = { ...profile, guesses: profile.guesses + (isHint ? 0 : 1) };
+      const progressed = recordLocalGameProgress(puzzle, next, undefined, profileSnapshot ?? undefined);
+      setProfileSnapshot(progressed);
+      if (!progressed.persisted) setStorageWarning(true);
+      saveGame(next);
       if (data.found && !profile.wins.some(w => w.id === puzzle.id)) {
-        nextProfile.wins = [...profile.wins, { id: puzzle.id, date: puzzle.date, mode, tries: next.guesses.length, hints: next.hints }];
         toast.success("La braise est allumée. Bien joué !", { duration: 4000 });
       }
-      saveProfile(nextProfile);
       if (profile.sound && nextFeedback.type !== "guessAccepted") playTone(data.found);
       if (isHint) toast("Une nouvelle piste a rejoint vos essais.");
       if (shouldReturnFocus) {
@@ -251,7 +271,7 @@ export default function Game() {
     <header className="site-header">
       <a className="brand" href="/" aria-label="Braise, accueil"><span className="brand-icon"><Flame strokeWidth={2.5} /></span>braise<span className="brand-period">.</span></a>
       <nav className="header-nav" aria-label="Navigation principale"><span className="nav-current">Le jeu</span><button onClick={() => setModal("stats")}>Ma progression</button><button onClick={() => setModal("help")}>Comment jouer</button></nav>
-      <div className="header-actions"><span className="level-pill"><Sparkles size={15} />Niv. {level}</span><button className="icon-button" aria-label={profile.sound ? "Désactiver le son" : "Activer le son"} disabled={busy || loading} onClick={() => saveProfile({ ...profile, sound: !profile.sound })}>{profile.sound ? <Volume2 size={19} /> : <VolumeX size={19} />}</button><button className="icon-button mobile-help" aria-label="Comment jouer" onClick={() => setModal("help")}><CircleHelp size={20} /></button></div>
+      <div className="header-actions"><span className="level-pill"><Sparkles size={15} />Niv. {level}</span><button className="icon-button" aria-label={profile.sound ? "Désactiver le son" : "Activer le son"} disabled={busy || loading} onClick={() => saveSound(!profile.sound)}>{profile.sound ? <Volume2 size={19} /> : <VolumeX size={19} />}</button><button className="icon-button mobile-help" aria-label="Comment jouer" onClick={() => setModal("help")}><CircleHelp size={20} /></button></div>
     </header>
 
     <main className="main-shell">
@@ -296,16 +316,16 @@ export default function Game() {
       </div>
 
       </TabsContent></Tabs>
-      {storageWarning && <p className="storage-warning" role="status">La sauvegarde sur cet appareil est indisponible. Gardez cet onglet ouvert pour conserver votre partie.</p>}
+      {(storageWarning || profileSnapshot && ["partial", "corrupt", "unsupported", "conflict", "memory-only"].includes(profileSnapshot.status)) && <p className="storage-warning" role="status" aria-live="polite" aria-atomic="true">{profileSnapshot?.status === "unsupported" ? "Cette sauvegarde provient d’une version plus récente de Braise. Elle n’a pas été modifiée." : profileSnapshot?.status === "corrupt" ? "La sauvegarde locale est illisible. Les données existantes ont été conservées sans être remplacées." : profileSnapshot?.status === "conflict" ? "Deux anciennes sauvegardes différentes ont été détectées. Elles ont été conservées sans fusion automatique." : profileSnapshot?.status === "partial" ? "Une partie de votre ancienne sauvegarde n’a pas pu être reprise. Les éléments valides restent disponibles." : "La sauvegarde est indisponible dans ce navigateur. Vous pouvez continuer à jouer, mais votre progression risque d’être perdue en quittant ou en rechargeant cette page."}</p>}
       <AdPlacement />
       <footer className="site-footer"><a className="footer-brand" href="/">braise.</a><span>Un nouveau mot. Un nouveau déclic.</span><div><button onClick={() => setModal("about")}>À propos</button><button onClick={() => setModal("privacy")}>Confidentialité</button><button onClick={() => setModal("help")}>Les règles</button></div><span className="footer-language">FR <span>·</span> Fait pour les curieux</span></footer>
     </main>
 
-    <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog"><DialogHeader><span className="modal-symbol">{modal === "stats" ? <Trophy /> : modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "help" ? "Un mot. Et le déclic." : modal === "stats" ? "Votre feu prend." : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : "Bienvenue chez Braise."}</DialogTitle><DialogDescription>{modal === "help" ? "La règle tient en trois petites étapes." : modal === "stats" ? "Votre progression, sauvegardée sur cet appareil." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : "Un jeu de proximité sémantique, en français."}</DialogDescription></DialogHeader>
+    <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog"><DialogHeader><span className="modal-symbol">{modal === "stats" ? <Trophy /> : modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "help" ? "Un mot. Et le déclic." : modal === "stats" ? "Votre feu prend." : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : "Bienvenue chez Braise."}</DialogTitle><DialogDescription>{modal === "help" ? "La règle tient en trois petites étapes." : modal === "stats" ? "Votre progression personnelle, enregistrée dans ce navigateur." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : "Un jeu de proximité sémantique, en français."}</DialogDescription></DialogHeader>
       {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations. Après 5 essais, vous disposez de 3 indices gratuits. Ils sont signalés dans le résultat partagé.</p></div></li></ol><div className="modal-note">La température traduit une proximité calculée, pas une probabilité. Un contraire peut être proche. Les accents manquants sont acceptés si le mot est identifiable.</div><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer<ArrowRight size={18} /></button></>}
-      {modal === "stats" && <><div className="modal-stats"><div><strong>{profile.wins.length}</strong><span>mots trouvés</span></div><div><strong>{streak}</strong><span>jours de série</span></div><div><strong>{profile.guesses}</strong><span>mots proposés</span></div></div><div className="achievement-list">{[{ icon: Flame, name: "Première étincelle", text: "Trouvez votre premier mot", done: profile.wins.length >= 1 }, { icon: Target, name: "L’intuition juste", text: "Trouvez un mot en 10 essais maximum, sans indice", done: profile.wins.some(w => w.tries <= 10 && w.hints === 0) }, { icon: Award, name: "Ça devient un rituel", text: "Réussissez 3 quotidiens de suite", done: streak >= 3 }, { icon: Trophy, name: "Gardien du feu", text: "Trouvez 10 mots", done: profile.wins.length >= 10 }].map(a => <div className={a.done ? "achievement unlocked" : "achievement"} key={a.name}><a.icon size={23} /><div><h3>{a.name}</h3><p>{a.text}</p></div>{a.done ? <CheckCheck size={18} /> : <LockKeyhole size={16} />}</div>)}</div><p className="modal-note">+2 XP par proposition, +150 XP par victoire. Les indices ne rapportent pas d’XP. La série compte les défis quotidiens réussis, à l’heure de Paris.</p></>}
+      {modal === "stats" && <><div className="modal-stats"><div><strong>{profile.wins.length}</strong><span>mots trouvés</span></div><div><strong>{streak}</strong><span>jours de série</span></div><div><strong>{profile.guesses}</strong><span>mots proposés</span></div></div><div className="achievement-list">{[{ icon: Flame, name: "Première étincelle", text: "Trouvez votre premier mot", done: profile.wins.length >= 1 }, { icon: Target, name: "L’intuition juste", text: "Trouvez un mot en 10 essais maximum, sans indice", done: profile.wins.some(w => w.tries <= 10 && w.hints === 0) }, { icon: Award, name: "Ça devient un rituel", text: "Réussissez 3 quotidiens de suite", done: streak >= 3 }, { icon: Trophy, name: "Gardien du feu", text: "Trouvez 10 mots", done: profile.wins.length >= 10 }].map(a => <div className={a.done ? "achievement unlocked" : "achievement"} key={a.name}><a.icon size={23} /><div><h3>{a.name}</h3><p>{a.text}</p></div>{a.done ? <CheckCheck size={18} /> : <LockKeyhole size={16} />}</div>)}</div><p className="modal-note">+2 XP par proposition, +150 XP par victoire. Les indices ne rapportent pas d’XP. La série compte les défis quotidiens réussis, à l’heure de Paris.</p><section className="local-save-status" aria-label="Sauvegarde locale"><h3>Sauvegarde locale</h3><p>{profileSnapshot?.persisted ? `Enregistrée dans ce navigateur · format v${profileSnapshot.formatVersion}` : "Sauvegarde indisponible dans ce navigateur"}</p>{profileSnapshot?.status === "migrated" && <span>Votre ancienne progression a été reprise.</span>}{profileSnapshot?.backupConfirmed && <span>Une copie de secours de l’ancien format est conservée ici.</span>}{profileSnapshot?.persisted && <span>Les onglets de Braise dans ce navigateur partagent cette progression.</span>}</section></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
-      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde sur votre appareil</h3><p>Les essais, les victoires, les pistes et le choix du son sont enregistrés dans votre navigateur. Ils ne sont pas synchronisés entre appareils.</p><h3>Le calcul des mots</h3><p>Vos propositions sont envoyées au serveur pour calculer leur proximité. Braise ne les enregistre pas dans une base de joueurs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Aucun réseau publicitaire ni outil d’analyse tiers n’est activé dans cette version. L’espace affiché est réservé. Aucun cookie publicitaire n’est déposé.</p><h3>Repartir de zéro</h3><p>Vous pouvez supprimer les données de ce site dans les réglages de votre navigateur. Cela efface votre progression locale.</p></div>}
+      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Vos essais, victoires, pistes et préférences sont enregistrés dans ce navigateur. Les onglets de Braise y partagent la même progression ; elle n’est pas synchronisée entre navigateurs ou appareils. Effacer les données du site efface également cette progression et les éventuelles copies de secours locales. Ces données constituent un historique personnel, pas des résultats compétitifs vérifiés.</p><h3>Le calcul des mots</h3><p>Vos propositions sont envoyées au serveur pour calculer leur proximité. Braise ne les enregistre pas dans une base de joueurs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Aucun réseau publicitaire ni outil d’analyse tiers n’est activé dans cette version. L’espace affiché est réservé. Aucun cookie publicitaire n’est déposé.</p><h3>Repartir de zéro</h3><p>Vous pouvez supprimer les données de ce site dans les réglages de votre navigateur. Cela efface votre progression locale.</p></div>}
       {modal === "about" && <div className="legal-copy"><p>Braise reprend le plaisir de chercher un mot par son contexte, popularisé par <a href="https://semantle.com" target="_blank" rel="noreferrer">Semantle</a> et <a href="https://cemantix.certitudes.org" target="_blank" rel="noreferrer">Cémantix</a>. C’est un projet indépendant.</p><h3>De vrais liens entre les mots</h3><p>Les températures reposent sur les vecteurs français <a href="https://fasttext.cc/docs/en/pretrained-vectors.html" target="_blank" rel="noreferrer">fastText de Meta</a>, entraînés sur Wikipédia, sous licence <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noreferrer">CC BY-SA 3.0</a>. Les scores sont pré-calculés par similarité cosinus.</p><p>{puzzle ? puzzle.vocabularySize.toLocaleString("fr-FR") : "Des milliers de"} mots sont disponibles. Certains mots rares ou fléchis peuvent manquer. Le rang porte sur ce vocabulaire, pas sur toute la langue française.</p><h3>Le quotidien et le mode libre</h3><p>Le mot quotidien change à minuit à Paris. Le quotidien parcourt une collection de 120 mots. Le mode libre puise dans cette même collection : une répétition reste possible.</p><a href="/semantic-data.json" className="data-link" download>Télécharger les données dérivées et leur attribution<ArrowRight size={15} /></a></div>}
       {modal === "share" && <><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}
     </DialogContent></Dialog>

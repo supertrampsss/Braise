@@ -26,7 +26,7 @@ Reconstruction : installer Python et NumPy, puis lancer `python scripts/build-se
 
 ## État et publicité
 
-Les parties, les pistes, le son et les victoires sont locaux au navigateur. Aucun compte ni synchronisation multi-appareil. Les défis partagent une seed et se comparent par leurs résultats, sans classement en direct.
+Les parties, les pistes, le son et les victoires sont locaux au navigateur. Le profil V2 reprend la progression V1 après une copie de secours vérifiée et ses événements convergent entre les onglets du même navigateur. Aucun compte ni synchronisation multi-appareil. Cet historique reste personnel et non compétitif. Les défis partagent une seed et se comparent par leurs résultats, sans classement en direct.
 
 Le site inclut un emplacement publicitaire réservé. Aucune régie, aucune annonce réelle, aucun consentement publicitaire simulé et aucun outil d'analyse tiers ne sont activés. Un lancement commercial nécessite les valeurs du compte éditeur approuvé, le dispositif de consentement et les informations d'éditeur réelles.
 
@@ -51,6 +51,7 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
 - `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
 - `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
+- `docs/program/B4A-DELIVERY.md` : profil local V2, migration sauvegardée et convergence entre onglets.
 
 Le calendrier et les seeds V1 sont désormais isolés du futur catalogue. Les références de partie versionnées sont exposées et contrôlées par l'API, avec maintien des requêtes V1 sans référence. Les lecteurs de sauvegarde utilisés par l'interface sont couverts par des fixtures synthétiques aux scores réels.
 

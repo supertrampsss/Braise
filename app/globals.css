@@ -302,6 +302,10 @@ h1 > span { color: #ff754d; }
 .rules-list h3 { font-size: 15px; font-weight: 500; margin: 0 0 5px; }
 .rules-list p { font-size: 13px; line-height: 1.6; color: #b4a4bf; margin: 0; }
 .modal-note { font-size: 12px; color: #ad98b8; line-height: 1.7; background: #302434; padding: 12px 14px; border-radius: 9px; margin: 5px 0; }
+.local-save-status { margin-top: 15px; padding: 14px 15px; border: 1px solid var(--stroke-soft); border-radius: 12px; background: rgba(255,255,255,.025); display: grid; gap: 5px; }
+.local-save-status h3 { margin: 0 0 2px; color: var(--ivory); font-size: .92rem; }
+.local-save-status p, .local-save-status span { margin: 0; color: var(--text-muted); font-size: .79rem; line-height: 1.45; }
+.local-save-status p { color: var(--copper-soft); font-weight: 700; }
 .modal-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 6px 0; border: 1px solid #4a3654; background: #29212e; border-radius: 12px; padding: 21px 0; text-align: center; }
 .modal-stats > div { display: grid; gap: 8px; border-right: 1px solid #483350; }
 .modal-stats > div:last-child { border: 0; }

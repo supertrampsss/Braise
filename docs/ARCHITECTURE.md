@@ -7,6 +7,7 @@
 - `lib/game-feedback.ts` : événements visuels transitoires, identifiés et jamais persistés.
 - `lib/advertising.ts` : décision publicitaire pure, actuellement non configurée et toujours ignorée.
 - `lib/legacy-storage.ts` : lecture, validation et écriture compatibles avec les clés `braise.v1.*`.
+- `lib/profile-storage.ts` : profil personnel V2, migration V1 non destructive, secours brut et journal d’événements append-only.
 - `lib/game-contracts.ts` : références publiques versionnées, résultat sémantique et contrats des extensions.
 - `lib/game-types.ts` : contrat partagé et calcul de série.
 - `lib/calendar.ts` : date et prochain minuit à Paris, sans données sémantiques.
@@ -25,7 +26,13 @@ Le GET ajoute `ref` aux champs V1 existants : version de contrat, corpus, règle
 
 Les 120 identités de cibles V1, leur ordre, l'époque et les coefficients du calendrier sont figés dans le manifeste. La sélection est résolue par mot vers les données, jamais par la longueur d'un catalogue extensible. Les seeds gardent leurs caractères exacts, y compris les zéros initiaux. Libre et défi conservent leur identité commune `free-${seed}`. Leur contexte de requête reste distinct.
 
-Le préfixe `braise.v1.*` désigne toujours le format, le corpus et les règles historiques. Le lecteur partagé conserve les validations V1, les essais et leurs scores sans recalcul, ainsi que les épingles, indices, dates et profils. Il ne crée aucun événement ni récompense à la restauration. La migration vers un nouveau profil, la copie de secours et la synchronisation des onglets appartiennent à B4. Les contrats de contenu, progression et publicité préparent les extensions ; leurs types ne signifient pas que ces fonctions sont déjà implémentées.
+Le préfixe `braise.v1.*` désigne toujours le format, le corpus et les règles historiques. Le lecteur partagé conserve les validations V1, les essais et leurs scores sans recalcul, ainsi que les épingles, indices, dates et profils. Il ne crée aucun événement ni récompense à la restauration.
+
+Le profil V2 est un état personnel local, jamais une preuve compétitive. Avant de migrer un profil V1 valide ou partiellement valide, `lib/profile-storage.ts` copie sa chaîne exacte sous une clé immuable `braise.v2.backup.braise.v1.profile.*`, relit cette copie, puis seulement écrit la base V2 sous une clé liée à la même empreinte. La source `braise.v1.profile` reste intacte. Deux initialisations portant sur des sources différentes écrivent des candidats distincts au lieu de s’écraser. Une version future, une base corrompue ou deux sources V1 différentes sont conservées sans réinitialisation ni fusion additive.
+
+La base V2 contient une fois le solde historique et les victoires V1 dédupliquées. Les nouvelles propositions et victoires d’une réponse acceptée sont écrites ensemble dans un lot immuable `braise.v2.profile.batch.*` ; les préférences et reprises utilisent des événements `braise.v2.profile.event.*`. Leur identité métier est stable et les relectures sont idempotentes. Des écritures concurrentes n’effectuent pas de read-modify-write sur un même compteur : les onglets ajoutent des faits distincts, puis reconstruisent la même vue par union. Une victoire conserve l’identité V1 commune de `free-${seed}` pour ne pas doubler libre et défi. Les valeurs historiques inconnues, notamment la date réelle de réalisation, ne sont pas inventées. Les nouveaux essais capturent leur date d’acceptation ; une victoire réconciliée conserve son `solvedAt`.
+
+Une partie modifiée après la migration porte `profileV2StartIndex`. Cet index de tableau, indépendant des anciens numéros d’essai, exclut les essais déjà compris dans le solde V1 et permet de rejouer sans doublon les opérations V2 connues. La synchronisation de la progression écoute les changements de stockage, les effacements et les écritures V1 tardives, puis relit au retour de visibilité. Les activités temporairement gardées en mémoire sont conservées entre les commandes et retentées. Cette synchronisation ne déclenche jamais d’effet visuel, de son, de toast ou de focus. Les contrats de contenu, progression et publicité préparent les extensions ; leurs types ne signifient pas que ces fonctions sont déjà implémentées.
 
 Le coût sémantique ne dépend pas d'un fournisseur d'IA payant : les scores sont déjà calculés. Le format BRZ1 contient, par cible, scores, rangs de compétition et ordre stable. Chaque segment compressé et décompressé est contrôlé par taille, en-tête et SHA-256 avant admission. Le cache LRU conserve au plus 4 Mio de tableaux décodés, quatre lectures actives et huit chargements uniques au total. Les requêtes simultanées du même objet partagent une promesse.
 
@@ -45,13 +52,15 @@ Le champ reste modifiable pendant l'analyse. Les rappels de focus sont annulés 
 
 Le son est désactivé par défaut. `prefers-reduced-motion` réduit les animations. Aucune dépendance externe de police, vidéo ou image n'est nécessaire au premier écran.
 
+La fenêtre de progression indique le format local et la présence effective de la copie de secours. Les erreurs de stockage, données illisibles, formats futurs et conflits V1 restent visibles sans bloquer le jeu. Une migration réussie ne produit ni récompense ni célébration. Les onglets actualisent silencieusement les compteurs et le son, sans toucher à la saisie ou à la fenêtre ouverte.
+
 ## Publicité
 
 `AdDecision` reste le seul contrat partagé. En l'absence de fournisseur, politique de consentement et fréquence réels, `decideAd` renvoie toujours `skip/not-configured`, avec disponibilité et fréquence fausses et consentement inconnu. Le composant réservé exécute cette décision mais ne charge aucun script, cadre, pixel, lien ni contrôle. Il n'accède pas aux mots, scores, parties ou sauvegardes. L'activation commerciale et sa mesure restent un lot séparé.
 
 ## Limites de cette version
 
-Le profil local est modifiable par l'utilisateur, les onglets simultanés ne se synchronisent pas et la suppression des données du navigateur efface la progression. Ne pas en faire un classement officiel. Le dictionnaire Wikipédia comprend parfois des noms propres ou emprunts. La matrice de 120 cibles est un corpus initial à élargir pour une exploitation pérenne.
+Le profil local reste modifiable par l'utilisateur et sa progression n’est partagée qu’entre les onglets du même navigateur. La suppression des données du navigateur efface aussi le journal V2 et sa copie de secours. Les parties elles-mêmes restent dans leurs clés V1 et ne sont pas encore une autorité transactionnelle multi-onglets. Ne pas en faire un classement officiel. Le dictionnaire Wikipédia comprend parfois des noms propres ou emprunts. La matrice de 120 cibles est un corpus initial à élargir pour une exploitation pérenne.
 
 La marque, le domaine commercial, l'audience publique, la régie et le consentement publicitaire n'ont pas été provisionnés. Les contrats d'API actuels n'ont pas besoin de D1, R2 ou d'identité utilisateur.
 
