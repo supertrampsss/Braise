@@ -7,8 +7,8 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B1",
-  "next_action": "Corpus complet ingéré et vérifié. Finaliser catalogue éditorial B2, puis transfert durable et qualification réelle R2/Worker avant activation V2. Huit colonnes de staging déjà préparées, respecter le quota. Qualifications HTTP authentifiées et inter-origines restent distinctes.",
+  "next_phase": "B2",
+  "next_action": "Rendre la preuve éditoriale durable après éviction, puis répéter le cycle borné de génération, vérification et revue jusqu'à 365 cibles approuvées. Qualifier ensuite le transfert R2 et la mémoire Worker avant activation V2. Les validations HTTP authentifiées et inter-origines restent distinctes.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,7 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": { "owner": "root-b2-catalogue", "expires_at": "2026-09-08T11:45:00Z", "phase": "B2" },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -114,16 +114,27 @@
       "depends_on": [
         "B1"
       ],
-      "status": "planned",
+      "status": "partial",
       "evidence": [
-        "docs/program/B1B-CORPUS-DIRECTIVE.md"
+        "docs/program/B1B-CORPUS-DIRECTIVE.md",
+        "docs/program/B2A-DELIVERY.md",
+        "docs/program/B2A-MEASUREMENTS.json",
+        "400 distinct corpus identities reviewed lexically by agents",
+        "Eight real target columns independently verified; six approved and two rejected on neighborhood quality",
+        "145 tests passed; TypeScript passed; production build passed",
+        "Independent gpt-6-astra max review: no remaining blocker within the inactive B2a slice"
       ],
-      "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "blockers": [
+        "Durable editorial evidence after verified target eviction is not implemented",
+        "359 further approved targets are required before a 365-day edition can be created",
+        "R2 and Worker runtime qualification remain required before product activation"
+      ],
+      "implementation": "inactive_editorial_workbench_400_reviewed_6_approved",
+      "automated_checks": "145_tests_typecheck_build_and_eight_real_target_verifications_passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
-      "catalogue_requirement": "Full reference source ingestion; 100% measured coverage of admitted entries for real hot/cold scores and target eligibility"
+      "catalogue_requirement": "365 distinct approved targets with durable lexical, neighborhood, hint and numerical evidence bound to the verified complete corpus",
+      "verified_source_commit": "6400667dcaabb5d4e752abf4bb5ab7f987f7be29"
     },
     {
       "id": "B3",
@@ -371,22 +382,34 @@
       "target_eligibility": "all_admitted_entries",
       "browser_full_corpus_delivery": false,
       "quadratic_matrix": false
+    },
+    "editorial_workbench": {
+      "evidence": "docs/program/B2A-DELIVERY.md",
+      "measurements": "docs/program/B2A-MEASUREMENTS.json",
+      "selected": 400,
+      "lexically_reviewed": 400,
+      "verified_staging_columns": 8,
+      "approved": 6,
+      "rejected_pending_broader_evidence": 2,
+      "remaining_approvals_for_calendar": 359,
+      "calendar_created": false,
+      "product_active": false
     }
   },
-  "last_checkpoint": "B1E-real-corpus-local-verified",
+  "last_checkpoint": "B2A-editorial-workbench-6-approved",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
+    "automated_checks": "145_tests_typecheck_build_passed_B2a_real_columns_independently_verified",
     "browser_validation": "not_requested",
     "publication": "v5_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0",
+  "last_verified_source_commit": "6400667dcaabb5d4e752abf4bb5ab7f987f7be29",
   "last_run": {
-    "completed_at": "2026-09-08T08:55:00.000Z",
-    "phase": "B1",
+    "completed_at": "2026-09-08T10:24:03.000Z",
+    "phase": "B2",
     "progress": true,
-    "source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0",
+    "source_commit": "6400667dcaabb5d4e752abf4bb5ab7f987f7be29",
     "publication": {
       "status": "not_published"
     },
