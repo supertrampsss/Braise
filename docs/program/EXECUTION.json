@@ -23,7 +23,15 @@
       "remaining_approvals_for_main_target": 346,
       "selected": 400,
       "verified_archived_evidence": 57,
-      "verified_staging_columns": 0
+      "verified_staging_columns": 0,
+      "verification": {
+        "evidence": "docs/program/B2I-DELIVERY.md",
+        "measurements": "docs/program/B2I-MEASUREMENTS.json",
+        "status": "passed",
+        "batch_limit": 8,
+        "scalar_parity": "exact_on_eight_real_targets",
+        "full_catalogue_elapsed_ms": 161841.965076
+      }
     },
     "required": {
       "browser_full_corpus_delivery": false,
@@ -77,7 +85,7 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "147_tests_typecheck_build_passed_B2h_57_real_evidence_catalogue_exhaustively_verified",
+    "automated_checks": "157_tests_typecheck_build_and_57_real_evidence_batched_exhaustive_verification_passed",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
@@ -90,20 +98,20 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B2h-sixteen-target-editorial-rotation",
+  "last_checkpoint": "B2i-bounded-exhaustive-verification",
   "last_run": {
-    "completed_at": "2026-09-08T21:41:47.207Z",
+    "completed_at": "2026-09-08T22:04:22.525Z",
     "phase": "B2",
     "progress": true,
-    "source_commit": "9233f4c126ec35cbb821d36936c81141820b5f4a",
+    "source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
     "publication": {
       "status": "unchanged",
       "version": 7
     },
     "main_model_override_performed": false
   },
-  "last_verified_source_commit": "9233f4c126ec35cbb821d36936c81141820b5f4a",
-  "lease": {"owner":"root-b2i-bounded-batch-verification","acquired_at":"2026-09-08T21:50:48.039Z","expires_at":"2026-09-08T23:20:48.040Z","base_commit":"7c58fee18f10f62c873ad11328a380aea249752d"},
+  "last_verified_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
+  "lease": null,
   "next_action": "Poursuivre les rotations bornées jusqu'à 365 cibles approuvées pour le calendrier et 400 pour l'objectif principal. Remplacer ou réexaminer avec de nouvelles preuves les trois candidats rejetés pour atteindre 400 approbations. Produire ensuite le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Préserver l'interface publiée ; les dix maquettes restent des propositions.",
   "next_phase": "B2",
   "phases": [
@@ -168,7 +176,7 @@
       "verified_source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0"
     },
     {
-      "automated_checks": "147_tests_typecheck_build_and_57_real_evidence_catalogue_exhaustive_verification_passed",
+      "automated_checks": "157_tests_typecheck_build_and_57_real_evidence_batched_exhaustive_verification_passed",
       "blockers": [
         "311 further approved targets are required before a 365-day edition can be created; 346 are required for the main 400-target acceptance goal",
         "R2 and Worker runtime qualification remain required before product activation"
@@ -208,14 +216,18 @@
         "docs/program/B2H-MEASUREMENTS.json",
         "Sixteen additional exact proofs; fifteen approvals and one rejection after two independent editorial reviews",
         "Sixty-four immutable proofs across fifty-seven target identities; fifty-four approved",
-        "Full real-corpus catalogue verification passed; independent gpt-6-astra max structural review passed"
+        "Full real-corpus catalogue verification passed; independent gpt-6-astra max structural review passed",
+        "docs/program/B2I-DELIVERY.md",
+        "docs/program/B2I-MEASUREMENTS.json",
+        "Bounded groups of eight preserve exact scalar scores, immutable evidence and full-corpus coverage; real eight-target benchmark 6.71x faster",
+        "157 tests, TypeScript, production build and 57-target real catalogue verification passed; max review corrections covered"
       ],
       "id": "B2",
       "implementation": "inactive_editorial_workbench_400_reviewed_54_approved_57_targets_64_immutable_proofs",
       "publication": "not_published",
       "status": "partial",
       "title": "Catalogue et calendrier",
-      "verified_source_commit": "9233f4c126ec35cbb821d36936c81141820b5f4a"
+      "verified_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6"
     },
     {
       "automated_checks": "passed",
@@ -500,10 +512,10 @@
       "full_history_transferred": false,
       "notice": "GITHUB-DATA-ASSETS.md",
       "repository": "supertrampsss/Braise",
-      "snapshot_commit": "8aa98d971d180bdd381690371856eb733d338ea1",
-      "snapshot_source_commit": "9233f4c126ec35cbb821d36936c81141820b5f4a",
+      "snapshot_commit": "10775061254849acade89c282bba2ef4288889d9",
+      "snapshot_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
       "standalone_build": false,
-      "status": "application_and_B2h_editorial_snapshot_present_runtime_data_transfer_incomplete"
+      "status": "application_editorial_and_B2i_verifier_snapshot_present_runtime_data_transfer_incomplete"
     },
     "private_site": {
       "audience_changed": false,
