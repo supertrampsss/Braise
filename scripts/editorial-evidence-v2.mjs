@@ -205,6 +205,82 @@ export async function verifyEditorialEvidence({ corpusDir, evidenceDir, targetId
   return { ...verified, evidenceSha256: loaded.sha256 };
 }
 
+// Local verification only. No score pages, persistent cache or product activation.
+export const EDITORIAL_VERIFICATION_BATCH_LIMIT = 8;
+
+/** @param {{corpusDir:string,evidenceDir:string,requests:Array<{targetId:number,expectedSha256?:string|null}>}} options */
+export async function verifyEditorialEvidenceBatch({ corpusDir, evidenceDir, requests }) {
+  if (!Array.isArray(requests) || requests.length > EDITORIAL_VERIFICATION_BATCH_LIMIT) throw new Error("Invalid editorial verification batch");
+  // Snapshot the bounded input before the first await: callers retain their arrays.
+  requests = requests.map(item => ({ targetId: item?.targetId, expectedSha256: item?.expectedSha256 }));
+  if (requests.some(item => !Number.isInteger(item.targetId) || item.targetId < 0) ||
+      new Set(requests.map(item => item.targetId)).size !== requests.length) throw new Error("Invalid editorial verification batch");
+  if (!requests.length) return [];
+  corpusDir = resolve(corpusDir); evidenceDir = resolve(evidenceDir);
+  const corpus = await loadActiveCorpus(corpusDir);
+  const dimensions = corpus.manifest.config.dimensions;
+  const states = [];
+  for (const request of requests) {
+    const loaded = await loadEditorialEvidence({ corpus, evidenceDir, targetId: request.targetId, expectedSha256: request.expectedSha256 });
+    states.push({ loaded, target: null, histogram: new Uint32Array(SCORE_BUCKETS), top: [], limit: neighborCountForSchema(loaded.payload.schemaVersion, corpus.manifest.stats.accepted) });
+  }
+  const byId = new Map(states.map(state => [state.loaded.payload.target.id, state]));
+  // Copy only the requested vectors. The scoring pass below still checks every segment.
+  for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) {
+    for (const entry of entries) {
+      const state = byId.get(entry.id);
+      if (!state) continue;
+      const pin = state.loaded.payload.target;
+      if (entry.word !== pin.word || sha256(Buffer.from(entry.word)) !== pin.wordSha256) throw new Error("Editorial evidence target identity differs from the corpus");
+      const vector = new Float64Array(dimensions);
+      for (let dimension = 0; dimension < dimensions; dimension++) {
+        vector[dimension] = entry.vector.readFloatLE(dimension * 4);
+        if (!Number.isFinite(vector[dimension])) throw new Error("Non-finite vector in editorial evidence verification");
+      }
+      state.target = { vector, norm: vectorNorm(entry.vector, dimensions) };
+    }
+  }
+  if (states.some(state => !state.target)) throw new Error("Editorial evidence target identity differs from the corpus");
+  const dots = new Float64Array(states.length);
+  let seen = 0;
+  for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) for (const entry of entries) {
+    dots.fill(0); let squared = 0;
+    for (let dimension = 0; dimension < dimensions; dimension++) {
+      const value = entry.vector.readFloatLE(dimension * 4);
+      if (!Number.isFinite(value)) throw new Error("Non-finite vector in editorial evidence verification");
+      squared += value * value;
+      // Each dot product retains the scalar oracle's float64 dimension order.
+      for (let index = 0; index < states.length; index++) dots[index] += value * states[index].target.vector[dimension];
+    }
+    const norm = Math.sqrt(squared);
+    for (let index = 0; index < states.length; index++) {
+      const state = states[index]; const sameIdentity = entry.id === state.loaded.payload.target.id;
+      const denominator = norm * state.target.norm;
+      if (!(denominator > 0) || !Number.isFinite(denominator)) throw new Error("Invalid editorial cosine denominator");
+      const scaled = Math.max(-1, Math.min(1, dots[index] / denominator)) * SCORE_MAX;
+      const rounded = scaled < 0 ? Math.ceil(scaled - 0.5) : Math.floor(scaled + 0.5);
+      const score = sameIdentity ? SCORE_MAX : Math.max(SCORE_MIN, Math.min(SCORE_MAX, rounded));
+      state.histogram[scoreIndex(score)]++;
+      const last = state.top.at(-1);
+      if (!sameIdentity && (state.top.length < state.limit || score > last.score || score === last.score && entry.id < last.id)) {
+        insertTop(state.top, { id: entry.id, word: entry.word, score }, state.limit);
+      }
+    }
+    seen++;
+  }
+  if (seen !== corpus.manifest.stats.accepted) throw new Error("Editorial evidence exhaustive coverage mismatch");
+  return states.map(state => {
+    const higher = new Uint32Array(SCORE_BUCKETS); let above = 0;
+    for (let index = SCORE_BUCKETS - 1; index >= 0; index--) { higher[index] = above; above += state.histogram[index]; }
+    const actual = state.top.map(entry => ({ ...entry, rank: higher[scoreIndex(entry.score)] + 1 }));
+    const histogramSha256 = sha256(Buffer.from(stableJson(Array.from(state.histogram))));
+    const payload = state.loaded.payload;
+    if (histogramSha256 !== payload.verification.histogramSha256) throw new Error(`Editorial evidence exhaustive histogram mismatch: ${payload.target.id}`);
+    if (stableJson(actual) !== stableJson(payload.neighborhood.entries)) throw new Error(`Editorial evidence neighborhood differs from independent corpus scoring: ${payload.target.id}`);
+    return { corpusId: corpus.manifest.corpusId, targetId: payload.target.id, dictionarySize: seen, neighbors: actual.length, evidenceSha256: state.loaded.sha256 };
+  });
+}
+
 async function scoreEvidencePayloadAgainstCorpus(corpusDir, corpus, payload) {
   const targetId = payload.target.id;
   let target = null;

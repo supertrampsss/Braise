@@ -79,6 +79,12 @@ L'export public V1 est servi comme flux d'asset par `/semantic-data.json`, sans 
 
 Une limitation par IP et fenêtre d'une minute protège contre les rafales simples ; elle est locale à l'isolate et ne remplace pas un dispositif global pour un gros lancement.
 
+## Vérification éditoriale locale par lots
+
+Le vérificateur de catalogue recalcule les preuves par groupes de huit cibles au maximum. Il conserve seulement leurs vecteurs copiés, huit histogrammes de 20 001 cases et huit listes de 64 associations au maximum. Chaque groupe relit intégralement les segments contrôlés du corpus ; il ne réutilise aucun résultat numérique persisté. Les normes et les produits scalaires conservent l'accumulation float64 dans l'ordre des dimensions, puis l'arrondi du contrat BRT2. Les scores, histogrammes, rangs et associations sont comparés aux preuves immuables, y compris leurs chaînes historiques.
+
+La vérification scalaire reste séparée et inchangée comme oracle de comparaison. La capture et l'extension des preuves ne changent pas. Aucun cache quadratique, colonne supplémentaire ou activation produit n'est créé. La sortie standard de la commande de catalogue contient uniquement son résultat final réussi ; la sortie d'erreur reçoit une progression JSON de l'étape `editorial-evidence` après chaque groupe vérifié. Cette progression ne remplace pas le succès final : les colonnes présentes et les compteurs du catalogue sont encore contrôlés ensuite. La mémoire Node locale mesurée ne constitue pas une qualification du Worker hébergé.
+
 ## UX
 
 La requête de chargement la plus récente est la seule autorisée à remplacer la partie. Une réponse devenue obsolète ne modifie pas une autre partie. Les modifications d'épingles et de son sont désactivées pendant un POST pour éviter de perdre un changement. Une révision de saisie est capturée au départ : toute édition, même si elle revient au même texte, est préservée à la réponse.

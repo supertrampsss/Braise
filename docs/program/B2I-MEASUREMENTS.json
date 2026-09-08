@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "slice": "B2i",
+  "scope": "local_exhaustive_editorial_verification_only",
+  "corpus_id": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "dictionary_entries": 1013881,
+  "approved_targets": 54,
+  "evidenced_targets": 57,
+  "immutable_proof_files": 64,
+  "new_approved_targets": 0,
+  "batch_target_limit": 8,
+  "benchmark": {
+    "batchMs": 21594.378207,
+    "dictionarySize": 1013881,
+    "maxRssKiB": 208204,
+    "parity": "exact",
+    "scalarMs": 144948.983322,
+    "speedup": 6.712348090440202,
+    "targets": [
+      541,
+      1181,
+      1305,
+      834,
+      1677,
+      2077,
+      2106,
+      2122
+    ],
+    "method": "same_eight_targets_sequential_scalar_then_batch_in_one_local_Node_process",
+    "universal_speed_guarantee": false
+  },
+  "full_catalogue_verification": {
+    "result": {
+      "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+      "selected": 400,
+      "lexicalReviewed": 400,
+      "evidenceReady": 54,
+      "approved": 54
+    },
+    "elapsedMs": 161841.965076,
+    "maxRssKiB": 318532,
+    "status": "passed",
+    "numerically_verified_targets": 57
+  },
+  "tests": {
+    "passed": 157,
+    "failed": 0,
+    "typecheck": "passed",
+    "production_build": "passed",
+    "independent_max_review": "passed_after_two_input_hardening_fixes"
+  },
+  "memory_scope": "local_Node_only_not_hosted_Worker_qualification",
+  "browser_validation": "not_requested",
+  "publication_changed": false,
+  "active_product_corpus": "fr-fasttext-30000-v1"
+}
