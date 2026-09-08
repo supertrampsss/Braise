@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "scope": "exact_local_reconstruction_not_product_activation",
+  "verifiedAt": "2026-09-08T18:05:10Z",
+  "verifiedCodeCommit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
+  "nodeVersion": "v24.19.0",
+  "source": {
+    "bytes": 3027096151,
+    "sha256": "bc68b0703375da9e81c3c11d0c28f3f8375dd944c209e697c4075e579455ac2a"
+  },
+  "corpus": {
+    "id": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+    "rowsRead": 1152449,
+    "accepted": 1013881,
+    "segments": 248,
+    "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+    "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+    "independentVerification": "passed_integrated_and_separate_command"
+  },
+  "presenceIndex": {
+    "entries": 1013881,
+    "leaves": 65536,
+    "manifestSha256": "77178f6fc85de9d5523db3f13141b751abdeb1c6b2d3ad6a4d020346a795c426",
+    "independentVerification": "passed_separate_command"
+  },
+  "catalogue": {
+    "sha256": "bcfb9807d57e9882c601e4ae8d3e2b4aaa9931780159881b69e3606a95c83c48",
+    "selected": 400,
+    "lexicalReviewed": 400,
+    "evidenceReady": 32,
+    "approved": 32,
+    "rejected": 1,
+    "evidencedDossiersIncludingRejection": 33,
+    "archivedProofFiles": 40,
+    "independentVerification": "passed_exhaustive_scores_histograms_and_neighborhoods_for_all_33_current_dossiers",
+    "newApprovals": 0,
+    "stagedColumns": 0
+  },
+  "v1SourceSha256": "7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16",
+  "applicationSourceChanged": false,
+  "projectTestsRerun": false,
+  "browserValidation": "not_requested",
+  "workerQualification": "not_performed",
+  "r2Qualification": "not_performed",
+  "v2ProductActive": false,
+  "workOutputsDurablyBackedUp": false
+}
