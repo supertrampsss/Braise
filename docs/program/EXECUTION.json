@@ -7,8 +7,8 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B1",
-  "next_action": "Vérifier et provisionner le binding R2 réel du même Site, produire les artefacts V1 segmentés et le lecteur versionné, puis comparer au même oracle. Si R2 bloque, avancer B3 indépendamment.",
+  "next_phase": "B3",
+  "next_action": "Implémenter une première tranche complète du design vivant et du socle publicitaire inactif, avec accessibilité, réduction des mouvements et préservation de la partie en cours.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B1-20260907T234205Z",
-    "acquired_at": "2026-09-07T23:42:05Z",
-    "expires_at": "2026-09-08T00:32:05Z",
-    "base_commit": "7a0977f170f22b974c6dc21afecf129c4c5a192b",
-    "phase": "B1"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -68,13 +62,25 @@
       "depends_on": [
         "B0"
       ],
-      "status": "in_progress",
-      "evidence": [],
-      "blockers": [],
-      "implementation": "in_progress",
-      "automated_checks": "not_run",
+      "status": "partial",
+      "evidence": [
+        "docs/program/B1A-DELIVERY.md",
+        "docs/program/B1A-MEASUREMENTS.json",
+        "120 immutable BRZ1 shards generated from the frozen V1 source",
+        "3,600,000 scores, ranks and stable order positions verified",
+        "22 tests passed; TypeScript passed; production build passed",
+        "Compiled Worker 1,128,880 bytes; V1 score sentinel absent",
+        "Independent gpt-6-astra max review: blocking ASSETS configuration corrected"
+      ],
+      "blockers": [
+        "Real R2 binding is not provisioned or qualified",
+        "Cloudflare Worker runtime memory remains unqualified"
+      ],
+      "implementation": "b1a_completed",
+      "automated_checks": "local_passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
+      "verified_source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
       "external_dependencies": [
         "R2 binding provisioned and accessible"
       ]
@@ -263,23 +269,23 @@
   "planning_evidence": {
     "specialist_missions_completed": 12,
     "orchestrator_review": "completed_with_corrections_applied",
-    "product_code_changed": false,
+    "product_code_changed": true,
     "browser_qa_performed": false
   },
-  "last_checkpoint": "B0-compatibility-verified",
+  "last_checkpoint": "B1a-segmented-local",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed",
+    "automated_checks": "B0_passed_B1a_local_passed",
     "browser_validation": "not_requested",
     "publication": "v1_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd",
+  "last_verified_source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
   "last_run": {
-    "completed_at": "2026-09-07T22:55:57.353853+00:00",
-    "phase": "B0",
+    "completed_at": "2026-09-08T00:09:31.296Z",
+    "phase": "B1",
     "progress": true,
-    "source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd",
+    "source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
     "delegation": {
       "orchestrator": {
         "model": "gpt-6-astra",
@@ -287,13 +293,13 @@
       },
       "specialists": [
         {
-          "mission": "V1 compatibility research",
+          "mission": "Segmented semantic storage review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B0-86bf522c-57d5-4a71-a6a6-486bcf4e0c52"
+    "lease_owner": "braise-B1-20260907T234205Z"
   }
 }
