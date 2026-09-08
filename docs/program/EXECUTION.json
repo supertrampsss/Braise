@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B6",
-  "next_action": "Implémenter la récupération d’accès, puis provisionner et qualifier D1 et les routes hébergées avant activation de /espace. Continuer les fonctions sociales, studio, distribution, puis le dictionnaire complet.",
+  "next_action": "Continuer cercles, duels, studio et distribution sur le socle D1 provisionné. Qualification HTTP authentifiée encore non réalisée : aucun jeton de contournement créé sans demande explicite. Dictionnaire complet ensuite.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -218,19 +218,21 @@
         "docs/program/B6A-DELIVERY.md",
         "125 tests passed; TypeScript and production build passed",
         "gpt-6-astra max source-only review: no local blocker",
-        "docs/program/B6B-DELIVERY.md"
+        "docs/program/B6B-DELIVERY.md",
+        "docs/program/B6C-DELIVERY.md",
+        "Private v4 succeeded; native database overview confirms DB and all five tables"
       ],
       "blockers": [
-        "Real D1 and hosted-route qualification pending"
+        "Authenticated hosted-route qualification pending; bypass-token creation requires explicit user request"
       ],
-      "implementation": "guest_sessions_and_atomic_server_games_local",
-      "automated_checks": "126_tests_typecheck_build_passed",
+      "implementation": "guest_sessions_atomic_games_and_confirmed_recovery",
+      "automated_checks": "127_tests_typecheck_build_passed_D1_schema_provisioned",
       "browser_validation": "not_requested",
-      "publication": "not_published",
+      "publication": "published_owner_private_v4",
       "external_dependencies": [
-        "D1 binding provisioned and accessible"
+        "Hosted authenticated API qualification"
       ],
-      "verified_source_commit": "f5c791fa7e969c97bfb4ca40b16b3d7f3e582a4f"
+      "verified_source_commit": "4fd4e9b27a16ca1c60041419f6e0172f3ad45394"
     },
     {
       "id": "B7",

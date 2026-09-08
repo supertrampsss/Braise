@@ -10,4 +10,4 @@ La récupération n’utilise aucun courriel fictif, fournisseur externe ni hist
 
 Contrôles locaux : 127 tests, TypeScript et build réussis. Cas ciblés : code inconnu, code consommé, répétition identique, anciennes sessions révoquées et refus de rotation depuis une session révoquée. La migration ajoute une table et un index unique sans réécrire les tables existantes.
 
-Publication et qualification D1 sont à constater séparément. Aucun test navigateur réalisé.
+Publication privée v4 confirmée le 8 septembre 2026 à 08:07 UTC, depuis `4fd4e9b27a16ca1c60041419f6e0172f3ad45394`. La consultation native confirme le binding DB et les cinq tables attendues, dont récupération. Ceci prouve le provisionnement et la présence du schéma, pas les parcours HTTP ni la concurrence hébergée. Aucun test navigateur réalisé. Aucun jeton de contournement créé : son outil exige une demande utilisateur explicite. Les développements indépendants continuent.
