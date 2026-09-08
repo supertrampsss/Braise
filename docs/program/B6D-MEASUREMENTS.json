@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-08T23:11:38.606Z",
+  "scope": "owner-private-hosted-D1-session-game-recovery",
+  "site": {
+    "url": "https://braise-mots.yellow-drake-7186.chatgpt.site",
+    "version": 7,
+    "liveSourceCommit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
+  },
+  "hostedFacts": {
+    "anonymousSession": "passed",
+    "guestCreationAndCookiePolicy": "passed",
+    "serverGameCreationReplay": "passed_exact_public_view",
+    "realV1GuessReplay": "passed_exact_public_view",
+    "unauthenticatedRead": "rejected_401",
+    "missingCsrfMutation": "rejected_403_state_unchanged",
+    "foreignOriginMutation": "rejected_403_state_unchanged",
+    "sameRevisionConcurrency": "one_200_one_409_one_persisted_guess",
+    "recovery": "same_guest_old_session_revoked_game_preserved",
+    "finalSessionRevocation": "passed"
+  },
+  "harness": {
+    "verifiedSourceCommit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
+    "command": "npm run qa:hosted:private",
+    "secretsInFilesOrOutput": false,
+    "fixedOrigin": true,
+    "requestTimeoutMs": 30000,
+    "failureCleanup": "verified_with_two_redacted_synthetic_failure_fixtures",
+    "finalLiveRerun": "deferred_after_real_429_hourly_creation_limit",
+    "finalLiveRerunCleanup": "revoked"
+  },
+  "projectChecks": {
+    "tests": 157,
+    "testsStatus": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "targetedEslint": "passed"
+  },
+  "testData": {
+    "prefix": "QA-",
+    "sessionsFromSuccessfulAndRateLimitedRuns": "revoked",
+    "firstPrototypeSession": "token_lost_before_cleanup_hardening_expires_automatically_within_30_days",
+    "guestAndGameRowsDeleted": false,
+    "presentedAsRealUsersOrUsage": false
+  },
+  "browserValidation": "not_requested",
+  "B7HostedQualification": "not_performed",
+  "B9HostedQualification": "not_performed",
+  "publication": "unchanged_owner_private_v7"
+}
