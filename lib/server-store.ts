@@ -19,6 +19,17 @@ export class ServerStore {
   async listGames(guest: string) {
     return (await this.db.prepare("SELECT id,state,revision,created_at,completed_at FROM braise_server_games WHERE guest_id=? ORDER BY created_at DESC LIMIT 50").bind(guest).all()).results;
   }
+  async revokeSession(session: GuestSession) {
+    await this.db.prepare("UPDATE braise_sessions SET revoked=1 WHERE token_hash=? AND guest_id=?").bind(session.token_hash, session.guest_id).run();
+  }
+  async createAuthorizedGame(session: GuestSession, id: string, seed: string, now = Date.now()) {
+    await this.db.prepare(`INSERT OR IGNORE INTO braise_server_games (id,guest_id,seed,corpus,rules,state,revision,created_at)
+      SELECT ?,s.guest_id,?,'fr-fasttext-30000-v1','classic-v1','open',0,? FROM braise_sessions s
+      WHERE s.token_hash=? AND s.guest_id=? AND s.revoked=0 AND s.expires_at>?
+      AND (SELECT count(*) FROM braise_server_games WHERE guest_id=s.guest_id)<100`).bind(id, seed, now, session.token_hash, session.guest_id, now).run();
+    const active = await this.db.prepare("SELECT guest_id FROM braise_sessions WHERE token_hash=? AND guest_id=? AND revoked=0 AND expires_at>?").bind(session.token_hash, session.guest_id, now).first();
+    return active ? this.game(session.guest_id, id) : null;
+  }
   async createGame(guest: string, id: string, seed: string, now = Date.now()) {
     await this.db.prepare("INSERT OR IGNORE INTO braise_server_games (id,guest_id,seed,corpus,rules,state,revision,created_at) SELECT ?,?,?,'fr-fasttext-30000-v1','classic-v1','open',0,? WHERE (SELECT count(*) FROM braise_server_games WHERE guest_id=?)<100").bind(id, guest, seed, now, guest).run();
     return this.game(guest, id);

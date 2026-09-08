@@ -68,3 +68,18 @@ test("CSRF boundary rejects absent and foreign origins", () => {
   assert.equal(validMutationOrigin(new Request(BRAISE_ORIGIN, { headers: { Origin: "https://evil.test", "Content-Type": "application/json" } })), false);
   assert.equal(sessionCookie(new Request(BRAISE_ORIGIN, { headers: { Cookie: "__Host-braise_session=bad" } })), null);
 });
+test("game creation rechecks expiry and revocation atomically and preserves replay identity", async () => {
+  const { sqlite, store } = database(); const token = randomToken();
+  await store.createGuest("Test", token, "csrf", 100); const session = (await store.session(token, 101))!;
+  const first = await store.createAuthorizedGame(session, "authorized", "1234", 102);
+  assert.equal(first?.seed, "1234");
+  assert.equal((await store.createAuthorizedGame(session, "authorized", "5678", 103))?.seed, "1234");
+  assert.equal(await store.createAuthorizedGame(session, "expired", "1", 100 + 31 * 86400000), null);
+  assert.equal(await store.game(session.guest_id, "expired"), null);
+  await store.revokeSession(session); await store.revokeSession(session);
+  assert.equal(await store.session(token, 104), null);
+  assert.equal(await store.createAuthorizedGame(session, "after-revoke", "1", 104), null);
+  assert.equal(await store.game(session.guest_id, "after-revoke"), null);
+  assert.ok(await store.game(session.guest_id, "authorized"));
+  sqlite.close();
+});

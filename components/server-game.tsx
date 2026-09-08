@@ -39,6 +39,11 @@ export default function ServerGame() {
         const data = await api("/api/server-games", { action: "guess", ...request }); setView(data as GameView); pending.current = null;
         if (revision === inputRevision.current) setWord("");
       }); }}><label className="sr-only" htmlFor="server-word">Votre proposition</label><input id="server-word" value={word} maxLength={50} onChange={event => { inputRevision.current++; setWord(event.target.value); }} placeholder="Un mot français…" /><button className="guess-button" type="submit" disabled={busy || !word.trim()}>→</button></form>}<div className="two-braises-history"><table><caption>Historique enregistré</caption><thead><tr><th>Mot</th><th>Température</th><th>Rang</th></tr></thead><tbody>{[...view.guesses].reverse().map(guess => <tr key={guess.ordinal}><th scope="row">{guess.word}</th><td>{guess.temperature.toFixed(1)}°</td><td>{guess.found ? "Trouvé ✓" : guess.rank}</td></tr>)}</tbody></table></div></>}
+      {session.guest && <details><summary>Déconnecter cet appareil</summary><p>Sans récupération configurée, vous ne pourrez plus accéder à cette identité depuis cet appareil. Les parties ne seront pas supprimées.</p><button className="text-action" disabled={busy} onClick={() => void perform(async () => {
+        const response = await fetch("/api/session", { method: "DELETE", headers: { "Content-Type": "application/json", "X-Braise-CSRF": session.csrf ?? "" } });
+        if (!response.ok) throw new Error("La déconnexion n’a pas abouti. Réessayez.");
+        setSession({ guest: null }); setView(null); setGames([]); pending.current = null; setWord("");
+      })}>Confirmer la déconnexion</button></details>}
       {busy && <p role="status">Chargement…</p>}{error && <p role="alert">{error}</p>}
       <p>Les cercles et les duels seront raccordés à ce socle. Aucun joueur ni classement fictif.</p>
     </section></main>;

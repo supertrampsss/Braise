@@ -22,3 +22,11 @@ export async function POST(request: Request) {
     return Response.json({ guest, csrf }, { headers: { ...serverHeaders, "Set-Cookie": `__Host-braise_session=${token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=2592000` } });
   } catch { return unavailable(); }
 }
+export async function DELETE(request: Request) {
+  try {
+    const session = await authenticate(request, true);
+    if (!session) return Response.json({ error: "Session ou origine invalide." }, { status: 403, headers: serverHeaders });
+    await store().revokeSession(session);
+    return Response.json({ guest: null }, { headers: { ...serverHeaders, "Set-Cookie": "__Host-braise_session=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0" } });
+  } catch { return unavailable(); }
+}

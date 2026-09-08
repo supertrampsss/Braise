@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     if (body.action === "create") {
       if (creationLimited(request)) return reply({ error: "Trop de créations. Réessayez plus tard." }, 429);
       const seed = String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647);
-      const game = await store().createGame(session.guest_id, body.id, seed);
+      const game = await store().createAuthorizedGame(session, body.id, seed);
       return game ? await view(session.guest_id, game.id) : reply({ error: "Identité indisponible ou limite de 100 parties atteinte." }, 409);
     }
     if (body.action !== "guess" || !uuid(body.requestId) || !Number.isInteger(body.revision) || typeof body.word !== "string" || body.word.length > 50) return reply({ error: "Proposition invalide." }, 400);
