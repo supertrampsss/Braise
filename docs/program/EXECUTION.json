@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B2",
-  "next_action": "Continuer les rotations bornées avec preuves à 64 voisins jusqu'à 365 cibles approuvées, produire le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Poursuivre les lots indépendants si cette infrastructure externe reste indisponible.",
+  "next_action": "Confirmer d'abord la synchronisation du checkpoint de restauration si le serveur Git Sites reste indisponible, puis vérifier bail et présence du staging restauré. Reprendre les rotations bornées avec preuves à 64 voisins jusqu'à 365 cibles approuvées et 400 pour l'objectif principal, produire le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Poursuivre les lots indépendants si cette infrastructure externe reste indisponible.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -332,13 +332,13 @@
         "B9",
         "B10"
       ],
-      "status": "planned",
-      "evidence": [],
+      "status": "partial",
+      "evidence": ["docs/program/RECOVERY-DELIVERY.md", "docs/program/RECOVERY-MEASUREMENTS.json", "GITHUB-DATA-ASSETS.md"],
       "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "implementation": "intermediate_private_publication_and_incomplete_github_snapshot_documented",
+      "automated_checks": "exact_corpus_index_and_editorial_recovery_passed_final_programme_gates_pending",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "intermediate_v6_owner_private_final_programme_publication_pending"
     }
   ],
   "conditional_work": [
@@ -412,20 +412,61 @@
       "product_active": false
     }
   },
-  "last_checkpoint": "B2F-multitheme-batch-32-approved",
+  "last_checkpoint": "recovery-exact-corpus-github-v6",
+  "recovery": {
+    "evidence": "docs/program/RECOVERY-DELIVERY.md",
+    "measurements": "docs/program/RECOVERY-MEASUREMENTS.json",
+    "source_corpus_and_presence_index": "restored_exactly_and_independently_verified",
+    "editorial_dossiers_numerically_reverified": 33,
+    "new_approvals": 0,
+    "staged_target_columns": 0,
+    "work_outputs_durably_backed_up": false,
+    "source_read_retries": "three_HTTP_500_responses_before_checkpoint_push_attempt",
+    "next_resume_must_confirm_canonical_checkpoint": true
+  },
+  "source_distribution": {
+    "canonical": "Sites source repository, complete V1 assets and original history preserved",
+    "github": {
+      "repository": "supertrampsss/Braise",
+      "audience": "public",
+      "snapshot_source_commit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
+      "snapshot_commit": "9b2e6980fef903e3d75f7122ae5512be6434caa0",
+      "data_notice_commit": "d2c19fd5bbab1747edf4be082d7ae19f07278aa0",
+      "status": "application_snapshot_present_runtime_data_transfer_incomplete",
+      "standalone_build": false,
+      "full_history_transferred": false,
+      "notice": "GITHUB-DATA-ASSETS.md",
+      "excluded": [
+        "data/semantic-fr.json",
+        "public/semantic/fr-fasttext-30000-v1/source.json",
+        "public/semantic/fr-fasttext-30000-v1/targets/*.brz"
+      ]
+    },
+    "private_site": {
+      "status": "succeeded",
+      "version": 6,
+      "source_commit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
+      "deployment_id": "appgdep_6aa03b5159048191af3127e9683225f7",
+      "version_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b~appgver_cbc62ac5ce688191ba13f32dd1161e24",
+      "url": "https://braise-mots.yellow-drake-7186.chatgpt.site",
+      "deployment_updated_at": "2026-09-08T16:45:18.161740+00:00",
+      "audience_changed": false,
+      "corpus_v2_active": false
+    }
+  },
   "delivery": {
     "implementation": "in_progress",
     "automated_checks": "147_tests_typecheck_build_passed_B2f_33_real_evidence_and_catalogue_independently_verified_global_lint_existing_debt_recorded",
     "browser_validation": "not_requested",
-    "publication": "v5_owner_private",
+    "publication": "v6_owner_private",
     "commercial_activation": "not_configured"
   },
   "last_verified_source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
   "last_run": {
-    "completed_at": "2026-09-08T15:27:08.000Z",
-    "phase": "B2",
+    "completed_at": "2026-09-08T18:05:10.000Z",
+    "phase": "B11-recovery",
     "progress": true,
-    "source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
+    "source_commit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
     "publication": {
       "status": "not_published"
     },
