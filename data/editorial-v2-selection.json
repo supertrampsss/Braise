@@ -622,6 +622,86 @@
       "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations contextuelles françaises, naturelles, distinctes et non dérivées : mouvement orbital, contexte hors de la Terre et environnement astronomique. Le bruit restant est explicitement écarté.",
       "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
       "supersedesEvidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+    },
+    {
+      "targetId": 4131,
+      "decision": "approved",
+      "hints": ["farine", "levain", "pétrin"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes valident un ingrédient, un ferment et un équipement de fabrication. Les trois indices sont naturels, distincts et ne dérivent pas de la cible.",
+      "evidenceSha256": "4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032"
+    },
+    {
+      "targetId": 4201,
+      "decision": "approved",
+      "hints": ["alliage", "tôles", "blindage"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes confirment la nature du matériau, une forme manufacturée et un usage protecteur. Aucun indice ne reprend la cible.",
+      "evidenceSha256": "bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250"
+    },
+    {
+      "targetId": 1303,
+      "decision": "approved",
+      "hints": ["violon", "sonate", "quintette"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un instrument associé, une forme musicale et une formation. Les dérivés de la cible sont écartés.",
+      "evidenceSha256": "80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d"
+    },
+    {
+      "targetId": 1421,
+      "decision": "approved",
+      "hints": ["chirurgien", "pharmacien", "psychiatre"],
+      "actor": "astra-b2e-arbitration-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:18:00.000Z",
+      "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations de soins naturelles et distinctes : chirurgie, médicament et santé mentale. Pharmacien est retenu comme profession de santé voisine, sans être présenté comme médecin.",
+      "evidenceSha256": "f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735"
+    },
+    {
+      "targetId": 1028,
+      "decision": "approved",
+      "hints": ["tournoi", "raquette", "gazon"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes valident une compétition, un équipement et une surface de jeu. Les variantes et fragments bruités sont exclus.",
+      "evidenceSha256": "84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c"
+    },
+    {
+      "targetId": 502,
+      "decision": "approved",
+      "hints": ["trains", "voyageurs", "quais"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes confirment des véhicules, des usagers et une infrastructure, trois composantes concrètes et distinctes.",
+      "evidenceSha256": "db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2"
+    },
+    {
+      "targetId": 3724,
+      "decision": "approved",
+      "hints": ["processeur", "logiciel", "imprimante"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un composant, un programme et un périphérique. Les trois notions sont complémentaires et non dérivées.",
+      "evidenceSha256": "71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690"
+    },
+    {
+      "targetId": 1365,
+      "decision": "approved",
+      "hints": ["démocratie", "émancipation", "oppression"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes valident un cadre politique, un processus d’affranchissement et un contraire sémantique. Les dérivés de la cible sont écartés.",
+      "evidenceSha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc"
     }
   ],
   "reviews": [

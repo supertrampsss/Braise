@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 17,
-    "approved": 17
+    "neighborhoodEvidenceReady": 25,
+    "approved": 25
   },
   "entries": [
     {
@@ -3400,16 +3400,286 @@
       },
       "word": "gare",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 2936,
+            "word": "gares"
+          },
+          {
+            "id": 1751,
+            "word": "ferroviaire"
+          },
+          {
+            "id": 4841,
+            "word": "terminus"
+          },
+          {
+            "id": 870147,
+            "word": "ferrroviaire"
+          },
+          {
+            "id": 6454,
+            "word": "halte"
+          },
+          {
+            "id": 839520,
+            "word": "massifcentralferroviaire"
+          },
+          {
+            "id": 2450,
+            "word": "trains"
+          },
+          {
+            "id": 3433,
+            "word": "desservie"
+          },
+          {
+            "id": 11918,
+            "word": "kilométrique"
+          },
+          {
+            "id": 20414,
+            "word": "bifurcation"
+          },
+          {
+            "id": 8538,
+            "word": "ferroviaires"
+          },
+          {
+            "id": 2404,
+            "word": "voyageurs"
+          },
+          {
+            "id": 841571,
+            "word": "terminusou"
+          },
+          {
+            "id": 95195,
+            "word": "déferrée"
+          },
+          {
+            "id": 9369,
+            "word": "ferrée"
+          },
+          {
+            "id": 6624,
+            "word": "quais"
+          },
+          {
+            "id": 3519,
+            "word": "sncf"
+          },
+          {
+            "id": 494235,
+            "word": "westbahnhof"
+          },
+          {
+            "id": 6902,
+            "word": "desserte"
+          },
+          {
+            "id": 600115,
+            "word": "kilométres"
+          },
+          {
+            "id": 838696,
+            "word": "ferrovière"
+          },
+          {
+            "id": 271779,
+            "word": "ferrovaire"
+          },
+          {
+            "id": 205027,
+            "word": "desserve"
+          },
+          {
+            "id": 7871,
+            "word": "tgv"
+          },
+          {
+            "id": 911412,
+            "word": "féroviaire"
+          },
+          {
+            "id": 89536,
+            "word": "desservira"
+          },
+          {
+            "id": 610959,
+            "word": "stadtbahnhof"
+          },
+          {
+            "id": 36497,
+            "word": "haltes"
+          },
+          {
+            "id": 278422,
+            "word": "intercityexpress"
+          },
+          {
+            "id": 293271,
+            "word": "ostbahnhof"
+          },
+          {
+            "id": 26706,
+            "word": "intercités"
+          },
+          {
+            "id": 23376,
+            "word": "triage"
+          },
+          {
+            "id": 958559,
+            "word": "garecornavin"
+          },
+          {
+            "id": 506243,
+            "word": "déferrées"
+          },
+          {
+            "id": 908218,
+            "word": "intercitéa"
+          },
+          {
+            "id": 292700,
+            "word": "intercité"
+          },
+          {
+            "id": 160424,
+            "word": "desservit"
+          },
+          {
+            "id": 12114,
+            "word": "tram"
+          },
+          {
+            "id": 668698,
+            "word": "ferrovaires"
+          },
+          {
+            "id": 41448,
+            "word": "intercity"
+          },
+          {
+            "id": 13140,
+            "word": "desservies"
+          },
+          {
+            "id": 231999,
+            "word": "hovedbanen"
+          },
+          {
+            "id": 531432,
+            "word": "centralbahn"
+          },
+          {
+            "id": 8318,
+            "word": "rer"
+          },
+          {
+            "id": 800768,
+            "word": "intercitésfret"
+          },
+          {
+            "id": 949906,
+            "word": "murgtalbahn"
+          },
+          {
+            "id": 224515,
+            "word": "roissypôle"
+          },
+          {
+            "id": 896204,
+            "word": "centralbahnplatz"
+          },
+          {
+            "id": 18544,
+            "word": "transilien"
+          },
+          {
+            "id": 189078,
+            "word": "desservirait"
+          },
+          {
+            "id": 462406,
+            "word": "jærbanen"
+          },
+          {
+            "id": 26086,
+            "word": "électrifiée"
+          },
+          {
+            "id": 11251,
+            "word": "desservant"
+          },
+          {
+            "id": 101267,
+            "word": "hauptbahnhof"
+          },
+          {
+            "id": 940678,
+            "word": "trainsde"
+          },
+          {
+            "id": 883164,
+            "word": "horokilométrique"
+          },
+          {
+            "id": 53026,
+            "word": "bahnhof"
+          },
+          {
+            "id": 919261,
+            "word": "lokalbahnhof"
+          },
+          {
+            "id": 7158,
+            "word": "tronçon"
+          },
+          {
+            "id": 511822,
+            "word": "nordbahnhof"
+          },
+          {
+            "id": 9167,
+            "word": "pk"
+          },
+          {
+            "id": 111398,
+            "word": "ferrovia"
+          },
+          {
+            "id": 109842,
+            "word": "kilométriques"
+          },
+          {
+            "id": 16444,
+            "word": "desservir"
+          }
+        ],
+        "targetManifestSha256": "ef11fd9fbede68e57e88679072e0aed124109c10ac5fd04a3665445817cbfa96",
+        "evidenceSha256": "db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "trains",
+          "voyageurs",
+          "quais"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes confirment des véhicules, des usagers et une infrastructure, trois composantes concrètes et distinctes.",
+        "evidenceSha256": "db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2"
+      }
     },
     {
       "targetId": 648,
@@ -4489,16 +4759,286 @@
       },
       "word": "médecin",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 7274,
+            "word": "chirurgien"
+          },
+          {
+            "id": 14058,
+            "word": "pharmacien"
+          },
+          {
+            "id": 45559,
+            "word": "gynécologue"
+          },
+          {
+            "id": 112021,
+            "word": "urologue"
+          },
+          {
+            "id": 38672,
+            "word": "pédiatre"
+          },
+          {
+            "id": 55799,
+            "word": "cardiologue"
+          },
+          {
+            "id": 510972,
+            "word": "vénérologue"
+          },
+          {
+            "id": 11930,
+            "word": "psychiatre"
+          },
+          {
+            "id": 74736,
+            "word": "obstétricien"
+          },
+          {
+            "id": 619917,
+            "word": "phtisiologue"
+          },
+          {
+            "id": 920365,
+            "word": "phlébologue"
+          },
+          {
+            "id": 553564,
+            "word": "anesthésiologiste"
+          },
+          {
+            "id": 81151,
+            "word": "ophtalmologiste"
+          },
+          {
+            "id": 794477,
+            "word": "idiologue"
+          },
+          {
+            "id": 65814,
+            "word": "pathologiste"
+          },
+          {
+            "id": 230715,
+            "word": "radiologiste"
+          },
+          {
+            "id": 197763,
+            "word": "pneumologue"
+          },
+          {
+            "id": 228275,
+            "word": "rhumatologue"
+          },
+          {
+            "id": 571816,
+            "word": "hématologiste"
+          },
+          {
+            "id": 788944,
+            "word": "dermatologiste"
+          },
+          {
+            "id": 236295,
+            "word": "oncologue"
+          },
+          {
+            "id": 255736,
+            "word": "néphrologue"
+          },
+          {
+            "id": 83203,
+            "word": "radiologue"
+          },
+          {
+            "id": 242258,
+            "word": "entérologue"
+          },
+          {
+            "id": 76566,
+            "word": "pharmacologue"
+          },
+          {
+            "id": 19243,
+            "word": "dentiste"
+          },
+          {
+            "id": 542428,
+            "word": "audiologiste"
+          },
+          {
+            "id": 29778,
+            "word": "légiste"
+          },
+          {
+            "id": 340842,
+            "word": "indologue"
+          },
+          {
+            "id": 764600,
+            "word": "oncologiste"
+          },
+          {
+            "id": 247349,
+            "word": "pharmacologiste"
+          },
+          {
+            "id": 737697,
+            "word": "médecinmaire"
+          },
+          {
+            "id": 29462,
+            "word": "anatomiste"
+          },
+          {
+            "id": 31425,
+            "word": "neurologue"
+          },
+          {
+            "id": 76340,
+            "word": "neurochirurgien"
+          },
+          {
+            "id": 266561,
+            "word": "neurologiste"
+          },
+          {
+            "id": 649674,
+            "word": "stomatologiste"
+          },
+          {
+            "id": 74664,
+            "word": "ophtalmologue"
+          },
+          {
+            "id": 936863,
+            "word": "angiologue"
+          },
+          {
+            "id": 184878,
+            "word": "hématologue"
+          },
+          {
+            "id": 82178,
+            "word": "dermatologue"
+          },
+          {
+            "id": 100227,
+            "word": "podologue"
+          },
+          {
+            "id": 858299,
+            "word": "hépatologue"
+          },
+          {
+            "id": 869193,
+            "word": "diabétologue"
+          },
+          {
+            "id": 885701,
+            "word": "otologiste"
+          },
+          {
+            "id": 618156,
+            "word": "traumatologue"
+          },
+          {
+            "id": 486981,
+            "word": "archiatre"
+          },
+          {
+            "id": 415699,
+            "word": "gériatre"
+          },
+          {
+            "id": 565921,
+            "word": "iridologue"
+          },
+          {
+            "id": 34942,
+            "word": "physiologiste"
+          },
+          {
+            "id": 882569,
+            "word": "médecinconseiller"
+          },
+          {
+            "id": 127716,
+            "word": "orthopédiste"
+          },
+          {
+            "id": 622927,
+            "word": "addictologue"
+          },
+          {
+            "id": 528675,
+            "word": "nématologiste"
+          },
+          {
+            "id": 104786,
+            "word": "aliéniste"
+          },
+          {
+            "id": 855144,
+            "word": "onirologue"
+          },
+          {
+            "id": 64568,
+            "word": "clinicien"
+          },
+          {
+            "id": 161062,
+            "word": "laryngologiste"
+          },
+          {
+            "id": 110328,
+            "word": "chirurgienne"
+          },
+          {
+            "id": 938817,
+            "word": "médecis"
+          },
+          {
+            "id": 411177,
+            "word": "anatomopathologiste"
+          },
+          {
+            "id": 763804,
+            "word": "denturologiste"
+          },
+          {
+            "id": 4472,
+            "word": "médecins"
+          },
+          {
+            "id": 126514,
+            "word": "virologue"
+          }
+        ],
+        "targetManifestSha256": "baff3c5cb43b7516098b3ace1c7ed74f5d8f58330847986aee21e3ba76118c67",
+        "evidenceSha256": "f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "chirurgien",
+          "pharmacien",
+          "psychiatre"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-arbitration-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:18:00.000Z",
+        "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations de soins naturelles et distinctes : chirurgie, médicament et santé mentale. Pharmacien est retenu comme profession de santé voisine, sans être présenté comme médecin.",
+        "evidenceSha256": "f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735"
+      }
     },
     {
       "targetId": 1640,
@@ -4904,16 +5444,286 @@
       },
       "word": "piano",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 3223,
+            "word": "violon"
+          },
+          {
+            "id": 6411,
+            "word": "violoncelle"
+          },
+          {
+            "id": 37328,
+            "word": "violoncelles"
+          },
+          {
+            "id": 635211,
+            "word": "violoncel"
+          },
+          {
+            "id": 101021,
+            "word": "violoncello"
+          },
+          {
+            "id": 687815,
+            "word": "violoncelo"
+          },
+          {
+            "id": 9441,
+            "word": "clarinette"
+          },
+          {
+            "id": 666816,
+            "word": "violoncelli"
+          },
+          {
+            "id": 4931,
+            "word": "concerto"
+          },
+          {
+            "id": 18732,
+            "word": "pianos"
+          },
+          {
+            "id": 11238,
+            "word": "clavecin"
+          },
+          {
+            "id": 42360,
+            "word": "pianoforte"
+          },
+          {
+            "id": 630854,
+            "word": "pianon"
+          },
+          {
+            "id": 54315,
+            "word": "concertino"
+          },
+          {
+            "id": 7175,
+            "word": "sonate"
+          },
+          {
+            "id": 14228,
+            "word": "sonates"
+          },
+          {
+            "id": 12929,
+            "word": "contrebasse"
+          },
+          {
+            "id": 332265,
+            "word": "concertstück"
+          },
+          {
+            "id": 16904,
+            "word": "concertos"
+          },
+          {
+            "id": 215781,
+            "word": "mandoloncelle"
+          },
+          {
+            "id": 32955,
+            "word": "clarinettes"
+          },
+          {
+            "id": 101372,
+            "word": "contrebasson"
+          },
+          {
+            "id": 140061,
+            "word": "violone"
+          },
+          {
+            "id": 43674,
+            "word": "concertante"
+          },
+          {
+            "id": 7946,
+            "word": "saxophone"
+          },
+          {
+            "id": 14410,
+            "word": "violons"
+          },
+          {
+            "id": 339691,
+            "word": "pianola"
+          },
+          {
+            "id": 557485,
+            "word": "concertone"
+          },
+          {
+            "id": 376927,
+            "word": "violonchelo"
+          },
+          {
+            "id": 73511,
+            "word": "quintettes"
+          },
+          {
+            "id": 464559,
+            "word": "pianoforti"
+          },
+          {
+            "id": 16618,
+            "word": "quintette"
+          },
+          {
+            "id": 132358,
+            "word": "violoncellistes"
+          },
+          {
+            "id": 655879,
+            "word": "contrebassons"
+          },
+          {
+            "id": 527577,
+            "word": "clarinets"
+          },
+          {
+            "id": 75075,
+            "word": "contrebasses"
+          },
+          {
+            "id": 906901,
+            "word": "pianoa"
+          },
+          {
+            "id": 86702,
+            "word": "concertant"
+          },
+          {
+            "id": 259787,
+            "word": "pianofortiste"
+          },
+          {
+            "id": 822567,
+            "word": "concertini"
+          },
+          {
+            "id": 39629,
+            "word": "vibraphone"
+          },
+          {
+            "id": 858549,
+            "word": "clarinetist"
+          },
+          {
+            "id": 33930,
+            "word": "pianistes"
+          },
+          {
+            "id": 5609,
+            "word": "flûte"
+          },
+          {
+            "id": 73569,
+            "word": "concerti"
+          },
+          {
+            "id": 914409,
+            "word": "pianistin"
+          },
+          {
+            "id": 563045,
+            "word": "concertonet"
+          },
+          {
+            "id": 449163,
+            "word": "clarinetto"
+          },
+          {
+            "id": 880149,
+            "word": "bassklarinette"
+          },
+          {
+            "id": 150457,
+            "word": "sonatines"
+          },
+          {
+            "id": 85984,
+            "word": "clarinet"
+          },
+          {
+            "id": 908698,
+            "word": "pianovox"
+          },
+          {
+            "id": 254573,
+            "word": "fortepiano"
+          },
+          {
+            "id": 134302,
+            "word": "sonatina"
+          },
+          {
+            "id": 23607,
+            "word": "mandoline"
+          },
+          {
+            "id": 865426,
+            "word": "guitarebasse"
+          },
+          {
+            "id": 118642,
+            "word": "concertina"
+          },
+          {
+            "id": 283668,
+            "word": "sextuors"
+          },
+          {
+            "id": 940628,
+            "word": "pianisten"
+          },
+          {
+            "id": 845802,
+            "word": "pianokonzerte"
+          },
+          {
+            "id": 23153,
+            "word": "quatuors"
+          },
+          {
+            "id": 510485,
+            "word": "concertinos"
+          },
+          {
+            "id": 220900,
+            "word": "klarinette"
+          },
+          {
+            "id": 70322,
+            "word": "pianistique"
+          }
+        ],
+        "targetManifestSha256": "4e88ca5fe1d289feff4502d1bf4f8ad4397483911f52f0c8efd0c6d58a515d08",
+        "evidenceSha256": "80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "violon",
+          "sonate",
+          "quintette"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes retiennent un instrument associé, une forme musicale et une formation. Les dérivés de la cible sont écartés.",
+        "evidenceSha256": "80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d"
+      }
     },
     {
       "targetId": 1364,
@@ -6070,16 +6880,286 @@
       },
       "word": "tennis",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 899337,
+            "word": "tennisball"
+          },
+          {
+            "id": 911751,
+            "word": "tenniswomen"
+          },
+          {
+            "id": 964270,
+            "word": "itftennis"
+          },
+          {
+            "id": 316180,
+            "word": "tennison"
+          },
+          {
+            "id": 900026,
+            "word": "tenniswood"
+          },
+          {
+            "id": 562484,
+            "word": "tennisclub"
+          },
+          {
+            "id": 272365,
+            "word": "tenniswoman"
+          },
+          {
+            "id": 90059,
+            "word": "tennisman"
+          },
+          {
+            "id": 95435,
+            "word": "tennistique"
+          },
+          {
+            "id": 343804,
+            "word": "tenni"
+          },
+          {
+            "id": 868092,
+            "word": "tennismans"
+          },
+          {
+            "id": 389434,
+            "word": "tennismen"
+          },
+          {
+            "id": 13568,
+            "word": "badminton"
+          },
+          {
+            "id": 366638,
+            "word": "tennistiques"
+          },
+          {
+            "id": 844690,
+            "word": "tennispalatsi"
+          },
+          {
+            "id": 34312,
+            "word": "squash"
+          },
+          {
+            "id": 91622,
+            "word": "indoors"
+          },
+          {
+            "id": 332168,
+            "word": "tennie"
+          },
+          {
+            "id": 624228,
+            "word": "tenniglo"
+          },
+          {
+            "id": 756,
+            "word": "tournoi"
+          },
+          {
+            "id": 536409,
+            "word": "tennin"
+          },
+          {
+            "id": 6165,
+            "word": "wta"
+          },
+          {
+            "id": 4151,
+            "word": "wimbledon"
+          },
+          {
+            "id": 749425,
+            "word": "parabadminton"
+          },
+          {
+            "id": 79391,
+            "word": "delray"
+          },
+          {
+            "id": 884892,
+            "word": "badmintoneurope"
+          },
+          {
+            "id": 278949,
+            "word": "tennisarchives"
+          },
+          {
+            "id": 4436,
+            "word": "atp"
+          },
+          {
+            "id": 10466,
+            "word": "raquette"
+          },
+          {
+            "id": 973472,
+            "word": "badmintonengland"
+          },
+          {
+            "id": 143832,
+            "word": "stennis"
+          },
+          {
+            "id": 5121,
+            "word": "golf"
+          },
+          {
+            "id": 7879,
+            "word": "gazon"
+          },
+          {
+            "id": 22504,
+            "word": "indoor"
+          },
+          {
+            "id": 31050,
+            "word": "volleyball"
+          },
+          {
+            "id": 25304,
+            "word": "softball"
+          },
+          {
+            "id": 898806,
+            "word": "tenniken"
+          },
+          {
+            "id": 31729,
+            "word": "pongiste"
+          },
+          {
+            "id": 363346,
+            "word": "tennille"
+          },
+          {
+            "id": 181743,
+            "word": "handisports"
+          },
+          {
+            "id": 3760,
+            "word": "tournois"
+          },
+          {
+            "id": 1907,
+            "word": "volley"
+          },
+          {
+            "id": 22643,
+            "word": "handisport"
+          },
+          {
+            "id": 948547,
+            "word": "tischtennis"
+          },
+          {
+            "id": 66863,
+            "word": "golfeuse"
+          },
+          {
+            "id": 285407,
+            "word": "racquetball"
+          },
+          {
+            "id": 656672,
+            "word": "korfball"
+          },
+          {
+            "id": 665510,
+            "word": "volleyballwl"
+          },
+          {
+            "id": 19592,
+            "word": "curling"
+          },
+          {
+            "id": 1039,
+            "word": "basket"
+          },
+          {
+            "id": 492664,
+            "word": "volleybal"
+          },
+          {
+            "id": 957629,
+            "word": "footballbasket"
+          },
+          {
+            "id": 322174,
+            "word": "sandball"
+          },
+          {
+            "id": 919204,
+            "word": "speedminton"
+          },
+          {
+            "id": 1466,
+            "word": "open"
+          },
+          {
+            "id": 4577,
+            "word": "natation"
+          },
+          {
+            "id": 39960,
+            "word": "multisports"
+          },
+          {
+            "id": 8341,
+            "word": "judo"
+          },
+          {
+            "id": 186,
+            "word": "football"
+          },
+          {
+            "id": 5051,
+            "word": "chelem"
+          },
+          {
+            "id": 2796,
+            "word": "handball"
+          },
+          {
+            "id": 104834,
+            "word": "hardcourt"
+          },
+          {
+            "id": 130220,
+            "word": "netball"
+          },
+          {
+            "id": 273160,
+            "word": "footvolley"
+          }
+        ],
+        "targetManifestSha256": "ead33cb6b9e2ad0cc166d557d1f6f30f9a77a74144728862ddc2b90e814ed63b",
+        "evidenceSha256": "84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "tournoi",
+          "raquette",
+          "gazon"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes valident une compétition, un équipement et une surface de jeu. Les variantes et fragments bruités sont exclus.",
+        "evidenceSha256": "84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c"
+      }
     },
     {
       "targetId": 837,
@@ -6392,16 +7472,286 @@
       },
       "word": "liberté",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 986907,
+            "word": "libertée"
+          },
+          {
+            "id": 779933,
+            "word": "libertéforza"
+          },
+          {
+            "id": 704386,
+            "word": "iberté"
+          },
+          {
+            "id": 6990,
+            "word": "libertés"
+          },
+          {
+            "id": 500503,
+            "word": "cyberliberté"
+          },
+          {
+            "id": 114936,
+            "word": "liberte"
+          },
+          {
+            "id": 664362,
+            "word": "libertez"
+          },
+          {
+            "id": 3403,
+            "word": "démocratie"
+          },
+          {
+            "id": 611849,
+            "word": "libertel"
+          },
+          {
+            "id": 331263,
+            "word": "libertes"
+          },
+          {
+            "id": 19982,
+            "word": "légalité"
+          },
+          {
+            "id": 44647,
+            "word": "individualité"
+          },
+          {
+            "id": 79007,
+            "word": "inviolabilité"
+          },
+          {
+            "id": 3000,
+            "word": "conscience"
+          },
+          {
+            "id": 112699,
+            "word": "libertalia"
+          },
+          {
+            "id": 16066,
+            "word": "laïcité"
+          },
+          {
+            "id": 13944,
+            "word": "émancipation"
+          },
+          {
+            "id": 118448,
+            "word": "indivisibilité"
+          },
+          {
+            "id": 37473,
+            "word": "pluralisme"
+          },
+          {
+            "id": 877841,
+            "word": "liberteu"
+          },
+          {
+            "id": 823983,
+            "word": "liberts"
+          },
+          {
+            "id": 235623,
+            "word": "berté"
+          },
+          {
+            "id": 1390,
+            "word": "indépendance"
+          },
+          {
+            "id": 11439,
+            "word": "freedom"
+          },
+          {
+            "id": 32780,
+            "word": "pluralité"
+          },
+          {
+            "id": 124486,
+            "word": "egalité"
+          },
+          {
+            "id": 27676,
+            "word": "conditionnelle"
+          },
+          {
+            "id": 545086,
+            "word": "libertària"
+          },
+          {
+            "id": 22574,
+            "word": "oppression"
+          },
+          {
+            "id": 897352,
+            "word": "liberterre"
+          },
+          {
+            "id": 74354,
+            "word": "respectabilité"
+          },
+          {
+            "id": 70796,
+            "word": "indignité"
+          },
+          {
+            "id": 9899,
+            "word": "tolérance"
+          },
+          {
+            "id": 16111,
+            "word": "civiques"
+          },
+          {
+            "id": 55794,
+            "word": "libertà"
+          },
+          {
+            "id": 453222,
+            "word": "démocraticité"
+          },
+          {
+            "id": 419181,
+            "word": "libertisme"
+          },
+          {
+            "id": 9416,
+            "word": "dignité"
+          },
+          {
+            "id": 51318,
+            "word": "entraves"
+          },
+          {
+            "id": 32844,
+            "word": "universalité"
+          },
+          {
+            "id": 891558,
+            "word": "justiciabilité"
+          },
+          {
+            "id": 25869,
+            "word": "servitude"
+          },
+          {
+            "id": 26507,
+            "word": "tyrannie"
+          },
+          {
+            "id": 180038,
+            "word": "libertat"
+          },
+          {
+            "id": 396591,
+            "word": "libertarisme"
+          },
+          {
+            "id": 559,
+            "word": "libre"
+          },
+          {
+            "id": 33058,
+            "word": "entrave"
+          },
+          {
+            "id": 98026,
+            "word": "égalitarisme"
+          },
+          {
+            "id": 5925,
+            "word": "citoyen"
+          },
+          {
+            "id": 268451,
+            "word": "imprescriptibilité"
+          },
+          {
+            "id": 164740,
+            "word": "inaliénabilité"
+          },
+          {
+            "id": 969045,
+            "word": "inconditionnalité"
+          },
+          {
+            "id": 954585,
+            "word": "supralégalité"
+          },
+          {
+            "id": 759514,
+            "word": "maldémocratie"
+          },
+          {
+            "id": 810620,
+            "word": "liberalisation"
+          },
+          {
+            "id": 678829,
+            "word": "conservatismedémocratie"
+          },
+          {
+            "id": 511250,
+            "word": "démocratisme"
+          },
+          {
+            "id": 76238,
+            "word": "civisme"
+          },
+          {
+            "id": 56147,
+            "word": "droiture"
+          },
+          {
+            "id": 911508,
+            "word": "indivduelle"
+          },
+          {
+            "id": 16160,
+            "word": "amnistie"
+          },
+          {
+            "id": 955783,
+            "word": "egalitaire"
+          },
+          {
+            "id": 4388,
+            "word": "morale"
+          },
+          {
+            "id": 3020,
+            "word": "respect"
+          }
+        ],
+        "targetManifestSha256": "272213dfb8f2b6ce75bdd6b0edeadd0bd4dcfb4089a53c001757a4fc99bbcdf9",
+        "evidenceSha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "démocratie",
+          "émancipation",
+          "oppression"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes valident un cadre politique, un processus d’affranchissement et un contraire sémantique. Les dérivés de la cible sont écartés.",
+        "evidenceSha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc"
+      }
     },
     {
       "targetId": 1080,
@@ -11085,16 +12435,286 @@
       },
       "word": "acier",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 32438,
+            "word": "inoxydable"
+          },
+          {
+            "id": 100746,
+            "word": "inoxydables"
+          },
+          {
+            "id": 31569,
+            "word": "aciers"
+          },
+          {
+            "id": 6948,
+            "word": "aluminium"
+          },
+          {
+            "id": 6697,
+            "word": "métallique"
+          },
+          {
+            "id": 8668,
+            "word": "métalliques"
+          },
+          {
+            "id": 3976,
+            "word": "métal"
+          },
+          {
+            "id": 569382,
+            "word": "duraluminium"
+          },
+          {
+            "id": 42124,
+            "word": "tôles"
+          },
+          {
+            "id": 31591,
+            "word": "armature"
+          },
+          {
+            "id": 25696,
+            "word": "laiton"
+          },
+          {
+            "id": 58453,
+            "word": "armatures"
+          },
+          {
+            "id": 5133,
+            "word": "béton"
+          },
+          {
+            "id": 25092,
+            "word": "tôle"
+          },
+          {
+            "id": 130932,
+            "word": "duralumin"
+          },
+          {
+            "id": 752420,
+            "word": "inoxydabilité"
+          },
+          {
+            "id": 13750,
+            "word": "alliage"
+          },
+          {
+            "id": 716397,
+            "word": "acierie"
+          },
+          {
+            "id": 768094,
+            "word": "cuproaluminium"
+          },
+          {
+            "id": 23918,
+            "word": "titane"
+          },
+          {
+            "id": 984456,
+            "word": "aluminiure"
+          },
+          {
+            "id": 558784,
+            "word": "acieries"
+          },
+          {
+            "id": 781841,
+            "word": "aluminiums"
+          },
+          {
+            "id": 172805,
+            "word": "rivetées"
+          },
+          {
+            "id": 156186,
+            "word": "riveté"
+          },
+          {
+            "id": 282070,
+            "word": "oxydable"
+          },
+          {
+            "id": 191420,
+            "word": "rivetée"
+          },
+          {
+            "id": 395204,
+            "word": "bimétalliques"
+          },
+          {
+            "id": 971884,
+            "word": "trimétallique"
+          },
+          {
+            "id": 75669,
+            "word": "laminage"
+          },
+          {
+            "id": 357378,
+            "word": "submétallique"
+          },
+          {
+            "id": 249681,
+            "word": "bimétallique"
+          },
+          {
+            "id": 764050,
+            "word": "contreplaque"
+          },
+          {
+            "id": 73329,
+            "word": "rivets"
+          },
+          {
+            "id": 23409,
+            "word": "alliages"
+          },
+          {
+            "id": 3414,
+            "word": "verre"
+          },
+          {
+            "id": 107055,
+            "word": "accastillage"
+          },
+          {
+            "id": 256751,
+            "word": "contreplaqués"
+          },
+          {
+            "id": 311006,
+            "word": "nickelage"
+          },
+          {
+            "id": 48861,
+            "word": "contreplaqué"
+          },
+          {
+            "id": 253216,
+            "word": "oxydables"
+          },
+          {
+            "id": 252836,
+            "word": "embouties"
+          },
+          {
+            "id": 170143,
+            "word": "maillechort"
+          },
+          {
+            "id": 135040,
+            "word": "rivetage"
+          },
+          {
+            "id": 946587,
+            "word": "emboutisseur"
+          },
+          {
+            "id": 347379,
+            "word": "ferroalliage"
+          },
+          {
+            "id": 92284,
+            "word": "galvanisé"
+          },
+          {
+            "id": 47029,
+            "word": "moulé"
+          },
+          {
+            "id": 13293,
+            "word": "blindage"
+          },
+          {
+            "id": 53468,
+            "word": "précontraint"
+          },
+          {
+            "id": 165184,
+            "word": "emboutie"
+          },
+          {
+            "id": 4550,
+            "word": "cuivre"
+          },
+          {
+            "id": 160775,
+            "word": "usiné"
+          },
+          {
+            "id": 442971,
+            "word": "duralinox"
+          },
+          {
+            "id": 986793,
+            "word": "cupronickels"
+          },
+          {
+            "id": 491598,
+            "word": "polymétallique"
+          },
+          {
+            "id": 208273,
+            "word": "rivetés"
+          },
+          {
+            "id": 131455,
+            "word": "cupronickel"
+          },
+          {
+            "id": 110963,
+            "word": "martelage"
+          },
+          {
+            "id": 65483,
+            "word": "profilés"
+          },
+          {
+            "id": 591929,
+            "word": "superalliage"
+          },
+          {
+            "id": 160058,
+            "word": "embouti"
+          },
+          {
+            "id": 213864,
+            "word": "lingotière"
+          },
+          {
+            "id": 163041,
+            "word": "usinée"
+          }
+        ],
+        "targetManifestSha256": "82a832d1a6c8dfcaf19ee3237322dcb8cc4bd062f7f49259c477db5c82970600",
+        "evidenceSha256": "bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "alliage",
+          "tôles",
+          "blindage"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes confirment la nature du matériau, une forme manufacturée et un usage protecteur. Aucun indice ne reprend la cible.",
+        "evidenceSha256": "bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250"
+      }
     },
     {
       "targetId": 4227,
@@ -11216,16 +12836,286 @@
       },
       "word": "pain",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 22998,
+            "word": "pains"
+          },
+          {
+            "id": 58837,
+            "word": "levain"
+          },
+          {
+            "id": 20748,
+            "word": "cuit"
+          },
+          {
+            "id": 10026,
+            "word": "farine"
+          },
+          {
+            "id": 14654,
+            "word": "gâteau"
+          },
+          {
+            "id": 31868,
+            "word": "lard"
+          },
+          {
+            "id": 92693,
+            "word": "lardons"
+          },
+          {
+            "id": 10644,
+            "word": "beurre"
+          },
+          {
+            "id": 147240,
+            "word": "babeurre"
+          },
+          {
+            "id": 139487,
+            "word": "azyme"
+          },
+          {
+            "id": 422213,
+            "word": "précuit"
+          },
+          {
+            "id": 28550,
+            "word": "biscuit"
+          },
+          {
+            "id": 34651,
+            "word": "confiture"
+          },
+          {
+            "id": 43608,
+            "word": "frit"
+          },
+          {
+            "id": 333929,
+            "word": "croûton"
+          },
+          {
+            "id": 12062,
+            "word": "soupe"
+          },
+          {
+            "id": 56912,
+            "word": "brioche"
+          },
+          {
+            "id": 52937,
+            "word": "saucisson"
+          },
+          {
+            "id": 190300,
+            "word": "croûtons"
+          },
+          {
+            "id": 26638,
+            "word": "gâteaux"
+          },
+          {
+            "id": 64223,
+            "word": "bouilli"
+          },
+          {
+            "id": 32155,
+            "word": "cuits"
+          },
+          {
+            "id": 414190,
+            "word": "précuits"
+          },
+          {
+            "id": 148890,
+            "word": "massepain"
+          },
+          {
+            "id": 400062,
+            "word": "pâtisson"
+          },
+          {
+            "id": 405428,
+            "word": "poêlon"
+          },
+          {
+            "id": 286870,
+            "word": "tartelette"
+          },
+          {
+            "id": 57948,
+            "word": "friture"
+          },
+          {
+            "id": 601085,
+            "word": "précuisson"
+          },
+          {
+            "id": 91924,
+            "word": "bouillis"
+          },
+          {
+            "id": 17970,
+            "word": "cuire"
+          },
+          {
+            "id": 80539,
+            "word": "potage"
+          },
+          {
+            "id": 823658,
+            "word": "pâtissons"
+          },
+          {
+            "id": 26870,
+            "word": "biscuits"
+          },
+          {
+            "id": 64468,
+            "word": "tartes"
+          },
+          {
+            "id": 39827,
+            "word": "saucisses"
+          },
+          {
+            "id": 5462,
+            "word": "fromage"
+          },
+          {
+            "id": 146379,
+            "word": "mijoter"
+          },
+          {
+            "id": 35249,
+            "word": "bouillie"
+          },
+          {
+            "id": 165925,
+            "word": "rassis"
+          },
+          {
+            "id": 136578,
+            "word": "chapelure"
+          },
+          {
+            "id": 21902,
+            "word": "oignons"
+          },
+          {
+            "id": 25516,
+            "word": "galette"
+          },
+          {
+            "id": 7844,
+            "word": "légumes"
+          },
+          {
+            "id": 91743,
+            "word": "compote"
+          },
+          {
+            "id": 381776,
+            "word": "massepains"
+          },
+          {
+            "id": 261985,
+            "word": "poêlé"
+          },
+          {
+            "id": 107555,
+            "word": "brioches"
+          },
+          {
+            "id": 110674,
+            "word": "saucissons"
+          },
+          {
+            "id": 33839,
+            "word": "desserts"
+          },
+          {
+            "id": 434625,
+            "word": "précuite"
+          },
+          {
+            "id": 41268,
+            "word": "yaourt"
+          },
+          {
+            "id": 53505,
+            "word": "confitures"
+          },
+          {
+            "id": 278753,
+            "word": "tartelettes"
+          },
+          {
+            "id": 20723,
+            "word": "aliment"
+          },
+          {
+            "id": 93663,
+            "word": "tartines"
+          },
+          {
+            "id": 184441,
+            "word": "pancakes"
+          },
+          {
+            "id": 84797,
+            "word": "pétrin"
+          },
+          {
+            "id": 36549,
+            "word": "pâtisseries"
+          },
+          {
+            "id": 34932,
+            "word": "grillé"
+          },
+          {
+            "id": 54617,
+            "word": "frite"
+          },
+          {
+            "id": 73895,
+            "word": "chiches"
+          },
+          {
+            "id": 9974,
+            "word": "sauce"
+          },
+          {
+            "id": 34540,
+            "word": "purée"
+          }
+        ],
+        "targetManifestSha256": "6fe44eb4dad32ac5947f13daac8bcccf857faf994eef962bd6354d64554b2dbb",
+        "evidenceSha256": "4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "farine",
+          "levain",
+          "pétrin"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes valident un ingrédient, un ferment et un équipement de fabrication. Les trois indices sont naturels, distincts et ne dérivent pas de la cible.",
+        "evidenceSha256": "4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032"
+      }
     },
     {
       "targetId": 4222,
@@ -11577,16 +13467,286 @@
       },
       "word": "ordinateur",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 7196,
+            "word": "ordinateurs"
+          },
+          {
+            "id": 808726,
+            "word": "miniordinateurs"
+          },
+          {
+            "id": 644802,
+            "word": "microordinateur"
+          },
+          {
+            "id": 27916,
+            "word": "microprocesseur"
+          },
+          {
+            "id": 30009,
+            "word": "imprimante"
+          },
+          {
+            "id": 87144,
+            "word": "superordinateur"
+          },
+          {
+            "id": 9451,
+            "word": "processeur"
+          },
+          {
+            "id": 266464,
+            "word": "microprogramme"
+          },
+          {
+            "id": 555134,
+            "word": "microordinateurs"
+          },
+          {
+            "id": 115679,
+            "word": "coprocesseur"
+          },
+          {
+            "id": 193746,
+            "word": "multiprocesseur"
+          },
+          {
+            "id": 8323,
+            "word": "portable"
+          },
+          {
+            "id": 400163,
+            "word": "reprogrammable"
+          },
+          {
+            "id": 417739,
+            "word": "monoprocesseur"
+          },
+          {
+            "id": 717942,
+            "word": "microprogrammes"
+          },
+          {
+            "id": 44215,
+            "word": "microprocesseurs"
+          },
+          {
+            "id": 2123,
+            "word": "logiciel"
+          },
+          {
+            "id": 76103,
+            "word": "supercalculateur"
+          },
+          {
+            "id": 122945,
+            "word": "superordinateurs"
+          },
+          {
+            "id": 616040,
+            "word": "reprogrammables"
+          },
+          {
+            "id": 36509,
+            "word": "imprimantes"
+          },
+          {
+            "id": 125994,
+            "word": "informatiquement"
+          },
+          {
+            "id": 913265,
+            "word": "microprogrammé"
+          },
+          {
+            "id": 29292,
+            "word": "calculateur"
+          },
+          {
+            "id": 35400,
+            "word": "calculatrice"
+          },
+          {
+            "id": 428661,
+            "word": "cryptoprocesseur"
+          },
+          {
+            "id": 566309,
+            "word": "biprocesseur"
+          },
+          {
+            "id": 228040,
+            "word": "télécopieur"
+          },
+          {
+            "id": 1910,
+            "word": "informatique"
+          },
+          {
+            "id": 119003,
+            "word": "supercalculateurs"
+          },
+          {
+            "id": 198606,
+            "word": "multiprocesseurs"
+          },
+          {
+            "id": 157947,
+            "word": "préprocesseur"
+          },
+          {
+            "id": 7961,
+            "word": "informatiques"
+          },
+          {
+            "id": 33459,
+            "word": "disquette"
+          },
+          {
+            "id": 48644,
+            "word": "programmable"
+          },
+          {
+            "id": 373115,
+            "word": "softphone"
+          },
+          {
+            "id": 18880,
+            "word": "portables"
+          },
+          {
+            "id": 455053,
+            "word": "microprocessor"
+          },
+          {
+            "id": 448485,
+            "word": "téléinformatique"
+          },
+          {
+            "id": 43484,
+            "word": "enregistreur"
+          },
+          {
+            "id": 86810,
+            "word": "multitâche"
+          },
+          {
+            "id": 247481,
+            "word": "coprocesseurs"
+          },
+          {
+            "id": 589199,
+            "word": "espiogiciel"
+          },
+          {
+            "id": 4521,
+            "word": "logiciels"
+          },
+          {
+            "id": 55603,
+            "word": "calculatrices"
+          },
+          {
+            "id": 19170,
+            "word": "smartphone"
+          },
+          {
+            "id": 1010284,
+            "word": "ogiciel"
+          },
+          {
+            "id": 844584,
+            "word": "microprogrammés"
+          },
+          {
+            "id": 466973,
+            "word": "microprogrammation"
+          },
+          {
+            "id": 954607,
+            "word": "microprogrammée"
+          },
+          {
+            "id": 78726,
+            "word": "hyperviseur"
+          },
+          {
+            "id": 72332,
+            "word": "programmables"
+          },
+          {
+            "id": 702440,
+            "word": "informatiqueélectronique"
+          },
+          {
+            "id": 277351,
+            "word": "trackpad"
+          },
+          {
+            "id": 52426,
+            "word": "calculateurs"
+          },
+          {
+            "id": 682400,
+            "word": "microprocessors"
+          },
+          {
+            "id": 294576,
+            "word": "désassembleur"
+          },
+          {
+            "id": 190472,
+            "word": "multitâches"
+          },
+          {
+            "id": 45164,
+            "word": "disquettes"
+          },
+          {
+            "id": 507177,
+            "word": "ordinate"
+          },
+          {
+            "id": 150740,
+            "word": "interfacer"
+          },
+          {
+            "id": 89247,
+            "word": "microcontrôleur"
+          },
+          {
+            "id": 44768,
+            "word": "émulateur"
+          },
+          {
+            "id": 20227,
+            "word": "logicielle"
+          }
+        ],
+        "targetManifestSha256": "1822c7283a812f0d3b4df07a43ce5f0d3b1dc79cf472fef48b60faac6cf4e38a",
+        "evidenceSha256": "71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "processeur",
+          "logiciel",
+          "imprimante"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2e-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T14:15:49.000Z",
+        "rationale": "Deux relectures indépendantes retiennent un composant, un programme et un périphérique. Les trois notions sont complémentaires et non dérivées.",
+        "evidenceSha256": "71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690"
+      }
     },
     {
       "targetId": 3768,
