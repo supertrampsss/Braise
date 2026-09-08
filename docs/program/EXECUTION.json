@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B1",
-  "next_action": "Fournir la source complète autorisée au pipeline B1b désormais vérifié, exécuter l'ingestion jusqu'au manifeste actif et consigner les mesures exactes. Générer ensuite les scores et rangs réels pour chaque cible admise, transférer les segments vers R2 et qualifier le Worker avant toute activation produit. Conserver V1 immuable.",
+  "next_action": "Produire l'index de présence paginé et l'éviction sûre du cache de cibles. Dès que la source complète autorisée est disponible, exécuter B1b et B1c sur son volume réel, enregistrer les mesures exactes, puis qualifier R2 et le Worker avant toute activation produit. Conserver V1 immuable.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B1c-target-segments-20260908T054544Z",
-    "acquired_at": "2026-09-08T05:45:44Z",
-    "expires_at": "2026-09-08T06:40:44Z",
-    "base_commit": "776acb625bf2ffa1e9971f4310bc2485f556d023",
-    "phase": "B1"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -74,21 +68,23 @@
         "docs/program/B1A-MEASUREMENTS.json",
         "docs/program/B1B-CORPUS-DIRECTIVE.md",
         "docs/program/B1B-DELIVERY.md",
+        "docs/program/B1C-DELIVERY.md",
         "120 immutable BRZ1 shards generated from the frozen V1 source",
         "3,600,000 scores, ranks and stable order positions verified",
         "Complete-source local ingestion CLI and independent verifier",
-        "96 tests passed; TypeScript passed; production build passed",
+        "Paged BRT2 target generator and independent exhaustive verifier",
+        "103 tests passed; TypeScript passed; production build passed",
         "Compiled Worker 1,128,880 bytes; V1 score sentinel absent",
-        "Independent gpt-6-astra max review: no remaining local ingestion-pipeline blocker"
+        "Independent gpt-6-astra max review: no remaining local target-generation blocker"
       ],
       "blockers": [
         "Real R2 binding is not provisioned or qualified",
         "Cloudflare Worker runtime memory remains unqualified",
         "Complete fastText source has not been ingested in this environment",
-        "B1b target score and rank generation with real full-corpus measurements remains"
+        "Real full-corpus measurements, presence index and safe target-cache eviction remain"
       ],
-      "implementation": "b1a_completed_b1b_pipeline_local_verified",
-      "automated_checks": "local_pipeline_passed",
+      "implementation": "b1a_completed_b1b_ingestion_and_b1c_target_pipelines_local_verified",
+      "automated_checks": "local_ingestion_and_target_pipelines_passed",
       "browser_validation": "not_requested",
       "publication": "b1a_published_owner_private_v2",
       "verified_source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
@@ -316,7 +312,7 @@
     "browser_qa_performed": false
   },
   "catalogue_directive": {
-    "status": "pipeline_local_verified_source_ingestion_pending",
+    "status": "ingestion_and_target_pipelines_local_verified_source_pending",
     "specification": "docs/program/B1B-CORPUS-DIRECTIVE.md",
     "current": {
       "source_rows_read": 50000,
@@ -333,21 +329,21 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B1b-ingestion-pipeline-local-verified",
+  "last_checkpoint": "B1c-target-generation-local-verified",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B3_passed_B4_passed",
+    "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B3_passed_B4_passed",
     "browser_validation": "not_requested",
     "publication": "v2_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "391a89a6a0103a49c9dfdc306dc2db2e304cc387",
+  "last_verified_source_commit": "0f017286a21b1759701143ca174b54b347d2658e",
   "last_run": {
-    "completed_at": "2026-09-08T05:17:35.000Z",
+    "completed_at": "2026-09-08T06:12:40.000Z",
     "phase": "B1",
     "progress": true,
-    "source_commit": "391a89a6a0103a49c9dfdc306dc2db2e304cc387",
-    "verified_product_commit": "391a89a6a0103a49c9dfdc306dc2db2e304cc387",
+    "source_commit": "0f017286a21b1759701143ca174b54b347d2658e",
+    "verified_product_commit": "0f017286a21b1759701143ca174b54b347d2658e",
     "publication": {
       "status": "succeeded",
       "audience": "owner_private",
@@ -364,18 +360,18 @@
       },
       "specialists": [
         {
-          "mission": "Complete-corpus storage and concurrency review",
+          "mission": "Paged target-score engine and bounded staging review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "Complete-corpus adversarial quality review",
+          "mission": "Target generation adversarial quality review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B1b-ingestion-20260908T044407Z"
+    "lease_owner": "braise-B1c-target-segments-20260908T054544Z"
   }
 }
