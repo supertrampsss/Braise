@@ -7,8 +7,8 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B6",
-  "next_action": "Continuer cercles, duels, studio et distribution sur le socle D1 provisionné. Qualification HTTP authentifiée encore non réalisée : aucun jeton de contournement créé sans demande explicite. Dictionnaire complet ensuite.",
+  "next_phase": "B1",
+  "next_action": "Terminer l’ingestion réelle exhaustive en cours puis vérifier index et cibles réels. B7/B9 et distribution locale publiés en privé v5. Qualifications HTTP authentifiées et inter-origines restent distinctes.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -241,13 +241,13 @@
         "B2",
         "B6"
       ],
-      "status": "planned",
-      "evidence": [],
-      "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "status": "implemented_validation_pending",
+      "evidence": ["docs/program/B7-DELIVERY.md", "138 tests, TypeScript and production build passed", "Astra review blockers corrected"],
+      "blockers": ["Hosted authenticated route/concurrency qualification pending"],
+      "implementation": "completed_on_verified_V1",
+      "automated_checks": "passed_local_sqlite",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "published_owner_private_v5"
     },
     {
       "id": "B8",
@@ -274,13 +274,13 @@
         "B5",
         "B6"
       ],
-      "status": "planned",
-      "evidence": [],
-      "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "status": "implemented_validation_pending",
+      "evidence": ["docs/program/B9-DELIVERY.md", "138 tests, TypeScript and production build passed"],
+      "blockers": ["Hosted authenticated route qualification pending"],
+      "implementation": "completed_on_verified_V1",
+      "automated_checks": "passed_local_sqlite",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "published_owner_private_v5"
     },
     {
       "id": "B10",
@@ -289,13 +289,13 @@
         "B3",
         "B6"
       ],
-      "status": "planned",
-      "evidence": [],
-      "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "status": "partial",
+      "evidence": ["docs/program/B10A-DELIVERY.md", "Offline and embed contract unit tests passed"],
+      "blockers": ["Controlled separate test origin and browser qualification unavailable"],
+      "implementation": "offline_and_same_origin_embed_implemented",
+      "automated_checks": "passed_local",
       "browser_validation": "not_requested",
-      "publication": "not_published",
+      "publication": "published_owner_private_v5",
       "external_dependencies": [
         "controlled test origin for iframe qualification"
       ]
@@ -366,12 +366,12 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B6b-session-revocation",
+  "last_checkpoint": "B7-B9-B10-private-v5",
   "delivery": {
     "implementation": "in_progress",
     "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
     "browser_validation": "not_requested",
-    "publication": "v3_owner_private",
+    "publication": "v5_owner_private",
     "commercial_activation": "not_configured"
   },
   "last_verified_source_commit": "f5c791fa7e969c97bfb4ca40b16b3d7f3e582a4f",
