@@ -1,0 +1,76 @@
+{
+  "measuredAt": "2026-09-07T22:50:46.637Z",
+  "baselineCommit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
+  "scenario": "Separate Node processes: forced GC; cold import; all 120 targets with one justice evaluation, one hint and one daily lookup each; forced GC again. No network, no concurrency.",
+  "limitation": "Node measurements are a reproducible local comparison, not Cloudflare Worker memory qualification. The encoded full V1 matrix is still retained. Worker peak below 100 MiB remains unverified for B1.",
+  "corpus": {
+    "bytes": 9940146,
+    "gzipBytes": 6772615,
+    "sha256": "7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16"
+  },
+  "candidateSourceSha256": {
+    "lib/semantic.ts": "ae608330dfbb4aff79ab7156ea80ba10e30af2f9adeb620331ac873884ba85d8",
+    "lib/calendar.ts": "3beab784f0f989a5cbcc9896f7ddecb342c741358f3ed677fb2245145a767e8b",
+    "lib/legacy-puzzles.ts": "e8fb1dec4debed6062740b5fd7e17bd0eaf328479c36e7fb2fadbffe31421f68",
+    "lib/game-contracts.ts": "5f975c02784cee862318653110603965ffe69f3e73a3f6ab7685f7c320d773a9",
+    "data/legacy-v1.json": "6e5538d851b398c35bacd2744137fd8dc074bb0e27d753517a9e3b7559494724"
+  },
+  "results": {
+    "baseline": {
+      "runtime": "v24.19.0",
+      "platform": "linux",
+      "before": {
+        "rss": 40415232,
+        "heapTotal": 12054528,
+        "heapUsed": 6764512,
+        "external": 3761521,
+        "arrayBuffers": 146559
+      },
+      "afterImport": {
+        "rss": 100548608,
+        "heapTotal": 30392320,
+        "heapUsed": 19483600,
+        "external": 33738552,
+        "arrayBuffers": 146559
+      },
+      "afterScenario": {
+        "rss": 188162048,
+        "heapTotal": 89534464,
+        "heapUsed": 20755232,
+        "external": 45526207,
+        "arrayBuffers": 1046559
+      },
+      "maxRssKiB": 237200,
+      "importMs": 70.486267,
+      "scenarioMs": 1682.460736
+    },
+    "candidate": {
+      "runtime": "v24.19.0",
+      "platform": "linux",
+      "before": {
+        "rss": 40271872,
+        "heapTotal": 12054528,
+        "heapUsed": 6764560,
+        "external": 3761521,
+        "arrayBuffers": 146559
+      },
+      "afterImport": {
+        "rss": 98414592,
+        "heapTotal": 29868032,
+        "heapUsed": 19488816,
+        "external": 23753451,
+        "arrayBuffers": 146559
+      },
+      "afterScenario": {
+        "rss": 187748352,
+        "heapTotal": 89796608,
+        "heapUsed": 20767752,
+        "external": 45533451,
+        "arrayBuffers": 1046559
+      },
+      "maxRssKiB": 236800,
+      "importMs": 73.365181,
+      "scenarioMs": 1553.03885
+    }
+  }
+}

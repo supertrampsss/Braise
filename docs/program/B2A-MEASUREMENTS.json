@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-09-08T10:10:00.000Z",
+  "scope": "real-corpus-local-editorial-workbench-not-product-active",
+  "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "corpusManifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+  "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+  "dictionaryEntries": 1013881,
+  "selection": {
+    "entries": 400,
+    "uniqueIds": 400,
+    "lexicalAgentReviews": 400,
+    "independentCorrections": 42,
+    "selectionFileSha256": "983b69c0e14e2d6cd183355ecf2374906661079f04fc17e929e0e5a8c2a911ae"
+  },
+  "neighborhoodReview": {
+    "verifiedColumns": 8,
+    "approvedByAgent": 6,
+    "rejectedPendingBroaderEvidence": 2,
+    "approvedTargetIds": [541, 1181, 1677, 2077, 2106, 1344],
+    "rejectedTargetIds": [1305, 834]
+  },
+  "catalogue": {
+    "status": "inactive-editorial-workbench",
+    "rawFileSha256": "4a9697f85c2e65b29d69fdb41f2934160055589e00e8f2fbe51e90cad0c5b617",
+    "canonicalPayloadSha256": "93bf5b6e7497768aea55a767faabb612e0de9e078db4f3e5fd8953e7a6176f4a"
+  },
+  "calendar": {
+    "actualEditionCreated": false,
+    "contractTestedDays": 365,
+    "requiredApprovedTargets": 365,
+    "remainingApprovals": 359
+  },
+  "runtime": {
+    "v2ProductActive": false,
+    "r2Qualified": false,
+    "workerQualified": false,
+    "browserValidation": "not_requested"
+  }
+}

@@ -1,0 +1,6446 @@
+{
+  "sourceCommit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
+  "corpusSha256": "7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16",
+  "daily": [
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-06T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-06",
+        "mode": "daily",
+        "seed": "2026-09-06",
+        "date": "2026-09-06",
+        "number": 1,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-06T22:00:01.000Z"
+      },
+      "targetIndex": 106,
+      "answer": "ours"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-07",
+        "mode": "daily",
+        "seed": "2026-09-07",
+        "date": "2026-09-07",
+        "number": 1,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 23,
+      "answer": "ordinateur"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-08T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-08",
+        "mode": "daily",
+        "seed": "2026-09-08",
+        "date": "2026-09-08",
+        "number": 2,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-08T22:00:01.000Z"
+      },
+      "targetIndex": 60,
+      "answer": "œuf"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-09T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-09",
+        "mode": "daily",
+        "seed": "2026-09-09",
+        "date": "2026-09-09",
+        "number": 3,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-09T22:00:01.000Z"
+      },
+      "targetIndex": 97,
+      "answer": "piano"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-10T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-10",
+        "mode": "daily",
+        "seed": "2026-09-10",
+        "date": "2026-09-10",
+        "number": 4,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-10T22:00:01.000Z"
+      },
+      "targetIndex": 14,
+      "answer": "marteau"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-11T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-11",
+        "mode": "daily",
+        "seed": "2026-09-11",
+        "date": "2026-09-11",
+        "number": 5,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-11T22:00:01.000Z"
+      },
+      "targetIndex": 51,
+      "answer": "lire"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-12T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-12",
+        "mode": "daily",
+        "seed": "2026-09-12",
+        "date": "2026-09-12",
+        "number": 6,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-12T22:00:01.000Z"
+      },
+      "targetIndex": 88,
+      "answer": "ville"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-13T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-13",
+        "mode": "daily",
+        "seed": "2026-09-13",
+        "date": "2026-09-13",
+        "number": 7,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-13T22:00:01.000Z"
+      },
+      "targetIndex": 5,
+      "answer": "valise"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-14T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-14",
+        "mode": "daily",
+        "seed": "2026-09-14",
+        "date": "2026-09-14",
+        "number": 8,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-14T22:00:01.000Z"
+      },
+      "targetIndex": 42,
+      "answer": "sable"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-15T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-15",
+        "mode": "daily",
+        "seed": "2026-09-15",
+        "date": "2026-09-15",
+        "number": 9,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-15T22:00:01.000Z"
+      },
+      "targetIndex": 79,
+      "answer": "calme"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-16T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-16",
+        "mode": "daily",
+        "seed": "2026-09-16",
+        "date": "2026-09-16",
+        "number": 10,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-16T22:00:01.000Z"
+      },
+      "targetIndex": 116,
+      "answer": "appareil"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-17T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-17",
+        "mode": "daily",
+        "seed": "2026-09-17",
+        "date": "2026-09-17",
+        "number": 11,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-17T22:00:01.000Z"
+      },
+      "targetIndex": 33,
+      "answer": "gâteau"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-18T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-18",
+        "mode": "daily",
+        "seed": "2026-09-18",
+        "date": "2026-09-18",
+        "number": 12,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-18T22:00:01.000Z"
+      },
+      "targetIndex": 70,
+      "answer": "palais"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-19T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-19",
+        "mode": "daily",
+        "seed": "2026-09-19",
+        "date": "2026-09-19",
+        "number": 13,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-19T22:00:01.000Z"
+      },
+      "targetIndex": 107,
+      "answer": "horloge"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-20T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-20",
+        "mode": "daily",
+        "seed": "2026-09-20",
+        "date": "2026-09-20",
+        "number": 14,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-20T22:00:01.000Z"
+      },
+      "targetIndex": 24,
+      "answer": "pont"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-21T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-21",
+        "mode": "daily",
+        "seed": "2026-09-21",
+        "date": "2026-09-21",
+        "number": 15,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-21T22:00:01.000Z"
+      },
+      "targetIndex": 61,
+      "answer": "sac"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-22T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-22",
+        "mode": "daily",
+        "seed": "2026-09-22",
+        "date": "2026-09-22",
+        "number": 16,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-22T22:00:01.000Z"
+      },
+      "targetIndex": 98,
+      "answer": "rivière"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-23T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-23",
+        "mode": "daily",
+        "seed": "2026-09-23",
+        "date": "2026-09-23",
+        "number": 17,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-23T22:00:01.000Z"
+      },
+      "targetIndex": 15,
+      "answer": "citron"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-24T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-24",
+        "mode": "daily",
+        "seed": "2026-09-24",
+        "date": "2026-09-24",
+        "number": 18,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-24T22:00:01.000Z"
+      },
+      "targetIndex": 52,
+      "answer": "construire"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-25T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-25",
+        "mode": "daily",
+        "seed": "2026-09-25",
+        "date": "2026-09-25",
+        "number": 19,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-25T22:00:01.000Z"
+      },
+      "targetIndex": 89,
+      "answer": "renard"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-26T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-26",
+        "mode": "daily",
+        "seed": "2026-09-26",
+        "date": "2026-09-26",
+        "number": 20,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-26T22:00:01.000Z"
+      },
+      "targetIndex": 6,
+      "answer": "fourmi"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-27T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-27",
+        "mode": "daily",
+        "seed": "2026-09-27",
+        "date": "2026-09-27",
+        "number": 21,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-27T22:00:01.000Z"
+      },
+      "targetIndex": 43,
+      "answer": "désert"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-28T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-28",
+        "mode": "daily",
+        "seed": "2026-09-28",
+        "date": "2026-09-28",
+        "number": 22,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-28T22:00:01.000Z"
+      },
+      "targetIndex": 80,
+      "answer": "tasse"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-29T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-29",
+        "mode": "daily",
+        "seed": "2026-09-29",
+        "date": "2026-09-29",
+        "number": 23,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-29T22:00:01.000Z"
+      },
+      "targetIndex": 117,
+      "answer": "aigle"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-30T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-30",
+        "mode": "daily",
+        "seed": "2026-09-30",
+        "date": "2026-09-30",
+        "number": 24,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-30T22:00:01.000Z"
+      },
+      "targetIndex": 34,
+      "answer": "chaussure"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-01T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-01",
+        "mode": "daily",
+        "seed": "2026-10-01",
+        "date": "2026-10-01",
+        "number": 25,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-01T22:00:01.000Z"
+      },
+      "targetIndex": 71,
+      "answer": "lampe"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-02T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-02",
+        "mode": "daily",
+        "seed": "2026-10-02",
+        "date": "2026-10-02",
+        "number": 26,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-02T22:00:01.000Z"
+      },
+      "targetIndex": 108,
+      "answer": "rêve"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-03T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-03",
+        "mode": "daily",
+        "seed": "2026-10-03",
+        "date": "2026-10-03",
+        "number": 27,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-03T22:00:01.000Z"
+      },
+      "targetIndex": 25,
+      "answer": "bouteille"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-04T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-04",
+        "mode": "daily",
+        "seed": "2026-10-04",
+        "date": "2026-10-04",
+        "number": 28,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-04T22:00:01.000Z"
+      },
+      "targetIndex": 62,
+      "answer": "pain"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-05T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-05",
+        "mode": "daily",
+        "seed": "2026-10-05",
+        "date": "2026-10-05",
+        "number": 29,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-05T22:00:01.000Z"
+      },
+      "targetIndex": 99,
+      "answer": "parler"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-06T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-06",
+        "mode": "daily",
+        "seed": "2026-10-06",
+        "date": "2026-10-06",
+        "number": 30,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-06T22:00:01.000Z"
+      },
+      "targetIndex": 16,
+      "answer": "lapin"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-07",
+        "mode": "daily",
+        "seed": "2026-10-07",
+        "date": "2026-10-07",
+        "number": 31,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-07T22:00:01.000Z"
+      },
+      "targetIndex": 53,
+      "answer": "herbe"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-08T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-08",
+        "mode": "daily",
+        "seed": "2026-10-08",
+        "date": "2026-10-08",
+        "number": 32,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-08T22:00:01.000Z"
+      },
+      "targetIndex": 90,
+      "answer": "espoir"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-09T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-09",
+        "mode": "daily",
+        "seed": "2026-10-09",
+        "date": "2026-10-09",
+        "number": 33,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-09T22:00:01.000Z"
+      },
+      "targetIndex": 7,
+      "answer": "hiver"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-10T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-10",
+        "mode": "daily",
+        "seed": "2026-10-10",
+        "date": "2026-10-10",
+        "number": 34,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-10T22:00:01.000Z"
+      },
+      "targetIndex": 44,
+      "answer": "danser"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-11T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-11",
+        "mode": "daily",
+        "seed": "2026-10-11",
+        "date": "2026-10-11",
+        "number": 35,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-11T22:00:01.000Z"
+      },
+      "targetIndex": 81,
+      "answer": "orage"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-12T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-12",
+        "mode": "daily",
+        "seed": "2026-10-12",
+        "date": "2026-10-12",
+        "number": 36,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-12T22:00:01.000Z"
+      },
+      "targetIndex": 118,
+      "answer": "chambre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-13T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-13",
+        "mode": "daily",
+        "seed": "2026-10-13",
+        "date": "2026-10-13",
+        "number": 37,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-13T22:00:01.000Z"
+      },
+      "targetIndex": 35,
+      "answer": "assiette"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-14T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-14",
+        "mode": "daily",
+        "seed": "2026-10-14",
+        "date": "2026-10-14",
+        "number": 38,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-14T22:00:01.000Z"
+      },
+      "targetIndex": 72,
+      "answer": "pantalon"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-15T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-15",
+        "mode": "daily",
+        "seed": "2026-10-15",
+        "date": "2026-10-15",
+        "number": 39,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-15T22:00:01.000Z"
+      },
+      "targetIndex": 109,
+      "answer": "tortue"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-16T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-16",
+        "mode": "daily",
+        "seed": "2026-10-16",
+        "date": "2026-10-16",
+        "number": 40,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-16T22:00:01.000Z"
+      },
+      "targetIndex": 26,
+      "answer": "arbre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-17T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-17",
+        "mode": "daily",
+        "seed": "2026-10-17",
+        "date": "2026-10-17",
+        "number": 41,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-17T22:00:01.000Z"
+      },
+      "targetIndex": 63,
+      "answer": "pinceau"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-18T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-18",
+        "mode": "daily",
+        "seed": "2026-10-18",
+        "date": "2026-10-18",
+        "number": 42,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-18T22:00:01.000Z"
+      },
+      "targetIndex": 100,
+      "answer": "clavier"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-19T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-19",
+        "mode": "daily",
+        "seed": "2026-10-19",
+        "date": "2026-10-19",
+        "number": 43,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-19T22:00:01.000Z"
+      },
+      "targetIndex": 17,
+      "answer": "fourchette"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-20T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-20",
+        "mode": "daily",
+        "seed": "2026-10-20",
+        "date": "2026-10-20",
+        "number": 44,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-20T22:00:01.000Z"
+      },
+      "targetIndex": 54,
+      "answer": "tigre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-21T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-21",
+        "mode": "daily",
+        "seed": "2026-10-21",
+        "date": "2026-10-21",
+        "number": 45,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-21T22:00:01.000Z"
+      },
+      "targetIndex": 91,
+      "answer": "thé"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-22T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-22",
+        "mode": "daily",
+        "seed": "2026-10-22",
+        "date": "2026-10-22",
+        "number": 46,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-22T22:00:01.000Z"
+      },
+      "targetIndex": 8,
+      "answer": "boire"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-23T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-23",
+        "mode": "daily",
+        "seed": "2026-10-23",
+        "date": "2026-10-23",
+        "number": 47,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-23T22:00:01.000Z"
+      },
+      "targetIndex": 45,
+      "answer": "restaurant"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-24T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-24",
+        "mode": "daily",
+        "seed": "2026-10-24",
+        "date": "2026-10-24",
+        "number": 48,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-24T22:00:01.000Z"
+      },
+      "targetIndex": 82,
+      "answer": "piscine"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-25T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-25",
+        "mode": "daily",
+        "seed": "2026-10-25",
+        "date": "2026-10-25",
+        "number": 49,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-25T23:00:01.000Z"
+      },
+      "targetIndex": 119,
+      "answer": "automne"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-26T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-26",
+        "mode": "daily",
+        "seed": "2026-10-26",
+        "date": "2026-10-26",
+        "number": 50,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-26T23:00:01.000Z"
+      },
+      "targetIndex": 36,
+      "answer": "écran"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-27T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-27",
+        "mode": "daily",
+        "seed": "2026-10-27",
+        "date": "2026-10-27",
+        "number": 51,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-27T23:00:01.000Z"
+      },
+      "targetIndex": 73,
+      "answer": "plaisir"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-28T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-28",
+        "mode": "daily",
+        "seed": "2026-10-28",
+        "date": "2026-10-28",
+        "number": 52,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-28T23:00:01.000Z"
+      },
+      "targetIndex": 110,
+      "answer": "bougie"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-29T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-29",
+        "mode": "daily",
+        "seed": "2026-10-29",
+        "date": "2026-10-29",
+        "number": 53,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-29T23:00:01.000Z"
+      },
+      "targetIndex": 27,
+      "answer": "pêche"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-30T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-30",
+        "mode": "daily",
+        "seed": "2026-10-30",
+        "date": "2026-10-30",
+        "number": 54,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-30T23:00:01.000Z"
+      },
+      "targetIndex": 64,
+      "answer": "été"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-31T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-31",
+        "mode": "daily",
+        "seed": "2026-10-31",
+        "date": "2026-10-31",
+        "number": 55,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-31T23:00:01.000Z"
+      },
+      "targetIndex": 101,
+      "answer": "beurre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-01T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-01",
+        "mode": "daily",
+        "seed": "2026-11-01",
+        "date": "2026-11-01",
+        "number": 56,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-01T23:00:01.000Z"
+      },
+      "targetIndex": 18,
+      "answer": "bibliothèque"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-02T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-02",
+        "mode": "daily",
+        "seed": "2026-11-02",
+        "date": "2026-11-02",
+        "number": 57,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-02T23:00:01.000Z"
+      },
+      "targetIndex": 55,
+      "answer": "ouvrir"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-03T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-03",
+        "mode": "daily",
+        "seed": "2026-11-03",
+        "date": "2026-11-03",
+        "number": 58,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-03T23:00:01.000Z"
+      },
+      "targetIndex": 92,
+      "answer": "étoile"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-04T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-04",
+        "mode": "daily",
+        "seed": "2026-11-04",
+        "date": "2026-11-04",
+        "number": 59,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-04T23:00:01.000Z"
+      },
+      "targetIndex": 9,
+      "answer": "curiosité"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-05T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-05",
+        "mode": "daily",
+        "seed": "2026-11-05",
+        "date": "2026-11-05",
+        "number": 60,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-05T23:00:01.000Z"
+      },
+      "targetIndex": 46,
+      "answer": "magasin"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-06T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-06",
+        "mode": "daily",
+        "seed": "2026-11-06",
+        "date": "2026-11-06",
+        "number": 61,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-06T23:00:01.000Z"
+      },
+      "targetIndex": 83,
+      "answer": "volcan"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-07",
+        "mode": "daily",
+        "seed": "2026-11-07",
+        "date": "2026-11-07",
+        "number": 62,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-07T23:00:01.000Z"
+      },
+      "targetIndex": 0,
+      "answer": "port"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-08T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-08",
+        "mode": "daily",
+        "seed": "2026-11-08",
+        "date": "2026-11-08",
+        "number": 63,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-08T23:00:01.000Z"
+      },
+      "targetIndex": 37,
+      "answer": "stylo"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-09T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-09",
+        "mode": "daily",
+        "seed": "2026-11-09",
+        "date": "2026-11-09",
+        "number": 64,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-09T23:00:01.000Z"
+      },
+      "targetIndex": 74,
+      "answer": "racine"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-10T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-10",
+        "mode": "daily",
+        "seed": "2026-11-10",
+        "date": "2026-11-10",
+        "number": 65,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-10T23:00:01.000Z"
+      },
+      "targetIndex": 111,
+      "answer": "gare"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-11T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-11",
+        "mode": "daily",
+        "seed": "2026-11-11",
+        "date": "2026-11-11",
+        "number": 66,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-11T23:00:01.000Z"
+      },
+      "targetIndex": 28,
+      "answer": "verre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-12T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-12",
+        "mode": "daily",
+        "seed": "2026-11-12",
+        "date": "2026-11-12",
+        "number": 67,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-12T23:00:01.000Z"
+      },
+      "targetIndex": 65,
+      "answer": "orange"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-13T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-13",
+        "mode": "daily",
+        "seed": "2026-11-13",
+        "date": "2026-11-13",
+        "number": 68,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-13T23:00:01.000Z"
+      },
+      "targetIndex": 102,
+      "answer": "couteau"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-14T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-14",
+        "mode": "daily",
+        "seed": "2026-11-14",
+        "date": "2026-11-14",
+        "number": 69,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-14T23:00:01.000Z"
+      },
+      "targetIndex": 19,
+      "answer": "grenouille"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-15T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-15",
+        "mode": "daily",
+        "seed": "2026-11-15",
+        "date": "2026-11-15",
+        "number": 70,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-15T23:00:01.000Z"
+      },
+      "targetIndex": 56,
+      "answer": "explorer"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-16T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-16",
+        "mode": "daily",
+        "seed": "2026-11-16",
+        "date": "2026-11-16",
+        "number": 71,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-16T23:00:01.000Z"
+      },
+      "targetIndex": 93,
+      "answer": "colline"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-17T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-17",
+        "mode": "daily",
+        "seed": "2026-11-17",
+        "date": "2026-11-17",
+        "number": 72,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-17T23:00:01.000Z"
+      },
+      "targetIndex": 10,
+      "answer": "avion"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-18T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-18",
+        "mode": "daily",
+        "seed": "2026-11-18",
+        "date": "2026-11-18",
+        "number": 73,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-18T23:00:01.000Z"
+      },
+      "targetIndex": 47,
+      "answer": "fleur"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-19T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-19",
+        "mode": "daily",
+        "seed": "2026-11-19",
+        "date": "2026-11-19",
+        "number": 74,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-19T23:00:01.000Z"
+      },
+      "targetIndex": 84,
+      "answer": "manger"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-20T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-20",
+        "mode": "daily",
+        "seed": "2026-11-20",
+        "date": "2026-11-20",
+        "number": 75,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-20T23:00:01.000Z"
+      },
+      "targetIndex": 1,
+      "answer": "peur"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-21T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-21",
+        "mode": "daily",
+        "seed": "2026-11-21",
+        "date": "2026-11-21",
+        "number": 76,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-21T23:00:01.000Z"
+      },
+      "targetIndex": 38,
+      "answer": "canard"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-22T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-22",
+        "mode": "daily",
+        "seed": "2026-11-22",
+        "date": "2026-11-22",
+        "number": 77,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-22T23:00:01.000Z"
+      },
+      "targetIndex": 75,
+      "answer": "souris"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-23T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-23",
+        "mode": "daily",
+        "seed": "2026-11-23",
+        "date": "2026-11-23",
+        "number": 78,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-23T23:00:01.000Z"
+      },
+      "targetIndex": 112,
+      "answer": "aéroport"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-24T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-24",
+        "mode": "daily",
+        "seed": "2026-11-24",
+        "date": "2026-11-24",
+        "number": 79,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-24T23:00:01.000Z"
+      },
+      "targetIndex": 29,
+      "answer": "mer"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-25T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-25",
+        "mode": "daily",
+        "seed": "2026-11-25",
+        "date": "2026-11-25",
+        "number": 80,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-25T23:00:01.000Z"
+      },
+      "targetIndex": 66,
+      "answer": "pâtes"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-26T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-26",
+        "mode": "daily",
+        "seed": "2026-11-26",
+        "date": "2026-11-26",
+        "number": 81,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-26T23:00:01.000Z"
+      },
+      "targetIndex": 103,
+      "answer": "patience"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-27T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-27",
+        "mode": "daily",
+        "seed": "2026-11-27",
+        "date": "2026-11-27",
+        "number": 82,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-27T23:00:01.000Z"
+      },
+      "targetIndex": 20,
+      "answer": "amour"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-28T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-28",
+        "mode": "daily",
+        "seed": "2026-11-28",
+        "date": "2026-11-28",
+        "number": 83,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-28T23:00:01.000Z"
+      },
+      "targetIndex": 57,
+      "answer": "neige"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-29T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-29",
+        "mode": "daily",
+        "seed": "2026-11-29",
+        "date": "2026-11-29",
+        "number": 84,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-29T23:00:01.000Z"
+      },
+      "targetIndex": 94,
+      "answer": "humour"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-11-30T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-11-30",
+        "mode": "daily",
+        "seed": "2026-11-30",
+        "date": "2026-11-30",
+        "number": 85,
+        "vocabularySize": 30000,
+        "resetAt": "2026-11-30T23:00:01.000Z"
+      },
+      "targetIndex": 11,
+      "answer": "banane"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-01T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-01",
+        "mode": "daily",
+        "seed": "2026-12-01",
+        "date": "2026-12-01",
+        "number": 86,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-01T23:00:01.000Z"
+      },
+      "targetIndex": 48,
+      "answer": "salade"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-02T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-02",
+        "mode": "daily",
+        "seed": "2026-12-02",
+        "date": "2026-12-02",
+        "number": 87,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-02T23:00:01.000Z"
+      },
+      "targetIndex": 85,
+      "answer": "train"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-03T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-03",
+        "mode": "daily",
+        "seed": "2026-12-03",
+        "date": "2026-12-03",
+        "number": 88,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-03T23:00:01.000Z"
+      },
+      "targetIndex": 2,
+      "answer": "bonheur"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-04T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-04",
+        "mode": "daily",
+        "seed": "2026-12-04",
+        "date": "2026-12-04",
+        "number": 89,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-04T23:00:01.000Z"
+      },
+      "targetIndex": 39,
+      "answer": "raisin"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-05T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-05",
+        "mode": "daily",
+        "seed": "2026-12-05",
+        "date": "2026-12-05",
+        "number": 90,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-05T23:00:01.000Z"
+      },
+      "targetIndex": 76,
+      "answer": "prairie"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-06T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-06",
+        "mode": "daily",
+        "seed": "2026-12-06",
+        "date": "2026-12-06",
+        "number": 91,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-06T23:00:01.000Z"
+      },
+      "targetIndex": 113,
+      "answer": "boulangerie"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-07",
+        "mode": "daily",
+        "seed": "2026-12-07",
+        "date": "2026-12-07",
+        "number": 92,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-07T23:00:01.000Z"
+      },
+      "targetIndex": 30,
+      "answer": "téléphone"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-08T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-08",
+        "mode": "daily",
+        "seed": "2026-12-08",
+        "date": "2026-12-08",
+        "number": 93,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-08T23:00:01.000Z"
+      },
+      "targetIndex": 67,
+      "answer": "sauter"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-09T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-09",
+        "mode": "daily",
+        "seed": "2026-12-09",
+        "date": "2026-12-09",
+        "number": 94,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-09T23:00:01.000Z"
+      },
+      "targetIndex": 104,
+      "answer": "cuillère"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-10T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-10",
+        "mode": "daily",
+        "seed": "2026-12-10",
+        "date": "2026-12-10",
+        "number": 95,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-10T23:00:01.000Z"
+      },
+      "targetIndex": 21,
+      "answer": "sourire"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-11T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-11",
+        "mode": "daily",
+        "seed": "2026-12-11",
+        "date": "2026-12-11",
+        "number": 96,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-11T23:00:01.000Z"
+      },
+      "targetIndex": 58,
+      "answer": "chapeau"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-12T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-12",
+        "mode": "daily",
+        "seed": "2026-12-12",
+        "date": "2026-12-12",
+        "number": 97,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-12T23:00:01.000Z"
+      },
+      "targetIndex": 95,
+      "answer": "route"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-13T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-13",
+        "mode": "daily",
+        "seed": "2026-12-13",
+        "date": "2026-12-13",
+        "number": 98,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-13T23:00:01.000Z"
+      },
+      "targetIndex": 12,
+      "answer": "pomme"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-14T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-14",
+        "mode": "daily",
+        "seed": "2026-12-14",
+        "date": "2026-12-14",
+        "number": 99,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-14T23:00:01.000Z"
+      },
+      "targetIndex": 49,
+      "answer": "soupe"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-15T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-15",
+        "mode": "daily",
+        "seed": "2026-12-15",
+        "date": "2026-12-15",
+        "number": 100,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-15T23:00:01.000Z"
+      },
+      "targetIndex": 86,
+      "answer": "réparer"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-16T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-16",
+        "mode": "daily",
+        "seed": "2026-12-16",
+        "date": "2026-12-16",
+        "number": 101,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-16T23:00:01.000Z"
+      },
+      "targetIndex": 3,
+      "answer": "pigeon"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-17T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-17",
+        "mode": "daily",
+        "seed": "2026-12-17",
+        "date": "2026-12-17",
+        "number": 102,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-17T23:00:01.000Z"
+      },
+      "targetIndex": 40,
+      "answer": "miroir"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-18T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-18",
+        "mode": "daily",
+        "seed": "2026-12-18",
+        "date": "2026-12-18",
+        "number": 103,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-18T23:00:01.000Z"
+      },
+      "targetIndex": 77,
+      "answer": "printemps"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-19T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-19",
+        "mode": "daily",
+        "seed": "2026-12-19",
+        "date": "2026-12-19",
+        "number": 104,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-19T23:00:01.000Z"
+      },
+      "targetIndex": 114,
+      "answer": "apprendre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-20T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-20",
+        "mode": "daily",
+        "seed": "2026-12-20",
+        "date": "2026-12-20",
+        "number": 105,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-20T23:00:01.000Z"
+      },
+      "targetIndex": 31,
+      "answer": "lunettes"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-21T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-21",
+        "mode": "daily",
+        "seed": "2026-12-21",
+        "date": "2026-12-21",
+        "number": 106,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-21T23:00:01.000Z"
+      },
+      "targetIndex": 68,
+      "answer": "cinéma"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-22T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-22",
+        "mode": "daily",
+        "seed": "2026-12-22",
+        "date": "2026-12-22",
+        "number": 107,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-22T23:00:01.000Z"
+      },
+      "targetIndex": 105,
+      "answer": "farine"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-23T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-23",
+        "mode": "daily",
+        "seed": "2026-12-23",
+        "date": "2026-12-23",
+        "number": 108,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-23T23:00:01.000Z"
+      },
+      "targetIndex": 22,
+      "answer": "théâtre"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-24T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-24",
+        "mode": "daily",
+        "seed": "2026-12-24",
+        "date": "2026-12-24",
+        "number": 109,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-24T23:00:01.000Z"
+      },
+      "targetIndex": 59,
+      "answer": "chanter"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-25T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-25",
+        "mode": "daily",
+        "seed": "2026-12-25",
+        "date": "2026-12-25",
+        "number": 110,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-25T23:00:01.000Z"
+      },
+      "targetIndex": 96,
+      "answer": "abeille"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-26T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-26",
+        "mode": "daily",
+        "seed": "2026-12-26",
+        "date": "2026-12-26",
+        "number": 111,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-26T23:00:01.000Z"
+      },
+      "targetIndex": 13,
+      "answer": "chemin"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-27T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-27",
+        "mode": "daily",
+        "seed": "2026-12-27",
+        "date": "2026-12-27",
+        "number": 112,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-27T23:00:01.000Z"
+      },
+      "targetIndex": 50,
+      "answer": "ciel"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-28T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-28",
+        "mode": "daily",
+        "seed": "2026-12-28",
+        "date": "2026-12-28",
+        "number": 113,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-28T23:00:01.000Z"
+      },
+      "targetIndex": 87,
+      "answer": "carotte"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-29T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-29",
+        "mode": "daily",
+        "seed": "2026-12-29",
+        "date": "2026-12-29",
+        "number": 114,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-29T23:00:01.000Z"
+      },
+      "targetIndex": 4,
+      "answer": "trouver"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-30T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-30",
+        "mode": "daily",
+        "seed": "2026-12-30",
+        "date": "2026-12-30",
+        "number": 115,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-30T23:00:01.000Z"
+      },
+      "targetIndex": 41,
+      "answer": "fraise"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-12-31T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-12-31",
+        "mode": "daily",
+        "seed": "2026-12-31",
+        "date": "2026-12-31",
+        "number": 116,
+        "vocabularySize": 30000,
+        "resetAt": "2026-12-31T23:00:01.000Z"
+      },
+      "targetIndex": 78,
+      "answer": "panier"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2027-01-01T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2027-01-01",
+        "mode": "daily",
+        "seed": "2027-01-01",
+        "date": "2027-01-01",
+        "number": 117,
+        "vocabularySize": 30000,
+        "resetAt": "2027-01-01T23:00:01.000Z"
+      },
+      "targetIndex": 115,
+      "answer": "dormir"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2027-01-02T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2027-01-02",
+        "mode": "daily",
+        "seed": "2027-01-02",
+        "date": "2027-01-02",
+        "number": 118,
+        "vocabularySize": 30000,
+        "resetAt": "2027-01-02T23:00:01.000Z"
+      },
+      "targetIndex": 32,
+      "answer": "planter"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2027-01-03T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2027-01-03",
+        "mode": "daily",
+        "seed": "2027-01-03",
+        "date": "2027-01-03",
+        "number": 119,
+        "vocabularySize": 30000,
+        "resetAt": "2027-01-03T23:00:01.000Z"
+      },
+      "targetIndex": 69,
+      "answer": "surprise"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2027-01-04T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2027-01-04",
+        "mode": "daily",
+        "seed": "2027-01-04",
+        "date": "2027-01-04",
+        "number": 120,
+        "vocabularySize": 30000,
+        "resetAt": "2027-01-04T23:00:01.000Z"
+      },
+      "targetIndex": 106,
+      "answer": "ours"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2027-01-05T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2027-01-05",
+        "mode": "daily",
+        "seed": "2027-01-05",
+        "date": "2027-01-05",
+        "number": 121,
+        "vocabularySize": 30000,
+        "resetAt": "2027-01-05T23:00:01.000Z"
+      },
+      "targetIndex": 23,
+      "answer": "ordinateur"
+    }
+  ],
+  "seeds": [
+    {
+      "mode": "free",
+      "seed": "0",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-0",
+        "mode": "free",
+        "seed": "0",
+        "date": "2026-09-07",
+        "number": 64,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 63,
+      "answer": "pinceau"
+    },
+    {
+      "mode": "challenge",
+      "seed": "0",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-0",
+        "mode": "challenge",
+        "seed": "0",
+        "date": "2026-09-07",
+        "number": 64,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 63,
+      "answer": "pinceau"
+    },
+    {
+      "mode": "free",
+      "seed": "1",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-1",
+        "mode": "free",
+        "seed": "1",
+        "date": "2026-09-07",
+        "number": 5,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 4,
+      "answer": "trouver"
+    },
+    {
+      "mode": "challenge",
+      "seed": "1",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-1",
+        "mode": "challenge",
+        "seed": "1",
+        "date": "2026-09-07",
+        "number": 5,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 4,
+      "answer": "trouver"
+    },
+    {
+      "mode": "free",
+      "seed": "1234",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-1234",
+        "mode": "free",
+        "seed": "1234",
+        "date": "2026-09-07",
+        "number": 62,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 61,
+      "answer": "sac"
+    },
+    {
+      "mode": "challenge",
+      "seed": "1234",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-1234",
+        "mode": "challenge",
+        "seed": "1234",
+        "date": "2026-09-07",
+        "number": 62,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 61,
+      "answer": "sac"
+    },
+    {
+      "mode": "free",
+      "seed": "0001",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-0001",
+        "mode": "free",
+        "seed": "0001",
+        "date": "2026-09-07",
+        "number": 3,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 2,
+      "answer": "bonheur"
+    },
+    {
+      "mode": "challenge",
+      "seed": "0001",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-0001",
+        "mode": "challenge",
+        "seed": "0001",
+        "date": "2026-09-07",
+        "number": 3,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 2,
+      "answer": "bonheur"
+    },
+    {
+      "mode": "free",
+      "seed": "2147483647",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-2147483647",
+        "mode": "free",
+        "seed": "2147483647",
+        "date": "2026-09-07",
+        "number": 2,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 1,
+      "answer": "peur"
+    },
+    {
+      "mode": "challenge",
+      "seed": "2147483647",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-2147483647",
+        "mode": "challenge",
+        "seed": "2147483647",
+        "date": "2026-09-07",
+        "number": 2,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 1,
+      "answer": "peur"
+    },
+    {
+      "mode": "free",
+      "seed": "0000000000",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-0000000000",
+        "mode": "free",
+        "seed": "0000000000",
+        "date": "2026-09-07",
+        "number": 70,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 69,
+      "answer": "surprise"
+    },
+    {
+      "mode": "challenge",
+      "seed": "0000000000",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-0000000000",
+        "mode": "challenge",
+        "seed": "0000000000",
+        "date": "2026-09-07",
+        "number": 70,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 69,
+      "answer": "surprise"
+    },
+    {
+      "mode": "free",
+      "seed": "20260907",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-20260907",
+        "mode": "free",
+        "seed": "20260907",
+        "date": "2026-09-07",
+        "number": 46,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 45,
+      "answer": "restaurant"
+    },
+    {
+      "mode": "challenge",
+      "seed": "20260907",
+      "now": "2026-09-07T12:00:00.000Z",
+      "publicPuzzle": {
+        "id": "free-20260907",
+        "mode": "challenge",
+        "seed": "20260907",
+        "date": "2026-09-07",
+        "number": 46,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 45,
+      "answer": "restaurant"
+    }
+  ],
+  "boundaries": [
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-07T21:59:59.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-07",
+        "mode": "daily",
+        "seed": "2026-09-07",
+        "date": "2026-09-07",
+        "number": 1,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-07T22:00:01.000Z"
+      },
+      "targetIndex": 23,
+      "answer": "ordinateur"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-09-07T22:00:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-09-08",
+        "mode": "daily",
+        "seed": "2026-09-08",
+        "date": "2026-09-08",
+        "number": 2,
+        "vocabularySize": 30000,
+        "resetAt": "2026-09-08T22:00:01.000Z"
+      },
+      "targetIndex": 60,
+      "answer": "œuf"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-03-28T23:01:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-03-29",
+        "mode": "daily",
+        "seed": "2026-03-29",
+        "date": "2026-03-29",
+        "number": 1,
+        "vocabularySize": 30000,
+        "resetAt": "2026-03-29T22:00:01.000Z"
+      },
+      "targetIndex": 29,
+      "answer": "mer"
+    },
+    {
+      "mode": "daily",
+      "seed": "",
+      "now": "2026-10-24T22:01:00.000Z",
+      "publicPuzzle": {
+        "id": "daily-2026-10-25",
+        "mode": "daily",
+        "seed": "2026-10-25",
+        "date": "2026-10-25",
+        "number": 49,
+        "vocabularySize": 30000,
+        "resetAt": "2026-10-25T23:00:01.000Z"
+      },
+      "targetIndex": 119,
+      "answer": "automne"
+    }
+  ],
+  "scores": [
+    {
+      "target": "port",
+      "evaluations": [
+        {
+          "word": "port",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 22.1,
+          "rank": 2199,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 26.6,
+          "rank": 829,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 13.9,
+          "rank": 13534,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13.6,
+          "rank": 14206,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "peur",
+      "evaluations": [
+        {
+          "word": "peur",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 23.3,
+          "rank": 5443,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.9,
+          "rank": 12302,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 19.1,
+          "rank": 10397,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 27.1,
+          "rank": 2995,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "bonheur",
+      "evaluations": [
+        {
+          "word": "bonheur",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 21.5,
+          "rank": 6724,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.8,
+          "rank": 12030,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.7,
+          "rank": 6441,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 25.7,
+          "rank": 3159,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pigeon",
+      "evaluations": [
+        {
+          "word": "pigeon",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18.9,
+          "rank": 5433,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.2,
+          "rank": 7747,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 26.2,
+          "rank": 907,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.9,
+          "rank": 15793,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "trouver",
+      "evaluations": [
+        {
+          "word": "trouver",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 27.1,
+          "rank": 3556,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.7,
+          "rank": 11591,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 13.7,
+          "rank": 22000,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.2,
+          "rank": 16515,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "valise",
+      "evaluations": [
+        {
+          "word": "valise",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 32.3,
+          "rank": 326,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.9,
+          "rank": 16364,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.9,
+          "rank": 3941,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 7.1,
+          "rank": 27369,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "fourmi",
+      "evaluations": [
+        {
+          "word": "fourmi",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 26.6,
+          "rank": 952,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.1,
+          "rank": 12211,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.5,
+          "rank": 3225,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13,
+          "rank": 16578,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "hiver",
+      "evaluations": [
+        {
+          "word": "hiver",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 9.2,
+          "rank": 25434,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 29.1,
+          "rank": 413,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.9,
+          "rank": 5317,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 8.1,
+          "rank": 27057,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "boire",
+      "evaluations": [
+        {
+          "word": "boire",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 13.5,
+          "rank": 18385,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 21.8,
+          "rank": 5587,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 35.4,
+          "rank": 493,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.5,
+          "rank": 22212,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "curiosité",
+      "evaluations": [
+        {
+          "word": "curiosité",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 26.1,
+          "rank": 3853,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.4,
+          "rank": 15585,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22.5,
+          "rank": 6800,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.9,
+          "rank": 16471,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "avion",
+      "evaluations": [
+        {
+          "word": "avion",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 33.2,
+          "rank": 517,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 29.1,
+          "rank": 976,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.3,
+          "rank": 8867,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.7,
+          "rank": 21039,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "banane",
+      "evaluations": [
+        {
+          "word": "banane",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18.4,
+          "rank": 8663,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 25,
+          "rank": 2258,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 40.4,
+          "rank": 144,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 9.8,
+          "rank": 24635,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pomme",
+      "evaluations": [
+        {
+          "word": "pomme",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.9,
+          "rank": 6576,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17,
+          "rank": 7988,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 42.7,
+          "rank": 108,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.9,
+          "rank": 12193,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "chemin",
+      "evaluations": [
+        {
+          "word": "chemin",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 13.7,
+          "rank": 16050,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 21.5,
+          "rank": 3177,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22.5,
+          "rank": 2480,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 18.8,
+          "rank": 6021,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "marteau",
+      "evaluations": [
+        {
+          "word": "marteau",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 28.1,
+          "rank": 815,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.4,
+          "rank": 8058,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22,
+          "rank": 3039,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 17.7,
+          "rank": 7682,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "citron",
+      "evaluations": [
+        {
+          "word": "citron",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.1,
+          "rank": 9297,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 24.8,
+          "rank": 1869,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 42.3,
+          "rank": 159,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 9.9,
+          "rank": 24634,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "lapin",
+      "evaluations": [
+        {
+          "word": "lapin",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.8,
+          "rank": 6062,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.8,
+          "rank": 16461,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 38.2,
+          "rank": 178,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 9.2,
+          "rank": 25083,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "fourchette",
+      "evaluations": [
+        {
+          "word": "fourchette",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.6,
+          "rank": 10212,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 12.5,
+          "rank": 20142,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 29.2,
+          "rank": 1017,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.1,
+          "rank": 16871,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "bibliothèque",
+      "evaluations": [
+        {
+          "word": "bibliothèque",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 23.8,
+          "rank": 1587,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 12.7,
+          "rank": 16030,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 7.8,
+          "rank": 25910,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 20,
+          "rank": 3940,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "grenouille",
+      "evaluations": [
+        {
+          "word": "grenouille",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.8,
+          "rank": 8369,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 22,
+          "rank": 3687,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 27.2,
+          "rank": 1314,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.9,
+          "rank": 19362,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "amour",
+      "evaluations": [
+        {
+          "word": "amour",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.9,
+          "rank": 10545,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 26.9,
+          "rank": 2373,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 14.4,
+          "rank": 16900,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 22.2,
+          "rank": 5341,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "sourire",
+      "evaluations": [
+        {
+          "word": "sourire",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18,
+          "rank": 12289,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 23.3,
+          "rank": 5199,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.4,
+          "rank": 7170,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.2,
+          "rank": 24740,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "théâtre",
+      "evaluations": [
+        {
+          "word": "théâtre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 10.6,
+          "rank": 25577,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.4,
+          "rank": 19690,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 13.4,
+          "rank": 19743,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13,
+          "rank": 20534,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "ordinateur",
+      "evaluations": [
+        {
+          "word": "ordinateur",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "océan",
+          "temperature": 19.7,
+          "rank": 10202,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 9.7,
+          "rank": 26846,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.1,
+          "rank": 23548,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pont",
+      "evaluations": [
+        {
+          "word": "pont",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 7.2,
+          "rank": 27181,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 19.3,
+          "rank": 4565,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.7,
+          "rank": 3396,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13.1,
+          "rank": 14948,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "bouteille",
+      "evaluations": [
+        {
+          "word": "bouteille",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 21.4,
+          "rank": 4509,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 24.5,
+          "rank": 2382,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 35.4,
+          "rank": 273,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 3.6,
+          "rank": 29673,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "arbre",
+      "evaluations": [
+        {
+          "word": "arbre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.2,
+          "rank": 1619,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 24.9,
+          "rank": 1425,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.2,
+          "rank": 3310,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.7,
+          "rank": 11736,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pêche",
+      "evaluations": [
+        {
+          "word": "pêche",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 14.2,
+          "rank": 15030,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 33.8,
+          "rank": 356,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 30.5,
+          "rank": 651,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 18.5,
+          "rank": 6697,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "verre",
+      "evaluations": [
+        {
+          "word": "verre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 22.6,
+          "rank": 4326,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 19.7,
+          "rank": 6921,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 35.2,
+          "rank": 674,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 3.7,
+          "rank": 29768,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "mer",
+      "evaluations": [
+        {
+          "word": "mer",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 14.1,
+          "rank": 14487,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 59.5,
+          "rank": 6,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 14,
+          "rank": 14818,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.6,
+          "rank": 18236,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "téléphone",
+      "evaluations": [
+        {
+          "word": "téléphone",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 57.1,
+          "rank": 13,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.3,
+          "rank": 10931,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 13.7,
+          "rank": 19584,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.8,
+          "rank": 13380,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "lunettes",
+      "evaluations": [
+        {
+          "word": "lunettes",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 30.3,
+          "rank": 809,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.8,
+          "rank": 16583,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 15.1,
+          "rank": 13945,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 1.9,
+          "rank": 29836,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "planter",
+      "evaluations": [
+        {
+          "word": "planter",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.8,
+          "rank": 7341,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 14.8,
+          "rank": 15709,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22.5,
+          "rank": 4587,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15,
+          "rank": 15265,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "gâteau",
+      "evaluations": [
+        {
+          "word": "gâteau",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18.3,
+          "rank": 7554,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17,
+          "rank": 9540,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 60,
+          "rank": 13,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 7.8,
+          "rank": 26614,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "chaussure",
+      "evaluations": [
+        {
+          "word": "chaussure",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.7,
+          "rank": 6634,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 9.6,
+          "rank": 26020,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 30,
+          "rank": 813,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.3,
+          "rank": 23341,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "assiette",
+      "evaluations": [
+        {
+          "word": "assiette",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18.6,
+          "rank": 6833,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.8,
+          "rank": 6558,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 31,
+          "rank": 342,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.4,
+          "rank": 11745,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "écran",
+      "evaluations": [
+        {
+          "word": "écran",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 60.5,
+          "rank": 6,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 20.1,
+          "rank": 8421,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 7.5,
+          "rank": 28213,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.1,
+          "rank": 24245,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "stylo",
+      "evaluations": [
+        {
+          "word": "stylo",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 40.9,
+          "rank": 32,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 8,
+          "rank": 25673,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.4,
+          "rank": 5209,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 6.7,
+          "rank": 27098,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "canard",
+      "evaluations": [
+        {
+          "word": "canard",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18.7,
+          "rank": 5802,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.2,
+          "rank": 9593,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 31.5,
+          "rank": 287,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.8,
+          "rank": 12352,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "raisin",
+      "evaluations": [
+        {
+          "word": "raisin",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18,
+          "rank": 6281,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.7,
+          "rank": 5445,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 40.9,
+          "rank": 166,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.4,
+          "rank": 11102,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "miroir",
+      "evaluations": [
+        {
+          "word": "miroir",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 30.1,
+          "rank": 436,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.9,
+          "rank": 7669,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 9.2,
+          "rank": 24107,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.4,
+          "rank": 19999,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "fraise",
+      "evaluations": [
+        {
+          "word": "fraise",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 15.1,
+          "rank": 12401,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 11.8,
+          "rank": 19108,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 38.8,
+          "rank": 140,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.8,
+          "rank": 16972,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "sable",
+      "evaluations": [
+        {
+          "word": "sable",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 13.6,
+          "rank": 15445,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 31.9,
+          "rank": 411,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 23.1,
+          "rank": 2561,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 5.7,
+          "rank": 28571,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "désert",
+      "evaluations": [
+        {
+          "word": "désert",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 14.4,
+          "rank": 13707,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 34.5,
+          "rank": 123,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.9,
+          "rank": 3982,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.3,
+          "rank": 22048,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "danser",
+      "evaluations": [
+        {
+          "word": "danser",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.6,
+          "rank": 8526,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.3,
+          "rank": 12152,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.3,
+          "rank": 7625,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.2,
+          "rank": 25365,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "restaurant",
+      "evaluations": [
+        {
+          "word": "restaurant",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.7,
+          "rank": 2415,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.5,
+          "rank": 14048,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 31.1,
+          "rank": 713,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.1,
+          "rank": 14852,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "magasin",
+      "evaluations": [
+        {
+          "word": "magasin",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 27.3,
+          "rank": 1198,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 10.5,
+          "rank": 23531,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22.2,
+          "rank": 3380,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 17,
+          "rank": 10283,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "fleur",
+      "evaluations": [
+        {
+          "word": "fleur",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 10.1,
+          "rank": 23627,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.2,
+          "rank": 9461,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 29,
+          "rank": 994,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.2,
+          "rank": 15281,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "salade",
+      "evaluations": [
+        {
+          "word": "salade",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 13.6,
+          "rank": 17426,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.4,
+          "rank": 17851,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 52,
+          "rank": 63,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.1,
+          "rank": 16257,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "soupe",
+      "evaluations": [
+        {
+          "word": "soupe",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 9.1,
+          "rank": 25479,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.2,
+          "rank": 12681,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 48.9,
+          "rank": 85,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11,
+          "rank": 22157,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "ciel",
+      "evaluations": [
+        {
+          "word": "ciel",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.8,
+          "rank": 8652,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 30.3,
+          "rank": 295,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 5.3,
+          "rank": 28995,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 18.1,
+          "rank": 6500,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "lire",
+      "evaluations": [
+        {
+          "word": "lire",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.9,
+          "rank": 2461,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 11.7,
+          "rank": 21459,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 15.8,
+          "rank": 12132,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.9,
+          "rank": 18740,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "construire",
+      "evaluations": [
+        {
+          "word": "construire",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.9,
+          "rank": 11045,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 11.3,
+          "rank": 21632,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.6,
+          "rank": 18979,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 17.2,
+          "rank": 10715,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "herbe",
+      "evaluations": [
+        {
+          "word": "herbe",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 15.6,
+          "rank": 11640,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.7,
+          "rank": 7928,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 27.1,
+          "rank": 1157,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.7,
+          "rank": 19934,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "tigre",
+      "evaluations": [
+        {
+          "word": "tigre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.2,
+          "rank": 8943,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 25.1,
+          "rank": 1169,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 11.5,
+          "rank": 19133,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.8,
+          "rank": 9808,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "ouvrir",
+      "evaluations": [
+        {
+          "word": "ouvrir",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.7,
+          "rank": 3279,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.9,
+          "rank": 8601,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.5,
+          "rank": 21160,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.7,
+          "rank": 12285,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "explorer",
+      "evaluations": [
+        {
+          "word": "explorer",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 36.9,
+          "rank": 265,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 27.2,
+          "rank": 1908,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 7.7,
+          "rank": 27603,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.5,
+          "rank": 20716,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "neige",
+      "evaluations": [
+        {
+          "word": "neige",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 11.6,
+          "rank": 20859,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 25.6,
+          "rank": 1435,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 28.9,
+          "rank": 694,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 9.3,
+          "rank": 24999,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "chapeau",
+      "evaluations": [
+        {
+          "word": "chapeau",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18.6,
+          "rank": 6952,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.3,
+          "rank": 8958,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 34.2,
+          "rank": 274,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 9.1,
+          "rank": 25313,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "chanter",
+      "evaluations": [
+        {
+          "word": "chanter",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 20.6,
+          "rank": 8253,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 11.4,
+          "rank": 24629,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 19.6,
+          "rank": 9577,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 19.6,
+          "rank": 9523,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "œuf",
+      "evaluations": [
+        {
+          "word": "œuf",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 25.6,
+          "rank": 1765,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 27.2,
+          "rank": 1342,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 46.1,
+          "rank": 41,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.6,
+          "rank": 21849,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "sac",
+      "evaluations": [
+        {
+          "word": "sac",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 21.3,
+          "rank": 3605,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.7,
+          "rank": 10989,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 27.5,
+          "rank": 887,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 6.4,
+          "rank": 28141,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pain",
+      "evaluations": [
+        {
+          "word": "pain",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 11,
+          "rank": 21350,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 9.1,
+          "rank": 24960,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 53.2,
+          "rank": 12,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 28.6,
+          "rank": 705,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pinceau",
+      "evaluations": [
+        {
+          "word": "pinceau",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 25.2,
+          "rank": 2332,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.4,
+          "rank": 10785,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.1,
+          "rank": 8380,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.1,
+          "rank": 22727,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "été",
+      "evaluations": [
+        {
+          "word": "été",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.2,
+          "rank": 9107,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 19.5,
+          "rank": 5024,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 10.3,
+          "rank": 27451,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.7,
+          "rank": 10541,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "orange",
+      "evaluations": [
+        {
+          "word": "orange",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 15.3,
+          "rank": 8890,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 20.5,
+          "rank": 2272,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.7,
+          "rank": 14951,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.1,
+          "rank": 16612,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pâtes",
+      "evaluations": [
+        {
+          "word": "pâtes",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.1,
+          "rank": 11674,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.5,
+          "rank": 16648,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 57.6,
+          "rank": 26,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 5.7,
+          "rank": 28536,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "sauter",
+      "evaluations": [
+        {
+          "word": "sauter",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 25.4,
+          "rank": 3133,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 14.4,
+          "rank": 17324,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.8,
+          "rank": 6609,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.6,
+          "rank": 24953,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "cinéma",
+      "evaluations": [
+        {
+          "word": "cinéma",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 20.8,
+          "rank": 5460,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.5,
+          "rank": 12760,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 14.7,
+          "rank": 16845,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.7,
+          "rank": 21473,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "surprise",
+      "evaluations": [
+        {
+          "word": "surprise",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 21,
+          "rank": 6643,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.9,
+          "rank": 15167,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 13.7,
+          "rank": 19662,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.6,
+          "rank": 17801,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "palais",
+      "evaluations": [
+        {
+          "word": "palais",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 11.1,
+          "rank": 20499,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 20.1,
+          "rank": 4369,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 11.4,
+          "rank": 19700,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 29.8,
+          "rank": 529,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "lampe",
+      "evaluations": [
+        {
+          "word": "lampe",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 31,
+          "rank": 693,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.2,
+          "rank": 9583,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 15.5,
+          "rank": 12744,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.2,
+          "rank": 23484,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "pantalon",
+      "evaluations": [
+        {
+          "word": "pantalon",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 20.7,
+          "rank": 5914,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.1,
+          "rank": 13535,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 27.3,
+          "rank": 1536,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.9,
+          "rank": 22596,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "plaisir",
+      "evaluations": [
+        {
+          "word": "plaisir",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 26,
+          "rank": 3248,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 12.9,
+          "rank": 20773,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22.1,
+          "rank": 6076,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.2,
+          "rank": 14532,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "racine",
+      "evaluations": [
+        {
+          "word": "racine",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 13.5,
+          "rank": 13070,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 8.2,
+          "rank": 23823,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 19.1,
+          "rank": 4354,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.7,
+          "rank": 7369,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "souris",
+      "evaluations": [
+        {
+          "word": "souris",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 35.7,
+          "rank": 110,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 9.5,
+          "rank": 24121,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.3,
+          "rank": 4348,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 5.4,
+          "rank": 28674,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "prairie",
+      "evaluations": [
+        {
+          "word": "prairie",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 8.1,
+          "rank": 26040,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.3,
+          "rank": 10592,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.7,
+          "rank": 3981,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 21.7,
+          "rank": 3975,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "printemps",
+      "evaluations": [
+        {
+          "word": "printemps",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 10,
+          "rank": 25443,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.9,
+          "rank": 6981,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 17.3,
+          "rank": 9968,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.5,
+          "rank": 22701,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "panier",
+      "evaluations": [
+        {
+          "word": "panier",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 21.5,
+          "rank": 5115,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 14.9,
+          "rank": 15415,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 25.3,
+          "rank": 2458,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 8.2,
+          "rank": 26951,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "calme",
+      "evaluations": [
+        {
+          "word": "calme",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.5,
+          "rank": 14288,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 26,
+          "rank": 3470,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 17.5,
+          "rank": 12424,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 18.4,
+          "rank": 10971,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "tasse",
+      "evaluations": [
+        {
+          "word": "tasse",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.8,
+          "rank": 9436,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.8,
+          "rank": 9420,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 34.6,
+          "rank": 245,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.9,
+          "rank": 18399,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "orage",
+      "evaluations": [
+        {
+          "word": "orage",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 20.6,
+          "rank": 5079,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 30,
+          "rank": 687,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.9,
+          "rank": 18879,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.3,
+          "rank": 13782,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "piscine",
+      "evaluations": [
+        {
+          "word": "piscine",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.6,
+          "rank": 7975,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 24.2,
+          "rank": 2111,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.1,
+          "rank": 19075,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 9.9,
+          "rank": 23550,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "volcan",
+      "evaluations": [
+        {
+          "word": "volcan",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.9,
+          "rank": 3729,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 41.6,
+          "rank": 60,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.5,
+          "rank": 2476,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 5.1,
+          "rank": 28791,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "manger",
+      "evaluations": [
+        {
+          "word": "manger",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 22.7,
+          "rank": 5210,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.3,
+          "rank": 19353,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 36.2,
+          "rank": 528,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.7,
+          "rank": 12599,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "train",
+      "evaluations": [
+        {
+          "word": "train",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 27,
+          "rank": 1190,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 14,
+          "rank": 16783,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.6,
+          "rank": 7483,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.6,
+          "rank": 19810,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "réparer",
+      "evaluations": [
+        {
+          "word": "réparer",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 27.1,
+          "rank": 2560,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 14.3,
+          "rank": 15728,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 8.8,
+          "rank": 25698,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 23.7,
+          "rank": 4353,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "carotte",
+      "evaluations": [
+        {
+          "word": "carotte",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 14.2,
+          "rank": 17351,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18,
+          "rank": 10209,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 35.4,
+          "rank": 336,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 19.6,
+          "rank": 7834,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "ville",
+      "evaluations": [
+        {
+          "word": "ville",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 11,
+          "rank": 22391,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 22.5,
+          "rank": 3842,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 17.2,
+          "rank": 9948,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 18.8,
+          "rank": 7571,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "renard",
+      "evaluations": [
+        {
+          "word": "renard",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 6.4,
+          "rank": 28289,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.4,
+          "rank": 8994,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.9,
+          "rank": 3829,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 23.8,
+          "rank": 2609,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "espoir",
+      "evaluations": [
+        {
+          "word": "espoir",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.2,
+          "rank": 11120,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 28.2,
+          "rank": 1166,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 7.2,
+          "rank": 28244,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.9,
+          "rank": 11559,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "thé",
+      "evaluations": [
+        {
+          "word": "thé",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.4,
+          "rank": 10111,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.2,
+          "rank": 8651,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 40,
+          "rank": 122,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.7,
+          "rank": 20329,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "étoile",
+      "evaluations": [
+        {
+          "word": "étoile",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 15.3,
+          "rank": 8057,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 23.8,
+          "rank": 777,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 8.8,
+          "rank": 23352,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.7,
+          "rank": 16482,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "colline",
+      "evaluations": [
+        {
+          "word": "colline",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 8.5,
+          "rank": 25272,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 13.7,
+          "rank": 14797,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 14.4,
+          "rank": 13393,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.2,
+          "rank": 9843,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "humour",
+      "evaluations": [
+        {
+          "word": "humour",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 23.1,
+          "rank": 5583,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 21.3,
+          "rank": 7381,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.7,
+          "rank": 8108,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.3,
+          "rank": 18929,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "route",
+      "evaluations": [
+        {
+          "word": "route",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 11.1,
+          "rank": 20271,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 24.4,
+          "rank": 1146,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 20.7,
+          "rank": 2875,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 17.5,
+          "rank": 6173,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "abeille",
+      "evaluations": [
+        {
+          "word": "abeille",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 21.8,
+          "rank": 2315,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 22.3,
+          "rank": 2053,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 23.1,
+          "rank": 1685,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 7.1,
+          "rank": 26084,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "piano",
+      "evaluations": [
+        {
+          "word": "piano",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24,
+          "rank": 2809,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 8.1,
+          "rank": 28569,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.7,
+          "rank": 4660,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 10.2,
+          "rank": 26212,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "rivière",
+      "evaluations": [
+        {
+          "word": "rivière",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 7.5,
+          "rank": 27980,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 30.1,
+          "rank": 608,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 17.7,
+          "rank": 6989,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.4,
+          "rank": 11340,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "parler",
+      "evaluations": [
+        {
+          "word": "parler",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.7,
+          "rank": 4713,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.5,
+          "rank": 15258,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 22.6,
+          "rank": 6267,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 14.9,
+          "rank": 18641,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "clavier",
+      "evaluations": [
+        {
+          "word": "clavier",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 55.1,
+          "rank": 11,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 10.1,
+          "rank": 22747,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 16.4,
+          "rank": 9645,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.8,
+          "rank": 19181,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "beurre",
+      "evaluations": [
+        {
+          "word": "beurre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 12.5,
+          "rank": 20296,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.7,
+          "rank": 7844,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 70.1,
+          "rank": 3,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.4,
+          "rank": 11902,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "couteau",
+      "evaluations": [
+        {
+          "word": "couteau",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 25.1,
+          "rank": 2679,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.2,
+          "rank": 14845,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 30.5,
+          "rank": 964,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 19.4,
+          "rank": 7678,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "patience",
+      "evaluations": [
+        {
+          "word": "patience",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.1,
+          "rank": 8383,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 21.6,
+          "rank": 5338,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 10.5,
+          "rank": 24446,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 26.9,
+          "rank": 1976,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "cuillère",
+      "evaluations": [
+        {
+          "word": "cuillère",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.8,
+          "rank": 9188,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15.7,
+          "rank": 12928,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 40.9,
+          "rank": 178,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.5,
+          "rank": 21329,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "farine",
+      "evaluations": [
+        {
+          "word": "farine",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 11.1,
+          "rank": 22868,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 8.8,
+          "rank": 26414,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 60.3,
+          "rank": 31,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 16.7,
+          "rank": 11563,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "ours",
+      "evaluations": [
+        {
+          "word": "ours",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 10.1,
+          "rank": 22605,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 20.2,
+          "rank": 4163,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 26.1,
+          "rank": 1044,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13.6,
+          "rank": 15078,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "horloge",
+      "evaluations": [
+        {
+          "word": "horloge",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 38.2,
+          "rank": 55,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 8.1,
+          "rank": 25951,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 15.6,
+          "rank": 10636,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 19.4,
+          "rank": 5020,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "rêve",
+      "evaluations": [
+        {
+          "word": "rêve",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 26.7,
+          "rank": 3198,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 28.2,
+          "rank": 2445,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.6,
+          "rank": 11885,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.2,
+          "rank": 18273,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "tortue",
+      "evaluations": [
+        {
+          "word": "tortue",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 19.8,
+          "rank": 5342,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 31.5,
+          "rank": 466,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 23.3,
+          "rank": 2530,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.7,
+          "rank": 17701,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "bougie",
+      "evaluations": [
+        {
+          "word": "bougie",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.8,
+          "rank": 1706,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 21.2,
+          "rank": 4150,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.4,
+          "rank": 7554,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.5,
+          "rank": 20855,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "gare",
+      "evaluations": [
+        {
+          "word": "gare",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 18,
+          "rank": 6781,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 15,
+          "rank": 12101,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 21.5,
+          "rank": 3265,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 15.7,
+          "rank": 10660,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "aéroport",
+      "evaluations": [
+        {
+          "word": "aéroport",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 20.2,
+          "rank": 3474,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 24,
+          "rank": 1439,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 16.6,
+          "rank": 7791,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13,
+          "rank": 15160,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "boulangerie",
+      "evaluations": [
+        {
+          "word": "boulangerie",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 17.1,
+          "rank": 10459,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 9.2,
+          "rank": 26327,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 41.4,
+          "rank": 160,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 20.5,
+          "rank": 5686,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "apprendre",
+      "evaluations": [
+        {
+          "word": "apprendre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 35.2,
+          "rank": 1152,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.4,
+          "rank": 14740,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.6,
+          "rank": 22516,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 13.1,
+          "rank": 21614,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "dormir",
+      "evaluations": [
+        {
+          "word": "dormir",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 24.7,
+          "rank": 3463,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.8,
+          "rank": 11873,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 19.4,
+          "rank": 8012,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 11.5,
+          "rank": 22168,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "appareil",
+      "evaluations": [
+        {
+          "word": "appareil",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 48.5,
+          "rank": 27,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 16.5,
+          "rank": 11978,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 14.9,
+          "rank": 14886,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 6.2,
+          "rank": 28653,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "aigle",
+      "evaluations": [
+        {
+          "word": "aigle",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 8.4,
+          "rank": 25030,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 21.2,
+          "rank": 2433,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 18.2,
+          "rank": 5032,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 17.1,
+          "rank": 6561,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "chambre",
+      "evaluations": [
+        {
+          "word": "chambre",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 16.2,
+          "rank": 9352,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 17.4,
+          "rank": 7249,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 12.5,
+          "rank": 18092,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 28.4,
+          "rank": 386,
+          "found": false
+        }
+      ]
+    },
+    {
+      "target": "automne",
+      "evaluations": [
+        {
+          "word": "automne",
+          "temperature": 100,
+          "rank": 1,
+          "found": true
+        },
+        {
+          "word": "ordinateur",
+          "temperature": 10.5,
+          "rank": 24757,
+          "found": false
+        },
+        {
+          "word": "océan",
+          "temperature": 18.4,
+          "rank": 8049,
+          "found": false
+        },
+        {
+          "word": "fromage",
+          "temperature": 13.7,
+          "rank": 18231,
+          "found": false
+        },
+        {
+          "word": "justice",
+          "temperature": 12.8,
+          "rank": 20183,
+          "found": false
+        }
+      ]
+    }
+  ]
+}

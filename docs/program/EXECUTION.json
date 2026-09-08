@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "goal_id": "braise-ten-paths-v1",
+  "project_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b",
+  "status": "running",
+  "plan": "docs/program/BRAISE-PLAN.md",
+  "contract": "docs/program/GOAL.md",
+  "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
+  "audience": "owner_private",
+  "next_phase": "B2",
+  "next_action": "Continuer les rotations bornées avec preuves à 64 voisins jusqu'à 365 cibles approuvées, produire le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Poursuivre les lots indépendants si cette infrastructure externe reste indisponible.",
+  "priority_override": {
+    "authority": "Antoine, directive confirmée dans la conversation",
+    "order": [
+      "features_on_existing_verified_corpus",
+      "complete_dictionary_and_runtime_qualification"
+    ],
+    "dependency_exception": "B5 and B8 may implement versioned content against verified V1 without waiting for full B2; server identity and authorization requirements remain mandatory for social features",
+    "models_requested": {
+      "ingestion": "gpt-5.6-luna",
+      "other_delegation": "gpt-6-astra",
+      "other_reasoning_effort": "low"
+    },
+    "root_model_override_performed": false
+  },
+  "planning_models": {
+    "orchestrator": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max"
+    },
+    "specialists": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "low",
+      "missions": 12
+    },
+    "scheduled_run_model_override_supported": false
+  },
+  "scheduler": {
+    "provider": "automations",
+    "native_goal_available": false,
+    "status": "enabled",
+    "automation_id": "6a9f3c5c99f08191af8f2e50bce0965a",
+    "cadence": "hourly",
+    "stop_after_same_blocker_without_progress": 2,
+    "schedule": "BEGIN:VEVENT\nDTSTART:20260907T224112Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "default_timezone": "Europe/Paris",
+    "created_at": "2026-09-07T22:36:13.445772+00:00"
+  },
+  "lease": null,
+  "phases": [
+    {
+      "id": "B0",
+      "title": "Référence et contrats",
+      "depends_on": [],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B0-DELIVERY.md",
+        "docs/program/B0-MEASUREMENTS.json",
+        "tests/fixtures/v1-reference.json",
+        "tests/fixtures/v1-saves.json",
+        "16 tests passed; TypeScript passed; production build passed",
+        "Pinned V1 oracle reproduced byte-for-byte",
+        "Independent gpt-6-astra max review: no blocking issue"
+      ],
+      "blockers": [],
+      "implementation": "completed",
+      "automated_checks": "passed",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v2",
+      "verified_source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd",
+      "completed_at": "2026-09-07T22:55:57.353853+00:00"
+    },
+    {
+      "id": "B1",
+      "title": "Versions et stockage sémantique",
+      "depends_on": [
+        "B0"
+      ],
+      "status": "partial",
+      "evidence": [
+        "docs/program/B1A-DELIVERY.md",
+        "docs/program/B1A-MEASUREMENTS.json",
+        "docs/program/B1B-CORPUS-DIRECTIVE.md",
+        "docs/program/B1B-DELIVERY.md",
+        "docs/program/B1C-DELIVERY.md",
+        "docs/program/B1D-DELIVERY.md",
+        "120 immutable BRZ1 shards generated from the frozen V1 source",
+        "3,600,000 scores, ranks and stable order positions verified",
+        "Complete-source local ingestion CLI and independent verifier",
+        "Paged BRT2 target generator and independent exhaustive verifier",
+        "Exact paged BPI2 presence index and independent exhaustive verifier",
+        "Shared-reader and exclusive-mutator target cache guard with resumable explicit eviction",
+        "109 tests passed; TypeScript passed; production build passed",
+        "Compiled Worker 1,128,880 bytes; V1 score sentinel absent",
+        "Independent gpt-6-astra max review: no remaining local B1d blocker"
+      ],
+      "blockers": [
+        "Real R2 binding is not provisioned or qualified",
+        "Cloudflare Worker runtime memory remains unqualified",
+        "Durable transfer and product activation remain; local full-source ingestion and measurements passed"
+      ],
+      "implementation": "complete_real_source_index_eight_targets_and_bounded_reader_verified_locally",
+      "automated_checks": "140_tests_typecheck_build_passed_real_corpus_independently_verified",
+      "browser_validation": "not_requested",
+      "publication": "b1a_published_owner_private_v2",
+      "verified_source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0",
+      "external_dependencies": [
+        "R2 binding provisioned and accessible"
+      ]
+    },
+    {
+      "id": "B2",
+      "title": "Catalogue et calendrier",
+      "depends_on": [
+        "B1"
+      ],
+      "status": "partial",
+      "evidence": [
+        "docs/program/B1B-CORPUS-DIRECTIVE.md",
+        "docs/program/B2A-DELIVERY.md",
+        "docs/program/B2A-MEASUREMENTS.json",
+        "docs/program/B2B-DELIVERY.md",
+        "docs/program/B2B-MEASUREMENTS.json",
+        "docs/program/B2C-DELIVERY.md",
+        "docs/program/B2C-MEASUREMENTS.json",
+        "docs/program/B2D-DELIVERY.md",
+        "docs/program/B2D-MEASUREMENTS.json",
+        "docs/program/B2E-DELIVERY.md",
+        "docs/program/B2E-MEASUREMENTS.json",
+        "docs/program/B2F-DELIVERY.md",
+        "docs/program/B2F-MEASUREMENTS.json",
+        "400 distinct corpus identities reviewed lexically by agents",
+        "Forty immutable content-addressed proofs across thirty-three target identities validated against the complete corpus",
+        "One real verified target eviction preserved its approval and the freed slot generated target 2122",
+        "Seven historical twelve-neighbor proofs extended to sixty-four neighbors after eviction without changing their parent files",
+        "Thirty-two approved targets and one conservative rejection after two independent reviews in B2f",
+        "147 tests passed; TypeScript passed; production build passed; real catalogue exhaustive verification passed",
+        "Independent gpt-6-astra max review: eight new proofs, prior history and empty staging verified; no remaining B2f blocker"
+      ],
+      "blockers": [
+        "333 further approved targets are required before a 365-day edition can be created; 368 are required for the main 400-target acceptance goal",
+        "R2 and Worker runtime qualification remain required before product activation"
+      ],
+      "implementation": "inactive_editorial_workbench_400_reviewed_32_approved_33_targets_40_immutable_proofs",
+      "automated_checks": "147_tests_typecheck_build_and_33_real_evidence_catalogue_exhaustive_verification_passed_global_lint_existing_debt_recorded",
+      "browser_validation": "not_requested",
+      "publication": "not_published",
+      "catalogue_requirement": "365 distinct approved targets with durable lexical, neighborhood, hint and numerical evidence bound to the verified complete corpus",
+      "verified_source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7"
+    },
+    {
+      "id": "B3",
+      "title": "Design vivant et socle publicitaire",
+      "depends_on": [
+        "B0"
+      ],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B3-DELIVERY.md",
+        "Transient guessAccepted, bestImproved and puzzleWon feedback is identified and deduplicated",
+        "Restored wins and rows do not replay transient celebrations",
+        "Input revision, focus epoch and deferred callbacks preserve the active interaction",
+        "Advertising decision is skip/not-configured with no provider integration",
+        "28 tests passed; TypeScript passed; production build passed",
+        "Independent gpt-6-astra max review: no remaining local blocking issue"
+      ],
+      "blockers": [],
+      "implementation": "completed",
+      "automated_checks": "passed",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v2",
+      "verified_source_commit": "987ec6015574a1b452560153b269d1eb4c30f6ac",
+      "completed_at": "2026-09-08T00:35:57.380Z"
+    },
+    {
+      "id": "B4",
+      "title": "Progression, archives et migration",
+      "depends_on": [
+        "B1",
+        "B3"
+      ],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B4A-DELIVERY.md",
+        "docs/program/B4B-DELIVERY.md",
+        "V1 profile preserved with exact immutable backup before migration",
+        "Append-only V2 response batches and events converge between same-browser tabs",
+        "Memory-only progress is retained and retried when local storage recovers",
+        "Past archives are server-validated and reproduce the exact V1 daily puzzle identity",
+        "Archive completion is timestamped separately and never backfills the daily streak",
+        "Daily and archive wins for the same puzzle are deterministically deduplicated",
+        "docs/program/B4C-DELIVERY.md",
+        "Weekly progress derives only from dated V2 facts and effective wins",
+        "Permanent cosmetics use monotone, deterministic reward identities independent from advertising",
+        "docs/program/B4D-DELIVERY.md",
+        "Readable profile export and previewed atomic import preserve local and historical facts",
+        "Strict validation rejects incompatible V1 boundaries, forged rewards and malformed transfers before mutation",
+        "77 tests passed; TypeScript passed; production build passed",
+        "Independent gpt-6-astra max review: no remaining local blocking issue"
+      ],
+      "blockers": [],
+      "implementation": "completed",
+      "automated_checks": "passed",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v2",
+      "verified_source_commit": "6431c30204a51e497884c4621039953a46ab7e02",
+      "completed_at": "2026-09-08T04:27:01.000Z"
+    },
+    {
+      "id": "B5",
+      "title": "Collections et expéditions",
+      "depends_on": [
+        "B2",
+        "B4"
+      ],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B5A-DELIVERY.md",
+        "111 tests passed; TypeScript and production build passed",
+        "docs/program/B5B-DELIVERY.md",
+        "112 tests, TypeScript and production build passed",
+        "docs/program/B5C-DELIVERY.md"
+      ],
+      "blockers": [],
+      "implementation": "completed_personal_local",
+      "automated_checks": "121_tests_typecheck_build_passed",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v3",
+      "verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26"
+    },
+    {
+      "id": "B6",
+      "title": "Identité et parties serveur",
+      "depends_on": [
+        "B1",
+        "B4"
+      ],
+      "status": "partial",
+      "evidence": [
+        "docs/program/B6A-DELIVERY.md",
+        "125 tests passed; TypeScript and production build passed",
+        "gpt-6-astra max source-only review: no local blocker",
+        "docs/program/B6B-DELIVERY.md",
+        "docs/program/B6C-DELIVERY.md",
+        "Private v4 succeeded; native database overview confirms DB and all five tables"
+      ],
+      "blockers": [
+        "Authenticated hosted-route qualification pending; bypass-token creation requires explicit user request"
+      ],
+      "implementation": "guest_sessions_atomic_games_and_confirmed_recovery",
+      "automated_checks": "127_tests_typecheck_build_passed_D1_schema_provisioned",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v4",
+      "external_dependencies": [
+        "Hosted authenticated API qualification"
+      ],
+      "verified_source_commit": "4fd4e9b27a16ca1c60041419f6e0172f3ad45394"
+    },
+    {
+      "id": "B7",
+      "title": "Cercles et duels",
+      "depends_on": [
+        "B2",
+        "B6"
+      ],
+      "status": "implemented_validation_pending",
+      "evidence": ["docs/program/B7-DELIVERY.md", "138 tests, TypeScript and production build passed", "Astra review blockers corrected"],
+      "blockers": ["Hosted authenticated route/concurrency qualification pending"],
+      "implementation": "completed_on_verified_V1",
+      "automated_checks": "passed_local_sqlite",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v5"
+    },
+    {
+      "id": "B8",
+      "title": "Laboratoire",
+      "depends_on": [
+        "B2",
+        "B4"
+      ],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B8-DELIVERY.md"
+      ],
+      "blockers": [],
+      "implementation": "completed_personal_local",
+      "automated_checks": "121_tests_typecheck_build_passed",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v3",
+      "verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26"
+    },
+    {
+      "id": "B9",
+      "title": "Studio créateurs",
+      "depends_on": [
+        "B5",
+        "B6"
+      ],
+      "status": "implemented_validation_pending",
+      "evidence": ["docs/program/B9-DELIVERY.md", "138 tests, TypeScript and production build passed"],
+      "blockers": ["Hosted authenticated route qualification pending"],
+      "implementation": "completed_on_verified_V1",
+      "automated_checks": "passed_local_sqlite",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v5"
+    },
+    {
+      "id": "B10",
+      "title": "Distribution",
+      "depends_on": [
+        "B3",
+        "B6"
+      ],
+      "status": "partial",
+      "evidence": ["docs/program/B10A-DELIVERY.md", "Offline and embed contract unit tests passed"],
+      "blockers": ["Controlled separate test origin and browser qualification unavailable"],
+      "implementation": "offline_and_same_origin_embed_implemented",
+      "automated_checks": "passed_local",
+      "browser_validation": "not_requested",
+      "publication": "published_owner_private_v5",
+      "external_dependencies": [
+        "controlled test origin for iframe qualification"
+      ]
+    },
+    {
+      "id": "B11",
+      "title": "Consolidation et publication privée",
+      "depends_on": [
+        "B5",
+        "B7",
+        "B8",
+        "B9",
+        "B10"
+      ],
+      "status": "planned",
+      "evidence": [],
+      "blockers": [],
+      "implementation": "not_started",
+      "automated_checks": "not_run",
+      "browser_validation": "not_requested",
+      "publication": "not_published"
+    }
+  ],
+  "conditional_work": [
+    {
+      "id": "C1",
+      "title": "Activation commerciale et partenaires",
+      "status": "external_dependencies",
+      "requires": [
+        "configuration régie et consentement réels",
+        "audience de publication couverte par autorisation",
+        "origines partenaires effectives si intégration réelle"
+      ]
+    },
+    {
+      "id": "C2",
+      "title": "Duels directs et chaîne généralisée",
+      "status": "conditional",
+      "requires": [
+        "preuve de demande et capacités de coordination",
+        "graphe et contenus validés"
+      ]
+    }
+  ],
+  "blockers": [],
+  "consecutive_runs_without_progress": 0,
+  "planning_evidence": {
+    "specialist_missions_completed": 12,
+    "orchestrator_review": "completed_with_corrections_applied",
+    "product_code_changed": true,
+    "browser_qa_performed": false
+  },
+  "catalogue_directive": {
+    "status": "complete_real_source_verified_locally_runtime_activation_pending",
+    "staging": {
+      "evidence": "docs/program/B1E-DELIVERY.md",
+      "measurements": "docs/program/B1E-MEASUREMENTS.json",
+      "source_rows_read": 1152449,
+      "dictionary_entries": 1013881,
+      "independently_verified_target_ids": [0,1013880,281,2106,916,223,1080,1344],
+      "product_active": false
+    },
+    "specification": "docs/program/B1B-CORPUS-DIRECTIVE.md",
+    "current": {
+      "source_rows_read": 50000,
+      "dictionary_entries": 30000,
+      "targets": 120,
+      "real_scores": 3600000
+    },
+    "required": {
+      "source_scope": "complete_reference_stream",
+      "dictionary_scope": "all_entries_admitted_by_versioned_french_lexicon_filter",
+      "guess_score_coverage": "100_percent_real",
+      "target_eligibility": "all_admitted_entries",
+      "browser_full_corpus_delivery": false,
+      "quadratic_matrix": false
+    },
+    "editorial_workbench": {
+      "evidence": "docs/program/B2F-DELIVERY.md",
+      "measurements": "docs/program/B2F-MEASUREMENTS.json",
+      "selected": 400,
+      "lexically_reviewed": 400,
+      "verified_staging_columns": 0,
+      "verified_archived_evidence": 33,
+      "durable_evidence_dossiers": 33,
+      "immutable_proof_files": 40,
+      "approved": 32,
+      "rejected_pending_broader_evidence": 1,
+      "remaining_approvals_for_calendar": 333,
+      "remaining_approvals_for_main_target": 368,
+      "calendar_created": false,
+      "product_active": false
+    }
+  },
+  "last_checkpoint": "B2F-multitheme-batch-32-approved",
+  "delivery": {
+    "implementation": "in_progress",
+    "automated_checks": "147_tests_typecheck_build_passed_B2f_33_real_evidence_and_catalogue_independently_verified_global_lint_existing_debt_recorded",
+    "browser_validation": "not_requested",
+    "publication": "v5_owner_private",
+    "commercial_activation": "not_configured"
+  },
+  "last_verified_source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
+  "last_run": {
+    "completed_at": "2026-09-08T15:27:08.000Z",
+    "phase": "B2",
+    "progress": true,
+    "source_commit": "a986add8d20ec2cc4e09fe3fd3ee3f0e484915a7",
+    "publication": {
+      "status": "not_published"
+    },
+    "main_model_override_performed": false
+  }
+}

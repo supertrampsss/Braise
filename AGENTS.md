@@ -1,0 +1,31 @@
+# Braise
+
+- Langue produit : français. Garder le jeu immédiatement accessible, sans page marketing préalable.
+- Lire README.md et docs/ARCHITECTURE.md avant une modification du moteur.
+- Ne jamais inventer un score sémantique, un classement ou des joueurs actifs.
+- Ne jamais importer lib/semantic.ts ou data/semantic-fr.json dans un composant client.
+- Ne jamais importer lib/semantic-storage.ts ou data/semantic-v1-index.json dans un composant client.
+- Ne jamais importer lib/legacy-puzzles.ts ou data/legacy-v1.json dans un composant client.
+- Ne pas réécrire le corpus, les identités ou l'oracle V1 pour une extension. Créer une nouvelle version et conserver le lecteur historique. Les fixtures V1 se reconstruisent uniquement depuis leur commit source figé.
+- Le pipeline V2 reste un outil local de staging jusqu'à ingestion et vérification de la source complète. Ne jamais présenter ses fixtures synthétiques comme le dictionnaire réel chargé, ni activer `active.json` sans vérification indépendante de la source et de tous les segments.
+- Une reprise du pipeline V2 exige la même empreinte source et la même configuration. Un verrou abandonné se récupère seulement avec son identifiant exact et après constat du processus mort ; ne jamais supprimer manuellement un verrou de génération actif.
+- Conserver l'attribution et la licence CC BY-SA des données.
+- Vérifier les modifications de calendrier, normalisation et API avec npm test.
+- Vérifier une génération V2 avec `npm run semantic:v2:verify -- --source <fichier.vec> --output <staging>` ; les sorties sous `work/` restent non publiées.
+- Une cible BRV2 se prépare localement avec `npm run semantic:v2:target:build -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>` puis se contrôle avec `npm run semantic:v2:target:verify`. Ne jamais activer une cible avant couverture et vérification exhaustives de ses scores, rangs et ordre.
+- L'index exact BRV2 se construit avec `npm run semantic:v2:index:build -- --corpus <staging-corpus> --output <staging-cibles>` puis se vérifie avec `npm run semantic:v2:index:verify`. Il ne fait aucun rapprochement approximatif V1.
+- Une cible de staging complète se retire uniquement avec `npm run semantic:v2:target:evict -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>`. Ne jamais supprimer manuellement un dossier cible ou une tombstone d'éviction.
+- Le staging des cibles reste borné par un quota global sérialisé. Une cible interrompue réserve aussi une place. Ne pas contourner ce quota en lançant plusieurs générateurs ou en copiant des colonnes hors du staging versionné.
+- Les preuves éditoriales BEE2 vivent hors du staging. Une preuve v1 à 12 voisins reste immuable ; son extension à 64 voisins passe par `semantic:v2:evidence:expand`, référence exactement le parent et conserve son préfixe. L'index, les preuves et les décisions gardent toute la chaîne de révision. Une approbation sur une preuve étendue sans historique complet est invalide.
+- Vérifier TypeScript et la construction après une modification du code.
+- Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.
+- Préserver `braise.v1.profile` et sa copie brute. Toute progression V2 passe par `lib/profile-storage.ts`, avec un événement stable par fait réel, sans réécriture additive du solde V1.
+- Une relecture ou synchronisation de profil ne déclenche jamais confettis, son, toast ni focus. Elle peut seulement matérialiser une identité de récompense déjà prouvée par les faits réels, sans nouveau crédit ni annonce.
+- Une archive accepte uniquement une date civile passée depuis l’époque V1, validée côté serveur. Elle conserve l’identité `daily-YYYY-MM-DD`, utilise le contexte `archive` et ne prolonge jamais rétroactivement la série quotidienne.
+- Les objectifs hebdomadaires dérivent uniquement des événements V2 horodatés et des victoires effectives avec `completedAt`. Ne jamais dater artificiellement le solde V1 ni compter un rejeu d’archive déjà acquis.
+- Les éditions d’objectifs et leurs récompenses sont immuables. Les cosmétiques restent locaux, permanents, sans avantage de jeu et sans dépendance publicitaire.
+- L’export de profil reste lisible, versionné et limité au profil. L’import affiche un aperçu sans écriture, exige une confirmation, conserve les faits locaux et refuse avant mutation toute frontière V1 incompatible, récompense non prouvée ou référence de partie incohérente.
+- Garder les effets visuels transitoires hors des sauvegardes et les déclencher uniquement depuis une réponse acceptée de la partie courante.
+- Les annonces sont réservées, aucune régie ne doit être activée avec des identifiants fictifs.
+- Toute publicité passe par lib/advertising.ts ; sans configuration commerciale réelle, la décision reste skip/not-configured.
+- Réutiliser l'identité Sites existante. Ne pas créer de Site de remplacement pour publier une correction.

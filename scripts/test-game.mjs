@@ -1,0 +1,10 @@
+import { build } from 'esbuild';
+import { mkdir, readdir, rm } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+await mkdir('work/tests', { recursive: true });
+const tests = (await readdir('tests')).filter(name => name.endsWith('.test.ts')).sort();
+await build({ entryPoints: tests.map(name => 'tests/' + name), outdir: 'work/tests', outExtension: { '.js': '.mjs' }, bundle: true, platform: 'node', format: 'esm', target: 'node22', external: ['react', 'react/jsx-runtime', 'react-dom/server', 'lucide-react'], alias: { 'cloudflare:workers': './tests/support/cloudflare-workers.ts' }, logLevel: 'warning' });
+const outputs = tests.map(name => 'work/tests/' + name.replace(/\.ts$/, '.mjs'));
+const result = spawnSync(process.execPath, ['--test', '--test-concurrency=1', ...outputs], { stdio: 'inherit' });
+await Promise.all(outputs.map(file => rm(file)));
+process.exitCode = result.status ?? 1;

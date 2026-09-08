@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "slice": "B2f",
+  "corpus_id": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "dictionary_entries": 1013881,
+  "selected_candidates": 400,
+  "evidence_targets": 33,
+  "immutable_proof_files": 40,
+  "new_proofs": 8,
+  "neighbors_per_new_proof": 64,
+  "approved_targets": 32,
+  "rejected_targets_with_current_decision": 1,
+  "calendar_minimum": 365,
+  "calendar_approvals_remaining": 333,
+  "main_goal_approvals_remaining": 368,
+  "evidence_directory_size": "7.3 MiB",
+  "catalogue_sha256": "bcfb9807d57e9882c601e4ae8d3e2b4aaa9931780159881b69e3606a95c83c48",
+  "tests": {
+    "passed": 147,
+    "failed": 0,
+    "typecheck": "passed",
+    "production_build": "passed",
+    "real_catalogue_exhaustive_verification": "passed",
+    "global_lint": "not_rerun_pre_existing_out_of_slice_debt"
+  },
+  "browser_validation": "not_requested",
+  "publication": "pending_user_requested_private_update",
+  "active_product_corpus": "fr-fasttext-30000-v1"
+}

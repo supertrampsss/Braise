@@ -1,0 +1,1281 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "corpusManifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+  "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+  "status": "lexical-agent-reviewed-neighbors-pending",
+  "corrections": [
+    {
+      "targetId": 1116,
+      "category": "société",
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Institution sociale et combinaison figurée."
+    },
+    {
+      "targetId": 1180,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Bâtiment et lieu."
+    },
+    {
+      "targetId": 1282,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Bâtiment et lieu."
+    },
+    {
+      "targetId": 1996,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Bâtiment et lieu."
+    },
+    {
+      "targetId": 1781,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Voie urbaine."
+    },
+    {
+      "targetId": 1983,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Site industriel."
+    },
+    {
+      "targetId": 818,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Espace intérieur."
+    },
+    {
+      "targetId": 1920,
+      "category": "culture",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Œuvre sculptée."
+    },
+    {
+      "targetId": 1919,
+      "category": "lieux",
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Élément architectural et apparence figurée."
+    },
+    {
+      "targetId": 1767,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Animaux et personnage mythologique."
+    },
+    {
+      "targetId": 1488,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Animal, puissance et équipement."
+    },
+    {
+      "targetId": 648,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Bâtiment et groupe doctrinal."
+    },
+    {
+      "targetId": 1120,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Métier et concepteur figuré."
+    },
+    {
+      "targetId": 553,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Artiste et métier du bâtiment."
+    },
+    {
+      "targetId": 966,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Genre et simulation."
+    },
+    {
+      "targetId": 1666,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Finance et banque de données."
+    },
+    {
+      "targetId": 1788,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:55:00.000Z",
+      "reason": "Lieu et séance collective."
+    },
+    {
+      "targetId": 2961,
+      "category": "transport",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Domaine du transport."
+    },
+    {
+      "targetId": 2830,
+      "category": "anatomie",
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Tissu anatomique et peau comme matière."
+    },
+    {
+      "targetId": 3455,
+      "category": "nature",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Formation géographique."
+    },
+    {
+      "targetId": 2770,
+      "category": "objets",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Objet documentaire."
+    },
+    {
+      "targetId": 2433,
+      "category": "objets",
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Qualification et certificat matériel."
+    },
+    {
+      "targetId": 4296,
+      "category": "concepts",
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "État de matière et sens monétaire."
+    },
+    {
+      "targetId": 4188,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Élément architectural."
+    },
+    {
+      "targetId": 4133,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Élément architectural."
+    },
+    {
+      "targetId": 4047,
+      "category": "lieux",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Monument et forme géométrique."
+    },
+    {
+      "targetId": 2437,
+      "category": "sport",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Discipline sportive."
+    },
+    {
+      "targetId": 2435,
+      "category": "culture",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Forme narrative."
+    },
+    {
+      "targetId": 3073,
+      "category": "culture",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Forme littéraire."
+    },
+    {
+      "targetId": 2810,
+      "category": "culture",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Discipline artistique."
+    },
+    {
+      "targetId": 2381,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Profondeur physique et figurée."
+    },
+    {
+      "targetId": 3581,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Vapeur physique et transport."
+    },
+    {
+      "targetId": 4279,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Chaleur physique et affective."
+    },
+    {
+      "targetId": 3830,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Nom de lieu et adjectif."
+    },
+    {
+      "targetId": 3465,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Diplomate et représentant promotionnel."
+    },
+    {
+      "targetId": 3940,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Personne et adjectif commercial."
+    },
+    {
+      "targetId": 4120,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Personne et proximité."
+    },
+    {
+      "targetId": 3214,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Nom et forme verbale."
+    },
+    {
+      "targetId": 3552,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Document et adjectif."
+    },
+    {
+      "targetId": 3768,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Appareil et échec figuré."
+    },
+    {
+      "targetId": 3305,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Être surnaturel et appellation affective."
+    },
+    {
+      "targetId": 4255,
+      "ambiguity": "medium",
+      "actor": "astra-b2-independent-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T09:57:00.000Z",
+      "reason": "Matière, sculpture et emploi figuré."
+    }
+  ],
+  "decisions": [
+    {
+      "targetId": 541,
+      "decision": "approved",
+      "hints": [
+        "rive",
+        "affluent",
+        "confluent"
+      ],
+      "actor": "astra-b2-neighborhood-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Voisinage hydrographique cohérent malgré plusieurs formes bruitées ; trois indices distincts sans variante orthographique de la cible.",
+      "evidenceSha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605"
+    },
+    {
+      "targetId": 1181,
+      "decision": "approved",
+      "hints": [
+        "boisée",
+        "lisière",
+        "clairière"
+      ],
+      "actor": "astra-b2-neighborhood-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Associations forestières nettes et indices pertinents malgré les coquilles et flexions.",
+      "evidenceSha256": "8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41"
+    },
+    {
+      "targetId": 1305,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2-neighborhood-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Échantillon dominé par les formes apparentées et le bruit lexical ; examiner davantage de voisins avant approbation.",
+      "evidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+    },
+    {
+      "targetId": 834,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2-neighborhood-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Deux indices exploitables seulement ; un voisinage réel plus large est nécessaire avant approbation.",
+      "evidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+    },
+    {
+      "targetId": 1677,
+      "decision": "approved",
+      "hints": [
+        "rive",
+        "embouchure",
+        "rivière"
+      ],
+      "actor": "astra-b2-neighborhood-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Voisinage hydrographique cohérent et plusieurs mots français distincts.",
+      "evidenceSha256": "fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3"
+    },
+    {
+      "targetId": 2077,
+      "decision": "approved",
+      "hints": [
+        "mer",
+        "atlantique",
+        "pacifique"
+      ],
+      "actor": "astra-b2-neighborhood-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Trois voisins usuels établissent clairement le domaine maritime malgré le bruit lexical.",
+      "evidenceSha256": "effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9"
+    },
+    {
+      "targetId": 2106,
+      "decision": "approved",
+      "hints": [
+        "feuillage",
+        "tronc",
+        "arbuste"
+      ],
+      "actor": "astra-b2-neighborhood-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Voisinage botanique solide avec parties de l’arbre et végétaux proches.",
+      "evidenceSha256": "9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5"
+    },
+    {
+      "targetId": 1344,
+      "decision": "approved",
+      "hints": [
+        "lune",
+        "couchant",
+        "astre"
+      ],
+      "actor": "astra-b2-neighborhood-review-2",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T10:05:00.000Z",
+      "rationale": "Noyau astronomique cohérent et indices non dérivés orthographiquement de la cible.",
+      "evidenceSha256": "b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c"
+    },
+    {
+      "targetId": 2122,
+      "decision": "approved",
+      "hints": [
+        "souffle",
+        "orage",
+        "pluie"
+      ],
+      "actor": "astra-b2b-evidence-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:09:32.000Z",
+      "rationale": "Malgré plusieurs flexions et deux formes bruitées, le voisinage contient trois indices français distincts, courants et cohérents avec « vent », sans révéler directement la cible.",
+      "evidenceSha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d"
+    },
+    {
+      "targetId": 1619,
+      "decision": "approved",
+      "hints": ["firmament", "rougeoyant", "nuages"],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins contiennent trois indices français distincts, naturels et utiles : firmament, rougeoyant et nuages. Ils évoquent la cible sans la reproduire ni en donner une flexion ; les variantes de ciel, les formes bruitées et les anglicismes sont écartés.",
+      "evidenceSha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67"
+    },
+    {
+      "targetId": 2069,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Le voisinage ne fournit pas trois indices distincts non révélateurs : terraformée et terraformé sont deux flexions du même indice, auxquelles seule martienne ajoute une association indépendante. Les neuf autres voisins sont des variantes, composés ou dérivés révélant directement la racine de planète, avec plusieurs formes bruitées.",
+      "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+    },
+    {
+      "targetId": 1767,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Parmi les douze voisins, seuls flore et endémiques offrent des indices français naturels sans révéler la cible. Les dix autres formes reprennent directement faune, notamment ses flexions et composés spécialisés ; aucun troisième indice indépendant acceptable n'est disponible.",
+      "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+    },
+    {
+      "targetId": 1502,
+      "decision": "approved",
+      "hints": ["potager", "roseraie", "parterre"],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins fournissent trois associations françaises distinctes et naturelles : potager, roseraie et parterre. Ces indices évoquent des espaces cultivés sans reproduire la cible ; les dérivés de jardin, les concaténations bruitées et le doublon parterres sont écartés.",
+      "evidenceSha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d"
+    },
+    {
+      "targetId": 1987,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins ne fournissent que deux familles d’indices distinctes et non révélatrices : automne et hiver. Automnale, automnes et automnales répètent la première ; printanier et printanière révèlent directement la cible ; les autres formes sont bruitées ou contiennent la réponse. Un voisinage réel plus large est nécessaire.",
+      "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+    },
+    {
+      "targetId": 898,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Parmi les douze voisins, seuls automne et printemps sont des indices distincts non révélateurs. Les dix autres sont des flexions, dérivés ou formes bruitées d’hiver et ne permettent pas de sélectionner un troisième indice acceptable. Un voisinage réel plus large est nécessaire.",
+      "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+    },
+    {
+      "targetId": 1488,
+      "decision": "approved",
+      "hints": ["attelage", "galop", "selle"],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins présentent un noyau équestre cohérent malgré plusieurs variantes et formes bruitées. Attelage, galop et selle sont trois mots français naturels, distincts et utiles, associés respectivement à la traction, au déplacement et à l’équipement, sans reprendre ni révéler directement la cible.",
+      "evidenceSha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5"
+    },
+    {
+      "targetId": 1572,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins ne fournissent que deux indices exploitables sans reprendre la cible : filante et supergéante. Etoile et étoiles sont des variantes directes ; protoétoile et étoilement contiennent la réponse ; rivétoile, brisétoile, mantétoile, aubétoile, tombétoile et étoilerefroid sont inadaptés comme indices naturels. Un voisinage réel plus large est nécessaire.",
+      "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+    },
+    {
+      "targetId": 834,
+      "decision": "approved",
+      "hints": ["plaine", "rivière", "versant"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes retiennent trois associations françaises complémentaires : un relief voisin, un cours d’eau et une pente latérale. Les variantes de vallée et de vallon sont écartées.",
+      "evidenceSha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+      "supersedesEvidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+    },
+    {
+      "targetId": 898,
+      "decision": "approved",
+      "hints": ["automne", "gelées", "luge"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes confirment trois relations distinctes : saison adjacente, phénomène météorologique et activité caractéristique. Aucun indice ne dérive de la cible.",
+      "evidenceSha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+      "supersedesEvidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+    },
+    {
+      "targetId": 1305,
+      "decision": "approved",
+      "hints": ["enneigée", "pentes", "sommet"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes valident le domaine. Les indices décrivent couverture, inclinaison et point culminant, sans reprendre la racine de la cible.",
+      "evidenceSha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+      "supersedesEvidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+    },
+    {
+      "targetId": 1572,
+      "decision": "approved",
+      "hints": ["exoplanète", "constellation", "nébuleuse"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes trouvent trois notions astronomiques naturelles et distinctes, sans variante ni dérivé de la cible.",
+      "evidenceSha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+      "supersedesEvidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+    },
+    {
+      "targetId": 1767,
+      "decision": "approved",
+      "hints": ["flore", "biodiversité", "mammifères"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un ensemble complémentaire, la diversité du vivant et un groupe animal concret. Les composés en faune sont exclus.",
+      "evidenceSha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+      "supersedesEvidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+    },
+    {
+      "targetId": 1987,
+      "decision": "approved",
+      "hints": ["automne", "dégel", "floraison"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes valident une saison de comparaison, une transition thermique et un phénomène végétal. Aucun indice ne révèle la cible par sa forme.",
+      "evidenceSha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+      "supersedesEvidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+    },
+    {
+      "targetId": 2069,
+      "decision": "approved",
+      "hints": ["orbitant", "extraterrestre", "galaxie"],
+      "actor": "astra-b2d-arbitration-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:24:00.000Z",
+      "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations contextuelles françaises, naturelles, distinctes et non dérivées : mouvement orbital, contexte hors de la Terre et environnement astronomique. Le bruit restant est explicitement écarté.",
+      "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+      "supersedesEvidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+    },
+    {
+      "targetId": 4131,
+      "decision": "approved",
+      "hints": ["farine", "levain", "pétrin"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes valident un ingrédient, un ferment et un équipement de fabrication. Les trois indices sont naturels, distincts et ne dérivent pas de la cible.",
+      "evidenceSha256": "4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032"
+    },
+    {
+      "targetId": 4201,
+      "decision": "approved",
+      "hints": ["alliage", "tôles", "blindage"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes confirment la nature du matériau, une forme manufacturée et un usage protecteur. Aucun indice ne reprend la cible.",
+      "evidenceSha256": "bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250"
+    },
+    {
+      "targetId": 1303,
+      "decision": "approved",
+      "hints": ["violon", "sonate", "quintette"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un instrument associé, une forme musicale et une formation. Les dérivés de la cible sont écartés.",
+      "evidenceSha256": "80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d"
+    },
+    {
+      "targetId": 1421,
+      "decision": "approved",
+      "hints": ["chirurgien", "pharmacien", "psychiatre"],
+      "actor": "astra-b2e-arbitration-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:18:00.000Z",
+      "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations de soins naturelles et distinctes : chirurgie, médicament et santé mentale. Pharmacien est retenu comme profession de santé voisine, sans être présenté comme médecin.",
+      "evidenceSha256": "f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735"
+    },
+    {
+      "targetId": 1028,
+      "decision": "approved",
+      "hints": ["tournoi", "raquette", "gazon"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes valident une compétition, un équipement et une surface de jeu. Les variantes et fragments bruités sont exclus.",
+      "evidenceSha256": "84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c"
+    },
+    {
+      "targetId": 502,
+      "decision": "approved",
+      "hints": ["trains", "voyageurs", "quais"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes confirment des véhicules, des usagers et une infrastructure, trois composantes concrètes et distinctes.",
+      "evidenceSha256": "db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2"
+    },
+    {
+      "targetId": 3724,
+      "decision": "approved",
+      "hints": ["processeur", "logiciel", "imprimante"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un composant, un programme et un périphérique. Les trois notions sont complémentaires et non dérivées.",
+      "evidenceSha256": "71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690"
+    },
+    {
+      "targetId": 1365,
+      "decision": "approved",
+      "hints": ["démocratie", "émancipation", "oppression"],
+      "actor": "astra-b2e-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T14:15:49.000Z",
+      "rationale": "Deux relectures indépendantes valident un cadre politique, un processus d’affranchissement et un contraire sémantique. Les dérivés de la cible sont écartés.",
+      "evidenceSha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc"
+    },
+    {
+      "targetId": 1718,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes rejettent un voisinage dominé par les variantes de la cible et les composés répétitifs en culture. Trois indices naturels, variés et non dérivés ne peuvent pas être retenus honnêtement.",
+      "evidenceSha256": "347d36c7799db14f997b7050152be129d6f8f66851906a427e5aebc1ff73966b"
+    },
+    {
+      "targetId": 1556,
+      "decision": "approved",
+      "hints": ["pharmacie", "chirurgie", "pédiatrie"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes confirment trois domaines de soins familiers et distincts, sans variante ni dérivé de la cible.",
+      "evidenceSha256": "7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a"
+    },
+    {
+      "targetId": 800,
+      "decision": "approved",
+      "hints": ["crépuscule", "obscurité", "sommeil"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes retiennent une transition temporelle, une condition lumineuse et une expérience humaine, trois associations complémentaires.",
+      "evidenceSha256": "dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b"
+    },
+    {
+      "targetId": 3646,
+      "decision": "approved",
+      "hints": ["métro", "rames", "lignes"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes valident un mode voisin, le matériel roulant et le réseau. Les abréviations et dérivés de tramway sont exclus.",
+      "evidenceSha256": "5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a"
+    },
+    {
+      "targetId": 4222,
+      "decision": "approved",
+      "hints": ["fromage", "yaourt", "vache"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes confirment deux produits transformés et une source familière, sans reprendre la famille morphologique de la cible.",
+      "evidenceSha256": "26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954"
+    },
+    {
+      "targetId": 4025,
+      "decision": "approved",
+      "hints": ["barils", "raffinerie", "carburant"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes valident une unité commerciale, un lieu de transformation et un produit d’usage, trois relations distinctes et non dérivées.",
+      "evidenceSha256": "52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73"
+    },
+    {
+      "targetId": 3223,
+      "decision": "approved",
+      "hints": ["concerto", "sonate", "soliste"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes retiennent deux formes musicales et un rôle d’interprète. Les dérivés de la cible et les noms propres sont écartés.",
+      "evidenceSha256": "f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed"
+    },
+    {
+      "targetId": 1891,
+      "decision": "approved",
+      "hints": ["championnats", "décathlon", "saut"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes valident un contexte de compétition et deux disciplines reconnaissables. Les formes dérivées de la cible sont exclues.",
+      "evidenceSha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3"
+    }
+  ],
+  "reviews": [
+    {
+      "actor": "astra-editorial-first-half",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T08:30:00.000Z",
+      "groups": {
+        "nature.low": [
+          541,
+          1181,
+          1305,
+          834,
+          1677,
+          2077,
+          2106,
+          2122,
+          1619,
+          1344,
+          2069,
+          1767,
+          1502,
+          1987,
+          898,
+          1488
+        ],
+        "nature.medium": [
+          1572,
+          703,
+          493,
+          372,
+          848
+        ],
+        "lieux.low": [
+          69,
+          198,
+          91,
+          140,
+          239,
+          199,
+          327,
+          502,
+          648,
+          656,
+          865,
+          1467,
+          1562,
+          1627,
+          389
+        ],
+        "lieux.medium": [
+          240,
+          335,
+          536,
+          558,
+          826,
+          1051,
+          148,
+          811
+        ],
+        "objets.low": [
+          1660,
+          1797,
+          1836,
+          1504,
+          1523,
+          2147,
+          1984,
+          1629,
+          1817
+        ],
+        "objets.medium": [
+          379,
+          410,
+          764,
+          766,
+          819,
+          932,
+          940,
+          1017,
+          1021,
+          1752,
+          1235,
+          1134,
+          2184,
+          2146
+        ],
+        "personnes.low": [
+          252,
+          467,
+          598,
+          1294,
+          885,
+          213,
+          1969,
+          606,
+          1421,
+          1640,
+          1120,
+          1111,
+          526,
+          553,
+          2190,
+          1215,
+          1312
+        ],
+        "personnes.medium": [
+          151,
+          367,
+          421,
+          471
+        ],
+        "culture.low": [
+          223,
+          450,
+          935,
+          966,
+          1303,
+          1364,
+          2196,
+          1880,
+          2182,
+          1934,
+          1734,
+          1100,
+          1668,
+          1218
+        ],
+        "culture.medium": [
+          320,
+          517,
+          341,
+          1296,
+          1353,
+          624,
+          658,
+          683,
+          2007
+        ],
+        "société.low": [
+          1274,
+          118,
+          265,
+          2107,
+          1735,
+          1666,
+          1052,
+          1718,
+          1266,
+          1161,
+          1437
+        ],
+        "société.medium": [
+          1208,
+          965,
+          494,
+          1041
+        ],
+        "corps.low": [
+          1738,
+          1073,
+          1626,
+          1556,
+          43,
+          1955,
+          1064,
+          1116
+        ],
+        "corps.medium": [
+          383,
+          430,
+          852,
+          1213,
+          1896,
+          905,
+          554
+        ],
+        "sport.low": [
+          186,
+          1028,
+          837,
+          623,
+          1891,
+          631,
+          756,
+          375,
+          361,
+          520,
+          580,
+          1445,
+          477
+        ],
+        "sport.medium": [
+          1207
+        ],
+        "concepts.low": [
+          916,
+          1365,
+          1080,
+          933,
+          920,
+          1954,
+          809,
+          1563,
+          1072,
+          1042,
+          1170,
+          726,
+          515,
+          1244,
+          1121
+        ],
+        "concepts.medium": [
+          2208,
+          1154,
+          1054,
+          1231,
+          1813,
+          1267,
+          2176
+        ],
+        "quotidien.low": [
+          818,
+          1788,
+          1983,
+          1180,
+          1282,
+          1996,
+          1781,
+          1919,
+          1920,
+          1369,
+          800,
+          1832,
+          1212,
+          1280,
+          1074,
+          295,
+          124
+        ],
+        "quotidien.medium": [
+          281,
+          845,
+          1200,
+          1923,
+          1930,
+          121
+        ]
+      }
+    },
+    {
+      "actor": "astra-editorial-second-half",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T08:45:00.000Z",
+      "groups": {
+        "concepts.low": [
+          2265,
+          2269,
+          2381,
+          2433,
+          2435,
+          2437,
+          2455,
+          2479,
+          2498,
+          2548,
+          2635,
+          2680,
+          2740,
+          2770,
+          2902,
+          2954,
+          2961,
+          2989,
+          3008,
+          3020,
+          3034,
+          3073,
+          3090,
+          3192,
+          3235
+        ],
+        "concepts.medium": [
+          2515,
+          2522,
+          2569,
+          2598,
+          2798,
+          2810,
+          2811,
+          2851,
+          2953,
+          2976,
+          3000,
+          3044,
+          3115,
+          3254
+        ],
+        "personnes.low": [
+          2880,
+          2406,
+          2373,
+          2457,
+          2579,
+          2624,
+          2663,
+          2777,
+          2897,
+          2992,
+          3244,
+          3361,
+          3372,
+          3438,
+          3465,
+          3600,
+          3619,
+          3837,
+          3940,
+          4074,
+          4120,
+          4236,
+          4265
+        ],
+        "personnes.medium": [
+          2431,
+          2909,
+          2957,
+          2973,
+          3494,
+          3579,
+          3595,
+          4049,
+          4368
+        ],
+        "nature.low": [
+          2341,
+          2447,
+          2453,
+          2469,
+          2485,
+          2497,
+          2528,
+          2543,
+          2544,
+          2653,
+          2830,
+          2838,
+          2861,
+          3007,
+          3162,
+          3170,
+          3246,
+          3251,
+          3270,
+          3449,
+          3481,
+          3555,
+          3562,
+          3581,
+          3609,
+          3830,
+          4130,
+          4279,
+          4302
+        ],
+        "nature.medium": [
+          2345,
+          2443,
+          2786,
+          2843,
+          2896,
+          3056,
+          3260,
+          3577,
+          3692,
+          3928,
+          4160,
+          4358
+        ],
+        "lieux.low": [
+          2471,
+          2490,
+          2588,
+          2633,
+          2716,
+          2874,
+          2894,
+          2898,
+          3470,
+          3174,
+          3435,
+          3455,
+          3777,
+          3947,
+          3975,
+          3989,
+          4075,
+          4184,
+          4287,
+          4346
+        ],
+        "lieux.medium": [
+          2575,
+          2396,
+          2405,
+          2480,
+          2692,
+          2697,
+          3132,
+          3188,
+          3402,
+          3407,
+          3420,
+          3758,
+          4083,
+          4237
+        ],
+        "imaginaire.low": [
+          3305
+        ],
+        "imaginaire.medium": [
+          2721
+        ],
+        "science.medium": [
+          2912
+        ],
+        "matières.low": [
+          4021,
+          4025,
+          4201,
+          4227,
+          4255
+        ],
+        "matières.medium": [
+          3418,
+          4296
+        ],
+        "alimentation.low": [
+          4131,
+          4222
+        ],
+        "alimentation.medium": [
+          4247,
+          2734,
+          3789
+        ],
+        "objets.low": [
+          2317,
+          2339,
+          2523,
+          2571,
+          2632,
+          2886,
+          3223,
+          3215,
+          3214,
+          3552,
+          3724,
+          3768,
+          3986,
+          4133,
+          3776
+        ],
+        "objets.medium": [
+          2302,
+          2309,
+          2444,
+          2466,
+          2502,
+          2537,
+          2642,
+          2801,
+          2920,
+          3203,
+          3397,
+          3414,
+          3446,
+          3565,
+          3644,
+          3818,
+          3934,
+          4012,
+          4047,
+          4188,
+          4226
+        ],
+        "anatomie.medium": [
+          3417
+        ],
+        "transport.low": [
+          4073,
+          3646
+        ]
+      }
+    }
+  ]
+}

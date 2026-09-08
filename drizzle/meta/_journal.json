@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1788853230459,
+      "tag": "0000_young_eternity",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788854520686,
+      "tag": "0001_wakeful_zuras",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788854999181,
+      "tag": "0002_colossal_spirit",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1788855382398,
+      "tag": "0003_same_morlun",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1788855736004,
+      "tag": "0004_minor_ravenous",
+      "breakpoints": true
+    }
+  ]
+}

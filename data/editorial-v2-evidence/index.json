@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 2,
+  "format": "BEI2-editorial-evidence-index",
+  "corpus": {
+    "id": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+    "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+    "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+    "dictionarySize": 1013881,
+    "dimensions": 300
+  },
+  "entries": [
+    {
+      "targetId": 502,
+      "file": "evidence-0000000502-db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2.json",
+      "sha256": "db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2",
+      "capturedAt": "2026-09-08T14:08:07.760Z",
+      "revisions": []
+    },
+    {
+      "targetId": 541,
+      "file": "evidence-0000000541-f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605.json",
+      "sha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605",
+      "capturedAt": "2026-09-08T10:59:12.400Z",
+      "revisions": []
+    },
+    {
+      "targetId": 800,
+      "file": "evidence-0000000800-dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b.json",
+      "sha256": "dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b",
+      "capturedAt": "2026-09-08T14:53:00.876Z",
+      "revisions": []
+    },
+    {
+      "targetId": 834,
+      "file": "evidence-0000000834-307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b.json",
+      "sha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+      "capturedAt": "2026-09-08T13:18:22.225Z",
+      "revisions": [
+        {
+          "file": "evidence-0000000834-fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f.json",
+          "sha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f",
+          "capturedAt": "2026-09-08T11:01:37.821Z"
+        }
+      ]
+    },
+    {
+      "targetId": 898,
+      "file": "evidence-0000000898-ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d.json",
+      "sha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+      "capturedAt": "2026-09-08T13:23:38.477Z",
+      "revisions": [
+        {
+          "file": "evidence-0000000898-c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f.json",
+          "sha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f",
+          "capturedAt": "2026-09-08T11:55:45.270Z"
+        }
+      ]
+    },
+    {
+      "targetId": 1028,
+      "file": "evidence-0000001028-84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c.json",
+      "sha256": "84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c",
+      "capturedAt": "2026-09-08T14:05:40.782Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1181,
+      "file": "evidence-0000001181-8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41.json",
+      "sha256": "8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41",
+      "capturedAt": "2026-09-08T11:00:08.555Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1303,
+      "file": "evidence-0000001303-80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d.json",
+      "sha256": "80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d",
+      "capturedAt": "2026-09-08T14:00:56.126Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1305,
+      "file": "evidence-0000001305-b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e.json",
+      "sha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+      "capturedAt": "2026-09-08T13:17:31.265Z",
+      "revisions": [
+        {
+          "file": "evidence-0000001305-428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23.json",
+          "sha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23",
+          "capturedAt": "2026-09-08T11:00:53.594Z"
+        }
+      ]
+    },
+    {
+      "targetId": 1344,
+      "file": "evidence-0000001344-b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c.json",
+      "sha256": "b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c",
+      "capturedAt": "2026-09-08T11:04:38.772Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1365,
+      "file": "evidence-0000001365-f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc.json",
+      "sha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc",
+      "capturedAt": "2026-09-08T14:12:54.186Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1421,
+      "file": "evidence-0000001421-f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735.json",
+      "sha256": "f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735",
+      "capturedAt": "2026-09-08T14:03:18.412Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1488,
+      "file": "evidence-0000001488-7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5.json",
+      "sha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5",
+      "capturedAt": "2026-09-08T11:57:37.950Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1502,
+      "file": "evidence-0000001502-ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d.json",
+      "sha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d",
+      "capturedAt": "2026-09-08T11:51:45.251Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1556,
+      "file": "evidence-0000001556-7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a.json",
+      "sha256": "7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a",
+      "capturedAt": "2026-09-08T14:50:34.834Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1572,
+      "file": "evidence-0000001572-969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397.json",
+      "sha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+      "capturedAt": "2026-09-08T13:24:20.394Z",
+      "revisions": [
+        {
+          "file": "evidence-0000001572-ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636.json",
+          "sha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636",
+          "capturedAt": "2026-09-08T11:59:36.104Z"
+        }
+      ]
+    },
+    {
+      "targetId": 1619,
+      "file": "evidence-0000001619-877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67.json",
+      "sha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67",
+      "capturedAt": "2026-09-08T11:46:03.109Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1677,
+      "file": "evidence-0000001677-fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3.json",
+      "sha256": "fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3",
+      "capturedAt": "2026-09-08T11:02:22.551Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1718,
+      "file": "evidence-0000001718-347d36c7799db14f997b7050152be129d6f8f66851906a427e5aebc1ff73966b.json",
+      "sha256": "347d36c7799db14f997b7050152be129d6f8f66851906a427e5aebc1ff73966b",
+      "capturedAt": "2026-09-08T14:48:13.561Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1767,
+      "file": "evidence-0000001767-4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450.json",
+      "sha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+      "capturedAt": "2026-09-08T13:19:57.425Z",
+      "revisions": [
+        {
+          "file": "evidence-0000001767-4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa.json",
+          "sha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa",
+          "capturedAt": "2026-09-08T11:49:48.749Z"
+        }
+      ]
+    },
+    {
+      "targetId": 1891,
+      "file": "evidence-0000001891-264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3.json",
+      "sha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3",
+      "capturedAt": "2026-09-08T15:05:10.190Z",
+      "revisions": []
+    },
+    {
+      "targetId": 1987,
+      "file": "evidence-0000001987-906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45.json",
+      "sha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+      "capturedAt": "2026-09-08T13:22:56.242Z",
+      "revisions": [
+        {
+          "file": "evidence-0000001987-1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421.json",
+          "sha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421",
+          "capturedAt": "2026-09-08T11:53:40.760Z"
+        }
+      ]
+    },
+    {
+      "targetId": 2069,
+      "file": "evidence-0000002069-125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b.json",
+      "sha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+      "capturedAt": "2026-09-08T13:19:12.066Z",
+      "revisions": [
+        {
+          "file": "evidence-0000002069-f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc.json",
+          "sha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc",
+          "capturedAt": "2026-09-08T11:47:55.254Z"
+        }
+      ]
+    },
+    {
+      "targetId": 2077,
+      "file": "evidence-0000002077-effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9.json",
+      "sha256": "effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9",
+      "capturedAt": "2026-09-08T11:03:06.412Z",
+      "revisions": []
+    },
+    {
+      "targetId": 2106,
+      "file": "evidence-0000002106-9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5.json",
+      "sha256": "9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5",
+      "capturedAt": "2026-09-08T11:03:52.880Z",
+      "revisions": []
+    },
+    {
+      "targetId": 2122,
+      "file": "evidence-0000002122-fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d.json",
+      "sha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d",
+      "capturedAt": "2026-09-08T11:07:51.637Z",
+      "revisions": []
+    },
+    {
+      "targetId": 3223,
+      "file": "evidence-0000003223-f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed.json",
+      "sha256": "f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed",
+      "capturedAt": "2026-09-08T15:02:44.496Z",
+      "revisions": []
+    },
+    {
+      "targetId": 3646,
+      "file": "evidence-0000003646-5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a.json",
+      "sha256": "5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a",
+      "capturedAt": "2026-09-08T14:55:28.525Z",
+      "revisions": []
+    },
+    {
+      "targetId": 3724,
+      "file": "evidence-0000003724-71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690.json",
+      "sha256": "71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690",
+      "capturedAt": "2026-09-08T14:10:30.815Z",
+      "revisions": []
+    },
+    {
+      "targetId": 4025,
+      "file": "evidence-0000004025-52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73.json",
+      "sha256": "52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73",
+      "capturedAt": "2026-09-08T15:00:17.165Z",
+      "revisions": []
+    },
+    {
+      "targetId": 4131,
+      "file": "evidence-0000004131-4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032.json",
+      "sha256": "4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032",
+      "capturedAt": "2026-09-08T13:53:57.607Z",
+      "revisions": []
+    },
+    {
+      "targetId": 4201,
+      "file": "evidence-0000004201-bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250.json",
+      "sha256": "bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250",
+      "capturedAt": "2026-09-08T13:58:22.313Z",
+      "revisions": []
+    },
+    {
+      "targetId": 4222,
+      "file": "evidence-0000004222-26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954.json",
+      "sha256": "26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954",
+      "capturedAt": "2026-09-08T14:57:55.664Z",
+      "revisions": []
+    }
+  ]
+}
