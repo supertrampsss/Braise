@@ -3,6 +3,9 @@
 ## Séparation
 
 - `components/game.tsx` : interface et orchestration des parties locales.
+- `components/ad-placement.tsx` : réservation publicitaire statique, séparée du jeu.
+- `lib/game-feedback.ts` : événements visuels transitoires, identifiés et jamais persistés.
+- `lib/advertising.ts` : décision publicitaire pure, actuellement non configurée et toujours ignorée.
 - `lib/legacy-storage.ts` : lecture, validation et écriture compatibles avec les clés `braise.v1.*`.
 - `lib/game-contracts.ts` : références publiques versionnées, résultat sémantique et contrats des extensions.
 - `lib/game-types.ts` : contrat partagé et calcul de série.
@@ -34,9 +37,17 @@ Une limitation par IP et fenêtre d'une minute protège contre les rafales simpl
 
 ## UX
 
-La requête de chargement la plus récente est la seule autorisée à remplacer la partie. Une réponse devenue obsolète ne modifie pas une autre partie. Les modifications d'épingles et de son sont désactivées pendant un POST pour éviter de perdre un changement. Une nouvelle saisie préparée pendant l'analyse n'est pas effacée par le résultat précédent.
+La requête de chargement la plus récente est la seule autorisée à remplacer la partie. Une réponse devenue obsolète ne modifie pas une autre partie. Les modifications d'épingles et de son sont désactivées pendant un POST pour éviter de perdre un changement. Une révision de saisie est capturée au départ : toute édition, même si elle revient au même texte, est préservée à la réponse.
+
+Les effets `guessAccepted`, `bestImproved` et `puzzleWon` naissent uniquement après une réponse valide de la partie courante. Leur identifiant lie partie, numéro d'essai et type. Ils sont consommés par leur propre minuterie, annulés au changement de partie et absents des sauvegardes. Une victoire restaurée conserve son résultat, sans confettis, son, toast ni focus forcé. Les lignes restaurées ne rejouent pas leur animation d'entrée.
+
+Le champ reste modifiable pendant l'analyse. Les rappels de focus sont annulés avec la partie et n'agissent pas lorsqu'une fenêtre est ouverte ou que la personne a déplacé son focus. Le plateau fournit une cible permanente au lien d'évitement. Les succès non victorieux ont une annonce textuelle ; la victoire soumise donne le focus à son titre.
 
 Le son est désactivé par défaut. `prefers-reduced-motion` réduit les animations. Aucune dépendance externe de police, vidéo ou image n'est nécessaire au premier écran.
+
+## Publicité
+
+`AdDecision` reste le seul contrat partagé. En l'absence de fournisseur, politique de consentement et fréquence réels, `decideAd` renvoie toujours `skip/not-configured`, avec disponibilité et fréquence fausses et consentement inconnu. Le composant réservé exécute cette décision mais ne charge aucun script, cadre, pixel, lien ni contrôle. Il n'accède pas aux mots, scores, parties ou sauvegardes. L'activation commerciale et sa mesure restent un lot séparé.
 
 ## Limites de cette version
 

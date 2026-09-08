@@ -50,6 +50,7 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/BASELINE.json` : référence du corpus et des identités V1 à préserver.
 - `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
 - `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
+- `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
 
 Le calendrier et les seeds V1 sont désormais isolés du futur catalogue. Les références de partie versionnées sont exposées et contrôlées par l'API, avec maintien des requêtes V1 sans référence. Les lecteurs de sauvegarde utilisés par l'interface sont couverts par des fixtures synthétiques aux scores réels.
 

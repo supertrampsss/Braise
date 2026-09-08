@@ -11,5 +11,7 @@
 - Vérifier les modifications de calendrier, normalisation et API avec npm test.
 - Vérifier TypeScript et la construction après une modification du code.
 - Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.
+- Garder les effets visuels transitoires hors des sauvegardes et les déclencher uniquement depuis une réponse acceptée de la partie courante.
 - Les annonces sont réservées, aucune régie ne doit être activée avec des identifiants fictifs.
+- Toute publicité passe par lib/advertising.ts ; sans configuration commerciale réelle, la décision reste skip/not-configured.
 - Réutiliser l'identité Sites existante. Ne pas créer de Site de remplacement pour publier une correction.
