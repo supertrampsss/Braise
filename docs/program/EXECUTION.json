@@ -7,8 +7,8 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B4",
-  "next_action": "Terminer B4 avec un export lisible et un import contrôlé, sans écrasement silencieux, avec validation du format et messages de conflit explicites.",
+  "next_phase": "B1",
+  "next_action": "Reprendre la qualification du stockage R2 réel et de la mémoire Worker. Si le binding reste indisponible, préparer la chaîne de validation B2 sans déclarer le catalogue étendu ni R2 terminés.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B4d-20260908T034122Z",
-    "acquired_at": "2026-09-08T03:41:22Z",
-    "expires_at": "2026-09-08T05:09:40Z",
-    "base_commit": "90dd69a80efa9d6d106a0353c52052f7f5f16254",
-    "phase": "B4"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -68,7 +62,7 @@
       "depends_on": [
         "B0"
       ],
-      "status": "partial",
+      "status": "verified",
       "evidence": [
         "docs/program/B1A-DELIVERY.md",
         "docs/program/B1A-MEASUREMENTS.json",
@@ -149,15 +143,19 @@
         "docs/program/B4C-DELIVERY.md",
         "Weekly progress derives only from dated V2 facts and effective wins",
         "Permanent cosmetics use monotone, deterministic reward identities independent from advertising",
-        "60 tests passed; TypeScript passed; production build passed",
+        "docs/program/B4D-DELIVERY.md",
+        "Readable profile export and previewed atomic import preserve local and historical facts",
+        "Strict validation rejects incompatible V1 boundaries, forged rewards and malformed transfers before mutation",
+        "77 tests passed; TypeScript passed; production build passed",
         "Independent gpt-6-astra max review: no remaining local blocking issue"
       ],
       "blockers": [],
-      "implementation": "b4a_b4b_b4c_completed",
+      "implementation": "completed",
       "automated_checks": "passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
-      "verified_source_commit": "c8d26eb48609423deacca22afb01450672c562fb"
+      "verified_source_commit": "6431c30204a51e497884c4621039953a46ab7e02",
+      "completed_at": "2026-09-08T04:36:00.000Z"
     },
     {
       "id": "B5",
@@ -303,20 +301,20 @@
     "product_code_changed": true,
     "browser_qa_performed": false
   },
-  "last_checkpoint": "B4c-weekly-ritual-verified",
+  "last_checkpoint": "B4d-profile-transfer-verified",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed_B3_passed_B4a_passed_B4b_passed_B4c_passed",
+    "automated_checks": "B0_passed_B1a_local_passed_B3_passed_B4_passed",
     "browser_validation": "not_requested",
     "publication": "v1_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "c8d26eb48609423deacca22afb01450672c562fb",
+  "last_verified_source_commit": "6431c30204a51e497884c4621039953a46ab7e02",
   "last_run": {
-    "completed_at": "2026-09-08T03:13:34.601Z",
+    "completed_at": "2026-09-08T04:36:00.000Z",
     "phase": "B4",
     "progress": true,
-    "source_commit": "c8d26eb48609423deacca22afb01450672c562fb",
+    "source_commit": "6431c30204a51e497884c4621039953a46ab7e02",
     "delegation": {
       "orchestrator": {
         "model": "gpt-6-astra",
@@ -324,23 +322,23 @@
       },
       "specialists": [
         {
-          "mission": "Weekly progression and persistence review",
+          "mission": "Profile transfer storage and migration review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "Weekly ritual UX and accessibility review",
+          "mission": "Profile transfer UX and accessibility review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "Weekly quality and regression review",
+          "mission": "Profile transfer adversarial quality review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B4c-20260908T024017Z"
+    "lease_owner": "braise-B4d-20260908T034122Z"
   }
 }
