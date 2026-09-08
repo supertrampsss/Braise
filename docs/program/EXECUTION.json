@@ -85,7 +85,7 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "157_tests_typecheck_build_and_57_real_evidence_batched_exhaustive_verification_passed",
+    "automated_checks": "157_tests_typecheck_build_targeted_lint_and_real_private_B6_hosted_D1_qualification_passed",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
@@ -98,27 +98,22 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B2i-bounded-exhaustive-verification",
+  "last_checkpoint": "B6d-private-hosted-authority-qualification",
   "last_run": {
-    "completed_at": "2026-09-08T22:04:22.525Z",
-    "phase": "B2",
+    "completed_at": "2026-09-08T23:11:38.606Z",
+    "phase": "B6",
     "progress": true,
-    "source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
+    "source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
     "publication": {
       "status": "unchanged",
       "version": 7
     },
     "main_model_override_performed": false
   },
-  "last_verified_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
-  "lease": {
-    "owner": "root-b2j-hosted-qualification",
-    "acquired_at": "2026-09-08T22:47:28.000Z",
-    "expires_at": "2026-09-09T00:17:28.000Z",
-    "base_commit": "3477dc827832af94a8a39ca1bf6e2bb6a891b401"
-  },
-  "next_action": "Poursuivre les rotations bornées jusqu'à 365 cibles approuvées pour le calendrier et 400 pour l'objectif principal. Remplacer ou réexaminer avec de nouvelles preuves les trois candidats rejetés pour atteindre 400 approbations. Produire ensuite le calendrier immuable, puis qualifier R2 et le Worker avant activation V2. Préserver l'interface publiée ; les dix maquettes restent des propositions.",
-  "next_phase": "B2",
+  "last_verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
+  "lease": null,
+  "next_action": "Qualifier sur l'hébergement privé les parcours cercles et duels, puis studio, avec données QA identifiées, assertions de droits et nettoyage. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
+  "next_phase": "B7",
   "phases": [
     {
       "automated_checks": "passed",
@@ -315,10 +310,8 @@
       "verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26"
     },
     {
-      "automated_checks": "127_tests_typecheck_build_passed_D1_schema_provisioned",
-      "blockers": [
-        "Authenticated hosted-route qualification pending; bypass-token creation requires explicit user request"
-      ],
+      "automated_checks": "157_tests_typecheck_build_targeted_lint_and_private_hosted_session_game_recovery_concurrency_passed",
+      "blockers": [],
       "browser_validation": "not_requested",
       "depends_on": [
         "B1",
@@ -330,17 +323,20 @@
         "gpt-6-astra max source-only review: no local blocker",
         "docs/program/B6B-DELIVERY.md",
         "docs/program/B6C-DELIVERY.md",
-        "Private v4 succeeded; native database overview confirms DB and all five tables"
+        "Private v4 succeeded; native database overview confirms DB and all five tables",
+        "docs/program/B6D-DELIVERY.md",
+        "docs/program/B6D-MEASUREMENTS.json",
+        "Private v7 hosted D1 accepted exactly one of two same-revision guesses and preserved the exact game through recovery",
+        "gpt-6-astra max review: failure output redacted and session cleanup verified"
       ],
-      "external_dependencies": [
-        "Hosted authenticated API qualification"
-      ],
+      "completed_at": "2026-09-08T23:11:38.606Z",
+      "external_dependencies": [],
       "id": "B6",
       "implementation": "guest_sessions_atomic_games_and_confirmed_recovery",
-      "publication": "published_owner_private_v4",
-      "status": "partial",
+      "publication": "qualified_on_current_owner_private_v7",
+      "status": "verified",
       "title": "Identité et parties serveur",
-      "verified_source_commit": "4fd4e9b27a16ca1c60041419f6e0172f3ad45394"
+      "verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa"
     },
     {
       "automated_checks": "passed_local_sqlite",
