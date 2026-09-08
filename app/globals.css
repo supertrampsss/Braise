@@ -476,3 +476,17 @@ h1 > span { color: #ff754d; }
   .level-pill { display: none; }
   .heat-scene { width: 280px; }
 }
+/* Collections reuse the charcoal and ember game palette. */
+.collection-picker { margin-bottom: 1rem; border: 1px solid #ffffff24; border-radius: 1rem; background: #ffffff04; }
+.collection-picker summary { cursor: pointer; min-height: 48px; padding: 1rem; display: flex; align-items: center; gap: .75rem; font-size: 1rem; }
+.collection-picker summary > span { margin-left: auto; font-variant-numeric: tabular-nums; }
+.collection-content { padding: 0 1rem 1rem; }
+.collection-content p { font-size: 1rem; line-height: 1.5; margin-bottom: 1rem; }
+.collection-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; margin-bottom: 1rem; }
+.collection-grid button { border: 1px solid #ffffff24; border-radius: .75rem; padding: .75rem; min-height: 64px; text-align: left; background: transparent; color: inherit; }
+.collection-grid button:hover, .collection-grid button[aria-current] { border-color: #ff754d; background: #ff754d14; }
+.collection-grid small { display: flex; gap: .25rem; align-items: center; font-size: .875rem; margin-top: .25rem; }
+.collection-grid button:disabled { opacity: .5; cursor: wait; }
+.collection-picker :focus-visible { outline: 2px solid #ff754d; outline-offset: 3px; }
+.collection-note { opacity: .75; }
+@media (max-width: 600px) { .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

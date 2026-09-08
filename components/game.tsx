@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import AdPlacement from "@/components/ad-placement";
 import { CosmeticPicker, WeeklyRitualCard } from "@/components/weekly-ritual";
 import { ProfileTransfer } from "@/components/profile-transfer";
+import { CollectionPicker } from "@/components/collection-picker";
 import { getStreak, warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
@@ -338,6 +339,10 @@ export default function Game() {
       <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
       <TabsContent value={tabMode} className="game-tab-content">
+      <CollectionPicker wins={profile.wins} seed={mode === "challenge" || mode === "free" ? puzzle?.seed : undefined} disabled={busy || loading} onSelect={seed => {
+        const url = new URL(window.location.href); url.searchParams.delete("archive"); url.searchParams.set("defi", seed);
+        window.history.replaceState(null, "", url); void loadPuzzle("challenge", seed);
+      }} />
       <section className={`archive-access ${archiveOpen || mode === "archive" ? "is-open" : ""}`} aria-label="Archives des mots quotidiens">
         {!archiveOpen && mode !== "archive" ? <button className="archive-reveal" type="button" onClick={revealArchives} disabled={busy}><CalendarDays size={18} /><span><strong>Archives</strong><small>Rejouer un ancien mot</small></span><ChevronRight size={16} /></button> : <form className="archive-form" onSubmit={openArchive}>
           <label htmlFor="archive-date">Date du mot</label>
