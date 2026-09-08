@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B1",
-  "next_action": "Produire l'index de présence paginé et l'éviction sûre du cache de cibles. Dès que la source complète autorisée est disponible, exécuter B1b et B1c sur son volume réel, enregistrer les mesures exactes, puis qualifier R2 et le Worker avant toute activation produit. Conserver V1 immuable.",
+  "next_action": "Obtenir la source française complète autorisée, exécuter B1b, BPI2 et B1c sur son volume réel, enregistrer les mesures exactes, puis provisionner et qualifier R2 ainsi que le lecteur Worker avant toute activation produit. Conserver V1 immuable.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B1d-index-eviction-20260908T061745Z",
-    "acquired_at": "2026-09-08T06:17:45Z",
-    "expires_at": "2026-09-08T07:12:45Z",
-    "base_commit": "f6f806081b343be989b45dd03e93e8ed097027f5",
-    "phase": "B1"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -75,25 +69,28 @@
         "docs/program/B1B-CORPUS-DIRECTIVE.md",
         "docs/program/B1B-DELIVERY.md",
         "docs/program/B1C-DELIVERY.md",
+        "docs/program/B1D-DELIVERY.md",
         "120 immutable BRZ1 shards generated from the frozen V1 source",
         "3,600,000 scores, ranks and stable order positions verified",
         "Complete-source local ingestion CLI and independent verifier",
         "Paged BRT2 target generator and independent exhaustive verifier",
-        "103 tests passed; TypeScript passed; production build passed",
+        "Exact paged BPI2 presence index and independent exhaustive verifier",
+        "Shared-reader and exclusive-mutator target cache guard with resumable explicit eviction",
+        "109 tests passed; TypeScript passed; production build passed",
         "Compiled Worker 1,128,880 bytes; V1 score sentinel absent",
-        "Independent gpt-6-astra max review: no remaining local target-generation blocker"
+        "Independent gpt-6-astra max review: no remaining local B1d blocker"
       ],
       "blockers": [
         "Real R2 binding is not provisioned or qualified",
         "Cloudflare Worker runtime memory remains unqualified",
         "Complete fastText source has not been ingested in this environment",
-        "Real full-corpus measurements, presence index and safe target-cache eviction remain"
+        "Real full-corpus measurements remain"
       ],
-      "implementation": "b1a_completed_b1b_ingestion_and_b1c_target_pipelines_local_verified",
-      "automated_checks": "local_ingestion_and_target_pipelines_passed",
+      "implementation": "b1a_completed_b1b_ingestion_b1c_targets_b1d_index_and_eviction_local_verified",
+      "automated_checks": "local_ingestion_target_index_and_eviction_pipelines_passed",
       "browser_validation": "not_requested",
       "publication": "b1a_published_owner_private_v2",
-      "verified_source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
+      "verified_source_commit": "471efdcd3d78230a8fefd3f11903bffca8171011",
       "external_dependencies": [
         "R2 binding provisioned and accessible"
       ]
@@ -318,7 +315,7 @@
     "browser_qa_performed": false
   },
   "catalogue_directive": {
-    "status": "ingestion_and_target_pipelines_local_verified_source_pending",
+    "status": "ingestion_target_index_and_eviction_pipelines_local_verified_source_pending",
     "specification": "docs/program/B1B-CORPUS-DIRECTIVE.md",
     "current": {
       "source_rows_read": 50000,
@@ -335,21 +332,21 @@
       "quadratic_matrix": false
     }
   },
-  "last_checkpoint": "B1c-target-generation-local-verified",
+  "last_checkpoint": "B1d-index-and-eviction-local-verified",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B3_passed_B4_passed",
+    "automated_checks": "B0_passed_B1a_local_passed_B1b_pipeline_passed_B1c_pipeline_passed_B1d_pipeline_passed_B3_passed_B4_passed",
     "browser_validation": "not_requested",
     "publication": "v2_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "0f017286a21b1759701143ca174b54b347d2658e",
+  "last_verified_source_commit": "471efdcd3d78230a8fefd3f11903bffca8171011",
   "last_run": {
-    "completed_at": "2026-09-08T06:12:40.000Z",
+    "completed_at": "2026-09-08T06:42:10.000Z",
     "phase": "B1",
     "progress": true,
-    "source_commit": "0f017286a21b1759701143ca174b54b347d2658e",
-    "verified_product_commit": "0f017286a21b1759701143ca174b54b347d2658e",
+    "source_commit": "471efdcd3d78230a8fefd3f11903bffca8171011",
+    "verified_product_commit": "471efdcd3d78230a8fefd3f11903bffca8171011",
     "publication": {
       "status": "succeeded",
       "audience": "owner_private",
@@ -366,18 +363,23 @@
       },
       "specialists": [
         {
-          "mission": "Paged target-score engine and bounded staging review",
+          "mission": "Exact paged presence index review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         },
         {
-          "mission": "Target generation adversarial quality review",
+          "mission": "Safe target-cache eviction review",
+          "model": "gpt-6-astra",
+          "reasoning_effort": "low"
+        },
+        {
+          "mission": "B1d adversarial quality review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B1c-target-segments-20260908T054544Z"
+    "lease_owner": "braise-B1d-index-eviction-20260908T061745Z"
   }
 }
