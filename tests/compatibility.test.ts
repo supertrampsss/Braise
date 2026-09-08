@@ -2,18 +2,24 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import reference from "./fixtures/v1-reference.json";
 import saves from "./fixtures/v1-saves.json";
 import baseline from "../docs/program/BASELINE.json";
 import manifest from "../data/legacy-v1.json";
-import { evaluateWord, exportDataset, findWord, getPuzzle } from "../lib/semantic";
+import dataset from "../data/semantic-fr.json";
+import { evaluateWord, findWord, getPuzzle } from "../lib/semantic";
+import { setSemanticObjectLoaderForTests } from "../lib/semantic-storage";
 import { getLegacyPuzzle, resolveLegacyTargetIndexes } from "../lib/legacy-puzzles";
 import { LEGACY_VERSIONS, samePuzzleRef, type EvaluationResponse } from "../lib/game-contracts";
 import { EMPTY_PROFILE, readLocal, restoreLegacyGame, restoreLegacyProfile, writeLocal } from "../lib/legacy-storage";
 import type { Mode, Puzzle } from "../lib/game-types";
 import { GET, POST } from "../app/api/game/route";
 
-const dataset = exportDataset();
+setSemanticObjectLoaderForTests(async key => {
+  try { const value = await readFile(`public/${key}`); return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength); }
+  catch { return null; }
+});
 const post = (body: unknown) => POST(new Request("https://braise.test/api/game", { method: "POST", body: JSON.stringify(body) }));
 
 test("the frozen V1 corpus and target identities match the original source fingerprint", () => {
@@ -56,13 +62,13 @@ test("V1 selection survives a reordered and extended target catalogue", () => {
   assert.throws(() => resolveLegacyTargetIndexes([...dataset.puzzles, dataset.puzzles[0]]), /Duplicate/);
 });
 
-test("real V1 temperatures and ranks match independently captured samples for all 120 targets", () => {
+test("real V1 temperatures and ranks match independently captured samples for all 120 targets", async () => {
   for (const fixture of reference.scores) {
     const targetIndex = dataset.puzzles.findIndex(p => p.word === fixture.target);
     for (const expected of fixture.evaluations) {
       const wordIndex = findWord(expected.word);
       assert.notEqual(wordIndex, undefined);
-      assert.deepEqual(evaluateWord(targetIndex, wordIndex!), expected);
+      assert.deepEqual(await evaluateWord(targetIndex, wordIndex!), expected);
     }
   }
 });
@@ -106,6 +112,20 @@ test("calendar references and hints are checked against the same canonical puzzl
   for (const invalidSeed of ["2147483648", "00000000000", "-1", "1.0", ""]) {
     assert.equal((await GET(new Request("https://braise.test/api/game?mode=free&seed=" + invalidSeed))).status, 400);
   }
+});
+
+test("a semantic storage failure returns 503 without inventing a result", async () => {
+  const { publicPuzzle } = getPuzzle("free", "1234");
+  setSemanticObjectLoaderForTests(async () => null);
+  const originalError = console.error; console.error = () => {};
+  const response = await post({ mode: "free", seed: "1234", puzzleId: publicPuzzle.id, puzzleRef: publicPuzzle.ref, action: "guess", word: "livre" }).finally(() => { console.error = originalError; });
+  assert.equal(response.status, 503);
+  const body = await response.json() as Record<string, unknown>;
+  assert.equal(Object.hasOwn(body, "temperature"), false); assert.equal(Object.hasOwn(body, "rank"), false);
+  setSemanticObjectLoaderForTests(async key => {
+    try { const value = await readFile(`public/${key}`); return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength); }
+    catch { return null; }
+  });
 });
 
 test("synthetic V1 saves restore through the actual UI reader with no storage writes or new wins", () => {

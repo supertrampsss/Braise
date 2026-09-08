@@ -1,10 +1,16 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { getPuzzle, parisDate, nextParisMidnight, findWord, evaluateWord, nextHint, exportDataset } from "../lib/semantic";
+import { readFile } from "node:fs/promises";
+import dataset from "../data/semantic-fr.json";
+import { getPuzzle, parisDate, nextParisMidnight, findWord, evaluateWord, nextHint } from "../lib/semantic";
+import { setSemanticObjectLoaderForTests } from "../lib/semantic-storage";
 import { getStreak } from "../lib/game-types";
 import { GET, POST } from "../app/api/game/route";
 
-const dataset = exportDataset();
+setSemanticObjectLoaderForTests(async key => {
+  try { const value = await readFile(`public/${key}`); return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength); }
+  catch { return null; }
+});
 const requestGuess = (fields: Record<string, unknown>) => new Request("https://braise.test/api/game", { method: "POST", body: JSON.stringify(fields) });
 
 test("same daily puzzle for everyone, all 120 targets visited before repeating", () => {
@@ -34,18 +40,18 @@ test("challenge and free share the exact puzzle, without answer in public metada
   assert.equal(Object.hasOwn(a.publicPuzzle, "scores"), false);
 });
 
-test("every answer wins, has rank 1 and its own score 100", () => {
-  dataset.puzzles.forEach((p, target) => {
+test("every answer wins, has rank 1 and its own score 100", async () => {
+  for (const [target, p] of dataset.puzzles.entries()) {
     const word = findWord(p.word); assert.notEqual(word, undefined);
-    const result = evaluateWord(target, word!);
+    const result = await evaluateWord(target, word!);
     assert.equal(result.found, true); assert.equal(result.rank, 1); assert.equal(result.temperature, 100);
-  });
+  }
 });
 
-test("real semantic scores rank ocean closer to sea than cheese", () => {
+test("real semantic scores rank ocean closer to sea than cheese", async () => {
   const target = dataset.puzzles.findIndex(p => p.word === "mer");
-  const ocean = evaluateWord(target, findWord("océan")!);
-  const cheese = evaluateWord(target, findWord("fromage")!);
+  const ocean = await evaluateWord(target, findWord("océan")!);
+  const cheese = await evaluateWord(target, findWord("fromage")!);
   assert.ok(ocean.temperature > cheese.temperature + 30);
   assert.ok(ocean.rank < cheese.rank);
   assert.equal(findWord("  ORDINATEUR "), findWord("ordinateur"));
@@ -53,15 +59,15 @@ test("real semantic scores rank ocean closer to sea than cheese", () => {
   assert.equal(findWord("bibliotheque"), findWord("bibliothèque"));
 });
 
-test("hints are real valid words, never the answer, never an existing guess", () => {
-  dataset.puzzles.forEach((p, target) => {
+test("hints are real valid words, never the answer, never an existing guess", async () => {
+  for (const [target, p] of dataset.puzzles.entries()) {
     const used = ["justice", "musique", "sport", "livre", "enfant"];
     for (let level = 0; level < 3; level++) {
-      const hint = nextHint(target, level, used);
+      const hint = await nextHint(target, level, used);
       assert.ok(hint); assert.notEqual(hint.word, p.word); assert.ok(!used.includes(hint.word));
       assert.equal(hint.found, false); used.push(hint.word);
     }
-  });
+  }
 });
 
 test("invalid words never receive made-up semantic scores; errors preserve protocol", async () => {

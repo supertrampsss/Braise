@@ -16,6 +16,8 @@ Le déploiement Sites utilise l'identité existante de `.openai/hosting.json`. L
 
 30 000 entrées françaises filtrées, 120 cibles courantes. Scores réels issus de fastText Wikipedia français, 300 dimensions, pré-calculés par similarité cosinus et quantifiés à 1/10 000. Le serveur expose une proposition à la fois ; le gros corpus n'est pas envoyé au chargement du jeu.
 
+La matrice V1 est compilée en 120 segments binaires immuables par `npm run semantic:shards`. Scores, rangs et ordre sont pré-calculés, puis chaque objet est contrôlé par empreinte avant usage. Le cache serveur est borné en octets et en lectures simultanées. Le Worker ne contient plus la matrice encodée. Les assets restent le transport provisoire tant que le binding R2 réel n'est pas configuré et qualifié.
+
 Le rang porte sur le dictionnaire de Braise. Certaines formes rares ou fléchies peuvent manquer. Les mots absents sont refusés explicitement, sans score inventé. Les cibles se répètent après 120 quotidiens ; le mode libre peut rencontrer des répétitions.
 
 `data/semantic-fr.json` contient les données dérivées, sous CC BY-SA 3.0, avec attribution et transformations. Voir `docs/DATA-LICENSE.md`. Une copie est proposée à `/semantic-data.json` pour la transparence de réutilisation. Elle dévoile la collection de cibles : ne pas utiliser cette V1 pour une compétition dotée ou un classement anti-triche.
@@ -47,7 +49,8 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/EXECUTION.json` : état vérifiable du programme.
 - `docs/program/BASELINE.json` : référence du corpus et des identités V1 à préserver.
 - `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
+- `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
 
 Le calendrier et les seeds V1 sont désormais isolés du futur catalogue. Les références de partie versionnées sont exposées et contrôlées par l'API, avec maintien des requêtes V1 sans référence. Les lecteurs de sauvegarde utilisés par l'interface sont couverts par des fixtures synthétiques aux scores réels.
 
-Pour reconstruire l'oracle historique, lancer `node scripts/capture-v1-fixtures.mjs`, puis `npm test`. Il repart du commit V1 conservé dans Git. Pour la comparaison mémoire locale, lancer ensuite `node scripts/measure-v1.mjs`. Les mesures Node ne valent pas validation de la limite mémoire du Worker.
+Pour reconstruire l'oracle historique, lancer `node scripts/capture-v1-fixtures.mjs`, puis `npm test`. Il repart du commit V1 conservé dans Git. Pour la comparaison mémoire locale, lancer ensuite `node scripts/measure-v1.mjs`. Elle écrit `docs/program/B1A-MEASUREMENTS.json`. Les mesures Node ne valent pas validation de la limite mémoire du Worker.

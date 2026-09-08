@@ -1,7 +1,8 @@
 // Server-only data path. Never import this module into a client component.
-import dataset from "@/data/semantic-fr.json";
+import dataset from "@/data/semantic-v1-index.json";
 import type { Mode } from "./game-types";
 import { getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
+import { targetSegment } from "./semantic-storage";
 export { parisDate, nextParisMidnight } from "./calendar";
 
 const words: string[] = dataset.words;
@@ -27,31 +28,13 @@ export function getPuzzle(mode: Mode, seed = "", now = new Date()) {
   const { publicPuzzle, legacyIndex } = getLegacyPuzzle(mode, seed, now);
   return { publicPuzzle, targetIndex: legacyTargetIndexes[legacyIndex] };
 }
-// Only decoded targets are bounded here; the full encoded V1 JSON still occupies memory.
-// B1 replaces that retained matrix with versioned shards and a byte-bounded cache.
-const scoreCache = new Map<number, { scores: Int16Array; ranks: Uint32Array; order: number[] }>();
-function targetScores(targetIndex: number) {
-  const hit = scoreCache.get(targetIndex);
-  if (hit) return hit;
-  const bytes = Uint8Array.from(atob(targets[targetIndex].scores), c => c.charCodeAt(0));
-  const view = new DataView(bytes.buffer);
-  const scores = new Int16Array(words.length);
-  for (let i = 0; i < words.length; i++) scores[i] = view.getInt16(i * 2, true);
-  const order = Array.from({ length: words.length }, (_, i) => i).sort((a, b) => scores[b] - scores[a] || a - b);
-  const ranks = new Uint32Array(words.length);
-  order.forEach((index, rank) => { ranks[index] = rank > 0 && scores[index] === scores[order[rank - 1]] ? ranks[order[rank - 1]] : rank + 1; });
-  const value = { scores, ranks, order };
-  if (scoreCache.size >= 5) scoreCache.delete(scoreCache.keys().next().value!);
-  scoreCache.set(targetIndex, value);
-  return value;
-}
-export function evaluateWord(targetIndex: number, index: number) {
-  const { scores, ranks } = targetScores(targetIndex);
+export async function evaluateWord(targetIndex: number, index: number) {
+  const { scores, ranks } = await targetSegment(targetIndex);
   const found = words[index] === targets[targetIndex].word;
   return { word: words[index], temperature: found ? 100 : Math.min(99.9, Math.round(scores[index] / 10) / 10), rank: found ? 1 : ranks[index], found };
 }
-export function nextHint(targetIndex: number, hintLevel: number, guesses: string[]) {
-  const { order, ranks } = targetScores(targetIndex);
+export async function nextHint(targetIndex: number, hintLevel: number, guesses: string[]) {
+  const { order, ranks } = await targetSegment(targetIndex);
   const used = new Set(guesses.map(normalizeWord));
   const bestRank = guesses.reduce((best, word) => {
     const index = findWord(word); return index === undefined ? best : Math.min(best, ranks[index]);
@@ -64,4 +47,3 @@ export function nextHint(targetIndex: number, hintLevel: number, guesses: string
   return candidate === undefined ? null : evaluateWord(targetIndex, candidate);
 }
 export const datasetMetadata = dataset.meta;
-export function exportDataset() { return dataset; }
