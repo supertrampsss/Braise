@@ -8,7 +8,7 @@
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
   "next_phase": "B2",
-  "next_action": "Rendre la preuve éditoriale durable après éviction, puis répéter le cycle borné de génération, vérification et revue jusqu'à 365 cibles approuvées. Qualifier ensuite le transfert R2 et la mémoire Worker avant activation V2. Les validations HTTP authentifiées et inter-origines restent distinctes.",
+  "next_action": "Répéter le cycle borné génération, vérification exhaustive, capture durable, revue éditoriale et éviction jusqu'à 365 cibles approuvées. Qualifier ensuite le transfert R2 et la mémoire Worker avant activation V2. Les validations HTTP authentifiées et inter-origines restent distinctes.",
   "priority_override": {
     "authority": "Antoine, directive confirmée dans la conversation",
     "order": [
@@ -46,7 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": { "owner": "root-b2-durable-evidence", "expires_at": "2026-09-08T12:45:00Z", "phase": "B2" },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -119,22 +119,25 @@
         "docs/program/B1B-CORPUS-DIRECTIVE.md",
         "docs/program/B2A-DELIVERY.md",
         "docs/program/B2A-MEASUREMENTS.json",
+        "docs/program/B2B-DELIVERY.md",
+        "docs/program/B2B-MEASUREMENTS.json",
         "400 distinct corpus identities reviewed lexically by agents",
-        "Eight real target columns independently verified; six approved and two rejected on neighborhood quality",
-        "145 tests passed; TypeScript passed; production build passed",
-        "Independent gpt-6-astra max review: no remaining blocker within the inactive B2a slice"
+        "Nine durable content-addressed editorial evidence dossiers validated against the complete corpus",
+        "One real verified target eviction preserved its approval and the freed slot generated target 2122",
+        "Eight live target columns, one archived evidence dossier, seven approved and two rejected on neighborhood quality",
+        "146 tests passed; TypeScript passed; production build passed; real catalogue verification passed",
+        "Independent gpt-6-astra max review: all B2b blockers corrected"
       ],
       "blockers": [
-        "Durable editorial evidence after verified target eviction is not implemented",
-        "359 further approved targets are required before a 365-day edition can be created",
+        "358 further approved targets are required before a 365-day edition can be created",
         "R2 and Worker runtime qualification remain required before product activation"
       ],
-      "implementation": "inactive_editorial_workbench_400_reviewed_6_approved",
-      "automated_checks": "145_tests_typecheck_build_and_eight_real_target_verifications_passed",
+      "implementation": "inactive_editorial_workbench_400_reviewed_7_approved_durable_evidence",
+      "automated_checks": "146_tests_typecheck_build_nine_real_evidence_manifests_and_catalogue_exhaustive_verification_passed",
       "browser_validation": "not_requested",
       "publication": "not_published",
       "catalogue_requirement": "365 distinct approved targets with durable lexical, neighborhood, hint and numerical evidence bound to the verified complete corpus",
-      "verified_source_commit": "6400667dcaabb5d4e752abf4bb5ab7f987f7be29"
+      "verified_source_commit": "18f883131e4c95d60058fba8add3f44c47118941"
     },
     {
       "id": "B3",
@@ -384,32 +387,34 @@
       "quadratic_matrix": false
     },
     "editorial_workbench": {
-      "evidence": "docs/program/B2A-DELIVERY.md",
-      "measurements": "docs/program/B2A-MEASUREMENTS.json",
+      "evidence": "docs/program/B2B-DELIVERY.md",
+      "measurements": "docs/program/B2B-MEASUREMENTS.json",
       "selected": 400,
       "lexically_reviewed": 400,
       "verified_staging_columns": 8,
-      "approved": 6,
+      "verified_archived_evidence": 1,
+      "durable_evidence_dossiers": 9,
+      "approved": 7,
       "rejected_pending_broader_evidence": 2,
-      "remaining_approvals_for_calendar": 359,
+      "remaining_approvals_for_calendar": 358,
       "calendar_created": false,
       "product_active": false
     }
   },
-  "last_checkpoint": "B2A-editorial-workbench-6-approved",
+  "last_checkpoint": "B2B-durable-evidence-7-approved",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "145_tests_typecheck_build_passed_B2a_real_columns_independently_verified",
+    "automated_checks": "146_tests_typecheck_build_passed_B2b_real_evidence_and_catalogue_independently_verified",
     "browser_validation": "not_requested",
     "publication": "v5_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "6400667dcaabb5d4e752abf4bb5ab7f987f7be29",
+  "last_verified_source_commit": "18f883131e4c95d60058fba8add3f44c47118941",
   "last_run": {
-    "completed_at": "2026-09-08T10:24:03.000Z",
+    "completed_at": "2026-09-08T11:29:00.000Z",
     "phase": "B2",
     "progress": true,
-    "source_commit": "6400667dcaabb5d4e752abf4bb5ab7f987f7be29",
+    "source_commit": "18f883131e4c95d60058fba8add3f44c47118941",
     "publication": {
       "status": "not_published"
     },
