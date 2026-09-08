@@ -46,11 +46,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "root-b2g-distribution-sync",
-    "expires_at": "2026-09-08T22:30:00Z",
-    "phase": "B11"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -467,10 +463,10 @@
     "github": {
       "repository": "supertrampsss/Braise",
       "audience": "public",
-      "snapshot_source_commit": "5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da",
-      "snapshot_commit": "9b2e6980fef903e3d75f7122ae5512be6434caa0",
+      "snapshot_source_commit": "7c04eb6cd5670b0a7023383409ad7cf4c1ef1c21",
+      "snapshot_commit": "37e3862cdce1e2a8f957c57475ba7edcd1dd870f",
       "data_notice_commit": "d2c19fd5bbab1747edf4be082d7ae19f07278aa0",
-      "status": "application_snapshot_present_runtime_data_transfer_incomplete",
+      "status": "application_and_B2g_editorial_snapshot_present_runtime_data_transfer_incomplete",
       "standalone_build": false,
       "full_history_transferred": false,
       "notice": "GITHUB-DATA-ASSETS.md",
