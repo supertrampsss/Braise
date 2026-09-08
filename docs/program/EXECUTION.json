@@ -111,7 +111,12 @@
     "main_model_override_performed": false
   },
   "last_verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
-  "lease": null,
+  "lease": {
+    "owner": "root-b7-hosted-social-qualification",
+    "acquired_at": "2026-09-08T23:47:00.000Z",
+    "expires_at": "2026-09-09T01:17:00.000Z",
+    "base_commit": "81624e3fa138068ce877460d31226f2644ad3bfb"
+  },
   "next_action": "Qualifier sur l'hébergement privé les parcours cercles et duels, puis studio, avec données QA identifiées, assertions de droits et nettoyage. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
   "next_phase": "B7",
   "phases": [
