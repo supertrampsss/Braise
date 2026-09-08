@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-09-08T12:04:25.000Z",
+  "scope": "real-corpus-local-bounded-editorial-batch-not-product-active",
+  "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "dictionaryEntries": 1013881,
+  "batch": {
+    "cycles": 8,
+    "sequential": true,
+    "stagingQuota": 8,
+    "oldTargetIds": [1181, 1305, 834, 1677, 2077, 2106, 2122, 1344],
+    "newTargetIds": [1619, 2069, 1767, 1502, 1987, 898, 1488, 1572],
+    "newApprovedTargetIds": [1619, 1502, 1488],
+    "newRejectedTargetIds": [2069, 1767, 1987, 898, 1572],
+    "newEvidence": [
+      { "targetId": 1619, "sha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67" },
+      { "targetId": 2069, "sha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc" },
+      { "targetId": 1767, "sha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa" },
+      { "targetId": 1502, "sha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d" },
+      { "targetId": 1987, "sha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421" },
+      { "targetId": 898, "sha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f" },
+      { "targetId": 1488, "sha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5" },
+      { "targetId": 1572, "sha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636" }
+    ]
+  },
+  "evidence": {
+    "entries": 17,
+    "verifiedStaging": 8,
+    "verifiedArchived": 9,
+    "indexRawSha256": "32d26736150746d637916af32215326fee50f942e8bfe8370a08263935f3375c",
+    "indexCanonicalSha256": "1a853f30e865a783f47cdadee6733435b2afa073b4d6bd92cf7c52c0f06f2085"
+  },
+  "catalogue": {
+    "selected": 400,
+    "lexicallyReviewed": 400,
+    "approved": 10,
+    "rejected": 7,
+    "remainingApprovalsForCalendar": 355,
+    "remainingApprovalsForMainTarget": 390,
+    "selectionRawSha256": "d94fd617f7c5c42be0d0d26830b702ac2e9d10ee91b6ebb8a874394974478e53",
+    "selectionCanonicalSha256": "95fc862070f5e21cf08660838be387ef36319910e24f174aad78b3921c3b1368",
+    "rawFileSha256": "00d9460d34c85253cd756d5e322fa1913de7d3d3434b982e470ff58600e110f9",
+    "canonicalPayloadSha256": "a8b3f9008e9dc54a5f11ebdea99c31806840adc4611b4bf5978872f84ecc3468"
+  },
+  "runtime": {
+    "v2ProductActive": false,
+    "r2Qualified": false,
+    "workerQualified": false,
+    "browserValidation": "not_requested",
+    "publication": "not_published"
+  },
+  "verification": {
+    "realCatalogueExhaustiveVerification": "passed",
+    "testsPassed": 146,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "diffCheck": "passed",
+    "independentMaxReview": "passed"
+  }
+}

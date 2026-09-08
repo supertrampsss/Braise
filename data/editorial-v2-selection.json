@@ -465,6 +465,86 @@
       "reviewedAt": "2026-09-08T11:09:32.000Z",
       "rationale": "Malgré plusieurs flexions et deux formes bruitées, le voisinage contient trois indices français distincts, courants et cohérents avec « vent », sans révéler directement la cible.",
       "evidenceSha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d"
+    },
+    {
+      "targetId": 1619,
+      "decision": "approved",
+      "hints": ["firmament", "rougeoyant", "nuages"],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins contiennent trois indices français distincts, naturels et utiles : firmament, rougeoyant et nuages. Ils évoquent la cible sans la reproduire ni en donner une flexion ; les variantes de ciel, les formes bruitées et les anglicismes sont écartés.",
+      "evidenceSha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67"
+    },
+    {
+      "targetId": 2069,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Le voisinage ne fournit pas trois indices distincts non révélateurs : terraformée et terraformé sont deux flexions du même indice, auxquelles seule martienne ajoute une association indépendante. Les neuf autres voisins sont des variantes, composés ou dérivés révélant directement la racine de planète, avec plusieurs formes bruitées.",
+      "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+    },
+    {
+      "targetId": 1767,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Parmi les douze voisins, seuls flore et endémiques offrent des indices français naturels sans révéler la cible. Les dix autres formes reprennent directement faune, notamment ses flexions et composés spécialisés ; aucun troisième indice indépendant acceptable n'est disponible.",
+      "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+    },
+    {
+      "targetId": 1502,
+      "decision": "approved",
+      "hints": ["potager", "roseraie", "parterre"],
+      "actor": "astra-b2c-review-a",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins fournissent trois associations françaises distinctes et naturelles : potager, roseraie et parterre. Ces indices évoquent des espaces cultivés sans reproduire la cible ; les dérivés de jardin, les concaténations bruitées et le doublon parterres sont écartés.",
+      "evidenceSha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d"
+    },
+    {
+      "targetId": 1987,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins ne fournissent que deux familles d’indices distinctes et non révélatrices : automne et hiver. Automnale, automnes et automnales répètent la première ; printanier et printanière révèlent directement la cible ; les autres formes sont bruitées ou contiennent la réponse. Un voisinage réel plus large est nécessaire.",
+      "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+    },
+    {
+      "targetId": 898,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Parmi les douze voisins, seuls automne et printemps sont des indices distincts non révélateurs. Les dix autres sont des flexions, dérivés ou formes bruitées d’hiver et ne permettent pas de sélectionner un troisième indice acceptable. Un voisinage réel plus large est nécessaire.",
+      "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+    },
+    {
+      "targetId": 1488,
+      "decision": "approved",
+      "hints": ["attelage", "galop", "selle"],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins présentent un noyau équestre cohérent malgré plusieurs variantes et formes bruitées. Attelage, galop et selle sont trois mots français naturels, distincts et utiles, associés respectivement à la traction, au déplacement et à l’équipement, sans reprendre ni révéler directement la cible.",
+      "evidenceSha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5"
+    },
+    {
+      "targetId": 1572,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2c-review-b",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T11:58:00.000Z",
+      "rationale": "Les douze voisins ne fournissent que deux indices exploitables sans reprendre la cible : filante et supergéante. Etoile et étoiles sont des variantes directes ; protoétoile et étoilement contiennent la réponse ; rivétoile, brisétoile, mantétoile, aubétoile, tombétoile et étoilerefroid sont inadaptés comme indices naturels. Un voisinage réel plus large est nécessaire.",
+      "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
     }
   ],
   "reviews": [

@@ -36,7 +36,7 @@ Le lot B1d ajoute l'index de présence exact `BPI2`. `npm run semantic:v2:index:
 
 Ces commandes restent des outils de staging. La source fastText française complète a été ingérée et vérifiée localement : 1 013 881 entrées admises sur 1 152 449 lignes, 248 segments, index exact complet. Huit colonnes réelles respectant le quota ont été préparées et contrôlées. Les empreintes et mesures sont figées dans `docs/program/B1E-MEASUREMENTS.json`. Le transfert durable et la qualification R2/Worker restent nécessaires avant activation produit.
 
-Le chantier B2 conserve 400 cibles courantes relues lexicalement par des agents dans un catalogue de travail inactif. Revue lexicale, qualité des voisinages, indices, colonne numérique et approbation sont des statuts distincts. `npm run semantic:v2:evidence:capture -- capture --corpus <corpus> --targets <staging> --evidence <preuves> --target-id <id>` archive une preuve immuable seulement après vérification exhaustive de la colonne. `npm run semantic:v2:evidence:verify -- verify --corpus <corpus> --evidence <preuves> --target-id <id>` recalcule ensuite le voisinage et l'histogramme directement depuis le corpus, même après éviction. Le dossier des preuves doit rester hors du staging des cibles. Les commandes de catalogue exigent `--evidence <preuves>` et distinguent une colonne présente d'une preuve archivée. Un calendrier V2 ne peut être produit qu'avec 365 approbations liées à l'empreinte exacte de leur preuve et reste inactif jusqu'à la bascule explicite.
+Le chantier B2 conserve 400 cibles courantes relues lexicalement par des agents dans un catalogue de travail inactif. Revue lexicale, qualité des voisinages, indices, colonne numérique et approbation sont des statuts distincts. `npm run semantic:v2:evidence:capture -- --corpus <corpus> --targets <staging> --evidence <preuves> --target-id <id>` archive une preuve immuable seulement après vérification exhaustive de la colonne. `npm run semantic:v2:evidence:verify -- --corpus <corpus> --evidence <preuves> --target-id <id>` recalcule ensuite le voisinage et l'histogramme directement depuis le corpus, même après éviction. Le dossier des preuves doit rester hors du staging des cibles. Les commandes de catalogue exigent `--evidence <preuves>` et distinguent une colonne présente d'une preuve archivée. Un calendrier V2 ne peut être produit qu'avec 365 approbations liées à l'empreinte exacte de leur preuve et reste inactif jusqu'à la bascule explicite.
 
 ## État et publicité
 
@@ -68,6 +68,7 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/B1C-DELIVERY.md` : générateur paginé d'une cible BRV2, classement exact et staging global borné.
 - `docs/program/B1D-DELIVERY.md` : index lexical exact BPI2 et éviction coordonnée du cache de cibles.
 - `docs/program/B2B-DELIVERY.md` : preuves éditoriales durables, cycle d'éviction réel et réutilisation du quota.
+- `docs/program/B2C-DELIVERY.md` : premier lot de huit rotations réelles, revues et rendement éditorial mesuré.
 - `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
 - `docs/program/B4A-DELIVERY.md` : profil local V2, migration sauvegardée et convergence entre onglets.
 - `docs/program/B4B-DELIVERY.md` : archives jouables, calendrier Paris contrôlé et progression non rétroactive.

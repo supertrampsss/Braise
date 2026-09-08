@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 7,
-    "approved": 7
+    "neighborhoodEvidenceReady": 10,
+    "approved": 10
   },
   "entries": [
     {
@@ -112,7 +112,7 @@
       },
       "word": "forêt",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -197,7 +197,7 @@
       },
       "word": "montagne",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-rejected",
         "neighbors": [
@@ -278,7 +278,7 @@
       },
       "word": "vallée",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-rejected",
         "neighbors": [
@@ -359,7 +359,7 @@
       },
       "word": "fleuve",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -444,7 +444,7 @@
       },
       "word": "océan",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -529,7 +529,7 @@
       },
       "word": "arbre",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -614,7 +614,7 @@
       },
       "word": "vent",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -699,16 +699,78 @@
       },
       "word": "ciel",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 35205,
+            "word": "ciels"
+          },
+          {
+            "id": 5281,
+            "word": "gratte"
+          },
+          {
+            "id": 19959,
+            "word": "cieux"
+          },
+          {
+            "id": 993265,
+            "word": "cieluv"
+          },
+          {
+            "id": 757616,
+            "word": "cielj"
+          },
+          {
+            "id": 257266,
+            "word": "cieli"
+          },
+          {
+            "id": 89076,
+            "word": "firmament"
+          },
+          {
+            "id": 103158,
+            "word": "skyscraper"
+          },
+          {
+            "id": 46675,
+            "word": "skyscraperpage"
+          },
+          {
+            "id": 280582,
+            "word": "rougeoyant"
+          },
+          {
+            "id": 8491,
+            "word": "nuages"
+          },
+          {
+            "id": 225040,
+            "word": "skyscrapers"
+          }
+        ],
+        "targetManifestSha256": "d6b8a851978727f8a4249a78bc62a27309f9452b1d794b2cc5b356f260fd59a3",
+        "evidenceSha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "firmament",
+          "rougeoyant",
+          "nuages"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2c-review-a",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Les douze voisins contiennent trois indices français distincts, naturels et utiles : firmament, rougeoyant et nuages. Ils évoquent la cible sans la reproduire ni en donner une flexion ; les variantes de ciel, les formes bruitées et les anglicismes sont écartés.",
+        "evidenceSha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67"
+      }
     },
     {
       "targetId": 1344,
@@ -722,7 +784,7 @@
       },
       "word": "soleil",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -807,16 +869,74 @@
       },
       "word": "planète",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 725839,
+            "word": "planètebd"
+          },
+          {
+            "id": 956684,
+            "word": "mésoplanète"
+          },
+          {
+            "id": 396559,
+            "word": "planéte"
+          },
+          {
+            "id": 953095,
+            "word": "nomplanète"
+          },
+          {
+            "id": 329949,
+            "word": "protoplanète"
+          },
+          {
+            "id": 48912,
+            "word": "interplanétaire"
+          },
+          {
+            "id": 304728,
+            "word": "terraformée"
+          },
+          {
+            "id": 792720,
+            "word": "planétes"
+          },
+          {
+            "id": 867719,
+            "word": "circumplanétaire"
+          },
+          {
+            "id": 32269,
+            "word": "martienne"
+          },
+          {
+            "id": 707372,
+            "word": "extraplanétaire"
+          },
+          {
+            "id": 435689,
+            "word": "terraformé"
+          }
+        ],
+        "targetManifestSha256": "2bb0aa0860377b520c69e4bce614d185d2ba91dd42ec742f4b16f32e60c495a6",
+        "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2c-review-a",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Le voisinage ne fournit pas trois indices distincts non révélateurs : terraformée et terraformé sont deux flexions du même indice, auxquelles seule martienne ajoute une association indépendante. Les neuf autres voisins sont des variantes, composés ou dérivés révélant directement la racine de planète, avec plusieurs formes bruitées.",
+        "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+      }
     },
     {
       "targetId": 1767,
@@ -838,16 +958,74 @@
       ],
       "word": "faune",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 2497,
+            "word": "flore"
+          },
+          {
+            "id": 69665,
+            "word": "faunes"
+          },
+          {
+            "id": 668152,
+            "word": "mésofaune"
+          },
+          {
+            "id": 434217,
+            "word": "épifaune"
+          },
+          {
+            "id": 562668,
+            "word": "malacofaune"
+          },
+          {
+            "id": 274024,
+            "word": "macrofaune"
+          },
+          {
+            "id": 382211,
+            "word": "pédofaune"
+          },
+          {
+            "id": 623012,
+            "word": "fauner"
+          },
+          {
+            "id": 269568,
+            "word": "entomofaune"
+          },
+          {
+            "id": 297043,
+            "word": "mammalofaune"
+          },
+          {
+            "id": 566788,
+            "word": "faunesse"
+          },
+          {
+            "id": 13919,
+            "word": "endémiques"
+          }
+        ],
+        "targetManifestSha256": "207b65c0705db9251b695be154449bd911d9d2c059e6dcdbbed888c1a5055f68",
+        "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2c-review-a",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Parmi les douze voisins, seuls flore et endémiques offrent des indices français naturels sans révéler la cible. Les dix autres formes reprennent directement faune, notamment ses flexions et composés spécialisés ; aucun troisième indice indépendant acceptable n'est disponible.",
+        "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+      }
     },
     {
       "targetId": 1502,
@@ -861,16 +1039,78 @@
       },
       "word": "jardin",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 3194,
+            "word": "jardins"
+          },
+          {
+            "id": 547672,
+            "word": "jardinbotanique"
+          },
+          {
+            "id": 25495,
+            "word": "potager"
+          },
+          {
+            "id": 450275,
+            "word": "jardiné"
+          },
+          {
+            "id": 873803,
+            "word": "botaniquejardin"
+          },
+          {
+            "id": 30370,
+            "word": "roseraie"
+          },
+          {
+            "id": 96354,
+            "word": "jardinet"
+          },
+          {
+            "id": 54209,
+            "word": "parterres"
+          },
+          {
+            "id": 3917,
+            "word": "botanique"
+          },
+          {
+            "id": 33243,
+            "word": "parterre"
+          },
+          {
+            "id": 722204,
+            "word": "ecojardin"
+          },
+          {
+            "id": 286714,
+            "word": "jardinot"
+          }
+        ],
+        "targetManifestSha256": "7ece89bc50ca32292078b87ba9c38b319673b1d9cc22bf8e028964f2cc0df8f9",
+        "evidenceSha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "potager",
+          "roseraie",
+          "parterre"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2c-review-a",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Les douze voisins fournissent trois associations françaises distinctes et naturelles : potager, roseraie et parterre. Ces indices évoquent des espaces cultivés sans reproduire la cible ; les dérivés de jardin, les concaténations bruitées et le doublon parterres sont écartés.",
+        "evidenceSha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d"
+      }
     },
     {
       "targetId": 1987,
@@ -884,16 +1124,74 @@
       },
       "word": "printemps",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 2447,
+            "word": "automne"
+          },
+          {
+            "id": 891455,
+            "word": "printempa"
+          },
+          {
+            "id": 910852,
+            "word": "printems"
+          },
+          {
+            "id": 433865,
+            "word": "lautomne"
+          },
+          {
+            "id": 510633,
+            "word": "automn"
+          },
+          {
+            "id": 83920,
+            "word": "printanier"
+          },
+          {
+            "id": 79627,
+            "word": "automnale"
+          },
+          {
+            "id": 49239,
+            "word": "automnes"
+          },
+          {
+            "id": 93339,
+            "word": "automnales"
+          },
+          {
+            "id": 48568,
+            "word": "printanière"
+          },
+          {
+            "id": 596797,
+            "word": "printempsdespoetes"
+          },
+          {
+            "id": 898,
+            "word": "hiver"
+          }
+        ],
+        "targetManifestSha256": "8051270d953b42680a7268448302d182cacb2d1a1b8a5f3c5379e703dee2957b",
+        "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2c-review-b",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Les douze voisins ne fournissent que deux familles d’indices distinctes et non révélatrices : automne et hiver. Automnale, automnes et automnales répètent la première ; printanier et printanière révèlent directement la cible ; les autres formes sont bruitées ou contiennent la réponse. Un voisinage réel plus large est nécessaire.",
+        "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+      }
     },
     {
       "targetId": 898,
@@ -907,16 +1205,74 @@
       },
       "word": "hiver",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 34742,
+            "word": "hivernales"
+          },
+          {
+            "id": 13072,
+            "word": "hivers"
+          },
+          {
+            "id": 2447,
+            "word": "automne"
+          },
+          {
+            "id": 28434,
+            "word": "hivernal"
+          },
+          {
+            "id": 531602,
+            "word": "hivern"
+          },
+          {
+            "id": 966622,
+            "word": "hivernals"
+          },
+          {
+            "id": 369573,
+            "word": "hiverna"
+          },
+          {
+            "id": 15801,
+            "word": "hivernale"
+          },
+          {
+            "id": 188646,
+            "word": "hiverné"
+          },
+          {
+            "id": 1987,
+            "word": "printemps"
+          },
+          {
+            "id": 78747,
+            "word": "hivernaux"
+          },
+          {
+            "id": 920126,
+            "word": "hivernam"
+          }
+        ],
+        "targetManifestSha256": "40e379cfca5a5b8dbc3fa2db67ae936c118afd54590b5fd41d4e62df70b2b1d1",
+        "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2c-review-b",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Parmi les douze voisins, seuls automne et printemps sont des indices distincts non révélateurs. Les dix autres sont des flexions, dérivés ou formes bruitées d’hiver et ne permettent pas de sélectionner un troisième indice acceptable. Un voisinage réel plus large est nécessaire.",
+        "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+      }
     },
     {
       "targetId": 1488,
@@ -938,16 +1294,78 @@
       ],
       "word": "cheval",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 2441,
+            "word": "chevaux"
+          },
+          {
+            "id": 21507,
+            "word": "attelage"
+          },
+          {
+            "id": 728947,
+            "word": "chevaus"
+          },
+          {
+            "id": 920411,
+            "word": "chevaly"
+          },
+          {
+            "id": 17531,
+            "word": "poney"
+          },
+          {
+            "id": 23594,
+            "word": "galop"
+          },
+          {
+            "id": 22125,
+            "word": "jument"
+          },
+          {
+            "id": 9892,
+            "word": "selle"
+          },
+          {
+            "id": 5957,
+            "word": "cavalier"
+          },
+          {
+            "id": 349905,
+            "word": "chevals"
+          },
+          {
+            "id": 25241,
+            "word": "poneys"
+          },
+          {
+            "id": 610821,
+            "word": "richeval"
+          }
+        ],
+        "targetManifestSha256": "fb7cdb39929ae0f86404d9b67c078c0f81fde435189783c2aea969e0ed54db7d",
+        "evidenceSha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "attelage",
+          "galop",
+          "selle"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2c-review-b",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Les douze voisins présentent un noyau équestre cohérent malgré plusieurs variantes et formes bruitées. Attelage, galop et selle sont trois mots français naturels, distincts et utiles, associés respectivement à la traction, au déplacement et à l’équipement, sans reprendre ni révéler directement la cible.",
+        "evidenceSha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5"
+      }
     },
     {
       "targetId": 1572,
@@ -961,16 +1379,74 @@
       },
       "word": "étoile",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 28936,
+            "word": "etoile"
+          },
+          {
+            "id": 862230,
+            "word": "étoilement"
+          },
+          {
+            "id": 980033,
+            "word": "rivétoile"
+          },
+          {
+            "id": 836997,
+            "word": "brisétoile"
+          },
+          {
+            "id": 908413,
+            "word": "mantétoile"
+          },
+          {
+            "id": 877427,
+            "word": "aubétoile"
+          },
+          {
+            "id": 1989,
+            "word": "étoiles"
+          },
+          {
+            "id": 300676,
+            "word": "protoétoile"
+          },
+          {
+            "id": 660335,
+            "word": "tombétoile"
+          },
+          {
+            "id": 56293,
+            "word": "filante"
+          },
+          {
+            "id": 94321,
+            "word": "supergéante"
+          },
+          {
+            "id": 413991,
+            "word": "étoilerefroid"
+          }
+        ],
+        "targetManifestSha256": "0c2fed1a0ad5148e9aadcde4186eff5ad21444c2af1e68a36c477ceadf4283b0",
+        "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2c-review-b",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:58:00.000Z",
+        "rationale": "Les douze voisins ne fournissent que deux indices exploitables sans reprendre la cible : filante et supergéante. Etoile et étoiles sont des variantes directes ; protoétoile et étoilement contiennent la réponse ; rivétoile, brisétoile, mantétoile, aubétoile, tombétoile et étoilerefroid sont inadaptés comme indices naturels. Un voisinage réel plus large est nécessaire.",
+        "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+      }
     },
     {
       "targetId": 703,
