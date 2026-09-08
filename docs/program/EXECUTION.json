@@ -46,7 +46,12 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": null,
+  "lease": {
+    "owner": "root-b2h-editorial-rotation",
+    "acquired_at": "2026-09-08T20:43:31Z",
+    "expires_at": "2026-09-08T22:15:00Z",
+    "base_commit": "a49993d04bbf925c7c56952eb0cf377c18439684"
+  },
   "phases": [
     {
       "id": "B0",
