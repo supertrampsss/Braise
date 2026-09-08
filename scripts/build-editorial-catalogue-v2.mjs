@@ -1,10 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
-import { gunzipSync } from "node:zlib";
 import { acquireTargetCacheGuard, assertTargetCacheGuard, corpusEntries, loadActiveCorpus, releaseTargetCacheGuard, sha256, stableJson } from "./semantic-target-v2-common.mjs";
+import { loadEditorialEvidence, loadEditorialEvidenceIndex } from "./editorial-evidence-v2.mjs";
 
 const HASH = /^[0-9a-f]{64}$/;
-const PAGE_HEADER_BYTES = 64;
 
 function parseArgs(argv) {
   const values = {};
@@ -12,7 +11,7 @@ function parseArgs(argv) {
     if (!argv[index]?.startsWith("--") || argv[index + 1] === undefined) throw new Error("Arguments B2 invalides");
     values[argv[index].slice(2)] = argv[index + 1];
   }
-  for (const key of ["corpus", "targets", "selection", "output"]) if (!values[key]) throw new Error(`--${key} est requis`);
+  for (const key of ["corpus", "targets", "evidence", "selection", "output"]) if (!values[key]) throw new Error(`--${key} est requis`);
   return values;
 }
 
@@ -40,7 +39,7 @@ function flattenSelection(selection) {
   return entries;
 }
 
-async function readPreparedTarget(targetsRoot, corpus, targetId, guard) {
+async function readLiveTargetReference(targetsRoot, corpus, targetId, guard) {
   assertTargetCacheGuard(guard, join(targetsRoot, corpus.manifest.corpusId, "targets"));
   const targetDir = join(targetsRoot, corpus.manifest.corpusId, "targets", String(targetId).padStart(10, "0"));
   let activeBytes;
@@ -51,52 +50,48 @@ async function readPreparedTarget(targetsRoot, corpus, targetId, guard) {
   const manifestBytes = await readFile(join(targetDir, active.manifest));
   if (sha256(manifestBytes) !== active.manifestSha256) throw new Error(`Empreinte de cible invalide: ${targetId}`);
   const manifest = JSON.parse(manifestBytes.toString("utf8"));
-  if (manifest.complete !== true || manifest.format !== "BRT2-pages" || manifest.target?.id !== targetId || manifest.corpus?.id !== corpus.manifest.corpusId || manifest.corpus.manifestSha256 !== corpus.manifestSha256 || manifest.corpus.semanticSha256 !== corpus.manifest.semanticSha256 || manifest.stats?.dictionarySize !== corpus.manifest.stats.accepted || !Array.isArray(manifest.orderPages) || manifest.orderPages.length < 1) throw new Error(`Contrat de cible invalide: ${targetId}`);
-  const page = manifest.orderPages[0];
-  if (basename(page.file) !== page.file || !HASH.test(page.objectSha256) || !HASH.test(page.rawSha256) || page.firstPosition !== 0 || page.count < 13) throw new Error(`Première page de voisinage invalide: ${targetId}`);
-  const compressed = await readFile(join(targetDir, "pages", page.file));
-  if (compressed.length !== page.compressedBytes || sha256(compressed) !== page.objectSha256) throw new Error(`Objet de voisinage invalide: ${targetId}`);
-  const raw = gunzipSync(compressed, { maxOutputLength: 4 * 1024 * 1024 });
-  if (raw.length !== page.rawBytes || sha256(raw) !== page.rawSha256 || raw.toString("ascii", 0, 4) !== "BSO2" || raw.readUInt32LE(8) !== targetId || raw.readUInt32LE(12) !== 0 || raw.readUInt32LE(16) !== page.count || raw.readUInt32LE(24) !== PAGE_HEADER_BYTES) throw new Error(`Page de voisinage invalide: ${targetId}`);
-  const orderedIds = [];
-  for (let index = 0; index < Math.min(page.count, 24); index++) orderedIds.push(raw.readUInt32LE(PAGE_HEADER_BYTES + index * 4));
-  return { manifestSha256: active.manifestSha256, orderedIds };
+  if (manifest.complete !== true || manifest.format !== "BRT2-pages" || manifest.target?.id !== targetId || manifest.corpus?.id !== corpus.manifest.corpusId || manifest.corpus.manifestSha256 !== corpus.manifestSha256 || manifest.corpus.semanticSha256 !== corpus.manifest.semanticSha256 || manifest.stats?.dictionarySize !== corpus.manifest.stats.accepted) throw new Error(`Contrat de cible invalide: ${targetId}`);
+  return { manifestSha256: active.manifestSha256 };
 }
 
-export async function preparedTarget(targetsRoot, corpus, targetId) {
-  targetsRoot = resolve(targetsRoot); const root = join(targetsRoot, corpus.manifest.corpusId, "targets"); const guard = acquireTargetCacheGuard(root, "shared");
-  try { return await readPreparedTarget(targetsRoot, corpus, targetId, guard); }
-  finally { releaseTargetCacheGuard(guard); }
-}
-
-export async function buildEditorialCatalogue({ corpusDir, targetsDir, selectionPath, outputPath }) {
+export async function buildEditorialCatalogue({ corpusDir, targetsDir, evidenceDir, selectionPath, outputPath }) {
   const corpus = await loadActiveCorpus(resolve(corpusDir));
   const selection = JSON.parse(await readFile(resolve(selectionPath), "utf8"));
   if (selection.corpusId !== corpus.manifest.corpusId || selection.corpusManifestSha256 !== corpus.manifestSha256 || selection.semanticSha256 !== corpus.manifest.semanticSha256) throw new Error("La sélection ne correspond pas au corpus actif");
   const selected = flattenSelection(selection);
-  const prepared = new Map(); const requiredIds = new Set(selected.map(entry => entry.targetId)); const resolvedTargets = resolve(targetsDir); const targetRoot = join(resolvedTargets, corpus.manifest.corpusId, "targets"); const guard = acquireTargetCacheGuard(targetRoot, "shared");
-  try { for (const entry of selected) { const target = await readPreparedTarget(resolvedTargets, corpus, entry.targetId, guard); if (target) { prepared.set(entry.targetId, target); for (const id of target.orderedIds) requiredIds.add(id); } } }
+  const evidenceIndex = await loadEditorialEvidenceIndex(resolve(evidenceDir), corpus);
+  const evidenceById = new Map(); const requiredIds = new Set(selected.map(entry => entry.targetId));
+  for (const reference of evidenceIndex.entries) {
+    if (!selected.some(entry => entry.targetId === reference.targetId)) continue;
+    const evidence = await loadEditorialEvidence({ corpus, evidenceDir, targetId: reference.targetId, expectedSha256: reference.sha256 });
+    evidenceById.set(reference.targetId, evidence);
+    for (const neighbor of evidence.payload.neighborhood.entries) requiredIds.add(neighbor.id);
+  }
+  const liveById = new Map(); const resolvedTargets = resolve(targetsDir); const targetRoot = join(resolvedTargets, corpus.manifest.corpusId, "targets"); const guard = acquireTargetCacheGuard(targetRoot, "shared");
+  try { for (const entry of selected) { const target = await readLiveTargetReference(resolvedTargets, corpus, entry.targetId, guard); if (target) liveById.set(entry.targetId, target); } }
   finally { releaseTargetCacheGuard(guard); }
   const words = new Map();
   for await (const { entries } of corpusEntries(resolve(corpusDir), corpus.manifest)) for (const entry of entries) if (requiredIds.has(entry.id)) words.set(entry.id, entry.word);
   if ([...requiredIds].some(id => !words.has(id))) throw new Error("Un identifiant éditorial est absent du corpus");
   const decisions = new Map();
   for (const decision of selection.decisions ?? []) {
-    if (!Number.isInteger(decision.targetId) || decisions.has(decision.targetId) || !["approved", "rejected"].includes(decision.decision) || decision.kind !== "agent" && decision.kind !== "human" || !decision.actor || !Number.isFinite(Date.parse(decision.reviewedAt)) || !decision.rationale || !Array.isArray(decision.hints)) throw new Error(`Décision éditoriale invalide: ${decision.targetId}`);
+    if (!Number.isInteger(decision.targetId) || !selected.some(entry => entry.targetId === decision.targetId) || decisions.has(decision.targetId) || !["approved", "rejected"].includes(decision.decision) || decision.kind !== "agent" && decision.kind !== "human" || !decision.actor || !Number.isFinite(Date.parse(decision.reviewedAt)) || !decision.rationale || !Array.isArray(decision.hints) || !HASH.test(decision.evidenceSha256)) throw new Error(`Décision éditoriale invalide: ${decision.targetId}`);
     decisions.set(decision.targetId, decision);
   }
   const entries = selected.map(entry => {
-    const target = prepared.get(entry.targetId); const word = words.get(entry.targetId);
-    const neighbors = target?.orderedIds.filter(id => id !== entry.targetId).slice(0, 12).map(id => ({ id, word: words.get(id) }));
+    const evidence = evidenceById.get(entry.targetId); const live = liveById.get(entry.targetId); const word = words.get(entry.targetId);
+    if (live && evidence && live.manifestSha256 !== evidence.payload.targetManifest.sha256) throw new Error(`La colonne active diffère de la preuve éditoriale: ${entry.targetId}`);
+    const neighbors = evidence?.payload.neighborhood.entries.map(({ id }) => ({ id, word: words.get(id) })) ?? [];
+    const numericalStatus = evidence ? live ? "verified-staging-column" : "verified-archived-evidence" : "not-prepared";
     const decision = decisions.get(entry.targetId);
-    if (decision && !target) throw new Error(`Décision sans colonne vérifiée: ${entry.targetId}`);
+    if (decision && (!evidence || decision.evidenceSha256 !== evidence.sha256)) throw new Error(`Décision sans preuve exacte: ${entry.targetId}`);
     if (decision?.decision === "approved") {
       const neighborWords = new Set(neighbors.map(item => item.word));
       if (decision.hints.length !== 3 || new Set(decision.hints).size !== 3 || decision.hints.some(hint => hint === word || !neighborWords.has(hint))) throw new Error(`Indices éditoriaux invalides: ${entry.targetId}`);
-      return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus: "verified-staging-column", neighborhood: { status: "reviewed-approved", neighbors, targetManifestSha256: target.manifestSha256 }, hints: { status: "reviewed", words: decision.hints }, approval: `approved-${decision.kind}`, approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale } };
+      return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: { status: "reviewed-approved", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256 }, hints: { status: "reviewed", words: decision.hints }, approval: `approved-${decision.kind}`, approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale, evidenceSha256: evidence.sha256 } };
     }
-    if (decision?.decision === "rejected") return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus: "verified-staging-column", neighborhood: { status: "reviewed-rejected", neighbors, targetManifestSha256: target.manifestSha256 }, hints: { status: "not-reviewed", words: [] }, approval: "rejected", approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale } };
-    return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus: target ? "verified-staging-column" : "not-prepared", neighborhood: target ? { status: "evidence-ready-agent-review-pending", neighbors, targetManifestSha256: target.manifestSha256 } : { status: "not-measured", neighbors: [] }, hints: { status: "not-reviewed", words: [] }, approval: "pending" };
+    if (decision?.decision === "rejected") return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: { status: "reviewed-rejected", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256 }, hints: { status: "not-reviewed", words: [] }, approval: "rejected", approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale, evidenceSha256: evidence.sha256 } };
+    return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: evidence ? { status: "evidence-ready-agent-review-pending", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256 } : { status: "not-measured", neighbors: [] }, hints: { status: "not-reviewed", words: [] }, approval: "pending" };
   });
   const payload = { schemaVersion: 1, id: "fr-v2-editorial-catalogue-1", corpus: { id: corpus.manifest.corpusId, manifestSha256: corpus.manifestSha256, semanticSha256: corpus.manifest.semanticSha256, dictionarySize: corpus.manifest.stats.accepted }, status: "inactive-editorial-workbench", counts: { selected: entries.length, lexicalReviewed: entries.filter(entry => entry.lexicalStatus === "agent-reviewed").length, neighborhoodEvidenceReady: entries.filter(entry => entry.neighborhood.status === "evidence-ready-agent-review-pending" || entry.neighborhood.status === "reviewed-approved").length, approved: entries.filter(entry => entry.approval.startsWith("approved")).length }, entries };
   const bytes = Buffer.from(JSON.stringify(payload, null, 2) + "\n");
@@ -106,5 +101,5 @@ export async function buildEditorialCatalogue({ corpusDir, targetsDir, selection
 
 if (process.argv[1] && basename(process.argv[1]) === "build-editorial-catalogue-v2.mjs") {
   const args = parseArgs(process.argv.slice(2));
-  buildEditorialCatalogue({ corpusDir: args.corpus, targetsDir: args.targets, selectionPath: args.selection, outputPath: args.output }).then(result => console.log(JSON.stringify(result))).catch(error => { console.error(error.message); process.exitCode = 1; });
+  buildEditorialCatalogue({ corpusDir: args.corpus, targetsDir: args.targets, evidenceDir: args.evidence, selectionPath: args.selection, outputPath: args.output }).then(result => console.log(JSON.stringify(result))).catch(error => { console.error(error.message); process.exitCode = 1; });
 }

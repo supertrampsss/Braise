@@ -12,6 +12,62 @@ import {
 
 const PAGE_HEADER_BYTES = 64;
 const MAX_PAGE_RAW_BYTES = PAGE_HEADER_BYTES + 262_144 * 6;
+const HASH = /^[0-9a-f]{64}$/;
+
+function validatePageInventory(pages, kind, manifest) {
+  const firstKey = kind === "values" ? "firstId" : "firstPosition";
+  const bytesPerEntry = kind === "values" ? 6 : 4;
+  const filePattern = kind === "values"
+    ? /^values-\d{10}-[0-9a-f]{16}\.brt\.gz$/
+    : /^order-\d{10}-[0-9a-f]{16}\.brt\.gz$/;
+  let next = 0; const files = new Set(); const objects = new Set();
+  for (const page of pages) {
+    const expectedCount = Math.min(manifest.config.pageEntries, manifest.stats.dictionarySize - next);
+    if (!page || page[firstKey] !== next || page.count !== expectedCount ||
+        basename(page.file) !== page.file || !filePattern.test(page.file) ||
+        !page.file.startsWith(`${kind === "values" ? "values" : "order"}-${String(next).padStart(10, "0")}-`) ||
+        !HASH.test(page.rawSha256) || !HASH.test(page.objectSha256) ||
+        files.has(page.file) || objects.has(page.objectSha256) ||
+        !page.file.endsWith(`-${page.objectSha256.slice(0, 16)}.brt.gz`) ||
+        page.rawBytes !== PAGE_HEADER_BYTES + page.count * bytesPerEntry ||
+        !Number.isInteger(page.compressedBytes) || page.compressedBytes < 1 ||
+        page.compressedBytes > page.rawBytes + 65_536) {
+      throw new Error(`Target ${kind} page inventory is invalid`);
+    }
+    files.add(page.file); objects.add(page.objectSha256);
+    next += page.count;
+  }
+  if (next !== manifest.stats.dictionarySize) throw new Error(`Target ${kind} pages do not cover every admitted word`);
+}
+
+/** Validate the complete immutable BRT2 manifest contract without reading its page objects. */
+export function validateSemanticTargetManifestContract({ manifest, corpus, targetId, active = null }) {
+  const contractHash = sha256(stableJson(SCORE_CONTRACT));
+  if (manifest.schemaVersion !== 1 || manifest.complete !== true || manifest.format !== "BRT2-pages" || manifest.formatVersion !== 2 ||
+      manifest.target?.id !== targetId || !HASH.test(manifest.target.wordSha256) ||
+      active && (active.targetId !== targetId || active.corpusId !== corpus.manifest.corpusId) ||
+      manifest.corpus?.id !== corpus.manifest.corpusId || manifest.corpus.manifestSha256 !== corpus.manifestSha256 ||
+      manifest.corpus.semanticSha256 !== corpus.manifest.semanticSha256 || manifest.corpus.dictionarySize !== corpus.manifest.stats.accepted ||
+      manifest.corpus.dimensions !== corpus.manifest.config.dimensions || manifest.config?.schemaVersion !== 1 ||
+      manifest.config.formatVersion !== 2 || manifest.config.contractHash !== contractHash ||
+      stableJson(manifest.config.contract) !== stableJson(SCORE_CONTRACT) || manifest.config.corpusId !== corpus.manifest.corpusId ||
+      manifest.config.corpusManifestSha256 !== corpus.manifestSha256 || manifest.config.semanticSha256 !== corpus.manifest.semanticSha256 ||
+      manifest.config.targetId !== targetId || sha256(stableJson(manifest.config)) !== manifest.configHash ||
+      !Number.isInteger(manifest.config.pageEntries) || manifest.config.pageEntries < 256 || manifest.config.pageEntries > 262_144 ||
+      manifest.stats?.dictionarySize !== corpus.manifest.stats.accepted || manifest.stats.scoreMin !== SCORE_MIN || manifest.stats.scoreMax !== SCORE_MAX ||
+      !Array.isArray(manifest.histogram) || manifest.histogram.length !== SCORE_BUCKETS ||
+      !manifest.histogram.every(value => Number.isSafeInteger(value) && value >= 0) ||
+      manifest.histogram.reduce((sum, value) => sum + value, 0) !== corpus.manifest.stats.accepted ||
+      !Array.isArray(manifest.valuePages) || !Array.isArray(manifest.orderPages) ||
+      manifest.valuePages.length !== Math.ceil(corpus.manifest.stats.accepted / manifest.config.pageEntries) ||
+      manifest.orderPages.length !== Math.ceil(corpus.manifest.stats.accepted / manifest.config.pageEntries) ||
+      manifest.stats.valuePages !== manifest.valuePages.length || manifest.stats.orderPages !== manifest.orderPages.length) {
+    throw new Error("Target manifest contract is unsupported or inconsistent");
+  }
+  validatePageInventory(manifest.valuePages, "values", manifest);
+  validatePageInventory(manifest.orderPages, "order", manifest);
+  return { contractHash };
+}
 
 function independentScore(vector, targetVector, dimensions, targetNorm, sameIdentity) {
   if (sameIdentity) return 10_000;
@@ -84,8 +140,8 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
   if (!manifestName) { active = JSON.parse(await readFile(join(targetDir, "active.json"), "utf8")); manifestName = active.manifest; expectedManifestSha256 = active.manifestSha256; }
   if (basename(manifestName) !== manifestName || !/^[0-9a-f]{64}$/.test(expectedManifestSha256)) throw new Error("Target manifest reference is invalid");
   const manifestBytes = await readFile(join(targetDir, manifestName)); if (sha256(manifestBytes) !== expectedManifestSha256) throw new Error("Target manifest hash mismatch");
-  const manifest = JSON.parse(manifestBytes.toString("utf8")); const contractHash = sha256(stableJson(SCORE_CONTRACT));
-  if (manifest.schemaVersion !== 1 || manifest.complete !== true || manifest.format !== "BRT2-pages" || manifest.formatVersion !== 2 || manifest.target?.id !== targetId || active && (active.targetId !== targetId || active.corpusId !== corpus.manifest.corpusId) || manifest.corpus?.id !== corpus.manifest.corpusId || manifest.corpus.manifestSha256 !== corpus.manifestSha256 || manifest.corpus.semanticSha256 !== corpus.manifest.semanticSha256 || manifest.corpus.dictionarySize !== corpus.manifest.stats.accepted || manifest.corpus.dimensions !== corpus.manifest.config.dimensions || manifest.config?.contractHash !== contractHash || stableJson(manifest.config.contract) !== stableJson(SCORE_CONTRACT) || manifest.config.corpusManifestSha256 !== corpus.manifestSha256 || manifest.config.targetId !== targetId || sha256(stableJson(manifest.config)) !== manifest.configHash || !Number.isInteger(manifest.config.pageEntries) || manifest.config.pageEntries < 256 || manifest.config.pageEntries > 262_144 || manifest.stats?.dictionarySize !== corpus.manifest.stats.accepted || manifest.stats.scoreMin !== SCORE_MIN || manifest.stats.scoreMax !== SCORE_MAX || !Array.isArray(manifest.histogram) || manifest.histogram.length !== SCORE_BUCKETS || !manifest.histogram.every(value => Number.isSafeInteger(value) && value >= 0) || !Array.isArray(manifest.valuePages) || !Array.isArray(manifest.orderPages) || manifest.stats.valuePages !== manifest.valuePages.length || manifest.stats.orderPages !== manifest.orderPages.length) throw new Error("Target manifest contract is unsupported or inconsistent");
+  const manifest = JSON.parse(manifestBytes.toString("utf8"));
+  const { contractHash } = validateSemanticTargetManifestContract({ manifest, corpus, targetId, active });
   const target = await findTarget(corpusDir, corpus.manifest, targetId);
   if (sha256(Buffer.from(target.word)) !== manifest.target.wordSha256) throw new Error("Target word identity mismatch");
   const targetNorm = vectorNorm(target.vector, corpus.manifest.config.dimensions);
@@ -114,7 +170,17 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
     const order = orderRecords(targetDir, manifest, corpus.manifestSha256, contractHash)[Symbol.asyncIterator](); let position = 0;
     for (const row of database.prepare("SELECT id FROM scored ORDER BY score DESC, id ASC").iterate()) { const stored = await order.next(); if (stored.done || stored.value !== row.id) throw new Error(`Stable order mismatch at position ${position}`); position++; }
     if (!(await order.next()).done || position !== seen) throw new Error("Stable order contains extra or missing ids");
-    return { corpusId: corpus.manifest.corpusId, targetId, dictionarySize: seen, valuePages: manifest.valuePages.length, orderPages: manifest.orderPages.length, manifestSha256: expectedManifestSha256 };
+    const topRows = [...database.prepare("SELECT id, score, rank FROM scored ORDER BY score DESC, id ASC LIMIT 13").iterate()].filter(row => row.id !== targetId).slice(0, 12);
+    const topWords = new Map(); const neededTopIds = new Set(topRows.map(row => row.id));
+    for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) for (const entry of entries) if (neededTopIds.has(entry.id)) topWords.set(entry.id, entry.word);
+    if (topWords.size !== topRows.length) throw new Error("Top-neighbor identities are absent from the corpus");
+    return {
+      corpusId: corpus.manifest.corpusId, targetId, targetWord: target.word, targetWordSha256: manifest.target.wordSha256,
+      dictionarySize: seen, valuePages: manifest.valuePages.length, orderPages: manifest.orderPages.length,
+      manifestSha256: expectedManifestSha256, manifestUtf8: manifestBytes.toString("utf8"), contractHash,
+      histogramSha256: sha256(Buffer.from(stableJson(histogram))),
+      topNeighbors: topRows.map(row => ({ id: row.id, word: topWords.get(row.id), score: row.score, rank: row.rank })),
+    };
   } finally {
     await records.return?.().catch(() => {}); try { database?.close(); } catch {} await rm(databasePath, { force: true });
   }

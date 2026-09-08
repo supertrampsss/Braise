@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 6,
-    "approved": 6
+    "neighborhoodEvidenceReady": 7,
+    "approved": 7
   },
   "entries": [
     {
@@ -27,7 +27,7 @@
       },
       "word": "rivière",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -80,7 +80,8 @@
             "word": "rive"
           }
         ],
-        "targetManifestSha256": "c5b0850414fc5d98ada3bbd4eeb12ee4684ca9f54a03690c9dcb2e4ec452422d"
+        "targetManifestSha256": "c5b0850414fc5d98ada3bbd4eeb12ee4684ca9f54a03690c9dcb2e4ec452422d",
+        "evidenceSha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605"
       },
       "hints": {
         "status": "reviewed",
@@ -95,7 +96,8 @@
         "actor": "astra-b2-neighborhood-review",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Voisinage hydrographique cohérent malgré plusieurs formes bruitées ; trois indices distincts sans variante orthographique de la cible."
+        "rationale": "Voisinage hydrographique cohérent malgré plusieurs formes bruitées ; trois indices distincts sans variante orthographique de la cible.",
+        "evidenceSha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605"
       }
     },
     {
@@ -163,7 +165,8 @@
             "word": "clairières"
           }
         ],
-        "targetManifestSha256": "211d1953dfbd1bae6c6a20e217e76270c5210d292689a3851711fd3a2793cea9"
+        "targetManifestSha256": "211d1953dfbd1bae6c6a20e217e76270c5210d292689a3851711fd3a2793cea9",
+        "evidenceSha256": "8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41"
       },
       "hints": {
         "status": "reviewed",
@@ -178,7 +181,8 @@
         "actor": "astra-b2-neighborhood-review",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Associations forestières nettes et indices pertinents malgré les coquilles et flexions."
+        "rationale": "Associations forestières nettes et indices pertinents malgré les coquilles et flexions.",
+        "evidenceSha256": "8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41"
       }
     },
     {
@@ -246,7 +250,8 @@
             "word": "transmontagne"
           }
         ],
-        "targetManifestSha256": "f4bc8565e560e185d2f1d63c596eed20c2fd04fe9cb7c870f15b6b3dd699b240"
+        "targetManifestSha256": "f4bc8565e560e185d2f1d63c596eed20c2fd04fe9cb7c870f15b6b3dd699b240",
+        "evidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
       },
       "hints": {
         "status": "not-reviewed",
@@ -257,7 +262,8 @@
         "actor": "astra-b2-neighborhood-review",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Échantillon dominé par les formes apparentées et le bruit lexical ; examiner davantage de voisins avant approbation."
+        "rationale": "Échantillon dominé par les formes apparentées et le bruit lexical ; examiner davantage de voisins avant approbation.",
+        "evidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
       }
     },
     {
@@ -325,7 +331,8 @@
             "word": "vallees"
           }
         ],
-        "targetManifestSha256": "387d63dd5fc3de0dd6e72b6ef6c816d7d20d212dde03602d6d99f12421607b71"
+        "targetManifestSha256": "387d63dd5fc3de0dd6e72b6ef6c816d7d20d212dde03602d6d99f12421607b71",
+        "evidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
       },
       "hints": {
         "status": "not-reviewed",
@@ -336,7 +343,8 @@
         "actor": "astra-b2-neighborhood-review",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Deux indices exploitables seulement ; un voisinage réel plus large est nécessaire avant approbation."
+        "rationale": "Deux indices exploitables seulement ; un voisinage réel plus large est nécessaire avant approbation.",
+        "evidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
       }
     },
     {
@@ -404,7 +412,8 @@
             "word": "défluent"
           }
         ],
-        "targetManifestSha256": "b9e5face3bcbf31ead9e9fb9d79cafc64c76916e42a3544415828cb753c5da95"
+        "targetManifestSha256": "b9e5face3bcbf31ead9e9fb9d79cafc64c76916e42a3544415828cb753c5da95",
+        "evidenceSha256": "fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3"
       },
       "hints": {
         "status": "reviewed",
@@ -419,7 +428,8 @@
         "actor": "astra-b2-neighborhood-review-2",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Voisinage hydrographique cohérent et plusieurs mots français distincts."
+        "rationale": "Voisinage hydrographique cohérent et plusieurs mots français distincts.",
+        "evidenceSha256": "fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3"
       }
     },
     {
@@ -487,7 +497,8 @@
             "word": "nonatlantique"
           }
         ],
-        "targetManifestSha256": "0abf6adbb7cc230435e039672b6b27a1c305d3f45f2a413c248fbd714cc77c24"
+        "targetManifestSha256": "0abf6adbb7cc230435e039672b6b27a1c305d3f45f2a413c248fbd714cc77c24",
+        "evidenceSha256": "effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9"
       },
       "hints": {
         "status": "reviewed",
@@ -502,7 +513,8 @@
         "actor": "astra-b2-neighborhood-review-2",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Trois voisins usuels établissent clairement le domaine maritime malgré le bruit lexical."
+        "rationale": "Trois voisins usuels établissent clairement le domaine maritime malgré le bruit lexical.",
+        "evidenceSha256": "effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9"
       }
     },
     {
@@ -570,7 +582,8 @@
             "word": "troncs"
           }
         ],
-        "targetManifestSha256": "cd8e1939892b5f4ddca4a72d0c006def8610319f6a747652817f8551cebc0481"
+        "targetManifestSha256": "cd8e1939892b5f4ddca4a72d0c006def8610319f6a747652817f8551cebc0481",
+        "evidenceSha256": "9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5"
       },
       "hints": {
         "status": "reviewed",
@@ -585,7 +598,8 @@
         "actor": "astra-b2-neighborhood-review-2",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Voisinage botanique solide avec parties de l’arbre et végétaux proches."
+        "rationale": "Voisinage botanique solide avec parties de l’arbre et végétaux proches.",
+        "evidenceSha256": "9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5"
       }
     },
     {
@@ -600,16 +614,78 @@
       },
       "word": "vent",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-staging-column",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 5010,
+            "word": "vents"
+          },
+          {
+            "id": 44405,
+            "word": "soufflant"
+          },
+          {
+            "id": 11043,
+            "word": "orage"
+          },
+          {
+            "id": 63842,
+            "word": "soufflent"
+          },
+          {
+            "id": 537741,
+            "word": "soufflants"
+          },
+          {
+            "id": 129889,
+            "word": "soufflait"
+          },
+          {
+            "id": 15175,
+            "word": "tempêtes"
+          },
+          {
+            "id": 6656,
+            "word": "souffle"
+          },
+          {
+            "id": 40512,
+            "word": "souffler"
+          },
+          {
+            "id": 453962,
+            "word": "souffland"
+          },
+          {
+            "id": 11294,
+            "word": "wind"
+          },
+          {
+            "id": 3609,
+            "word": "pluie"
+          }
+        ],
+        "targetManifestSha256": "37af10c767d4a6e61af7c4ac894651d16137121931fc500bd858699ef3f80f5c",
+        "evidenceSha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "souffle",
+          "orage",
+          "pluie"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2b-evidence-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T11:09:32.000Z",
+        "rationale": "Malgré plusieurs flexions et deux formes bruitées, le voisinage contient trois indices français distincts, courants et cohérents avec « vent », sans révéler directement la cible.",
+        "evidenceSha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d"
+      }
     },
     {
       "targetId": 1619,
@@ -699,7 +775,8 @@
             "word": "soleillet"
           }
         ],
-        "targetManifestSha256": "ff2e32ba1004ab833bcf127457a09921c5cb444c12df888dbb99fd89392a2d64"
+        "targetManifestSha256": "ff2e32ba1004ab833bcf127457a09921c5cb444c12df888dbb99fd89392a2d64",
+        "evidenceSha256": "b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c"
       },
       "hints": {
         "status": "reviewed",
@@ -714,7 +791,8 @@
         "actor": "astra-b2-neighborhood-review-2",
         "kind": "agent",
         "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Noyau astronomique cohérent et indices non dérivés orthographiquement de la cible."
+        "rationale": "Noyau astronomique cohérent et indices non dérivés orthographiquement de la cible.",
+        "evidenceSha256": "b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c"
       }
     },
     {

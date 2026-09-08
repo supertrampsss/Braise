@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-09-08T11:23:08.000Z",
+  "scope": "real-corpus-local-durable-editorial-evidence-not-product-active",
+  "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "corpusManifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+  "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+  "dictionaryEntries": 1013881,
+  "evidence": {
+    "format": "BEE2-editorial-neighborhood",
+    "entries": 9,
+    "indexRawSha256": "390dce8d0df796b8e96e40dcf1f4ed2eeb5d06906cecd954fe222fb5e341ed07",
+    "indexCanonicalSha256": "e714457c67efd90b5272992e8ec2015e9f556e065c271ac1f6b12327841eedff",
+    "archivedTargetIds": [541],
+    "verifiedStagingTargetIds": [834, 1181, 1305, 1344, 1677, 2077, 2106, 2122]
+  },
+  "quotaCycle": {
+    "maximumStagingTargets": 8,
+    "evictedTargetId": 541,
+    "replacementTargetId": 2122,
+    "replacementWord": "vent",
+    "replacementEvidenceSha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d",
+    "quotaReused": true
+  },
+  "catalogue": {
+    "selected": 400,
+    "lexicallyReviewed": 400,
+    "approved": 7,
+    "rejected": 2,
+    "remainingApprovalsForCalendar": 358,
+    "rawFileSha256": "cc0047b23ce0a7c0386d09843e2a9b2990ca4f944e0ed9ab67fb040088a88a22",
+    "canonicalPayloadSha256": "e17f1f1c8de63b5de9a7dc68174dea00938f798a776d92a23560da1fbac556d8"
+  },
+  "runtime": {
+    "v2ProductActive": false,
+    "r2Qualified": false,
+    "workerQualified": false,
+    "browserValidation": "not_requested",
+    "publication": "not_published"
+  },
+  "verification": {
+    "testsPassed": 146,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "realEvidenceManifestsValidated": 9,
+    "realCatalogueExhaustiveVerification": "passed",
+    "independentMaxReview": "passed_after_corrections"
+  }
+}

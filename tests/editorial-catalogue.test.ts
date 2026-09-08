@@ -23,7 +23,7 @@ test("catalogue refuses duplicate identities and unproven approvals", () => {
   assert.throws(() => validateEditorialCatalogue(duplicate), /invalid-editorial-entry/);
   const forged = catalogue(); const first = forged.entries[0];
   first.approval = "approved-agent"; forged.counts.approved = 1;
-  assert.throws(() => validateEditorialCatalogue(forged), /unproven-editorial-approval/);
+  assert.throws(() => validateEditorialCatalogue(forged), /invalid-unprepared-editorial-state|unproven-editorial-approval/);
   const misattributed = catalogue(); misattributed.entries[0].lexicalStatus = "human-reviewed";
   assert.throws(() => validateEditorialCatalogue(misattributed), /invalid-editorial-entry/);
   const malformed = catalogue(); malformed.entries[0].neighborhood.neighbors = [{ id: -1, word: "voisin" }, { id: -1, word: "voisin" }];
@@ -31,5 +31,13 @@ test("catalogue refuses duplicate identities and unproven approvals", () => {
   const badHints = catalogue(); badHints.entries[0].hints = { status: "reviewed", words: [null, 0, {}] as unknown as string[] };
   assert.throws(() => validateEditorialCatalogue(badHints), /invalid-editorial-hint/);
   const unexplainedRejection = catalogue(); unexplainedRejection.entries[0].approval = "rejected";
-  assert.throws(() => validateEditorialCatalogue(unexplainedRejection), /unproven-editorial-rejection/);
+  assert.throws(() => validateEditorialCatalogue(unexplainedRejection), /invalid-unprepared-editorial-state|unproven-editorial-rejection/);
+  const wrongHints = catalogue(); const reviewed = wrongHints.entries[0];
+  reviewed.numericalStatus = "verified-archived-evidence";
+  reviewed.neighborhood = { status: "reviewed-approved", neighbors: Array.from({ length: 6 }, (_, id) => ({ id: id + 500, word: `voisin${String.fromCharCode(97 + id)}` })), targetManifestSha256: hash, evidenceSha256: hash };
+  reviewed.hints = { status: "reviewed", words: ["indicea", "indiceb", "indicec"] };
+  reviewed.approval = "approved-agent";
+  reviewed.approvalReview = { actor: "approval-agent", kind: "agent", reviewedAt: "2026-09-08T09:00:00.000Z", rationale: "Fixture.", evidenceSha256: hash };
+  wrongHints.counts = { ...wrongHints.counts, neighborhoodEvidenceReady: 1, approved: 1 };
+  assert.throws(() => validateEditorialCatalogue(wrongHints), /unproven-editorial-approval/);
 });

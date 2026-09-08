@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "format": "BEI2-editorial-evidence-index",
+  "corpus": {
+    "id": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+    "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+    "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+    "dictionarySize": 1013881,
+    "dimensions": 300
+  },
+  "entries": [
+    {
+      "targetId": 541,
+      "file": "evidence-0000000541-f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605.json",
+      "sha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605",
+      "capturedAt": "2026-09-08T10:59:12.400Z"
+    },
+    {
+      "targetId": 834,
+      "file": "evidence-0000000834-fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f.json",
+      "sha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f",
+      "capturedAt": "2026-09-08T11:01:37.821Z"
+    },
+    {
+      "targetId": 1181,
+      "file": "evidence-0000001181-8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41.json",
+      "sha256": "8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41",
+      "capturedAt": "2026-09-08T11:00:08.555Z"
+    },
+    {
+      "targetId": 1305,
+      "file": "evidence-0000001305-428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23.json",
+      "sha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23",
+      "capturedAt": "2026-09-08T11:00:53.594Z"
+    },
+    {
+      "targetId": 1344,
+      "file": "evidence-0000001344-b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c.json",
+      "sha256": "b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c",
+      "capturedAt": "2026-09-08T11:04:38.772Z"
+    },
+    {
+      "targetId": 1677,
+      "file": "evidence-0000001677-fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3.json",
+      "sha256": "fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3",
+      "capturedAt": "2026-09-08T11:02:22.551Z"
+    },
+    {
+      "targetId": 2077,
+      "file": "evidence-0000002077-effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9.json",
+      "sha256": "effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9",
+      "capturedAt": "2026-09-08T11:03:06.412Z"
+    },
+    {
+      "targetId": 2106,
+      "file": "evidence-0000002106-9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5.json",
+      "sha256": "9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5",
+      "capturedAt": "2026-09-08T11:03:52.880Z"
+    },
+    {
+      "targetId": 2122,
+      "file": "evidence-0000002122-fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d.json",
+      "sha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d",
+      "capturedAt": "2026-09-08T11:07:51.637Z"
+    }
+  ]
+}
