@@ -7,8 +7,8 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B3",
-  "next_action": "Implémenter une première tranche complète du design vivant et du socle publicitaire inactif, avec accessibilité, réduction des mouvements et préservation de la partie en cours.",
+  "next_phase": "B4",
+  "next_action": "Implémenter le profil local versionné et sa migration idempotente avec copie de secours, sans dépendre du R2 non qualifié ni transformer l'historique personnel en résultat compétitif.",
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",
@@ -32,13 +32,7 @@
     "default_timezone": "Europe/Paris",
     "created_at": "2026-09-07T22:36:13.445772+00:00"
   },
-  "lease": {
-    "owner": "braise-B3-20260908T001349Z",
-    "acquired_at": "2026-09-08T00:13:49Z",
-    "expires_at": "2026-09-08T01:03:49Z",
-    "base_commit": "b1e6918fb7a5c484af811434e3a7d2d7d16238a7",
-    "phase": "B3"
-  },
+  "lease": null,
   "phases": [
     {
       "id": "B0",
@@ -111,13 +105,23 @@
       "depends_on": [
         "B0"
       ],
-      "status": "ready",
-      "evidence": [],
+      "status": "verified",
+      "evidence": [
+        "docs/program/B3-DELIVERY.md",
+        "Transient guessAccepted, bestImproved and puzzleWon feedback is identified and deduplicated",
+        "Restored wins and rows do not replay transient celebrations",
+        "Input revision, focus epoch and deferred callbacks preserve the active interaction",
+        "Advertising decision is skip/not-configured with no provider integration",
+        "28 tests passed; TypeScript passed; production build passed",
+        "Independent gpt-6-astra max review: no remaining local blocking issue"
+      ],
       "blockers": [],
-      "implementation": "not_started",
-      "automated_checks": "not_run",
+      "implementation": "completed",
+      "automated_checks": "passed",
       "browser_validation": "not_requested",
-      "publication": "not_published"
+      "publication": "not_published",
+      "verified_source_commit": "987ec6015574a1b452560153b269d1eb4c30f6ac",
+      "completed_at": "2026-09-08T00:35:57.380Z"
     },
     {
       "id": "B4",
@@ -126,7 +130,7 @@
         "B1",
         "B3"
       ],
-      "status": "planned",
+      "status": "ready",
       "evidence": [],
       "blockers": [],
       "implementation": "not_started",
@@ -278,20 +282,20 @@
     "product_code_changed": true,
     "browser_qa_performed": false
   },
-  "last_checkpoint": "B1a-segmented-local",
+  "last_checkpoint": "B3-design-verified",
   "delivery": {
     "implementation": "in_progress",
-    "automated_checks": "B0_passed_B1a_local_passed",
+    "automated_checks": "B0_passed_B1a_local_passed_B3_passed",
     "browser_validation": "not_requested",
     "publication": "v1_owner_private",
     "commercial_activation": "not_configured"
   },
-  "last_verified_source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
+  "last_verified_source_commit": "987ec6015574a1b452560153b269d1eb4c30f6ac",
   "last_run": {
-    "completed_at": "2026-09-08T00:09:31.296Z",
-    "phase": "B1",
+    "completed_at": "2026-09-08T00:35:57.380Z",
+    "phase": "B3",
     "progress": true,
-    "source_commit": "101dba4e0021beb10038a054388e86ac06e593db",
+    "source_commit": "987ec6015574a1b452560153b269d1eb4c30f6ac",
     "delegation": {
       "orchestrator": {
         "model": "gpt-6-astra",
@@ -299,13 +303,23 @@
       },
       "specialists": [
         {
-          "mission": "Segmented semantic storage review",
+          "mission": "Design and motion review",
+          "model": "gpt-6-astra",
+          "reasoning_effort": "low"
+        },
+        {
+          "mission": "Inactive advertising foundation review",
+          "model": "gpt-6-astra",
+          "reasoning_effort": "low"
+        },
+        {
+          "mission": "B3 quality and test review",
           "model": "gpt-6-astra",
           "reasoning_effort": "low"
         }
       ]
     },
     "main_model_override_performed": false,
-    "lease_owner": "braise-B1-20260907T234205Z"
+    "lease_owner": "braise-B3-20260908T001349Z"
   }
 }
