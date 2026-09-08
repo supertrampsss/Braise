@@ -1,13 +1,15 @@
 import { lstat, readFile } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { acquireTargetCacheGuard, corpusEntries, loadActiveCorpus, releaseTargetCacheGuard } from "./semantic-target-v2-common.mjs";
-import { loadEditorialEvidence, verifyEditorialEvidence } from "./editorial-evidence-v2.mjs";
+import { EDITORIAL_VERIFICATION_BATCH_LIMIT, loadEditorialEvidence, verifyEditorialEvidenceBatch } from "./editorial-evidence-v2.mjs";
 import { verifySemanticTargetUnderGuard } from "./verify-semantic-target-v2.mjs";
 
 const HASH = /^[0-9a-f]{64}$/;
 const WORD = /^[a-zàâäçéèêëîïôöùûüÿœæ]+(?:[-'][a-zàâäçéèêëîïôöùûüÿœæ]+)*$/u;
 
-export async function verifyEditorialCatalogue({ corpusDir, targetsDir, evidenceDir, cataloguePath }) {
+/** @param {{corpusDir:string,targetsDir:string,evidenceDir:string,cataloguePath:string,onProgress?:(progress:{stage:string,completed:number,total:number})=>unknown}} options */
+export async function verifyEditorialCatalogue({ corpusDir, targetsDir, evidenceDir, cataloguePath, onProgress = undefined }) {
+  if (onProgress !== undefined && typeof onProgress !== "function") throw new Error("Invalid editorial progress callback");
   corpusDir = resolve(corpusDir); targetsDir = resolve(targetsDir); evidenceDir = resolve(evidenceDir);
   const corpus = await loadActiveCorpus(corpusDir); const catalogue = JSON.parse(await readFile(resolve(cataloguePath), "utf8"));
   if (catalogue.schemaVersion !== 1 || catalogue.status !== "inactive-editorial-workbench" || catalogue.corpus?.id !== corpus.manifest.corpusId || catalogue.corpus.manifestSha256 !== corpus.manifestSha256 || catalogue.corpus.semanticSha256 !== corpus.manifest.semanticSha256 || catalogue.corpus.dictionarySize !== corpus.manifest.stats.accepted || !Array.isArray(catalogue.entries) || catalogue.entries.length < 400) throw new Error("Contrat du catalogue B2 invalide");
@@ -54,7 +56,11 @@ export async function verifyEditorialCatalogue({ corpusDir, targetsDir, evidence
     if (needed.has(entry.id)) { if (expectedWords.get(entry.id) !== entry.word) throw new Error(`Identité mot/id divergente: ${entry.id}`); needed.delete(entry.id); }
   }
   if (needed.size) throw new Error("Le catalogue référence des identifiants absents");
-  for (const entry of evidencedEntries) await verifyEditorialEvidence({ corpusDir, evidenceDir, targetId: entry.targetId, expectedSha256: entry.neighborhood.evidenceSha256 });
+  for (let offset = 0; offset < evidencedEntries.length; offset += EDITORIAL_VERIFICATION_BATCH_LIMIT) {
+    const batch = evidencedEntries.slice(offset, offset + EDITORIAL_VERIFICATION_BATCH_LIMIT);
+    await verifyEditorialEvidenceBatch({ corpusDir, evidenceDir, requests: batch.map(entry => ({ targetId: entry.targetId, expectedSha256: entry.neighborhood.evidenceSha256 })) });
+    await onProgress?.({ stage: "editorial-evidence", completed: offset + batch.length, total: evidencedEntries.length });
+  }
   const targetRoot = join(targetsDir, corpus.manifest.corpusId, "targets"); const guard = acquireTargetCacheGuard(targetRoot, "shared");
   try {
     for (const entry of evidencedEntries) {
@@ -78,4 +84,4 @@ function parseArgs(argv) {
   const values = {}; for (let index = 0; index < argv.length; index += 2) { if (!argv[index]?.startsWith("--") || argv[index + 1] === undefined) throw new Error("Arguments B2 invalides"); values[argv[index].slice(2)] = argv[index + 1]; }
   for (const key of ["corpus", "targets", "evidence", "catalogue"]) if (!values[key]) throw new Error(`--${key} est requis`); return values;
 }
-if (process.argv[1] && basename(process.argv[1]) === "verify-editorial-catalogue-v2.mjs") { const args = parseArgs(process.argv.slice(2)); verifyEditorialCatalogue({ corpusDir: args.corpus, targetsDir: args.targets, evidenceDir: args.evidence, cataloguePath: args.catalogue }).then(result => console.log(JSON.stringify(result))).catch(error => { console.error(error.message); process.exitCode = 1; }); }
+if (process.argv[1] && basename(process.argv[1]) === "verify-editorial-catalogue-v2.mjs") { const args = parseArgs(process.argv.slice(2)); verifyEditorialCatalogue({ corpusDir: args.corpus, targetsDir: args.targets, evidenceDir: args.evidence, cataloguePath: args.catalogue, onProgress: progress => console.error(JSON.stringify(progress)) }).then(result => console.log(JSON.stringify(result))).catch(error => { console.error(error.message); process.exitCode = 1; }); }
