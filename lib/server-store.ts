@@ -22,6 +22,35 @@ export class ServerStore {
   async revokeSession(session: GuestSession) {
     await this.db.prepare("UPDATE braise_sessions SET revoked=1 WHERE token_hash=? AND guest_id=?").bind(session.token_hash, session.guest_id).run();
   }
+  async setRecoveryCode(session: GuestSession, code: string, now = Date.now()) {
+    const result = await this.db.prepare(`INSERT INTO braise_recovery_codes (guest_id,pending_code_hash,created_at)
+      SELECT guest_id,?,? FROM braise_sessions WHERE token_hash=? AND guest_id=? AND revoked=0 AND expires_at>?
+      ON CONFLICT(guest_id) DO UPDATE SET pending_code_hash=excluded.pending_code_hash,created_at=excluded.created_at`).bind(await tokenHash(code), now, session.token_hash, session.guest_id, now).run();
+    return Boolean(result.meta.changes);
+  }
+  async confirmRecoveryCode(session: GuestSession, code: string, now = Date.now()) {
+    const hash = await tokenHash(code);
+    const result = await this.db.prepare(`UPDATE braise_recovery_codes SET code_hash=?,pending_code_hash=NULL,redeemed_session_hash=NULL
+      WHERE guest_id=? AND (pending_code_hash=? OR (code_hash=? AND redeemed_session_hash IS NULL))
+      AND EXISTS (SELECT 1 FROM braise_sessions s WHERE s.token_hash=? AND s.guest_id=braise_recovery_codes.guest_id AND s.revoked=0 AND s.expires_at>?)`).bind(hash, session.guest_id, hash, hash, session.token_hash, now).run();
+    return Boolean(result.meta.changes);
+  }
+  async recover(code: string, token: string, csrf: string, now = Date.now()) {
+    const hash = await tokenHash(code); const sessionHash = await tokenHash(token);
+    const replay = await this.db.prepare("SELECT guest_id FROM braise_recovery_codes WHERE code_hash=? AND redeemed_session_hash=?").bind(hash, sessionHash).first();
+    if (replay) return this.session(token, now);
+    await this.db.batch([
+      this.db.prepare(`INSERT OR IGNORE INTO braise_sessions (token_hash,guest_id,csrf_hash,expires_at,revoked)
+        SELECT ?,guest_id,?,?,0 FROM braise_recovery_codes WHERE code_hash=? AND redeemed_session_hash IS NULL`).bind(sessionHash, await tokenHash(csrf), now + 30 * 86400000, hash),
+      this.db.prepare(`UPDATE braise_sessions SET revoked=1 WHERE token_hash<>? AND guest_id IN
+        (SELECT r.guest_id FROM braise_recovery_codes r JOIN braise_sessions s ON s.guest_id=r.guest_id
+         WHERE r.code_hash=? AND r.redeemed_session_hash IS NULL AND s.token_hash=?)`).bind(sessionHash, hash, sessionHash),
+      this.db.prepare(`UPDATE braise_recovery_codes SET redeemed_session_hash=? WHERE code_hash=? AND redeemed_session_hash IS NULL
+        AND EXISTS (SELECT 1 FROM braise_sessions s WHERE s.token_hash=? AND s.guest_id=braise_recovery_codes.guest_id)`).bind(sessionHash, hash, sessionHash),
+    ]);
+    const receipt = await this.db.prepare("SELECT guest_id FROM braise_recovery_codes WHERE code_hash=? AND redeemed_session_hash=?").bind(hash, sessionHash).first();
+    return receipt ? this.session(token, now) : null;
+  }
   async createAuthorizedGame(session: GuestSession, id: string, seed: string, now = Date.now()) {
     await this.db.prepare(`INSERT OR IGNORE INTO braise_server_games (id,guest_id,seed,corpus,rules,state,revision,created_at)
       SELECT ?,s.guest_id,?,'fr-fasttext-30000-v1','classic-v1','open',0,? FROM braise_sessions s

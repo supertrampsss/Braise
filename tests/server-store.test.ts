@@ -8,6 +8,7 @@ import { randomToken, tokenHash, validMutationOrigin, sessionCookie, BRAISE_ORIG
 function database() {
   const sqlite = new DatabaseSync(":memory:");
   for (const statement of readFileSync("drizzle/0000_young_eternity.sql", "utf8").split("--> statement-breakpoint")) sqlite.exec(statement);
+  for (const statement of readFileSync("drizzle/0001_wakeful_zuras.sql", "utf8").split("--> statement-breakpoint")) sqlite.exec(statement);
   assert.ok(sqlite.prepare("SELECT name FROM sqlite_master WHERE type='trigger' AND name='braise_guess_applies_revision'").get());
   function prepare(sql: string) {
     let values: Array<string | number | null> = [];
@@ -67,6 +68,24 @@ test("CSRF boundary rejects absent and foreign origins", () => {
   assert.equal(validMutationOrigin(new Request(BRAISE_ORIGIN)), false);
   assert.equal(validMutationOrigin(new Request(BRAISE_ORIGIN, { headers: { Origin: "https://evil.test", "Content-Type": "application/json" } })), false);
   assert.equal(sessionCookie(new Request(BRAISE_ORIGIN, { headers: { Cookie: "__Host-braise_session=bad" } })), null);
+});
+test("recovery rotates sessions, consumes code once and retries lost response safely", async () => {
+  const { sqlite, store } = database(); const token = randomToken();
+  const guest = await store.createGuest("Test", token, "csrf", 100); const session = (await store.session(token, 101))!;
+  const code = randomToken(), replacement = randomToken();
+  assert.equal(await store.setRecoveryCode(session, code, 102), true);
+  assert.equal(await store.recover(code, replacement, "new-csrf", 102), null);
+  assert.equal(await store.confirmRecoveryCode(session, code, 102), true);
+  const undelivered = randomToken();
+  assert.equal(await store.setRecoveryCode(session, undelivered, 102), true);
+  assert.equal(await store.recover(undelivered, randomToken(), "pending", 102), null);
+  const result = await store.recover(code, replacement, "new-csrf", 103);
+  assert.equal(result?.guest_id, guest.id); assert.equal(await store.session(token, 104), null);
+  assert.equal((await store.recover(code, replacement, "new-csrf", 104))?.guest_id, guest.id);
+  assert.equal(await store.recover(code, randomToken(), "other", 104), null);
+  assert.equal(await store.setRecoveryCode(session, randomToken(), 104), false);
+  assert.equal(await store.recover(randomToken(), randomToken(), "bad", 104), null);
+  sqlite.close();
 });
 test("game creation rechecks expiry and revocation atomically and preserves replay identity", async () => {
   const { sqlite, store } = database(); const token = randomToken();

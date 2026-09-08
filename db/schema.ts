@@ -8,6 +8,13 @@ export const sessions = sqliteTable("braise_sessions", {
   tokenHash: text("token_hash").primaryKey(), guestId: text("guest_id").notNull().references(() => guests.id),
   csrfHash: text("csrf_hash").notNull(), expiresAt: integer("expires_at").notNull(), revoked: integer("revoked").notNull().default(0),
 });
+export const recoveryCodes = sqliteTable("braise_recovery_codes", {
+  guestId: text("guest_id").primaryKey().references(() => guests.id),
+  codeHash: text("code_hash").unique(),
+  pendingCodeHash: text("pending_code_hash"),
+  redeemedSessionHash: text("redeemed_session_hash"),
+  createdAt: integer("created_at").notNull(),
+});
 export const serverGames = sqliteTable("braise_server_games", {
   id: text("id").primaryKey(), guestId: text("guest_id").notNull().references(() => guests.id),
   seed: text("seed").notNull(), corpus: text("corpus").notNull(), rules: text("rules").notNull(),

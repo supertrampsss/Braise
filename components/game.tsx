@@ -341,6 +341,7 @@ export default function Game() {
 
       <TabsContent value={tabMode} className="game-tab-content">
       <a className="text-action" href="/laboratoire">L’intrus · explorer le laboratoire →</a>
+      <a className="text-action" href="/espace">Mon espace · parties conservées en ligne →</a>
       <ExpeditionPicker disabled={busy || loading} puzzle={puzzle} game={game} navigationGeneration={() => requestRef.current} onSelect={(seed, saved) => loadPuzzle("challenge", seed, saved)} />
       <CollectionPicker wins={profile.wins} seed={mode === "challenge" || mode === "free" ? puzzle?.seed : undefined} disabled={busy || loading} onSelect={seed => {
         const url = new URL(window.location.href); url.searchParams.delete("archive"); url.searchParams.set("defi", seed);
