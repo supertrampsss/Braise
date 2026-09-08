@@ -24,6 +24,10 @@ Le rang porte sur le dictionnaire de Braise. Certaines formes rares ou fléchies
 
 Reconstruction : installer Python et NumPy, puis lancer `python scripts/build-semantic-data.py`. Le script télécharge seulement les 50 000 premières lignes du modèle et conserve son cache brut dans `work/semantic`, ignoré par Git. Le fichier reproductible final est écrit dans `data`.
 
+Le pipeline local B1b prépare le futur corpus complet sans modifier V1. `npm run semantic:v2:build -- --source <fichier.vec> --output work/semantic-v2` lit le fichier jusqu'à EOF, normalise les vecteurs avec une méthode stable, déduplique exactement sur disque et produit des segments BRV2 immuables. Les lignes, segments et buffers sont bornés. Une interruption conserve uniquement les segments validés et peut reprendre avec la même empreinte de source et la même configuration. Un verrou abandonné demande l'identifiant exact inscrit dans `.build.lock` et l'option `--recover-lock-owner` ; un processus encore actif ne peut pas être remplacé.
+
+`npm run semantic:v2:verify -- --source <fichier.vec> --output work/semantic-v2` relit indépendamment toute la source et tous les segments, contrôle chaque association mot/vecteur, les exclusions, les empreintes et l'inventaire sémantique. Le pointeur `active.json` n'est créé qu'après cette vérification. Les tests synthétiques dépassent 50 000 lignes mais ne signifient pas que la source réelle complète a déjà été ingérée. Cette ingestion, la génération des scores/rangs par cible et la qualification R2/Worker restent à effectuer avant activation produit.
+
 ## État et publicité
 
 Les parties, les pistes, le son et les victoires sont locaux au navigateur. Le profil V2 reprend la progression V1 après une copie de secours vérifiée et ses événements convergent entre les onglets du même navigateur. Un export JSON lisible permet de copier manuellement le profil, ses récompenses et ses préférences vers un autre appareil ; l’import prévisualise la fusion, exige une confirmation et ne déplace pas les parties en cours ni les épingles. Les archives ouvrent les mots passés depuis le lancement, avec la même partie sauvegardée que le quotidien correspondant. Une réussite tardive reste une archive et ne réécrit pas la série historique. Trois objectifs repartent chaque lundi à l’heure de Paris et débloquent des styles permanents, sans visionnage publicitaire ni avantage de jeu. Aucun compte ni synchronisation automatique multi-appareil. Cet historique reste personnel et non compétitif. Les défis partagent une seed et se comparent par leurs résultats, sans classement en direct.
@@ -50,6 +54,7 @@ Tests automatisés du calendrier Paris (y compris changements d'heure), rotation
 - `docs/program/BASELINE.json` : référence du corpus et des identités V1 à préserver.
 - `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
 - `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
+- `docs/program/B1B-CORPUS-DIRECTIVE.md` : exigence de dictionnaire complet et critères d'acceptation du futur corpus.
 - `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
 - `docs/program/B4A-DELIVERY.md` : profil local V2, migration sauvegardée et convergence entre onglets.
 - `docs/program/B4B-DELIVERY.md` : archives jouables, calendrier Paris contrôlé et progression non rétroactive.

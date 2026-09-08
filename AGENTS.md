@@ -7,8 +7,11 @@
 - Ne jamais importer lib/semantic-storage.ts ou data/semantic-v1-index.json dans un composant client.
 - Ne jamais importer lib/legacy-puzzles.ts ou data/legacy-v1.json dans un composant client.
 - Ne pas réécrire le corpus, les identités ou l'oracle V1 pour une extension. Créer une nouvelle version et conserver le lecteur historique. Les fixtures V1 se reconstruisent uniquement depuis leur commit source figé.
+- Le pipeline V2 reste un outil local de staging jusqu'à ingestion et vérification de la source complète. Ne jamais présenter ses fixtures synthétiques comme le dictionnaire réel chargé, ni activer `active.json` sans vérification indépendante de la source et de tous les segments.
+- Une reprise du pipeline V2 exige la même empreinte source et la même configuration. Un verrou abandonné se récupère seulement avec son identifiant exact et après constat du processus mort ; ne jamais supprimer manuellement un verrou de génération actif.
 - Conserver l'attribution et la licence CC BY-SA des données.
 - Vérifier les modifications de calendrier, normalisation et API avec npm test.
+- Vérifier une génération V2 avec `npm run semantic:v2:verify -- --source <fichier.vec> --output <staging>` ; les sorties sous `work/` restent non publiées.
 - Vérifier TypeScript et la construction après une modification du code.
 - Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.
 - Préserver `braise.v1.profile` et sa copie brute. Toute progression V2 passe par `lib/profile-storage.ts`, avec un événement stable par fait réel, sans réécriture additive du solde V1.
