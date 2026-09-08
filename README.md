@@ -34,7 +34,9 @@ Le lot B1d ajoute l'index de présence exact `BPI2`. `npm run semantic:v2:index:
 
 `npm run semantic:v2:target:evict -- --corpus work/semantic-v2 --output work/semantic-targets-v2 --target-id <id>` vérifie une cible complète avant son retrait. Génération, vérification et éviction partagent un verrou lecteur/mutateur. Le renommage atomique et le journal reprenable empêchent une suppression interrompue de libérer ou de recréer silencieusement un emplacement.
 
-Ces commandes restent des outils de staging. Les fixtures prouvent qu'un identifiant quelconque peut être cible et que les rangs dépassant 65 535 sont conservés, mais elles ne prouvent pas que le dictionnaire complet réel a été chargé. Le corpus réel, son index de présence serveur, les cibles effectivement préparées et la qualification R2/Worker restent nécessaires avant activation produit.
+Ces commandes restent des outils de staging. La source fastText française complète a été ingérée et vérifiée localement : 1 013 881 entrées admises sur 1 152 449 lignes, 248 segments, index exact complet. Huit colonnes réelles respectant le quota ont été préparées et contrôlées. Les empreintes et mesures sont figées dans `docs/program/B1E-MEASUREMENTS.json`. Le transfert durable et la qualification R2/Worker restent nécessaires avant activation produit.
+
+Le chantier B2 conserve 400 cibles courantes relues lexicalement par des agents dans un catalogue de travail inactif. Revue lexicale, qualité des voisinages, indices, colonne numérique et approbation sont des statuts distincts. Un calendrier V2 ne peut être produit qu'avec 365 approbations prouvées et reste inactif jusqu'à la bascule explicite. `npm run semantic:v2:catalogue:build` reconstruit les dossiers depuis le corpus et les colonnes disponibles ; `npm run semantic:v2:catalogue:verify` relit indépendamment les identités et les preuves numériques.
 
 ## État et publicité
 

@@ -83,6 +83,8 @@ export class SemanticV2Reader {
     if (decoder.decode(raw.subarray(0, 4)) !== "BSV2" || view.getUint16(4, true) !== 2 || view.getUint16(6, true) !== 3 || view.getUint32(8, true) !== target || view.getUint32(12, true) !== page.firstId || view.getUint32(16, true) !== page.count || view.getUint32(20, true) !== this.pins.dictionarySize || view.getUint32(24, true) !== 64 || view.getUint32(28, true) !== 64 + page.count * 2 || view.getUint32(32, true) !== raw.length || raw.length !== 64 + page.count * 6 || hex(raw.subarray(40, 56)) !== this.pins.manifestSha256.slice(0, 32) || hex(raw.subarray(56, 64)) !== manifest.config.contractHash.slice(0, 16)) throw new Error("v2-score-page");
     const index = wordId - page.firstId; const score = view.getInt16(64 + index * 2, true); const rank = view.getUint32(64 + page.count * 2 + index * 4, true);
     if (score < -10000 || score > 10000 || rank < 1 || rank > this.pins.dictionarySize || (wordId === target && (score !== 10000 || rank !== 1))) throw new Error("v2-score-range");
-    return { temperature: score / 100, rank, found: wordId === target };
+    const found = wordId === target;
+    // Quantization can tie another vector at 10,000. Only exact identity wins.
+    return { temperature: found ? 100 : Math.min(score / 100, 99.9), rank, found };
   }
 }
