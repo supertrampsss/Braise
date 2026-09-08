@@ -1,6 +1,7 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { distributionHeaders } from "../lib/embed-contract";
 
 interface Env {
   ASSETS: Fetcher;
@@ -40,7 +41,8 @@ const worker = {
       }, allowedWidths);
     }
 
-    return handler.fetch(request, env, ctx);
+    const response = await handler.fetch(request, env, ctx);
+    return url.pathname === "/embed" ? distributionHeaders(response) : response;
   },
 };
 

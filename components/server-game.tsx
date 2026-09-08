@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { ServerGameLinks } from "./server-game-links";
 type Session = { guest: { id: string; name: string } | null; csrf?: string };
 type GameView = { game: { id: string; state: string; revision: number }; guesses: Array<{ word: string; ordinal: number; temperature: number; rank: number; found: boolean }> };
 export default function ServerGame() {
@@ -29,7 +30,7 @@ export default function ServerGame() {
   async function refreshGames() { const data = await api("/api/server-games"); setGames(data.games as typeof games); }
   useEffect(() => { void perform(async () => {
     const result = await api("/api/session") as Session; setSession(result);
-    if (result.guest) await refreshGames();
+    if (result.guest) { await refreshGames(); const game = new URLSearchParams(location.search).get("game"); if (game) setView(await api(`/api/server-games?id=${encodeURIComponent(game)}`) as GameView); }
   });
   // Restore only. A page visit does not create a guest or a game.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,6 +58,7 @@ export default function ServerGame() {
         setSession({ guest: null }); setView(null); setGames([]); pending.current = null; setWord(""); setIssuedCode("");
       })}>Confirmer la déconnexion</button></details>}
       {busy && <p role="status">Chargement…</p>}{error && <p role="alert">{error}</p>}
-      <p>Les cercles et les duels seront raccordés à ce socle. Aucun joueur ni classement fictif.</p>
+      <ServerGameLinks game={view?.game.id} />
+      <p>Aucun joueur ni classement fictif. Les parties partagées sont conservées côté serveur.</p>
     </section></main>;
 }

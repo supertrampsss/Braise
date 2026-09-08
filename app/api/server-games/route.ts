@@ -18,8 +18,9 @@ export async function POST(request: Request) {
   try {
     const session = await authenticate(request, true); if (!session) return reply({ error: "Session ou origine invalide." }, 403);
     const text = await request.text(); if (text.length > 512) return reply({ error: "Requête trop grande." }, 413);
-    const body = JSON.parse(text); if (!uuid(body?.id)) return reply({ error: "Identité de partie invalide." }, 400);
+    const body = JSON.parse(text); if (typeof body?.id !== "string" || (!uuid(body.id) && !/^circle-[a-f0-9-]{73}$/.test(body.id) && !/^studio-[a-f0-9-]{73}-\d{1,2}$/.test(body.id))) return reply({ error: "Identité de partie invalide." }, 400);
     if (body.action === "create") {
+      if (!uuid(body.id)) return reply({ error: "Identité de partie invalide." }, 400);
       if (creationLimited(request)) return reply({ error: "Trop de créations. Réessayez plus tard." }, 429);
       const seed = String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647);
       const game = await store().createAuthorizedGame(session, body.id, seed);
