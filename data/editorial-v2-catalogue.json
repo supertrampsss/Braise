@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 25,
-    "approved": 25
+    "neighborhoodEvidenceReady": 32,
+    "approved": 32
   },
   "entries": [
     {
@@ -6320,16 +6320,282 @@
       },
       "word": "agriculture",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 466558,
+            "word": "écoagriculture"
+          },
+          {
+            "id": 108145,
+            "word": "agricultures"
+          },
+          {
+            "id": 886304,
+            "word": "argriculture"
+          },
+          {
+            "id": 921671,
+            "word": "agricultureet"
+          },
+          {
+            "id": 367244,
+            "word": "mariculture"
+          },
+          {
+            "id": 882353,
+            "word": "agriculturelle"
+          },
+          {
+            "id": 962953,
+            "word": "méléagriculture"
+          },
+          {
+            "id": 733059,
+            "word": "agriculturel"
+          },
+          {
+            "id": 684159,
+            "word": "pomiculture"
+          },
+          {
+            "id": 176899,
+            "word": "floriculture"
+          },
+          {
+            "id": 44359,
+            "word": "arboriculture"
+          },
+          {
+            "id": 383546,
+            "word": "aquiculture"
+          },
+          {
+            "id": 562096,
+            "word": "serriculture"
+          },
+          {
+            "id": 842854,
+            "word": "agriculturisme"
+          },
+          {
+            "id": 974840,
+            "word": "ediculture"
+          },
+          {
+            "id": 130112,
+            "word": "agricultura"
+          },
+          {
+            "id": 836481,
+            "word": "agriculturistes"
+          },
+          {
+            "id": 416190,
+            "word": "agrumiculture"
+          },
+          {
+            "id": 869676,
+            "word": "agriculturiste"
+          },
+          {
+            "id": 684620,
+            "word": "pénéiculture"
+          },
+          {
+            "id": 351001,
+            "word": "maïsiculture"
+          },
+          {
+            "id": 102836,
+            "word": "céréaliculture"
+          },
+          {
+            "id": 500007,
+            "word": "sériculture"
+          },
+          {
+            "id": 256860,
+            "word": "agrosylviculture"
+          },
+          {
+            "id": 931922,
+            "word": "arboricultures"
+          },
+          {
+            "id": 772038,
+            "word": "carpiculture"
+          },
+          {
+            "id": 516769,
+            "word": "nuciculture"
+          },
+          {
+            "id": 267950,
+            "word": "perliculture"
+          },
+          {
+            "id": 771533,
+            "word": "renniculture"
+          },
+          {
+            "id": 871504,
+            "word": "lombriculture"
+          },
+          {
+            "id": 584640,
+            "word": "osiériculture"
+          },
+          {
+            "id": 476867,
+            "word": "fruiticulture"
+          },
+          {
+            "id": 20464,
+            "word": "sylviculture"
+          },
+          {
+            "id": 42405,
+            "word": "apiculture"
+          },
+          {
+            "id": 113504,
+            "word": "oléiculture"
+          },
+          {
+            "id": 853067,
+            "word": "citriculture"
+          },
+          {
+            "id": 163728,
+            "word": "caféiculture"
+          },
+          {
+            "id": 256227,
+            "word": "acériculture"
+          },
+          {
+            "id": 318508,
+            "word": "populiculture"
+          },
+          {
+            "id": 337740,
+            "word": "héliciculture"
+          },
+          {
+            "id": 46991,
+            "word": "agricultural"
+          },
+          {
+            "id": 3311,
+            "word": "agricoles"
+          },
+          {
+            "id": 72314,
+            "word": "riziculture"
+          },
+          {
+            "id": 258641,
+            "word": "saliculture"
+          },
+          {
+            "id": 161977,
+            "word": "viniculture"
+          },
+          {
+            "id": 911725,
+            "word": "oléïculture"
+          },
+          {
+            "id": 432473,
+            "word": "sylvicultures"
+          },
+          {
+            "id": 782025,
+            "word": "anticulture"
+          },
+          {
+            "id": 962952,
+            "word": "ésociculture"
+          },
+          {
+            "id": 968163,
+            "word": "ligniculture"
+          },
+          {
+            "id": 72376,
+            "word": "aviculture"
+          },
+          {
+            "id": 589139,
+            "word": "astaciculture"
+          },
+          {
+            "id": 584908,
+            "word": "fruticulture"
+          },
+          {
+            "id": 573061,
+            "word": "hévéaculture"
+          },
+          {
+            "id": 743531,
+            "word": "myciculture"
+          },
+          {
+            "id": 681965,
+            "word": "échiniculture"
+          },
+          {
+            "id": 391232,
+            "word": "vitiviniculture"
+          },
+          {
+            "id": 454355,
+            "word": "castanéiculture"
+          },
+          {
+            "id": 44544,
+            "word": "polyculture"
+          },
+          {
+            "id": 2429,
+            "word": "agricole"
+          },
+          {
+            "id": 833381,
+            "word": "agriculturae"
+          },
+          {
+            "id": 543747,
+            "word": "deptofagriculture"
+          },
+          {
+            "id": 22772,
+            "word": "horticulture"
+          },
+          {
+            "id": 898398,
+            "word": "coraliculture"
+          }
+        ],
+        "targetManifestSha256": "6ae7024d57aad058a46de33c41376df9ddb579d369d2b285fd2959565ed583d4",
+        "evidenceSha256": "347d36c7799db14f997b7050152be129d6f8f66851906a427e5aebc1ff73966b"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes rejettent un voisinage dominé par les variantes de la cible et les composés répétitifs en culture. Trois indices naturels, variés et non dérivés ne peuvent pas être retenus honnêtement.",
+        "evidenceSha256": "347d36c7799db14f997b7050152be129d6f8f66851906a427e5aebc1ff73966b"
+      }
     },
     {
       "targetId": 1266,
@@ -6573,16 +6839,286 @@
       },
       "word": "médecine",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 754109,
+            "word": "médecinerie"
+          },
+          {
+            "id": 36758,
+            "word": "pharmacologie"
+          },
+          {
+            "id": 996678,
+            "word": "médecineacadémie"
+          },
+          {
+            "id": 37976,
+            "word": "gynécologie"
+          },
+          {
+            "id": 49523,
+            "word": "médecines"
+          },
+          {
+            "id": 472341,
+            "word": "phtisiologie"
+          },
+          {
+            "id": 785935,
+            "word": "idiologie"
+          },
+          {
+            "id": 8495,
+            "word": "pharmacie"
+          },
+          {
+            "id": 4876,
+            "word": "médicale"
+          },
+          {
+            "id": 7068,
+            "word": "chirurgie"
+          },
+          {
+            "id": 41976,
+            "word": "cardiologie"
+          },
+          {
+            "id": 563843,
+            "word": "synécologie"
+          },
+          {
+            "id": 896144,
+            "word": "cryomédecine"
+          },
+          {
+            "id": 163726,
+            "word": "anesthésiologie"
+          },
+          {
+            "id": 34964,
+            "word": "obstétrique"
+          },
+          {
+            "id": 952302,
+            "word": "médecinemaire"
+          },
+          {
+            "id": 710468,
+            "word": "angéiologie"
+          },
+          {
+            "id": 55728,
+            "word": "urologie"
+          },
+          {
+            "id": 316209,
+            "word": "vénérologie"
+          },
+          {
+            "id": 32868,
+            "word": "pédiatrie"
+          },
+          {
+            "id": 486616,
+            "word": "chirologie"
+          },
+          {
+            "id": 65718,
+            "word": "stomatologie"
+          },
+          {
+            "id": 746631,
+            "word": "élixirologie"
+          },
+          {
+            "id": 43639,
+            "word": "odontologie"
+          },
+          {
+            "id": 81710,
+            "word": "néphrologie"
+          },
+          {
+            "id": 118107,
+            "word": "biomédecine"
+          },
+          {
+            "id": 191676,
+            "word": "hépatologie"
+          },
+          {
+            "id": 10038,
+            "word": "physiologie"
+          },
+          {
+            "id": 922178,
+            "word": "égologie"
+          },
+          {
+            "id": 9714,
+            "word": "vétérinaire"
+          },
+          {
+            "id": 51918,
+            "word": "hématologie"
+          },
+          {
+            "id": 64086,
+            "word": "endocrinologie"
+          },
+          {
+            "id": 847464,
+            "word": "cirurgie"
+          },
+          {
+            "id": 9254,
+            "word": "médicales"
+          },
+          {
+            "id": 68437,
+            "word": "rhumatologie"
+          },
+          {
+            "id": 69348,
+            "word": "pneumologie"
+          },
+          {
+            "id": 934262,
+            "word": "stomathérapie"
+          },
+          {
+            "id": 57637,
+            "word": "oncologie"
+          },
+          {
+            "id": 39767,
+            "word": "ophtalmologie"
+          },
+          {
+            "id": 29366,
+            "word": "neurologie"
+          },
+          {
+            "id": 892671,
+            "word": "onirologie"
+          },
+          {
+            "id": 38179,
+            "word": "dermatologie"
+          },
+          {
+            "id": 228072,
+            "word": "diabétologie"
+          },
+          {
+            "id": 264664,
+            "word": "angiologie"
+          },
+          {
+            "id": 794799,
+            "word": "hémobiologie"
+          },
+          {
+            "id": 281213,
+            "word": "otologie"
+          },
+          {
+            "id": 534015,
+            "word": "etiologie"
+          },
+          {
+            "id": 104096,
+            "word": "entérologie"
+          },
+          {
+            "id": 912477,
+            "word": "paradontologie"
+          },
+          {
+            "id": 828277,
+            "word": "nématologie"
+          },
+          {
+            "id": 738168,
+            "word": "figurologie"
+          },
+          {
+            "id": 402826,
+            "word": "séméiologie"
+          },
+          {
+            "id": 951855,
+            "word": "egologie"
+          },
+          {
+            "id": 835818,
+            "word": "pyrétologie"
+          },
+          {
+            "id": 744211,
+            "word": "sitologie"
+          },
+          {
+            "id": 312390,
+            "word": "phlébologie"
+          },
+          {
+            "id": 467756,
+            "word": "ethnomédecine"
+          },
+          {
+            "id": 66785,
+            "word": "virologie"
+          },
+          {
+            "id": 35573,
+            "word": "radiologie"
+          },
+          {
+            "id": 621027,
+            "word": "asthmologie"
+          },
+          {
+            "id": 506497,
+            "word": "vaccinologie"
+          },
+          {
+            "id": 941566,
+            "word": "ätiologie"
+          },
+          {
+            "id": 772263,
+            "word": "craniologie"
+          },
+          {
+            "id": 913176,
+            "word": "podiatrie"
+          }
+        ],
+        "targetManifestSha256": "126ac5ba1db2e04afeee20308627f138b121aed8d9733a1355eb2439de5ff25f",
+        "evidenceSha256": "7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "pharmacie",
+          "chirurgie",
+          "pédiatrie"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes confirment trois domaines de soins familiers et distincts, sans variante ni dérivé de la cible.",
+        "evidenceSha256": "7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a"
+      }
     },
     {
       "targetId": 43,
@@ -7219,16 +7755,286 @@
       },
       "word": "athlétisme",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 1002348,
+            "word": "athlétismes"
+          },
+          {
+            "id": 770662,
+            "word": "réathlétisation"
+          },
+          {
+            "id": 799296,
+            "word": "athléte"
+          },
+          {
+            "id": 36724,
+            "word": "heptathlon"
+          },
+          {
+            "id": 930244,
+            "word": "vétathlon"
+          },
+          {
+            "id": 421199,
+            "word": "octathlon"
+          },
+          {
+            "id": 529,
+            "word": "championnats"
+          },
+          {
+            "id": 792192,
+            "word": "athlétics"
+          },
+          {
+            "id": 4577,
+            "word": "natation"
+          },
+          {
+            "id": 62787,
+            "word": "athletisme"
+          },
+          {
+            "id": 17308,
+            "word": "haltérophilie"
+          },
+          {
+            "id": 20831,
+            "word": "pentathlon"
+          },
+          {
+            "id": 940756,
+            "word": "hampionnats"
+          },
+          {
+            "id": 476456,
+            "word": "spartathlon"
+          },
+          {
+            "id": 100066,
+            "word": "athlé"
+          },
+          {
+            "id": 114585,
+            "word": "heptathlonienne"
+          },
+          {
+            "id": 1947,
+            "word": "athlète"
+          },
+          {
+            "id": 891077,
+            "word": "étéchampionnats"
+          },
+          {
+            "id": 20068,
+            "word": "steeple"
+          },
+          {
+            "id": 28364,
+            "word": "universiade"
+          },
+          {
+            "id": 28276,
+            "word": "décathlon"
+          },
+          {
+            "id": 465321,
+            "word": "athlético"
+          },
+          {
+            "id": 510759,
+            "word": "panathlon"
+          },
+          {
+            "id": 547284,
+            "word": "heptathlète"
+          },
+          {
+            "id": 639704,
+            "word": "athlètisme"
+          },
+          {
+            "id": 123416,
+            "word": "aquathlon"
+          },
+          {
+            "id": 787787,
+            "word": "décatriathlon"
+          },
+          {
+            "id": 61842,
+            "word": "universiades"
+          },
+          {
+            "id": 18042,
+            "word": "iaaf"
+          },
+          {
+            "id": 67476,
+            "word": "pentathlonien"
+          },
+          {
+            "id": 94489,
+            "word": "pentathlonienne"
+          },
+          {
+            "id": 630682,
+            "word": "icosathlon"
+          },
+          {
+            "id": 752302,
+            "word": "athlège"
+          },
+          {
+            "id": 303770,
+            "word": "pentathlète"
+          },
+          {
+            "id": 507415,
+            "word": "haltérophilique"
+          },
+          {
+            "id": 22643,
+            "word": "handisport"
+          },
+          {
+            "id": 193522,
+            "word": "haltérophiles"
+          },
+          {
+            "id": 731434,
+            "word": "teeple"
+          },
+          {
+            "id": 336727,
+            "word": "mondechampionnats"
+          },
+          {
+            "id": 799641,
+            "word": "pentathlètes"
+          },
+          {
+            "id": 585412,
+            "word": "décathloniens"
+          },
+          {
+            "id": 181743,
+            "word": "handisports"
+          },
+          {
+            "id": 815005,
+            "word": "décathlons"
+          },
+          {
+            "id": 69082,
+            "word": "décathlonien"
+          },
+          {
+            "id": 6854,
+            "word": "escrime"
+          },
+          {
+            "id": 77119,
+            "word": "gbrathletics"
+          },
+          {
+            "id": 394237,
+            "word": "marathoniaaf"
+          },
+          {
+            "id": 121992,
+            "word": "docathlé"
+          },
+          {
+            "id": 891827,
+            "word": "décathlète"
+          },
+          {
+            "id": 749891,
+            "word": "olympiqueaviron"
+          },
+          {
+            "id": 131722,
+            "word": "athletissima"
+          },
+          {
+            "id": 627216,
+            "word": "bigathlon"
+          },
+          {
+            "id": 5575,
+            "word": "gymnastique"
+          },
+          {
+            "id": 23084,
+            "word": "haltérophile"
+          },
+          {
+            "id": 6910,
+            "word": "patinage"
+          },
+          {
+            "id": 2851,
+            "word": "saut"
+          },
+          {
+            "id": 620820,
+            "word": "natations"
+          },
+          {
+            "id": 2437,
+            "word": "cyclisme"
+          },
+          {
+            "id": 1007039,
+            "word": "athl"
+          },
+          {
+            "id": 849585,
+            "word": "athlérama"
+          },
+          {
+            "id": 861282,
+            "word": "paraduathlon"
+          },
+          {
+            "id": 8341,
+            "word": "judo"
+          },
+          {
+            "id": 11047,
+            "word": "panaméricains"
+          },
+          {
+            "id": 51137,
+            "word": "athlétic"
+          }
+        ],
+        "targetManifestSha256": "ce66c4ec8db5038b0c5f010a8969c05af6693f5951115852df36af969a1986bb",
+        "evidenceSha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "championnats",
+          "décathlon",
+          "saut"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes valident un contexte de compétition et deux disciplines reconnaissables. Les formes dérivées de la cible sont exclues.",
+        "evidenceSha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3"
+      }
     },
     {
       "targetId": 631,
@@ -8527,16 +9333,286 @@
       },
       "word": "nuit",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 1832,
+            "word": "soir"
+          },
+          {
+            "id": 749356,
+            "word": "nuite"
+          },
+          {
+            "id": 7740,
+            "word": "nocturne"
+          },
+          {
+            "id": 16581,
+            "word": "matinée"
+          },
+          {
+            "id": 2269,
+            "word": "matin"
+          },
+          {
+            "id": 2883,
+            "word": "night"
+          },
+          {
+            "id": 6720,
+            "word": "minuit"
+          },
+          {
+            "id": 13904,
+            "word": "crépuscule"
+          },
+          {
+            "id": 5931,
+            "word": "nuits"
+          },
+          {
+            "id": 13934,
+            "word": "nocturnes"
+          },
+          {
+            "id": 3339,
+            "word": "soirée"
+          },
+          {
+            "id": 16745,
+            "word": "obscurité"
+          },
+          {
+            "id": 169052,
+            "word": "crépuscules"
+          },
+          {
+            "id": 382377,
+            "word": "nocture"
+          },
+          {
+            "id": 68691,
+            "word": "lueurs"
+          },
+          {
+            "id": 73585,
+            "word": "crépusculaire"
+          },
+          {
+            "id": 11250,
+            "word": "coucher"
+          },
+          {
+            "id": 34098,
+            "word": "lueur"
+          },
+          {
+            "id": 12911,
+            "word": "brouillard"
+          },
+          {
+            "id": 20271,
+            "word": "soirs"
+          },
+          {
+            "id": 412798,
+            "word": "nocturn"
+          },
+          {
+            "id": 139707,
+            "word": "nuitamment"
+          },
+          {
+            "id": 41043,
+            "word": "dorment"
+          },
+          {
+            "id": 11720,
+            "word": "songe"
+          },
+          {
+            "id": 35372,
+            "word": "veillée"
+          },
+          {
+            "id": 122925,
+            "word": "endorment"
+          },
+          {
+            "id": 430890,
+            "word": "minuits"
+          },
+          {
+            "id": 594286,
+            "word": "nuiton"
+          },
+          {
+            "id": 120824,
+            "word": "crépusculaires"
+          },
+          {
+            "id": 748662,
+            "word": "noctiurne"
+          },
+          {
+            "id": 227,
+            "word": "jour"
+          },
+          {
+            "id": 541698,
+            "word": "nightrise"
+          },
+          {
+            "id": 1280,
+            "word": "journée"
+          },
+          {
+            "id": 524256,
+            "word": "dormiront"
+          },
+          {
+            "id": 66336,
+            "word": "réveillée"
+          },
+          {
+            "id": 91692,
+            "word": "matinées"
+          },
+          {
+            "id": 934164,
+            "word": "furinocturne"
+          },
+          {
+            "id": 20513,
+            "word": "dort"
+          },
+          {
+            "id": 10320,
+            "word": "tombée"
+          },
+          {
+            "id": 518548,
+            "word": "matiné"
+          },
+          {
+            "id": 97274,
+            "word": "walpurgis"
+          },
+          {
+            "id": 877253,
+            "word": "noctures"
+          },
+          {
+            "id": 14866,
+            "word": "cauchemar"
+          },
+          {
+            "id": 18482,
+            "word": "brume"
+          },
+          {
+            "id": 521776,
+            "word": "dormin"
+          },
+          {
+            "id": 532308,
+            "word": "dormirons"
+          },
+          {
+            "id": 735610,
+            "word": "nuiteux"
+          },
+          {
+            "id": 591804,
+            "word": "noct"
+          },
+          {
+            "id": 682559,
+            "word": "nocturnia"
+          },
+          {
+            "id": 49606,
+            "word": "sieste"
+          },
+          {
+            "id": 566710,
+            "word": "soiré"
+          },
+          {
+            "id": 45721,
+            "word": "veilleur"
+          },
+          {
+            "id": 135942,
+            "word": "endormies"
+          },
+          {
+            "id": 14527,
+            "word": "dormir"
+          },
+          {
+            "id": 7269,
+            "word": "sommeil"
+          },
+          {
+            "id": 929548,
+            "word": "nuiteuse"
+          },
+          {
+            "id": 134977,
+            "word": "nocturna"
+          },
+          {
+            "id": 345666,
+            "word": "réveilles"
+          },
+          {
+            "id": 60571,
+            "word": "midsummer"
+          },
+          {
+            "id": 918809,
+            "word": "anticrépusculaires"
+          },
+          {
+            "id": 220431,
+            "word": "nocturnus"
+          },
+          {
+            "id": 40793,
+            "word": "endort"
+          },
+          {
+            "id": 58976,
+            "word": "endormis"
+          },
+          {
+            "id": 754092,
+            "word": "endormira"
+          }
+        ],
+        "targetManifestSha256": "12ae0499c5efec5b5f9c7de6f6be250737a186dd62c90c2d0f1374db2f3bcbfa",
+        "evidenceSha256": "dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "crépuscule",
+          "obscurité",
+          "sommeil"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes retiennent une transition temporelle, une condition lumineuse et une expérience humaine, trois associations complémentaires.",
+        "evidenceSha256": "dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b"
+      }
     },
     {
       "targetId": 1832,
@@ -12412,16 +13488,286 @@
       },
       "word": "pétrole",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 56982,
+            "word": "pétroles"
+          },
+          {
+            "id": 14132,
+            "word": "pétrolière"
+          },
+          {
+            "id": 766452,
+            "word": "pétrolette"
+          },
+          {
+            "id": 15007,
+            "word": "hydrocarbures"
+          },
+          {
+            "id": 970601,
+            "word": "pétroleurs"
+          },
+          {
+            "id": 16491,
+            "word": "pétroliers"
+          },
+          {
+            "id": 23136,
+            "word": "pétrolières"
+          },
+          {
+            "id": 456764,
+            "word": "pétroléo"
+          },
+          {
+            "id": 67844,
+            "word": "pétrolifères"
+          },
+          {
+            "id": 13592,
+            "word": "pétrolier"
+          },
+          {
+            "id": 258827,
+            "word": "pétrolia"
+          },
+          {
+            "id": 78853,
+            "word": "pétrolifère"
+          },
+          {
+            "id": 223053,
+            "word": "petrole"
+          },
+          {
+            "id": 979646,
+            "word": "europétrole"
+          },
+          {
+            "id": 63985,
+            "word": "gazière"
+          },
+          {
+            "id": 48054,
+            "word": "hydrocarbure"
+          },
+          {
+            "id": 27468,
+            "word": "carburants"
+          },
+          {
+            "id": 24761,
+            "word": "barils"
+          },
+          {
+            "id": 62210,
+            "word": "pétrochimie"
+          },
+          {
+            "id": 101153,
+            "word": "pétrochimiques"
+          },
+          {
+            "id": 69694,
+            "word": "pétrochimique"
+          },
+          {
+            "id": 604121,
+            "word": "algocarburants"
+          },
+          {
+            "id": 552931,
+            "word": "algocarburant"
+          },
+          {
+            "id": 580443,
+            "word": "pétrogazière"
+          },
+          {
+            "id": 30053,
+            "word": "raffinage"
+          },
+          {
+            "id": 312426,
+            "word": "parapétrolière"
+          },
+          {
+            "id": 34919,
+            "word": "fioul"
+          },
+          {
+            "id": 34952,
+            "word": "raffineries"
+          },
+          {
+            "id": 421724,
+            "word": "pétroleuse"
+          },
+          {
+            "id": 1704,
+            "word": "gaz"
+          },
+          {
+            "id": 21036,
+            "word": "raffinerie"
+          },
+          {
+            "id": 994172,
+            "word": "pétrogazières"
+          },
+          {
+            "id": 84887,
+            "word": "gazières"
+          },
+          {
+            "id": 226718,
+            "word": "unitécarburant"
+          },
+          {
+            "id": 732890,
+            "word": "halocarbures"
+          },
+          {
+            "id": 54654,
+            "word": "liquéfié"
+          },
+          {
+            "id": 97822,
+            "word": "agrocarburants"
+          },
+          {
+            "id": 677465,
+            "word": "pétrogazier"
+          },
+          {
+            "id": 70603,
+            "word": "gaziers"
+          },
+          {
+            "id": 204861,
+            "word": "agrocarburant"
+          },
+          {
+            "id": 698674,
+            "word": "superpétroliers"
+          },
+          {
+            "id": 35181,
+            "word": "bitumineux"
+          },
+          {
+            "id": 221964,
+            "word": "pétroleuses"
+          },
+          {
+            "id": 69947,
+            "word": "oléoducs"
+          },
+          {
+            "id": 11115,
+            "word": "gisements"
+          },
+          {
+            "id": 52097,
+            "word": "biocarburants"
+          },
+          {
+            "id": 22069,
+            "word": "combustibles"
+          },
+          {
+            "id": 367773,
+            "word": "superpétrolier"
+          },
+          {
+            "id": 81522,
+            "word": "biocarburant"
+          },
+          {
+            "id": 6877,
+            "word": "carburant"
+          },
+          {
+            "id": 4227,
+            "word": "charbon"
+          },
+          {
+            "id": 777205,
+            "word": "parapétrolier"
+          },
+          {
+            "id": 42849,
+            "word": "kérosène"
+          },
+          {
+            "id": 386627,
+            "word": "idrocarburi"
+          },
+          {
+            "id": 794205,
+            "word": "bioraffinerie"
+          },
+          {
+            "id": 120885,
+            "word": "pétro"
+          },
+          {
+            "id": 37237,
+            "word": "petroleum"
+          },
+          {
+            "id": 673471,
+            "word": "bioraffineries"
+          },
+          {
+            "id": 119015,
+            "word": "carbures"
+          },
+          {
+            "id": 69545,
+            "word": "gazoducs"
+          },
+          {
+            "id": 201452,
+            "word": "pétrodollars"
+          },
+          {
+            "id": 12075,
+            "word": "gisement"
+          },
+          {
+            "id": 46492,
+            "word": "gazier"
+          },
+          {
+            "id": 476956,
+            "word": "supercarburant"
+          }
+        ],
+        "targetManifestSha256": "656c1bd0ab7a1cfc865dcdc3de3ca40b5f1a22d6bfc7d732562f283f20191d01",
+        "evidenceSha256": "52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "barils",
+          "raffinerie",
+          "carburant"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes valident une unité commerciale, un lieu de transformation et un produit d’usage, trois relations distinctes et non dérivées.",
+        "evidenceSha256": "52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73"
+      }
     },
     {
       "targetId": 4201,
@@ -13129,16 +14475,286 @@
       },
       "word": "lait",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 66419,
+            "word": "laits"
+          },
+          {
+            "id": 5462,
+            "word": "fromage"
+          },
+          {
+            "id": 67860,
+            "word": "pasteurisé"
+          },
+          {
+            "id": 81625,
+            "word": "lactosérum"
+          },
+          {
+            "id": 305892,
+            "word": "laitage"
+          },
+          {
+            "id": 4558,
+            "word": "viande"
+          },
+          {
+            "id": 827745,
+            "word": "lactosérums"
+          },
+          {
+            "id": 25265,
+            "word": "laitiers"
+          },
+          {
+            "id": 106320,
+            "word": "écrémé"
+          },
+          {
+            "id": 124192,
+            "word": "laitages"
+          },
+          {
+            "id": 13591,
+            "word": "fromages"
+          },
+          {
+            "id": 147240,
+            "word": "babeurre"
+          },
+          {
+            "id": 10644,
+            "word": "beurre"
+          },
+          {
+            "id": 580150,
+            "word": "lactosée"
+          },
+          {
+            "id": 658391,
+            "word": "lactosé"
+          },
+          {
+            "id": 729339,
+            "word": "fromagé"
+          },
+          {
+            "id": 228459,
+            "word": "pasteurisée"
+          },
+          {
+            "id": 41268,
+            "word": "yaourt"
+          },
+          {
+            "id": 38696,
+            "word": "laitières"
+          },
+          {
+            "id": 20605,
+            "word": "laitière"
+          },
+          {
+            "id": 8480,
+            "word": "vache"
+          },
+          {
+            "id": 731200,
+            "word": "citronfromage"
+          },
+          {
+            "id": 193819,
+            "word": "pasteurisés"
+          },
+          {
+            "id": 992803,
+            "word": "pasteuriser"
+          },
+          {
+            "id": 16407,
+            "word": "brebis"
+          },
+          {
+            "id": 431404,
+            "word": "laita"
+          },
+          {
+            "id": 196861,
+            "word": "bufflonne"
+          },
+          {
+            "id": 28083,
+            "word": "laitier"
+          },
+          {
+            "id": 213604,
+            "word": "lacto"
+          },
+          {
+            "id": 107708,
+            "word": "présure"
+          },
+          {
+            "id": 348320,
+            "word": "laitance"
+          },
+          {
+            "id": 527855,
+            "word": "laitié"
+          },
+          {
+            "id": 609488,
+            "word": "fromagée"
+          },
+          {
+            "id": 53614,
+            "word": "fromagère"
+          },
+          {
+            "id": 92600,
+            "word": "saindoux"
+          },
+          {
+            "id": 83518,
+            "word": "persillée"
+          },
+          {
+            "id": 383981,
+            "word": "pasteurisées"
+          },
+          {
+            "id": 20723,
+            "word": "aliment"
+          },
+          {
+            "id": 72069,
+            "word": "yaourts"
+          },
+          {
+            "id": 521096,
+            "word": "fromaget"
+          },
+          {
+            "id": 46715,
+            "word": "fermenté"
+          },
+          {
+            "id": 7187,
+            "word": "pâte"
+          },
+          {
+            "id": 20408,
+            "word": "viandes"
+          },
+          {
+            "id": 713190,
+            "word": "laiter"
+          },
+          {
+            "id": 167659,
+            "word": "beurres"
+          },
+          {
+            "id": 22496,
+            "word": "sirop"
+          },
+          {
+            "id": 864027,
+            "word": "délactosé"
+          },
+          {
+            "id": 607793,
+            "word": "fromagette"
+          },
+          {
+            "id": 12146,
+            "word": "chèvre"
+          },
+          {
+            "id": 27578,
+            "word": "volaille"
+          },
+          {
+            "id": 148648,
+            "word": "fromagères"
+          },
+          {
+            "id": 798106,
+            "word": "lactoserum"
+          },
+          {
+            "id": 10026,
+            "word": "farine"
+          },
+          {
+            "id": 60312,
+            "word": "lactation"
+          },
+          {
+            "id": 481393,
+            "word": "bufflonnes"
+          },
+          {
+            "id": 89701,
+            "word": "pasteurisation"
+          },
+          {
+            "id": 385573,
+            "word": "écrémeuse"
+          },
+          {
+            "id": 34651,
+            "word": "confiture"
+          },
+          {
+            "id": 74270,
+            "word": "caséine"
+          },
+          {
+            "id": 98368,
+            "word": "laiteries"
+          },
+          {
+            "id": 812657,
+            "word": "lactiwel"
+          },
+          {
+            "id": 706310,
+            "word": "laitem"
+          },
+          {
+            "id": 431122,
+            "word": "emprésuré"
+          },
+          {
+            "id": 434625,
+            "word": "précuite"
+          }
+        ],
+        "targetManifestSha256": "4d8b445364e1355d3a9fad9c87ce593ff69214753ffc760f8c1092059716ef81",
+        "evidenceSha256": "26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "fromage",
+          "yaourt",
+          "vache"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes confirment deux produits transformés et une source familière, sans reprendre la famille morphologique de la cible.",
+        "evidenceSha256": "26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954"
+      }
     },
     {
       "targetId": 4247,
@@ -13359,16 +14975,286 @@
       },
       "word": "violon",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 6411,
+            "word": "violoncelle"
+          },
+          {
+            "id": 1303,
+            "word": "piano"
+          },
+          {
+            "id": 37328,
+            "word": "violoncelles"
+          },
+          {
+            "id": 635211,
+            "word": "violoncel"
+          },
+          {
+            "id": 687815,
+            "word": "violoncelo"
+          },
+          {
+            "id": 101021,
+            "word": "violoncello"
+          },
+          {
+            "id": 666816,
+            "word": "violoncelli"
+          },
+          {
+            "id": 9441,
+            "word": "clarinette"
+          },
+          {
+            "id": 140061,
+            "word": "violone"
+          },
+          {
+            "id": 14410,
+            "word": "violons"
+          },
+          {
+            "id": 4931,
+            "word": "concerto"
+          },
+          {
+            "id": 376927,
+            "word": "violonchelo"
+          },
+          {
+            "id": 132358,
+            "word": "violoncellistes"
+          },
+          {
+            "id": 5609,
+            "word": "flûte"
+          },
+          {
+            "id": 11238,
+            "word": "clavecin"
+          },
+          {
+            "id": 12929,
+            "word": "contrebasse"
+          },
+          {
+            "id": 101372,
+            "word": "contrebasson"
+          },
+          {
+            "id": 215781,
+            "word": "mandoloncelle"
+          },
+          {
+            "id": 17338,
+            "word": "violoncelliste"
+          },
+          {
+            "id": 54315,
+            "word": "concertino"
+          },
+          {
+            "id": 32955,
+            "word": "clarinettes"
+          },
+          {
+            "id": 16904,
+            "word": "concertos"
+          },
+          {
+            "id": 947342,
+            "word": "violonchelos"
+          },
+          {
+            "id": 358352,
+            "word": "violonistique"
+          },
+          {
+            "id": 43674,
+            "word": "concertante"
+          },
+          {
+            "id": 11021,
+            "word": "hautbois"
+          },
+          {
+            "id": 16618,
+            "word": "quintette"
+          },
+          {
+            "id": 118642,
+            "word": "concertina"
+          },
+          {
+            "id": 55998,
+            "word": "violonistes"
+          },
+          {
+            "id": 893919,
+            "word": "violoneuse"
+          },
+          {
+            "id": 42360,
+            "word": "pianoforte"
+          },
+          {
+            "id": 449163,
+            "word": "clarinetto"
+          },
+          {
+            "id": 7175,
+            "word": "sonate"
+          },
+          {
+            "id": 655879,
+            "word": "contrebassons"
+          },
+          {
+            "id": 73511,
+            "word": "quintettes"
+          },
+          {
+            "id": 485791,
+            "word": "violot"
+          },
+          {
+            "id": 22231,
+            "word": "basson"
+          },
+          {
+            "id": 14228,
+            "word": "sonates"
+          },
+          {
+            "id": 7341,
+            "word": "violoniste"
+          },
+          {
+            "id": 86702,
+            "word": "concertant"
+          },
+          {
+            "id": 7946,
+            "word": "saxophone"
+          },
+          {
+            "id": 73569,
+            "word": "concerti"
+          },
+          {
+            "id": 557485,
+            "word": "concertone"
+          },
+          {
+            "id": 11033,
+            "word": "harpe"
+          },
+          {
+            "id": 858549,
+            "word": "clarinetist"
+          },
+          {
+            "id": 332265,
+            "word": "concertstück"
+          },
+          {
+            "id": 75075,
+            "word": "contrebasses"
+          },
+          {
+            "id": 527577,
+            "word": "clarinets"
+          },
+          {
+            "id": 85984,
+            "word": "clarinet"
+          },
+          {
+            "id": 220900,
+            "word": "klarinette"
+          },
+          {
+            "id": 822567,
+            "word": "concertini"
+          },
+          {
+            "id": 563045,
+            "word": "concertonet"
+          },
+          {
+            "id": 865426,
+            "word": "guitarebasse"
+          },
+          {
+            "id": 23607,
+            "word": "mandoline"
+          },
+          {
+            "id": 35862,
+            "word": "traversière"
+          },
+          {
+            "id": 880149,
+            "word": "bassklarinette"
+          },
+          {
+            "id": 23153,
+            "word": "quatuors"
+          },
+          {
+            "id": 653461,
+            "word": "violonistiques"
+          },
+          {
+            "id": 328463,
+            "word": "clarine"
+          },
+          {
+            "id": 13384,
+            "word": "accordéon"
+          },
+          {
+            "id": 11640,
+            "word": "soliste"
+          },
+          {
+            "id": 893618,
+            "word": "violonneux"
+          },
+          {
+            "id": 356035,
+            "word": "quintetto"
+          },
+          {
+            "id": 259787,
+            "word": "pianofortiste"
+          }
+        ],
+        "targetManifestSha256": "1c19eb739e9192bf6ff2598b5853daf77c58704b9c3a4897e7e9e7d81cc63528",
+        "evidenceSha256": "f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "concerto",
+          "sonate",
+          "soliste"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes retiennent deux formes musicales et un rôle d’interprète. Les dérivés de la cible et les noms propres sont écartés.",
+        "evidenceSha256": "f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed"
+      }
     },
     {
       "targetId": 3215,
@@ -14413,16 +16299,286 @@
       },
       "word": "tramway",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 999197,
+            "word": "tramwaybus"
+          },
+          {
+            "id": 611118,
+            "word": "tramwaysbus"
+          },
+          {
+            "id": 9500,
+            "word": "tramways"
+          },
+          {
+            "id": 694687,
+            "word": "tramwaj"
+          },
+          {
+            "id": 12114,
+            "word": "tram"
+          },
+          {
+            "id": 480270,
+            "word": "tramwayliste"
+          },
+          {
+            "id": 18301,
+            "word": "trolleybus"
+          },
+          {
+            "id": 367751,
+            "word": "trolleybusbus"
+          },
+          {
+            "id": 461407,
+            "word": "tramwaje"
+          },
+          {
+            "id": 587381,
+            "word": "baseltramway"
+          },
+          {
+            "id": 50475,
+            "word": "citadis"
+          },
+          {
+            "id": 41311,
+            "word": "trams"
+          },
+          {
+            "id": 192257,
+            "word": "métrobus"
+          },
+          {
+            "id": 945943,
+            "word": "trolleybussystem"
+          },
+          {
+            "id": 484323,
+            "word": "métrocâble"
+          },
+          {
+            "id": 2085,
+            "word": "bus"
+          },
+          {
+            "id": 8602,
+            "word": "autobus"
+          },
+          {
+            "id": 330096,
+            "word": "citybus"
+          },
+          {
+            "id": 1817,
+            "word": "métro"
+          },
+          {
+            "id": 213735,
+            "word": "sqybus"
+          },
+          {
+            "id": 784960,
+            "word": "péreybus"
+          },
+          {
+            "id": 787533,
+            "word": "metrotram"
+          },
+          {
+            "id": 60572,
+            "word": "bhns"
+          },
+          {
+            "id": 588810,
+            "word": "tramweg"
+          },
+          {
+            "id": 175432,
+            "word": "orlybus"
+          },
+          {
+            "id": 9658,
+            "word": "ratp"
+          },
+          {
+            "id": 227308,
+            "word": "metrobus"
+          },
+          {
+            "id": 89399,
+            "word": "transpole"
+          },
+          {
+            "id": 833784,
+            "word": "zybus"
+          },
+          {
+            "id": 641620,
+            "word": "moncitybus"
+          },
+          {
+            "id": 795223,
+            "word": "regiocitadis"
+          },
+          {
+            "id": 103653,
+            "word": "rhônexpress"
+          },
+          {
+            "id": 128194,
+            "word": "busway"
+          },
+          {
+            "id": 7158,
+            "word": "tronçon"
+          },
+          {
+            "id": 48454,
+            "word": "suburbain"
+          },
+          {
+            "id": 21428,
+            "word": "funiculaire"
+          },
+          {
+            "id": 815457,
+            "word": "tramviaire"
+          },
+          {
+            "id": 958994,
+            "word": "flybus"
+          },
+          {
+            "id": 186746,
+            "word": "tcar"
+          },
+          {
+            "id": 744676,
+            "word": "streetcars"
+          },
+          {
+            "id": 7192,
+            "word": "rames"
+          },
+          {
+            "id": 36688,
+            "word": "interurbain"
+          },
+          {
+            "id": 137772,
+            "word": "chronobus"
+          },
+          {
+            "id": 411090,
+            "word": "metrorail"
+          },
+          {
+            "id": 121294,
+            "word": "streetcar"
+          },
+          {
+            "id": 661250,
+            "word": "octobus"
+          },
+          {
+            "id": 929,
+            "word": "lignes"
+          },
+          {
+            "id": 529637,
+            "word": "tramstation"
+          },
+          {
+            "id": 99727,
+            "word": "stcrp"
+          },
+          {
+            "id": 246083,
+            "word": "transbus"
+          },
+          {
+            "id": 197683,
+            "word": "roissybus"
+          },
+          {
+            "id": 127122,
+            "word": "interurbaine"
+          },
+          {
+            "id": 15296,
+            "word": "ferrées"
+          },
+          {
+            "id": 26086,
+            "word": "électrifiée"
+          },
+          {
+            "id": 248037,
+            "word": "cityrail"
+          },
+          {
+            "id": 43780,
+            "word": "interurbains"
+          },
+          {
+            "id": 8538,
+            "word": "ferroviaires"
+          },
+          {
+            "id": 135458,
+            "word": "translohr"
+          },
+          {
+            "id": 302125,
+            "word": "tramlink"
+          },
+          {
+            "id": 117271,
+            "word": "stadtbahn"
+          },
+          {
+            "id": 9369,
+            "word": "ferrée"
+          },
+          {
+            "id": 8318,
+            "word": "rer"
+          },
+          {
+            "id": 905089,
+            "word": "soisybus"
+          },
+          {
+            "id": 278422,
+            "word": "intercityexpress"
+          }
+        ],
+        "targetManifestSha256": "6167e7adfe3f5656cebc834bffd193b65a9ec37494a1552567e513ce2a6547c6",
+        "evidenceSha256": "5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "métro",
+          "rames",
+          "lignes"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2f-consensus-review",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T15:09:11.000Z",
+        "rationale": "Deux relectures indépendantes valident un mode voisin, le matériel roulant et le réseau. Les abréviations et dérivés de tramway sont exclus.",
+        "evidenceSha256": "5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a"
+      }
     }
   ]
 }

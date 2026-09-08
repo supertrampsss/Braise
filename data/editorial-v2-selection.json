@@ -702,6 +702,86 @@
       "reviewedAt": "2026-09-08T14:15:49.000Z",
       "rationale": "Deux relectures indépendantes valident un cadre politique, un processus d’affranchissement et un contraire sémantique. Les dérivés de la cible sont écartés.",
       "evidenceSha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc"
+    },
+    {
+      "targetId": 1718,
+      "decision": "rejected",
+      "hints": [],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes rejettent un voisinage dominé par les variantes de la cible et les composés répétitifs en culture. Trois indices naturels, variés et non dérivés ne peuvent pas être retenus honnêtement.",
+      "evidenceSha256": "347d36c7799db14f997b7050152be129d6f8f66851906a427e5aebc1ff73966b"
+    },
+    {
+      "targetId": 1556,
+      "decision": "approved",
+      "hints": ["pharmacie", "chirurgie", "pédiatrie"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes confirment trois domaines de soins familiers et distincts, sans variante ni dérivé de la cible.",
+      "evidenceSha256": "7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a"
+    },
+    {
+      "targetId": 800,
+      "decision": "approved",
+      "hints": ["crépuscule", "obscurité", "sommeil"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes retiennent une transition temporelle, une condition lumineuse et une expérience humaine, trois associations complémentaires.",
+      "evidenceSha256": "dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b"
+    },
+    {
+      "targetId": 3646,
+      "decision": "approved",
+      "hints": ["métro", "rames", "lignes"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes valident un mode voisin, le matériel roulant et le réseau. Les abréviations et dérivés de tramway sont exclus.",
+      "evidenceSha256": "5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a"
+    },
+    {
+      "targetId": 4222,
+      "decision": "approved",
+      "hints": ["fromage", "yaourt", "vache"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes confirment deux produits transformés et une source familière, sans reprendre la famille morphologique de la cible.",
+      "evidenceSha256": "26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954"
+    },
+    {
+      "targetId": 4025,
+      "decision": "approved",
+      "hints": ["barils", "raffinerie", "carburant"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes valident une unité commerciale, un lieu de transformation et un produit d’usage, trois relations distinctes et non dérivées.",
+      "evidenceSha256": "52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73"
+    },
+    {
+      "targetId": 3223,
+      "decision": "approved",
+      "hints": ["concerto", "sonate", "soliste"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes retiennent deux formes musicales et un rôle d’interprète. Les dérivés de la cible et les noms propres sont écartés.",
+      "evidenceSha256": "f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed"
+    },
+    {
+      "targetId": 1891,
+      "decision": "approved",
+      "hints": ["championnats", "décathlon", "saut"],
+      "actor": "astra-b2f-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T15:09:11.000Z",
+      "rationale": "Deux relectures indépendantes valident un contexte de compétition et deux disciplines reconnaissables. Les formes dérivées de la cible sont exclues.",
+      "evidenceSha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3"
     }
   ],
   "reviews": [
