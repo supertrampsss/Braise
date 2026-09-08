@@ -35,7 +35,7 @@
   "lease": {
     "owner": "braise-B4-20260908T004312Z",
     "acquired_at": "2026-09-08T00:43:12Z",
-    "expires_at": "2026-09-08T01:33:12Z",
+    "expires_at": "2026-09-08T02:04:24Z",
     "base_commit": "d840430a6a491b3d0e654d0140918d37bb32da77",
     "phase": "B4"
   },
