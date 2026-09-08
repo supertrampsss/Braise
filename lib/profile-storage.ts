@@ -1,4 +1,6 @@
 import type { PuzzleRef } from "./game-contracts";
+import type { IntruderAttempt } from "./intruder";
+import type { TwoBraisesGuess } from "./two-braises";
 import type { Profile, Puzzle, SavedGame, Win } from "./game-types";
 import { parisDate } from "./calendar";
 import { EMPTY_PROFILE, LEGACY_STORAGE_PREFIX } from "./legacy-storage";
@@ -14,6 +16,57 @@ export const PROFILE_V2_IMPORT_PREFIX = "braise.v2.profile.import.";
 export const PROFILE_TRANSFER_MAX_BYTES = 8 * 1024 * 1024;
 const PROFILE_TRANSFER_VERSION = 1 as const;
 const LEGACY_PROFILE_KEY = `${LEGACY_STORAGE_PREFIX}profile`;
+const INTRUDER_PREFIX = "braise.v2.intruder.attempt.";
+const TWO_BRAISES_PREFIX = "braise.v2.two-braises.guess.";
+export function readTwoBraises(pair: number, storage?: ProfileStorage): TwoBraisesGuess[] {
+  const results = new Map<string, TwoBraisesGuess>();
+  try {
+    const target = storage ?? localStorage;
+    for (let i = 0; i < target.length; i++) {
+      const key = target.key(i); if (!key?.startsWith(`${TWO_BRAISES_PREFIX}${pair}.`)) continue;
+      let value; try { value = JSON.parse(target.getItem(key) ?? "null"); } catch { continue; }
+      if (!value || value.edition !== "deux-braises-v1" || value.pair !== pair || typeof value.word !== "string" || value.word.length > 80 || typeof value.acceptedAt !== "string" || !Number.isFinite(Date.parse(value.acceptedAt)) || !Array.isArray(value.values) || value.values.length !== 2 || !value.values.every((item: { word?: unknown; temperature?: unknown; rank?: unknown; found?: unknown }) => item && item.word === value.word && typeof item.temperature === "number" && Number.isFinite(item.temperature) && Number.isInteger(item.rank) && typeof item.found === "boolean")) continue;
+      const previous = results.get(value.word);
+      if (!previous || Date.parse(value.acceptedAt) < Date.parse(previous.acceptedAt)) results.set(value.word, value);
+    }
+  } catch { /* Session keeps unsaved responses. */ }
+  return [...results.values()].sort((a, b) => Date.parse(a.acceptedAt) - Date.parse(b.acceptedAt) || a.word.localeCompare(b.word));
+}
+export function saveTwoBraises(guess: TwoBraisesGuess, storage?: ProfileStorage): boolean {
+  try {
+    const target = storage ?? localStorage;
+    if (readTwoBraises(guess.pair, target).some(item => item.word === guess.word)) return true;
+    const key = `${TWO_BRAISES_PREFIX}${guess.pair}.${encodeURIComponent(guess.word)}.${crypto.randomUUID()}`;
+    target.setItem(key, JSON.stringify(guess));
+    return target.getItem(key) === JSON.stringify(guess);
+  } catch { return false; }
+}
+
+// Independent local laboratory history, excluded from the profile-only export.
+// Append-only attempts converge by earliest timestamp, then stable key.
+export function readIntruderAttempts(storage?: ProfileStorage): IntruderAttempt[] {
+  const selected = new Map<number, { key: string; value: IntruderAttempt }>();
+  try {
+    storage = storage ?? localStorage;
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i); if (!key?.startsWith(INTRUDER_PREFIX)) continue;
+      let value; try { value = JSON.parse(storage.getItem(key) ?? "null"); } catch { continue; }
+      if (!value || value.edition !== "intrus-v1" || !Number.isInteger(value.index) || value.index < 0 || value.index >= 20 || !Number.isInteger(value.choice) || value.choice < 0 || value.choice > 3 || typeof value.occurredAt !== "string" || !Number.isFinite(Date.parse(value.occurredAt)) || new Date(value.occurredAt).toISOString() !== value.occurredAt) continue;
+      const previous = selected.get(value.index);
+      if (!previous || value.occurredAt < previous.value.occurredAt || value.occurredAt === previous.value.occurredAt && key < previous.key) selected.set(value.index, { key, value });
+    }
+  } catch { /* Unavailable storage is handled by the current session. */ }
+  return [...selected.values()].map(item => item.value).sort((a, b) => a.index - b.index);
+}
+export function saveIntruderAttempt(attempt: IntruderAttempt, storage?: ProfileStorage): { persisted: boolean; attempt: IntruderAttempt } {
+  try {
+    const target = storage ?? localStorage;
+    const previous = readIntruderAttempts(target).find(item => item.index === attempt.index);
+    if (previous) return { persisted: true, attempt: previous };
+    target.setItem(`${INTRUDER_PREFIX}${attempt.index}.${crypto.randomUUID()}`, JSON.stringify(attempt));
+    return { persisted: true, attempt: readIntruderAttempts(target).find(item => item.index === attempt.index) ?? attempt };
+  } catch { return { persisted: false, attempt }; }
+}
 
 export type ProfileStorage = Pick<Storage, "getItem" | "setItem" | "length" | "key">;
 export type ProfileLoadStatus = "ready" | "migrated" | "partial" | "memory-only" | "corrupt" | "unsupported" | "conflict";

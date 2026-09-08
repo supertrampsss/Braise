@@ -490,3 +490,15 @@ h1 > span { color: #ff754d; }
 .collection-picker :focus-visible { outline: 2px solid #ff754d; outline-offset: 3px; }
 .collection-note { opacity: .75; }
 @media (max-width: 600px) { .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Laboratory keeps the shared charcoal/ivory surfaces and native focus behavior. */
+.laboratory-shell { max-width: 860px; margin: 0 auto; padding-bottom: 64px; }
+.laboratory-card { padding: 24px; }
+.laboratory-card p { line-height: 1.65; }
+.laboratory-card h2 { margin: 24px 0 16px; }
+.laboratory-explanation { margin: 24px 0; padding: 20px; border-left: 3px solid #ff754d; }
+.laboratory-card button:focus-visible { outline: 2px solid #ff754d; outline-offset: 4px; }
+.two-braises-history { overflow-x: auto; margin-top: 24px; }
+.two-braises-history table { width: 100%; border-collapse: collapse; }
+.two-braises-history th, .two-braises-history td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #ffffff18; }
+.two-braises-history small { display: block; font-size: 12px; }
+.laboratory-card select { min-height: 44px; padding: 8px; background: #242522; color: #f4f1e8; border: 1px solid #ffffff30; border-radius: 8px; font-size: 16px; }

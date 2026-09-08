@@ -11,6 +11,7 @@ import AdPlacement from "@/components/ad-placement";
 import { CosmeticPicker, WeeklyRitualCard } from "@/components/weekly-ritual";
 import { ProfileTransfer } from "@/components/profile-transfer";
 import { CollectionPicker } from "@/components/collection-picker";
+import { ExpeditionPicker } from "@/components/expedition-picker";
 import { getStreak, warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
@@ -74,7 +75,7 @@ export default function Game() {
   const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const focusFrameRef = useRef<number | null>(null);
   const modalRef = useRef<Modal>(null);
-  const lastLoad = useRef<{ mode: Mode; locator: string }>({ mode: "daily", locator: "" });
+  const lastLoad = useRef<{ mode: Mode; locator: string; sessionSave?: SavedGame }>({ mode: "daily", locator: "" });
   const victoryRef = useRef<HTMLHeadingElement>(null);
   modalRef.current = modal;
 
@@ -137,9 +138,9 @@ export default function Game() {
     });
   }
 
-  async function loadPuzzle(nextMode: Mode, locator = "") {
+  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame) {
     const request = ++requestRef.current;
-    lastLoad.current = { mode: nextMode, locator };
+    lastLoad.current = { mode: nextMode, locator, sessionSave };
     clearDeferredUi();
     consumedFeedbackRef.current.clear();
     inputRevisionRef.current += 1;
@@ -154,7 +155,7 @@ export default function Game() {
       const data = await response.json() as Puzzle & { error?: string };
       if (request !== requestRef.current) return false;
       if (!response.ok) { if (request === requestRef.current) setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
-      const restored = restoreLegacyGame(data.id);
+      const restored = sessionSave ?? restoreLegacyGame(data.id);
       setGame(restored);
       setMode(nextMode); setPuzzle(data);
       setArchiveOpen(nextMode === "archive");
@@ -339,6 +340,8 @@ export default function Game() {
       <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
       <TabsContent value={tabMode} className="game-tab-content">
+      <a className="text-action" href="/laboratoire">L’intrus · explorer le laboratoire →</a>
+      <ExpeditionPicker disabled={busy || loading} puzzle={puzzle} game={game} navigationGeneration={() => requestRef.current} onSelect={(seed, saved) => loadPuzzle("challenge", seed, saved)} />
       <CollectionPicker wins={profile.wins} seed={mode === "challenge" || mode === "free" ? puzzle?.seed : undefined} disabled={busy || loading} onSelect={seed => {
         const url = new URL(window.location.href); url.searchParams.delete("archive"); url.searchParams.set("defi", seed);
         window.history.replaceState(null, "", url); void loadPuzzle("challenge", seed);
@@ -359,7 +362,7 @@ export default function Game() {
           <section id="game-board" tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
             <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedbackAnnouncement}</p>
             <div className="game-topline"><div><span className="game-kicker">{mode === "daily" ? "LE MOT DU JOUR" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
-            {loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator)}>Réessayer<ArrowRight size={18} /></button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour<ArrowRight size={16} /></button>}</div> : <>
+{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator, lastLoad.current.sessionSave)}>Réessayer<ArrowRight size={18} /></button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour<ArrowRight size={16} /></button>}</div> : <>
               <div className={`heat-scene ${isRecord ? "heat-record" : ""} ${isAccepted ? "heat-accepted" : ""}`} style={{ "--heat-color": best ? heat.color : "#ff754d", "--heat-intensity": String(.18 + Math.max(0, temperature) / 140) } as CSSProperties}>
                 <div className="heat-atmosphere" aria-hidden="true" />
                 <svg className="heat-dial" viewBox="0 0 330 264" aria-hidden="true"><defs><linearGradient id="dial-gradient" x1="0" y1="1" x2="1" y2="0"><stop stopColor="#ff754d" /><stop offset="1" stopColor="#ffcc9c" /></linearGradient></defs><circle className="dial-orbit" cx="165" cy="146" r="129" /><path className="dial-track" d="M 78.73 232.27 A 122 122 0 1 1 251.27 232.27" pathLength="100" /><path className="dial-value" d="M 78.73 232.27 A 122 122 0 1 1 251.27 232.27" pathLength="100" strokeDasharray={`${best ? Math.max(2, Math.min(100, temperature)) : 0} 100`} /><path className="dial-inner" d="M 98 213 A 95 95 0 1 1 232 213" /></svg>
