@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 39,
-    "approved": 39
+    "neighborhoodEvidenceReady": 54,
+    "approved": 54
   },
   "entries": [
     {
@@ -3436,16 +3436,286 @@
       },
       "word": "bois",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 93937,
+            "word": "madriers"
+          },
+          {
+            "id": 833244,
+            "word": "chêneaux"
+          },
+          {
+            "id": 589410,
+            "word": "menuisement"
+          },
+          {
+            "id": 23414,
+            "word": "hêtre"
+          },
+          {
+            "id": 617719,
+            "word": "chêneau"
+          },
+          {
+            "id": 37274,
+            "word": "châtaigniers"
+          },
+          {
+            "id": 256751,
+            "word": "contreplaqués"
+          },
+          {
+            "id": 34804,
+            "word": "taillis"
+          },
+          {
+            "id": 32648,
+            "word": "résineux"
+          },
+          {
+            "id": 34666,
+            "word": "châtaignier"
+          },
+          {
+            "id": 4929,
+            "word": "chêne"
+          },
+          {
+            "id": 57347,
+            "word": "rondins"
+          },
+          {
+            "id": 48861,
+            "word": "contreplaqué"
+          },
+          {
+            "id": 70503,
+            "word": "sciage"
+          },
+          {
+            "id": 224423,
+            "word": "madrier"
+          },
+          {
+            "id": 584416,
+            "word": "palissandres"
+          },
+          {
+            "id": 531390,
+            "word": "robinières"
+          },
+          {
+            "id": 56206,
+            "word": "bardeaux"
+          },
+          {
+            "id": 22152,
+            "word": "tilleul"
+          },
+          {
+            "id": 1006283,
+            "word": "châtaignière"
+          },
+          {
+            "id": 725910,
+            "word": "ybois"
+          },
+          {
+            "id": 48222,
+            "word": "torchis"
+          },
+          {
+            "id": 17778,
+            "word": "résine"
+          },
+          {
+            "id": 82066,
+            "word": "sciure"
+          },
+          {
+            "id": 188796,
+            "word": "bûcheronnage"
+          },
+          {
+            "id": 34891,
+            "word": "bouleaux"
+          },
+          {
+            "id": 11560,
+            "word": "charpente"
+          },
+          {
+            "id": 770287,
+            "word": "chênecières"
+          },
+          {
+            "id": 252115,
+            "word": "merrains"
+          },
+          {
+            "id": 581603,
+            "word": "chênetière"
+          },
+          {
+            "id": 280288,
+            "word": "merrain"
+          },
+          {
+            "id": 736801,
+            "word": "chênerie"
+          },
+          {
+            "id": 302141,
+            "word": "écorcé"
+          },
+          {
+            "id": 31051,
+            "word": "hêtres"
+          },
+          {
+            "id": 117046,
+            "word": "planchettes"
+          },
+          {
+            "id": 262351,
+            "word": "clayonnage"
+          },
+          {
+            "id": 24530,
+            "word": "feuillus"
+          },
+          {
+            "id": 205463,
+            "word": "résineuse"
+          },
+          {
+            "id": 38065,
+            "word": "acajou"
+          },
+          {
+            "id": 371485,
+            "word": "robinière"
+          },
+          {
+            "id": 24257,
+            "word": "troncs"
+          },
+          {
+            "id": 764050,
+            "word": "contreplaque"
+          },
+          {
+            "id": 12979,
+            "word": "chênes"
+          },
+          {
+            "id": 176735,
+            "word": "feuillue"
+          },
+          {
+            "id": 375311,
+            "word": "chanvres"
+          },
+          {
+            "id": 81622,
+            "word": "charpenterie"
+          },
+          {
+            "id": 31232,
+            "word": "lambris"
+          },
+          {
+            "id": 53323,
+            "word": "futaie"
+          },
+          {
+            "id": 437333,
+            "word": "clayonnages"
+          },
+          {
+            "id": 734258,
+            "word": "chênet"
+          },
+          {
+            "id": 117231,
+            "word": "robinier"
+          },
+          {
+            "id": 204777,
+            "word": "robiniers"
+          },
+          {
+            "id": 847694,
+            "word": "chênette"
+          },
+          {
+            "id": 461217,
+            "word": "chataigniers"
+          },
+          {
+            "id": 1181,
+            "word": "forêt"
+          },
+          {
+            "id": 718516,
+            "word": "forêterie"
+          },
+          {
+            "id": 41922,
+            "word": "épicéa"
+          },
+          {
+            "id": 78943,
+            "word": "menuiseries"
+          },
+          {
+            "id": 101926,
+            "word": "futaies"
+          },
+          {
+            "id": 609419,
+            "word": "parqueterie"
+          },
+          {
+            "id": 32744,
+            "word": "peuplier"
+          },
+          {
+            "id": 82501,
+            "word": "fagots"
+          },
+          {
+            "id": 65543,
+            "word": "branchages"
+          },
+          {
+            "id": 37326,
+            "word": "planchers"
+          }
+        ],
+        "targetManifestSha256": "5e5a50b6ebb61e6679a919fcf1b3c94ab0f940dec558927d57c2a554e197dcb4",
+        "evidenceSha256": "9daa437fe0459f56b9a0471943e43656d8198b8ec282b3a40e06359ec84f842e"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "chêne",
+          "charpente",
+          "sciure"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident une essence, un usage de construction et un résidu, trois indices familiers et complémentaires malgré quelques formes parasites.",
+        "evidenceSha256": "9daa437fe0459f56b9a0471943e43656d8198b8ec282b3a40e06359ec84f842e"
+      }
     },
     {
       "targetId": 372,
@@ -3459,16 +3729,286 @@
       },
       "word": "terre",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 7096,
+            "word": "pommes"
+          },
+          {
+            "id": 713736,
+            "word": "terreste"
+          },
+          {
+            "id": 4627,
+            "word": "neuve"
+          },
+          {
+            "id": 5184,
+            "word": "pomme"
+          },
+          {
+            "id": 3461,
+            "word": "terrestre"
+          },
+          {
+            "id": 10693,
+            "word": "cuite"
+          },
+          {
+            "id": 56463,
+            "word": "glaise"
+          },
+          {
+            "id": 1268,
+            "word": "terres"
+          },
+          {
+            "id": 204977,
+            "word": "terrer"
+          },
+          {
+            "id": 143499,
+            "word": "neuvienne"
+          },
+          {
+            "id": 793210,
+            "word": "exoterre"
+          },
+          {
+            "id": 811248,
+            "word": "terrestes"
+          },
+          {
+            "id": 487589,
+            "word": "terrestar"
+          },
+          {
+            "id": 112442,
+            "word": "neuvas"
+          },
+          {
+            "id": 751147,
+            "word": "atterre"
+          },
+          {
+            "id": 10184,
+            "word": "tremblement"
+          },
+          {
+            "id": 2069,
+            "word": "planète"
+          },
+          {
+            "id": 592458,
+            "word": "terreneuvienne"
+          },
+          {
+            "id": 208667,
+            "word": "neuviens"
+          },
+          {
+            "id": 6030,
+            "word": "terrestres"
+          },
+          {
+            "id": 92453,
+            "word": "cultivable"
+          },
+          {
+            "id": 744575,
+            "word": "ovterre"
+          },
+          {
+            "id": 28407,
+            "word": "cuites"
+          },
+          {
+            "id": 94386,
+            "word": "arable"
+          },
+          {
+            "id": 143535,
+            "word": "neuvien"
+          },
+          {
+            "id": 2341,
+            "word": "lune"
+          },
+          {
+            "id": 740535,
+            "word": "incultivable"
+          },
+          {
+            "id": 22505,
+            "word": "tremblements"
+          },
+          {
+            "id": 327171,
+            "word": "terreneuviens"
+          },
+          {
+            "id": 349616,
+            "word": "proterre"
+          },
+          {
+            "id": 7258,
+            "word": "earth"
+          },
+          {
+            "id": 10009,
+            "word": "labrador"
+          },
+          {
+            "id": 662312,
+            "word": "terrehault"
+          },
+          {
+            "id": 85347,
+            "word": "inhabitable"
+          },
+          {
+            "id": 148886,
+            "word": "héliosphère"
+          },
+          {
+            "id": 944296,
+            "word": "planétairement"
+          },
+          {
+            "id": 62841,
+            "word": "tellurique"
+          },
+          {
+            "id": 957523,
+            "word": "circumterrestre"
+          },
+          {
+            "id": 44410,
+            "word": "patates"
+          },
+          {
+            "id": 551520,
+            "word": "neuviennes"
+          },
+          {
+            "id": 32269,
+            "word": "martienne"
+          },
+          {
+            "id": 893569,
+            "word": "terrelonge"
+          },
+          {
+            "id": 302509,
+            "word": "écosphère"
+          },
+          {
+            "id": 1010906,
+            "word": "surterrestre"
+          },
+          {
+            "id": 150237,
+            "word": "déterre"
+          },
+          {
+            "id": 454089,
+            "word": "terrant"
+          },
+          {
+            "id": 841833,
+            "word": "terrepure"
+          },
+          {
+            "id": 65040,
+            "word": "telluriques"
+          },
+          {
+            "id": 40934,
+            "word": "cultivables"
+          },
+          {
+            "id": 696902,
+            "word": "tærrestre"
+          },
+          {
+            "id": 590604,
+            "word": "incultivables"
+          },
+          {
+            "id": 357625,
+            "word": "saulterre"
+          },
+          {
+            "id": 29275,
+            "word": "habitable"
+          },
+          {
+            "id": 1010624,
+            "word": "géoculture"
+          },
+          {
+            "id": 83897,
+            "word": "lopin"
+          },
+          {
+            "id": 867719,
+            "word": "circumplanétaire"
+          },
+          {
+            "id": 835948,
+            "word": "exsphère"
+          },
+          {
+            "id": 443604,
+            "word": "terrafin"
+          },
+          {
+            "id": 407705,
+            "word": "obterre"
+          },
+          {
+            "id": 219742,
+            "word": "tremblet"
+          },
+          {
+            "id": 769837,
+            "word": "neuviers"
+          },
+          {
+            "id": 304728,
+            "word": "terraformée"
+          },
+          {
+            "id": 54471,
+            "word": "émergée"
+          },
+          {
+            "id": 48912,
+            "word": "interplanétaire"
+          }
+        ],
+        "targetManifestSha256": "d801da28c160e06aee8a7e339c4215a394580ae7e5ecf3820c2a8a0e598d6406",
+        "evidenceSha256": "d09be32b7de6c6e72f59cabc8e057ef976c01b3b3c4960b6da15b2ce8883ce2b"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "planète",
+          "glaise",
+          "tremblement"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident la cible malgré ses sens multiples. Les indices retenus couvrent astronomie, matière et phénomène naturel ; les dérivés et concaténations sont exclus.",
+        "evidenceSha256": "d09be32b7de6c6e72f59cabc8e057ef976c01b3b3c4960b6da15b2ce8883ce2b"
+      }
     },
     {
       "targetId": 848,
@@ -3482,16 +4022,286 @@
       },
       "word": "glace",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 623,
+            "word": "hockey"
+          },
+          {
+            "id": 18574,
+            "word": "hockeyeur"
+          },
+          {
+            "id": 1004434,
+            "word": "glacel"
+          },
+          {
+            "id": 656561,
+            "word": "hockeyettan"
+          },
+          {
+            "id": 233158,
+            "word": "hockeyeuse"
+          },
+          {
+            "id": 1007297,
+            "word": "hockeys"
+          },
+          {
+            "id": 714677,
+            "word": "hockeyeuses"
+          },
+          {
+            "id": 113840,
+            "word": "hockeyeurs"
+          },
+          {
+            "id": 214643,
+            "word": "glacer"
+          },
+          {
+            "id": 792141,
+            "word": "glacent"
+          },
+          {
+            "id": 752424,
+            "word": "icehockey"
+          },
+          {
+            "id": 902318,
+            "word": "ffhockey"
+          },
+          {
+            "id": 340049,
+            "word": "hockeyligan"
+          },
+          {
+            "id": 948610,
+            "word": "déglace"
+          },
+          {
+            "id": 867411,
+            "word": "soliglace"
+          },
+          {
+            "id": 134652,
+            "word": "hockeydb"
+          },
+          {
+            "id": 884097,
+            "word": "rollhockey"
+          },
+          {
+            "id": 715880,
+            "word": "rinkhockey"
+          },
+          {
+            "id": 929154,
+            "word": "cityglace"
+          },
+          {
+            "id": 586917,
+            "word": "hockeycanada"
+          },
+          {
+            "id": 377974,
+            "word": "shockey"
+          },
+          {
+            "id": 655735,
+            "word": "hockeytown"
+          },
+          {
+            "id": 494825,
+            "word": "hockeygoalies"
+          },
+          {
+            "id": 397007,
+            "word": "hockeyarenas"
+          },
+          {
+            "id": 521534,
+            "word": "hockeyhebdo"
+          },
+          {
+            "id": 360428,
+            "word": "swehockey"
+          },
+          {
+            "id": 534339,
+            "word": "shockeye"
+          },
+          {
+            "id": 759487,
+            "word": "addihockey"
+          },
+          {
+            "id": 186868,
+            "word": "unihockey"
+          },
+          {
+            "id": 1000601,
+            "word": "hockeyclub"
+          },
+          {
+            "id": 57902,
+            "word": "patinoires"
+          },
+          {
+            "id": 463772,
+            "word": "carboglace"
+          },
+          {
+            "id": 514124,
+            "word": "hocke"
+          },
+          {
+            "id": 6910,
+            "word": "patinage"
+          },
+          {
+            "id": 928539,
+            "word": "interglace"
+          },
+          {
+            "id": 10977,
+            "word": "patinoire"
+          },
+          {
+            "id": 217469,
+            "word": "patinant"
+          },
+          {
+            "id": 119336,
+            "word": "hockeyarchives"
+          },
+          {
+            "id": 893348,
+            "word": "amphiglace"
+          },
+          {
+            "id": 475369,
+            "word": "hockeyville"
+          },
+          {
+            "id": 755034,
+            "word": "hocket"
+          },
+          {
+            "id": 10708,
+            "word": "glaces"
+          },
+          {
+            "id": 879115,
+            "word": "rouenhockeyelite"
+          },
+          {
+            "id": 32832,
+            "word": "glacée"
+          },
+          {
+            "id": 10548,
+            "word": "rink"
+          },
+          {
+            "id": 189266,
+            "word": "ijshockey"
+          },
+          {
+            "id": 416484,
+            "word": "glac"
+          },
+          {
+            "id": 131098,
+            "word": "eurohockey"
+          },
+          {
+            "id": 612365,
+            "word": "maniacduhockey"
+          },
+          {
+            "id": 191164,
+            "word": "patinent"
+          },
+          {
+            "id": 582643,
+            "word": "hockeydraftcentral"
+          },
+          {
+            "id": 385851,
+            "word": "hocker"
+          },
+          {
+            "id": 121600,
+            "word": "eishockey"
+          },
+          {
+            "id": 13802,
+            "word": "patineur"
+          },
+          {
+            "id": 355890,
+            "word": "hockeyallsvenskan"
+          },
+          {
+            "id": 631896,
+            "word": "glacéau"
+          },
+          {
+            "id": 102958,
+            "word": "icedogs"
+          },
+          {
+            "id": 68759,
+            "word": "patiner"
+          },
+          {
+            "id": 751217,
+            "word": "patinages"
+          },
+          {
+            "id": 36119,
+            "word": "patineurs"
+          },
+          {
+            "id": 7586,
+            "word": "ice"
+          },
+          {
+            "id": 40694,
+            "word": "iihf"
+          },
+          {
+            "id": 824067,
+            "word": "patiny"
+          },
+          {
+            "id": 164697,
+            "word": "patineuses"
+          }
+        ],
+        "targetManifestSha256": "7b320bda7eee34813234319cc916c19f826bb1a72269afd86965ccbf0f556ecf",
+        "evidenceSha256": "6ce7fffc56374443bc51c25b992b61d0e115f072afce61bbcf984cdc54c02d67"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "hockey",
+          "patinoire",
+          "patinage"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures ont divergé ; arbitrage indépendant maximal favorable conformément aux précédents : sport, lieu et activité sont distincts, familiers et pertinents. La concentration thématique est conservée comme réserve, sans ajouter de critère absent du plan.",
+        "evidenceSha256": "6ce7fffc56374443bc51c25b992b61d0e115f072afce61bbcf984cdc54c02d67"
+      }
     },
     {
       "targetId": 69,
@@ -3798,16 +4608,286 @@
       },
       "word": "village",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 965321,
+            "word": "mayvillage"
+          },
+          {
+            "id": 894060,
+            "word": "villagedans"
+          },
+          {
+            "id": 615754,
+            "word": "villag"
+          },
+          {
+            "id": 2716,
+            "word": "hameau"
+          },
+          {
+            "id": 1679,
+            "word": "villages"
+          },
+          {
+            "id": 919529,
+            "word": "jazzvillage"
+          },
+          {
+            "id": 917808,
+            "word": "agevillage"
+          },
+          {
+            "id": 192506,
+            "word": "villager"
+          },
+          {
+            "id": 469050,
+            "word": "levillage"
+          },
+          {
+            "id": 10237,
+            "word": "villageois"
+          },
+          {
+            "id": 751024,
+            "word": "sierniki"
+          },
+          {
+            "id": 190131,
+            "word": "glinojeck"
+          },
+          {
+            "id": 274447,
+            "word": "villagers"
+          },
+          {
+            "id": 122963,
+            "word": "dolne"
+          },
+          {
+            "id": 218678,
+            "word": "borzymy"
+          },
+          {
+            "id": 394803,
+            "word": "villaga"
+          },
+          {
+            "id": 879670,
+            "word": "barcikowo"
+          },
+          {
+            "id": 992330,
+            "word": "mazewo"
+          },
+          {
+            "id": 81706,
+            "word": "zalesie"
+          },
+          {
+            "id": 628628,
+            "word": "janiszewo"
+          },
+          {
+            "id": 238293,
+            "word": "bledzew"
+          },
+          {
+            "id": 21617,
+            "word": "bourgade"
+          },
+          {
+            "id": 1086,
+            "word": "localité"
+          },
+          {
+            "id": 921113,
+            "word": "villagois"
+          },
+          {
+            "id": 454367,
+            "word": "lubiszewo"
+          },
+          {
+            "id": 459074,
+            "word": "kruszewo"
+          },
+          {
+            "id": 246427,
+            "word": "tarnawatka"
+          },
+          {
+            "id": 209539,
+            "word": "naruszewo"
+          },
+          {
+            "id": 193455,
+            "word": "sitno"
+          },
+          {
+            "id": 166837,
+            "word": "korytnica"
+          },
+          {
+            "id": 957106,
+            "word": "borownica"
+          },
+          {
+            "id": 5657,
+            "word": "hameaux"
+          },
+          {
+            "id": 606251,
+            "word": "charsznica"
+          },
+          {
+            "id": 650073,
+            "word": "buszewo"
+          },
+          {
+            "id": 337466,
+            "word": "lisewo"
+          },
+          {
+            "id": 486221,
+            "word": "villaguay"
+          },
+          {
+            "id": 390074,
+            "word": "wijewo"
+          },
+          {
+            "id": 191944,
+            "word": "repki"
+          },
+          {
+            "id": 884400,
+            "word": "villagana"
+          },
+          {
+            "id": 618669,
+            "word": "broniszewo"
+          },
+          {
+            "id": 171412,
+            "word": "boguty"
+          },
+          {
+            "id": 909503,
+            "word": "plebanowce"
+          },
+          {
+            "id": 115766,
+            "word": "dolneni"
+          },
+          {
+            "id": 215244,
+            "word": "lesznowola"
+          },
+          {
+            "id": 919244,
+            "word": "folwarki"
+          },
+          {
+            "id": 160518,
+            "word": "folwark"
+          },
+          {
+            "id": 709399,
+            "word": "zabielne"
+          },
+          {
+            "id": 763543,
+            "word": "kanigowo"
+          },
+          {
+            "id": 182816,
+            "word": "rankovtsé"
+          },
+          {
+            "id": 704134,
+            "word": "malewo"
+          },
+          {
+            "id": 227507,
+            "word": "korczew"
+          },
+          {
+            "id": 430909,
+            "word": "kijewo"
+          },
+          {
+            "id": 690533,
+            "word": "dalewo"
+          },
+          {
+            "id": 419402,
+            "word": "ecovillage"
+          },
+          {
+            "id": 559638,
+            "word": "lelkowo"
+          },
+          {
+            "id": 349984,
+            "word": "niwiska"
+          },
+          {
+            "id": 790581,
+            "word": "graboszewo"
+          },
+          {
+            "id": 849628,
+            "word": "mokrus"
+          },
+          {
+            "id": 329182,
+            "word": "borowo"
+          },
+          {
+            "id": 171705,
+            "word": "mogielnica"
+          },
+          {
+            "id": 220569,
+            "word": "yégounovtsé"
+          },
+          {
+            "id": 163216,
+            "word": "bedlno"
+          },
+          {
+            "id": 559585,
+            "word": "dylewo"
+          },
+          {
+            "id": 141585,
+            "word": "bielawy"
+          }
+        ],
+        "targetManifestSha256": "1683878cfd506b7a6f9860771a3c23ffeda13b1c7a3f419d970634e713b80dc0",
+        "evidenceSha256": "e9d28ea2135977ad497f629f9761893ba5b07757f40efb9388993cef9e514b98"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "localité",
+          "bourgade",
+          "hameau"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures ont divergé ; arbitrage indépendant maximal favorable : catégorie générale et deux formes de peuplement offrent trois indices naturels et distincts, malgré leur proximité et les nombreux toponymes parasites.",
+        "evidenceSha256": "e9d28ea2135977ad497f629f9761893ba5b07757f40efb9388993cef9e514b98"
+      }
     },
     {
       "targetId": 91,
@@ -4183,16 +5263,282 @@
       },
       "word": "musée",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-rejected",
+        "neighbors": [
+          {
+            "id": 763561,
+            "word": "muséee"
+          },
+          {
+            "id": 380052,
+            "word": "museummusée"
+          },
+          {
+            "id": 738570,
+            "word": "muséeum"
+          },
+          {
+            "id": 269771,
+            "word": "musé"
+          },
+          {
+            "id": 3377,
+            "word": "musées"
+          },
+          {
+            "id": 576527,
+            "word": "capcmusée"
+          },
+          {
+            "id": 1830,
+            "word": "museum"
+          },
+          {
+            "id": 835900,
+            "word": "bardomuseum"
+          },
+          {
+            "id": 443906,
+            "word": "emuseum"
+          },
+          {
+            "id": 621037,
+            "word": "madmusée"
+          },
+          {
+            "id": 624036,
+            "word": "ecomuseum"
+          },
+          {
+            "id": 934080,
+            "word": "bymuseum"
+          },
+          {
+            "id": 544856,
+            "word": "vitromusée"
+          },
+          {
+            "id": 723298,
+            "word": "frietmuseum"
+          },
+          {
+            "id": 644174,
+            "word": "dommuseum"
+          },
+          {
+            "id": 720936,
+            "word": "modemuseum"
+          },
+          {
+            "id": 155799,
+            "word": "museon"
+          },
+          {
+            "id": 2802,
+            "word": "collections"
+          },
+          {
+            "id": 573545,
+            "word": "videomuseum"
+          },
+          {
+            "id": 829452,
+            "word": "musés"
+          },
+          {
+            "id": 42201,
+            "word": "musee"
+          },
+          {
+            "id": 512708,
+            "word": "automuseum"
+          },
+          {
+            "id": 435262,
+            "word": "webmuseum"
+          },
+          {
+            "id": 231769,
+            "word": "fotomuseum"
+          },
+          {
+            "id": 933965,
+            "word": "halsmuseum"
+          },
+          {
+            "id": 292198,
+            "word": "abbemuseum"
+          },
+          {
+            "id": 345235,
+            "word": "metmuseum"
+          },
+          {
+            "id": 915128,
+            "word": "bodemuseum"
+          },
+          {
+            "id": 799150,
+            "word": "hofmuseum"
+          },
+          {
+            "id": 11052,
+            "word": "museo"
+          },
+          {
+            "id": 387140,
+            "word": "muséenat"
+          },
+          {
+            "id": 811169,
+            "word": "ledermuseum"
+          },
+          {
+            "id": 533466,
+            "word": "rijkmuseum"
+          },
+          {
+            "id": 95888,
+            "word": "museet"
+          },
+          {
+            "id": 3650,
+            "word": "louvre"
+          },
+          {
+            "id": 812810,
+            "word": "industriemuseum"
+          },
+          {
+            "id": 701962,
+            "word": "pelizaeusmuseum"
+          },
+          {
+            "id": 790067,
+            "word": "naturmuseum"
+          },
+          {
+            "id": 767734,
+            "word": "folkemuseum"
+          },
+          {
+            "id": 32351,
+            "word": "carnavalet"
+          },
+          {
+            "id": 477378,
+            "word": "muséo"
+          },
+          {
+            "id": 355327,
+            "word": "économusée"
+          },
+          {
+            "id": 763699,
+            "word": "muséart"
+          },
+          {
+            "id": 511227,
+            "word": "gewerbemuseum"
+          },
+          {
+            "id": 751242,
+            "word": "fieldmuseum"
+          },
+          {
+            "id": 630199,
+            "word": "museumotel"
+          },
+          {
+            "id": 420705,
+            "word": "stadsmuseum"
+          },
+          {
+            "id": 76620,
+            "word": "nationalmuseum"
+          },
+          {
+            "id": 285867,
+            "word": "pergamonmuseum"
+          },
+          {
+            "id": 876019,
+            "word": "skulpturenmuseum"
+          },
+          {
+            "id": 419845,
+            "word": "muséa"
+          },
+          {
+            "id": 957540,
+            "word": "rijskmuseum"
+          },
+          {
+            "id": 806591,
+            "word": "papyrusmuseum"
+          },
+          {
+            "id": 894683,
+            "word": "glasmuseum"
+          },
+          {
+            "id": 189735,
+            "word": "muséon"
+          },
+          {
+            "id": 709677,
+            "word": "cerclemuseum"
+          },
+          {
+            "id": 89906,
+            "word": "artothèque"
+          },
+          {
+            "id": 498826,
+            "word": "designmuseum"
+          },
+          {
+            "id": 138890,
+            "word": "ecomusée"
+          },
+          {
+            "id": 332236,
+            "word": "bonnefantenmuseum"
+          },
+          {
+            "id": 506757,
+            "word": "museux"
+          },
+          {
+            "id": 412657,
+            "word": "führermuseum"
+          },
+          {
+            "id": 960260,
+            "word": "streekmuseum"
+          },
+          {
+            "id": 525330,
+            "word": "schlossmuseum"
+          }
+        ],
+        "targetManifestSha256": "ed6520adb7e88377ccbe78794d5f1b93a4b8d8bb38f40cf6846bbc84af3606ce",
+        "evidenceSha256": "0c62f387bdf6e481c284a8b0e90fbd1b5f258ac24e6f6e1f606c6ffdd0783066"
       },
       "hints": {
         "status": "not-reviewed",
         "words": []
       },
-      "approval": "pending"
+      "approval": "rejected",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Les deux relectures rejettent ce voisinage : collections et louvre sont accessibles, mais aucun troisième indice aussi familier et non dérivé ne se dégage ; artothèque est spécialisé et carnavalet moins connu.",
+        "evidenceSha256": "0c62f387bdf6e481c284a8b0e90fbd1b5f258ac24e6f6e1f606c6ffdd0783066"
+      }
     },
     {
       "targetId": 502,
@@ -4553,16 +5899,286 @@
       },
       "word": "hôtel",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 7223,
+            "word": "hotel"
+          },
+          {
+            "id": 6966,
+            "word": "hôtels"
+          },
+          {
+            "id": 990125,
+            "word": "hoteldieu"
+          },
+          {
+            "id": 3975,
+            "word": "immeuble"
+          },
+          {
+            "id": 770546,
+            "word": "belhôtel"
+          },
+          {
+            "id": 24984,
+            "word": "hôtelier"
+          },
+          {
+            "id": 946594,
+            "word": "hôtelerie"
+          },
+          {
+            "id": 3947,
+            "word": "restaurant"
+          },
+          {
+            "id": 633915,
+            "word": "hotelière"
+          },
+          {
+            "id": 1010910,
+            "word": "hoteldaumesnil"
+          },
+          {
+            "id": 41408,
+            "word": "hotels"
+          },
+          {
+            "id": 357140,
+            "word": "hotelier"
+          },
+          {
+            "id": 331481,
+            "word": "hotellerie"
+          },
+          {
+            "id": 35527,
+            "word": "hôtelière"
+          },
+          {
+            "id": 652541,
+            "word": "démeublé"
+          },
+          {
+            "id": 35891,
+            "word": "ritz"
+          },
+          {
+            "id": 6662,
+            "word": "casino"
+          },
+          {
+            "id": 888370,
+            "word": "môtel"
+          },
+          {
+            "id": 5658,
+            "word": "appartement"
+          },
+          {
+            "id": 18718,
+            "word": "hôtellerie"
+          },
+          {
+            "id": 802208,
+            "word": "hoteldeville"
+          },
+          {
+            "id": 77665,
+            "word": "hostellerie"
+          },
+          {
+            "id": 568651,
+            "word": "hotellier"
+          },
+          {
+            "id": 73875,
+            "word": "sheraton"
+          },
+          {
+            "id": 219012,
+            "word": "hôtelleries"
+          },
+          {
+            "id": 53644,
+            "word": "hôteliers"
+          },
+          {
+            "id": 930752,
+            "word": "hotelières"
+          },
+          {
+            "id": 9239,
+            "word": "appartements"
+          },
+          {
+            "id": 187716,
+            "word": "hôtelville"
+          },
+          {
+            "id": 418721,
+            "word": "chotel"
+          },
+          {
+            "id": 7456,
+            "word": "palace"
+          },
+          {
+            "id": 842179,
+            "word": "hoteliers"
+          },
+          {
+            "id": 625929,
+            "word": "palasthotel"
+          },
+          {
+            "id": 84991,
+            "word": "sofitel"
+          },
+          {
+            "id": 6322,
+            "word": "immeubles"
+          },
+          {
+            "id": 58718,
+            "word": "palaces"
+          },
+          {
+            "id": 597625,
+            "word": "entresort"
+          },
+          {
+            "id": 969562,
+            "word": "hoteldumolantrennes"
+          },
+          {
+            "id": 363095,
+            "word": "remeublé"
+          },
+          {
+            "id": 136920,
+            "word": "negresco"
+          },
+          {
+            "id": 416327,
+            "word": "hoteles"
+          },
+          {
+            "id": 12814,
+            "word": "hospice"
+          },
+          {
+            "id": 848749,
+            "word": "interhotel"
+          },
+          {
+            "id": 84583,
+            "word": "hôtelières"
+          },
+          {
+            "id": 392879,
+            "word": "dhotel"
+          },
+          {
+            "id": 842037,
+            "word": "appartemens"
+          },
+          {
+            "id": 59826,
+            "word": "meublé"
+          },
+          {
+            "id": 488937,
+            "word": "remeublée"
+          },
+          {
+            "id": 23861,
+            "word": "bâtisse"
+          },
+          {
+            "id": 909,
+            "word": "bâtiment"
+          },
+          {
+            "id": 8856,
+            "word": "auberge"
+          },
+          {
+            "id": 1467,
+            "word": "hôpital"
+          },
+          {
+            "id": 981234,
+            "word": "hotelard"
+          },
+          {
+            "id": 96400,
+            "word": "novotel"
+          },
+          {
+            "id": 977768,
+            "word": "hôtelrégence"
+          },
+          {
+            "id": 689712,
+            "word": "hotelans"
+          },
+          {
+            "id": 928757,
+            "word": "restaurand"
+          },
+          {
+            "id": 522218,
+            "word": "restaurante"
+          },
+          {
+            "id": 325614,
+            "word": "hotell"
+          },
+          {
+            "id": 470724,
+            "word": "hostelleries"
+          },
+          {
+            "id": 1001984,
+            "word": "hotelkeeper"
+          },
+          {
+            "id": 132028,
+            "word": "escoville"
+          },
+          {
+            "id": 107998,
+            "word": "carabacel"
+          },
+          {
+            "id": 26406,
+            "word": "motel"
+          }
+        ],
+        "targetManifestSha256": "ae1e67c9813956aaa57c49d2f58d65f55b83de1695f7d5ebaac96494d96b0643",
+        "evidenceSha256": "8724bd8f04980f9d3452836d7486391bb54afba9b6c14beb3a6eadcccd570831"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "immeuble",
+          "restaurant",
+          "auberge"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident bâtiment, service associé et hébergement voisin. Ces trois indices familiers sont présents et non dérivés de la cible.",
+        "evidenceSha256": "8724bd8f04980f9d3452836d7486391bb54afba9b6c14beb3a6eadcccd570831"
+      }
     },
     {
       "targetId": 1467,
@@ -4576,16 +6192,286 @@
       },
       "word": "hôpital",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 457289,
+            "word": "lhôpital"
+          },
+          {
+            "id": 896224,
+            "word": "ôpital"
+          },
+          {
+            "id": 7287,
+            "word": "hôpitaux"
+          },
+          {
+            "id": 620870,
+            "word": "hospitalise"
+          },
+          {
+            "id": 8403,
+            "word": "hospitalier"
+          },
+          {
+            "id": 533516,
+            "word": "hospitalor"
+          },
+          {
+            "id": 106946,
+            "word": "gériatrique"
+          },
+          {
+            "id": 12948,
+            "word": "hospital"
+          },
+          {
+            "id": 55178,
+            "word": "pédiatrique"
+          },
+          {
+            "id": 84084,
+            "word": "hospitalo"
+          },
+          {
+            "id": 12658,
+            "word": "psychiatrique"
+          },
+          {
+            "id": 54183,
+            "word": "hopital"
+          },
+          {
+            "id": 695118,
+            "word": "hospitaux"
+          },
+          {
+            "id": 135651,
+            "word": "hospitaliser"
+          },
+          {
+            "id": 12814,
+            "word": "hospice"
+          },
+          {
+            "id": 24174,
+            "word": "hospitalisé"
+          },
+          {
+            "id": 328008,
+            "word": "gériatriques"
+          },
+          {
+            "id": 554870,
+            "word": "hospitalia"
+          },
+          {
+            "id": 50168,
+            "word": "hospitalisés"
+          },
+          {
+            "id": 427911,
+            "word": "hospitale"
+          },
+          {
+            "id": 647441,
+            "word": "hospitali"
+          },
+          {
+            "id": 281461,
+            "word": "bariatrique"
+          },
+          {
+            "id": 113077,
+            "word": "pédiatriques"
+          },
+          {
+            "id": 1005429,
+            "word": "hospitalar"
+          },
+          {
+            "id": 49411,
+            "word": "hospitalisée"
+          },
+          {
+            "id": 834813,
+            "word": "hospitaul"
+          },
+          {
+            "id": 34089,
+            "word": "hospitalières"
+          },
+          {
+            "id": 24185,
+            "word": "infirmerie"
+          },
+          {
+            "id": 384298,
+            "word": "hospitalisme"
+          },
+          {
+            "id": 537157,
+            "word": "podiatrique"
+          },
+          {
+            "id": 22280,
+            "word": "hospitalisation"
+          },
+          {
+            "id": 38908,
+            "word": "dispensaire"
+          },
+          {
+            "id": 695919,
+            "word": "hospitales"
+          },
+          {
+            "id": 5305,
+            "word": "clinique"
+          },
+          {
+            "id": 22682,
+            "word": "hospitalière"
+          },
+          {
+            "id": 702589,
+            "word": "lhospitalier"
+          },
+          {
+            "id": 469769,
+            "word": "hospitaller"
+          },
+          {
+            "id": 121625,
+            "word": "hospitalisées"
+          },
+          {
+            "id": 450876,
+            "word": "préhospitalier"
+          },
+          {
+            "id": 928299,
+            "word": "lospital"
+          },
+          {
+            "id": 711845,
+            "word": "pédopsychiatrique"
+          },
+          {
+            "id": 565803,
+            "word": "hospitallers"
+          },
+          {
+            "id": 26365,
+            "word": "psychiatriques"
+          },
+          {
+            "id": 55483,
+            "word": "polyclinique"
+          },
+          {
+            "id": 28286,
+            "word": "sanatorium"
+          },
+          {
+            "id": 417314,
+            "word": "hospita"
+          },
+          {
+            "id": 208552,
+            "word": "hospitals"
+          },
+          {
+            "id": 723643,
+            "word": "hospitalieres"
+          },
+          {
+            "id": 560622,
+            "word": "hospitalités"
+          },
+          {
+            "id": 76321,
+            "word": "hospitalisations"
+          },
+          {
+            "id": 241297,
+            "word": "ospital"
+          },
+          {
+            "id": 804212,
+            "word": "pédopsychiatriques"
+          },
+          {
+            "id": 64648,
+            "word": "gériatrie"
+          },
+          {
+            "id": 18827,
+            "word": "orphelinat"
+          },
+          {
+            "id": 159390,
+            "word": "infirmeries"
+          },
+          {
+            "id": 69553,
+            "word": "incurables"
+          },
+          {
+            "id": 487613,
+            "word": "dospital"
+          },
+          {
+            "id": 357069,
+            "word": "neuropsychiatrique"
+          },
+          {
+            "id": 12379,
+            "word": "hospitaliers"
+          },
+          {
+            "id": 38871,
+            "word": "soignant"
+          },
+          {
+            "id": 815325,
+            "word": "extrahospitalières"
+          },
+          {
+            "id": 303330,
+            "word": "hospitalis"
+          },
+          {
+            "id": 301237,
+            "word": "policlinique"
+          },
+          {
+            "id": 197763,
+            "word": "pneumologue"
+          }
+        ],
+        "targetManifestSha256": "12974159c67b4f1ebe23104b018fa4759beb2224e85c5bd5c3013e336522f300",
+        "evidenceSha256": "42136dbdf4fc706e799b564de7313bc4fe0ff96ba7b390af9e2e2e24a9ee410a"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "clinique",
+          "pédiatrique",
+          "soignant"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident le voisinage médical malgré les dérivés parasites. Les indices retenus couvrent établissement, spécialité et personnel, dans trois familles lexicales distinctes.",
+        "evidenceSha256": "42136dbdf4fc706e799b564de7313bc4fe0ff96ba7b390af9e2e2e24a9ee410a"
+      }
     },
     {
       "targetId": 1562,
@@ -4622,16 +6508,286 @@
       },
       "word": "aéroport",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 10264,
+            "word": "aéroports"
+          },
+          {
+            "id": 43289,
+            "word": "aéroportuaire"
+          },
+          {
+            "id": 1006961,
+            "word": "aéroporter"
+          },
+          {
+            "id": 96755,
+            "word": "aeroport"
+          },
+          {
+            "id": 840862,
+            "word": "aéroportage"
+          },
+          {
+            "id": 36781,
+            "word": "aérogare"
+          },
+          {
+            "id": 8349,
+            "word": "aérodrome"
+          },
+          {
+            "id": 156726,
+            "word": "aérogares"
+          },
+          {
+            "id": 57628,
+            "word": "aéroportuaires"
+          },
+          {
+            "id": 13335,
+            "word": "airport"
+          },
+          {
+            "id": 192514,
+            "word": "euroairport"
+          },
+          {
+            "id": 45907,
+            "word": "iata"
+          },
+          {
+            "id": 46137,
+            "word": "heathrow"
+          },
+          {
+            "id": 481516,
+            "word": "aeroports"
+          },
+          {
+            "id": 65010,
+            "word": "gatwick"
+          },
+          {
+            "id": 16398,
+            "word": "aita"
+          },
+          {
+            "id": 257617,
+            "word": "airpost"
+          },
+          {
+            "id": 27660,
+            "word": "aérodromes"
+          },
+          {
+            "id": 308193,
+            "word": "hydroaérodrome"
+          },
+          {
+            "id": 537159,
+            "word": "aéroexpress"
+          },
+          {
+            "id": 510137,
+            "word": "aéropole"
+          },
+          {
+            "id": 65634,
+            "word": "airports"
+          },
+          {
+            "id": 587024,
+            "word": "aéropolis"
+          },
+          {
+            "id": 217606,
+            "word": "airlinair"
+          },
+          {
+            "id": 336499,
+            "word": "aéropos"
+          },
+          {
+            "id": 823643,
+            "word": "aerogare"
+          },
+          {
+            "id": 88619,
+            "word": "domodedovo"
+          },
+          {
+            "id": 19497,
+            "word": "orly"
+          },
+          {
+            "id": 58065,
+            "word": "héliport"
+          },
+          {
+            "id": 860080,
+            "word": "libroport"
+          },
+          {
+            "id": 19995,
+            "word": "oaci"
+          },
+          {
+            "id": 463696,
+            "word": "transair"
+          },
+          {
+            "id": 88351,
+            "word": "malpensa"
+          },
+          {
+            "id": 349969,
+            "word": "aéroparc"
+          },
+          {
+            "id": 55026,
+            "word": "ryanair"
+          },
+          {
+            "id": 62366,
+            "word": "tarmac"
+          },
+          {
+            "id": 188650,
+            "word": "europort"
+          },
+          {
+            "id": 546183,
+            "word": "aéropôle"
+          },
+          {
+            "id": 25197,
+            "word": "hub"
+          },
+          {
+            "id": 165063,
+            "word": "aerodrome"
+          },
+          {
+            "id": 6087,
+            "word": "airlines"
+          },
+          {
+            "id": 3664,
+            "word": "passagers"
+          },
+          {
+            "id": 994722,
+            "word": "skytaxi"
+          },
+          {
+            "id": 11251,
+            "word": "desservant"
+          },
+          {
+            "id": 81498,
+            "word": "schiphol"
+          },
+          {
+            "id": 7546,
+            "word": "atterrissage"
+          },
+          {
+            "id": 289535,
+            "word": "taxiways"
+          },
+          {
+            "id": 164599,
+            "word": "taxiway"
+          },
+          {
+            "id": 454714,
+            "word": "airpod"
+          },
+          {
+            "id": 775643,
+            "word": "aéropostal"
+          },
+          {
+            "id": 124071,
+            "word": "icao"
+          },
+          {
+            "id": 875786,
+            "word": "airlib"
+          },
+          {
+            "id": 140013,
+            "word": "gardermoen"
+          },
+          {
+            "id": 142540,
+            "word": "aeroporto"
+          },
+          {
+            "id": 635430,
+            "word": "aeroexpo"
+          },
+          {
+            "id": 395368,
+            "word": "loganair"
+          },
+          {
+            "id": 88163,
+            "word": "stansted"
+          },
+          {
+            "id": 12669,
+            "word": "airways"
+          },
+          {
+            "id": 37984,
+            "word": "atr"
+          },
+          {
+            "id": 224515,
+            "word": "roissypôle"
+          },
+          {
+            "id": 344228,
+            "word": "airlink"
+          },
+          {
+            "id": 25007,
+            "word": "atterrir"
+          },
+          {
+            "id": 475584,
+            "word": "airlinesopéré"
+          },
+          {
+            "id": 216786,
+            "word": "héliports"
+          }
+        ],
+        "targetManifestSha256": "3d8fe2560ddf82a701704697019f0e376e1b946f0980409cec6d6ecadeca75e9",
+        "evidenceSha256": "623b554c273312342b79ce8cf0576c54846d356f753995fac21c1b012b45fc97"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "passagers",
+          "atterrissage",
+          "tarmac"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes retiennent voyageurs, opération aérienne et infrastructure : trois indices présents, distincts et accessibles.",
+        "evidenceSha256": "623b554c273312342b79ce8cf0576c54846d356f753995fac21c1b012b45fc97"
+      }
     },
     {
       "targetId": 389,
@@ -5731,16 +7887,286 @@
       },
       "word": "avion",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 29634,
+            "word": "bimoteur"
+          },
+          {
+            "id": 67100,
+            "word": "quadrimoteur"
+          },
+          {
+            "id": 88110,
+            "word": "trimoteur"
+          },
+          {
+            "id": 7943,
+            "word": "hélicoptère"
+          },
+          {
+            "id": 22812,
+            "word": "hydravion"
+          },
+          {
+            "id": 22954,
+            "word": "monomoteur"
+          },
+          {
+            "id": 20244,
+            "word": "aéronef"
+          },
+          {
+            "id": 22342,
+            "word": "biplan"
+          },
+          {
+            "id": 2114,
+            "word": "avions"
+          },
+          {
+            "id": 750954,
+            "word": "avionné"
+          },
+          {
+            "id": 127651,
+            "word": "quadriréacteur"
+          },
+          {
+            "id": 133426,
+            "word": "quadrimoteurs"
+          },
+          {
+            "id": 11628,
+            "word": "décollage"
+          },
+          {
+            "id": 56945,
+            "word": "biréacteur"
+          },
+          {
+            "id": 230818,
+            "word": "triréacteur"
+          },
+          {
+            "id": 1004685,
+            "word": "aviona"
+          },
+          {
+            "id": 31141,
+            "word": "monoplan"
+          },
+          {
+            "id": 7741,
+            "word": "boeing"
+          },
+          {
+            "id": 80939,
+            "word": "bimoteurs"
+          },
+          {
+            "id": 228452,
+            "word": "biplane"
+          },
+          {
+            "id": 224339,
+            "word": "trimoteurs"
+          },
+          {
+            "id": 375727,
+            "word": "biturbopropulseur"
+          },
+          {
+            "id": 110686,
+            "word": "monomoteurs"
+          },
+          {
+            "id": 397154,
+            "word": "quadriréacteurs"
+          },
+          {
+            "id": 7546,
+            "word": "atterrissage"
+          },
+          {
+            "id": 330269,
+            "word": "monoplane"
+          },
+          {
+            "id": 335893,
+            "word": "turbopropulsé"
+          },
+          {
+            "id": 500599,
+            "word": "turbopropulsés"
+          },
+          {
+            "id": 33755,
+            "word": "cessna"
+          },
+          {
+            "id": 39860,
+            "word": "supersonique"
+          },
+          {
+            "id": 73591,
+            "word": "turbopropulseur"
+          },
+          {
+            "id": 66889,
+            "word": "avionneur"
+          },
+          {
+            "id": 922981,
+            "word": "quadriturbopropulseur"
+          },
+          {
+            "id": 21002,
+            "word": "biplace"
+          },
+          {
+            "id": 155642,
+            "word": "turbopropulsion"
+          },
+          {
+            "id": 235628,
+            "word": "biréacteurs"
+          },
+          {
+            "id": 766701,
+            "word": "biturbopropulseurs"
+          },
+          {
+            "id": 87323,
+            "word": "biplans"
+          },
+          {
+            "id": 99541,
+            "word": "quadriplace"
+          },
+          {
+            "id": 89050,
+            "word": "décollant"
+          },
+          {
+            "id": 386078,
+            "word": "turbopropulsée"
+          },
+          {
+            "id": 523184,
+            "word": "triréacteurs"
+          },
+          {
+            "id": 340612,
+            "word": "multimoteur"
+          },
+          {
+            "id": 343644,
+            "word": "monoréacteur"
+          },
+          {
+            "id": 68289,
+            "word": "turbopropulseurs"
+          },
+          {
+            "id": 9563,
+            "word": "bombardier"
+          },
+          {
+            "id": 18513,
+            "word": "planeur"
+          },
+          {
+            "id": 103459,
+            "word": "atterrissant"
+          },
+          {
+            "id": 121867,
+            "word": "monoplans"
+          },
+          {
+            "id": 799683,
+            "word": "aeronef"
+          },
+          {
+            "id": 913135,
+            "word": "aérowagon"
+          },
+          {
+            "id": 67326,
+            "word": "biplaces"
+          },
+          {
+            "id": 48257,
+            "word": "iliouchine"
+          },
+          {
+            "id": 32337,
+            "word": "tupolev"
+          },
+          {
+            "id": 72253,
+            "word": "aéroplane"
+          },
+          {
+            "id": 104891,
+            "word": "triplace"
+          },
+          {
+            "id": 259713,
+            "word": "pulsoréacteur"
+          },
+          {
+            "id": 776952,
+            "word": "monoturbopropulseur"
+          },
+          {
+            "id": 339919,
+            "word": "navion"
+          },
+          {
+            "id": 46303,
+            "word": "beechcraft"
+          },
+          {
+            "id": 28702,
+            "word": "hydravions"
+          },
+          {
+            "id": 16664,
+            "word": "lockheed"
+          },
+          {
+            "id": 80045,
+            "word": "amerrissage"
+          },
+          {
+            "id": 98025,
+            "word": "learjet"
+          }
+        ],
+        "targetManifestSha256": "2ffd0001273c63670cce308bd17f5dfb3c23612648b809edd20d296dcab3671f",
+        "evidenceSha256": "d85a9fe200f3fdfd2b15967863772c444803a2c4aaa62e6508200b6660b43713"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "hélicoptère",
+          "décollage",
+          "planeur"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident deux appareils familiers et une action caractéristique, sans dérivé de la cible ni vocabulaire technique inaccessible.",
+        "evidenceSha256": "d85a9fe200f3fdfd2b15967863772c444803a2c4aaa62e6508200b6660b43713"
+      }
     },
     {
       "targetId": 1523,
@@ -5823,16 +8249,286 @@
       },
       "word": "dictionnaire",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 453084,
+            "word": "dictionnairique"
+          },
+          {
+            "id": 399841,
+            "word": "dictions"
+          },
+          {
+            "id": 195793,
+            "word": "dictionaire"
+          },
+          {
+            "id": 919823,
+            "word": "dictier"
+          },
+          {
+            "id": 12578,
+            "word": "dictionnaires"
+          },
+          {
+            "id": 571783,
+            "word": "dictio"
+          },
+          {
+            "id": 748193,
+            "word": "dictionar"
+          },
+          {
+            "id": 115139,
+            "word": "dictionnary"
+          },
+          {
+            "id": 44653,
+            "word": "diction"
+          },
+          {
+            "id": 1008497,
+            "word": "dictionnarium"
+          },
+          {
+            "id": 518880,
+            "word": "dictionarie"
+          },
+          {
+            "id": 298840,
+            "word": "dicti"
+          },
+          {
+            "id": 8419,
+            "word": "larousse"
+          },
+          {
+            "id": 199186,
+            "word": "dictionaries"
+          },
+          {
+            "id": 183176,
+            "word": "dictionarium"
+          },
+          {
+            "id": 879750,
+            "word": "dictius"
+          },
+          {
+            "id": 320088,
+            "word": "dictis"
+          },
+          {
+            "id": 455354,
+            "word": "dictionnairedespiritualite"
+          },
+          {
+            "id": 4643,
+            "word": "biographique"
+          },
+          {
+            "id": 10239,
+            "word": "dictionary"
+          },
+          {
+            "id": 24518,
+            "word": "bénézit"
+          },
+          {
+            "id": 50607,
+            "word": "vapereau"
+          },
+          {
+            "id": 78421,
+            "word": "lexicographie"
+          },
+          {
+            "id": 865650,
+            "word": "autodictionnaire"
+          },
+          {
+            "id": 921911,
+            "word": "larousserie"
+          },
+          {
+            "id": 15321,
+            "word": "glossaire"
+          },
+          {
+            "id": 557928,
+            "word": "dictionaryofarthistorians"
+          },
+          {
+            "id": 475602,
+            "word": "granddictionnaire"
+          },
+          {
+            "id": 826504,
+            "word": "larousselle"
+          },
+          {
+            "id": 627846,
+            "word": "dictionarylookuphover"
+          },
+          {
+            "id": 97135,
+            "word": "glossaires"
+          },
+          {
+            "id": 14905,
+            "word": "bibliographique"
+          },
+          {
+            "id": 74986,
+            "word": "dict"
+          },
+          {
+            "id": 88772,
+            "word": "lexicographique"
+          },
+          {
+            "id": 33849,
+            "word": "dico"
+          },
+          {
+            "id": 462156,
+            "word": "biobibliographique"
+          },
+          {
+            "id": 35929,
+            "word": "maitron"
+          },
+          {
+            "id": 10112,
+            "word": "lexique"
+          },
+          {
+            "id": 58024,
+            "word": "terminologique"
+          },
+          {
+            "id": 63721,
+            "word": "encrevé"
+          },
+          {
+            "id": 24764,
+            "word": "étymologique"
+          },
+          {
+            "id": 420989,
+            "word": "dictz"
+          },
+          {
+            "id": 878168,
+            "word": "encyclopédye"
+          },
+          {
+            "id": 22411,
+            "word": "encyclopædia"
+          },
+          {
+            "id": 745934,
+            "word": "larouse"
+          },
+          {
+            "id": 966555,
+            "word": "encyclopéde"
+          },
+          {
+            "id": 551024,
+            "word": "laroussinie"
+          },
+          {
+            "id": 19926,
+            "word": "raisonné"
+          },
+          {
+            "id": 513977,
+            "word": "wictionnaire"
+          },
+          {
+            "id": 40253,
+            "word": "lexicographe"
+          },
+          {
+            "id": 83093,
+            "word": "dezobry"
+          },
+          {
+            "id": 139338,
+            "word": "lexicographiques"
+          },
+          {
+            "id": 653355,
+            "word": "petitbibliographie"
+          },
+          {
+            "id": 82743,
+            "word": "lexiques"
+          },
+          {
+            "id": 180475,
+            "word": "diccionari"
+          },
+          {
+            "id": 373597,
+            "word": "biobibliographie"
+          },
+          {
+            "id": 648403,
+            "word": "biographiedrame"
+          },
+          {
+            "id": 36779,
+            "word": "littré"
+          },
+          {
+            "id": 147590,
+            "word": "lexicographes"
+          },
+          {
+            "id": 519488,
+            "word": "biographiquedrame"
+          },
+          {
+            "id": 116922,
+            "word": "moréri"
+          },
+          {
+            "id": 328631,
+            "word": "laroussilhe"
+          },
+          {
+            "id": 45548,
+            "word": "lexicon"
+          },
+          {
+            "id": 874174,
+            "word": "essaibiographie"
+          }
+        ],
+        "targetManifestSha256": "404c0f75f3b270a606cc5d450e397f9efb382615ac836d7ecf03a55c121275cc",
+        "evidenceSha256": "44c2b677d4932a564568794de93240314839e0ac6e696cbec7b7af90ff808850"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "glossaire",
+          "lexique",
+          "larousse"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident deux répertoires de vocabulaire et une référence éditoriale connue, trois indices familiers et non dérivés de la cible.",
+        "evidenceSha256": "44c2b677d4932a564568794de93240314839e0ac6e696cbec7b7af90ff808850"
+      }
     },
     {
       "targetId": 1817,
@@ -5846,16 +8542,286 @@
       },
       "word": "métro",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 67115,
+            "word": "prémétro"
+          },
+          {
+            "id": 30372,
+            "word": "métros"
+          },
+          {
+            "id": 2390,
+            "word": "stations"
+          },
+          {
+            "id": 833428,
+            "word": "métrot"
+          },
+          {
+            "id": 3646,
+            "word": "tramway"
+          },
+          {
+            "id": 732,
+            "word": "station"
+          },
+          {
+            "id": 596050,
+            "word": "métroz"
+          },
+          {
+            "id": 192257,
+            "word": "métrobus"
+          },
+          {
+            "id": 8259,
+            "word": "metro"
+          },
+          {
+            "id": 484323,
+            "word": "métrocâble"
+          },
+          {
+            "id": 821912,
+            "word": "métrovélos"
+          },
+          {
+            "id": 9658,
+            "word": "ratp"
+          },
+          {
+            "id": 411090,
+            "word": "metrorail"
+          },
+          {
+            "id": 452304,
+            "word": "metrobüs"
+          },
+          {
+            "id": 753546,
+            "word": "prémétros"
+          },
+          {
+            "id": 787533,
+            "word": "metrotram"
+          },
+          {
+            "id": 999197,
+            "word": "tramwaybus"
+          },
+          {
+            "id": 12114,
+            "word": "tram"
+          },
+          {
+            "id": 165729,
+            "word": "metrorex"
+          },
+          {
+            "id": 300754,
+            "word": "métrovélo"
+          },
+          {
+            "id": 936615,
+            "word": "supermétro"
+          },
+          {
+            "id": 8318,
+            "word": "rer"
+          },
+          {
+            "id": 917697,
+            "word": "métrod"
+          },
+          {
+            "id": 222309,
+            "word": "metrolink"
+          },
+          {
+            "id": 611118,
+            "word": "tramwaysbus"
+          },
+          {
+            "id": 48454,
+            "word": "suburbain"
+          },
+          {
+            "id": 227308,
+            "word": "metrobus"
+          },
+          {
+            "id": 7192,
+            "word": "rames"
+          },
+          {
+            "id": 941641,
+            "word": "métrovélobox"
+          },
+          {
+            "id": 505247,
+            "word": "fstations"
+          },
+          {
+            "id": 480270,
+            "word": "tramwayliste"
+          },
+          {
+            "id": 175432,
+            "word": "orlybus"
+          },
+          {
+            "id": 4841,
+            "word": "terminus"
+          },
+          {
+            "id": 984254,
+            "word": "metroul"
+          },
+          {
+            "id": 18301,
+            "word": "trolleybus"
+          },
+          {
+            "id": 293174,
+            "word": "metrocard"
+          },
+          {
+            "id": 989409,
+            "word": "métrobate"
+          },
+          {
+            "id": 899170,
+            "word": "métron"
+          },
+          {
+            "id": 41311,
+            "word": "trams"
+          },
+          {
+            "id": 128194,
+            "word": "busway"
+          },
+          {
+            "id": 719578,
+            "word": "kaloujskaïa"
+          },
+          {
+            "id": 2085,
+            "word": "bus"
+          },
+          {
+            "id": 694827,
+            "word": "métroscope"
+          },
+          {
+            "id": 125228,
+            "word": "lacmta"
+          },
+          {
+            "id": 6624,
+            "word": "quais"
+          },
+          {
+            "id": 219794,
+            "word": "métrostar"
+          },
+          {
+            "id": 976942,
+            "word": "metrosur"
+          },
+          {
+            "id": 367751,
+            "word": "trolleybusbus"
+          },
+          {
+            "id": 929,
+            "word": "lignes"
+          },
+          {
+            "id": 79006,
+            "word": "vélib"
+          },
+          {
+            "id": 579396,
+            "word": "metrostation"
+          },
+          {
+            "id": 376689,
+            "word": "metrocable"
+          },
+          {
+            "id": 89536,
+            "word": "desservira"
+          },
+          {
+            "id": 587381,
+            "word": "baseltramway"
+          },
+          {
+            "id": 370833,
+            "word": "metrolinx"
+          },
+          {
+            "id": 959210,
+            "word": "domodedovskaïa"
+          },
+          {
+            "id": 900050,
+            "word": "metromini"
+          },
+          {
+            "id": 208478,
+            "word": "rijskaïa"
+          },
+          {
+            "id": 8414,
+            "word": "souterrain"
+          },
+          {
+            "id": 340580,
+            "word": "metroliner"
+          },
+          {
+            "id": 529637,
+            "word": "tramstation"
+          },
+          {
+            "id": 307556,
+            "word": "filiovskaïa"
+          },
+          {
+            "id": 197683,
+            "word": "roissybus"
+          },
+          {
+            "id": 330096,
+            "word": "citybus"
+          }
+        ],
+        "targetManifestSha256": "a1de2dc784951ab1ec3f68fae267e8610965510f4d7ca60e8908d3dd60e17230",
+        "evidenceSha256": "8a9382d1336823a40ca85fdfcd8bcae2a5211cc6fac4002ac0bc27abd02aad90"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "station",
+          "rames",
+          "souterrain"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident le voisinage. Les indices retenus relient point d’arrêt, véhicules et environnement, sans reprendre de dérivé de la cible.",
+        "evidenceSha256": "8a9382d1336823a40ca85fdfcd8bcae2a5211cc6fac4002ac0bc27abd02aad90"
+      }
     },
     {
       "targetId": 379,
@@ -5892,16 +8858,286 @@
       },
       "word": "livre",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 941,
+            "word": "ouvrage"
+          },
+          {
+            "id": 610078,
+            "word": "idlivre"
+          },
+          {
+            "id": 978,
+            "word": "livres"
+          },
+          {
+            "id": 582781,
+            "word": "livrel"
+          },
+          {
+            "id": 776978,
+            "word": "difralivre"
+          },
+          {
+            "id": 245142,
+            "word": "audiolivre"
+          },
+          {
+            "id": 712013,
+            "word": "delivre"
+          },
+          {
+            "id": 1699,
+            "word": "paru"
+          },
+          {
+            "id": 9011,
+            "word": "autobiographie"
+          },
+          {
+            "id": 13182,
+            "word": "autobiographique"
+          },
+          {
+            "id": 819662,
+            "word": "tierslivre"
+          },
+          {
+            "id": 864300,
+            "word": "lelivre"
+          },
+          {
+            "id": 164819,
+            "word": "édilivre"
+          },
+          {
+            "id": 2435,
+            "word": "récit"
+          },
+          {
+            "id": 473699,
+            "word": "audiolivres"
+          },
+          {
+            "id": 3635,
+            "word": "préface"
+          },
+          {
+            "id": 150526,
+            "word": "autobiographe"
+          },
+          {
+            "id": 3552,
+            "word": "manuscrit"
+          },
+          {
+            "id": 254292,
+            "word": "bibliophane"
+          },
+          {
+            "id": 745423,
+            "word": "hyperlivre"
+          },
+          {
+            "id": 10006,
+            "word": "folio"
+          },
+          {
+            "id": 603,
+            "word": "publié"
+          },
+          {
+            "id": 347576,
+            "word": "préfacer"
+          },
+          {
+            "id": 24475,
+            "word": "seller"
+          },
+          {
+            "id": 24588,
+            "word": "préfacé"
+          },
+          {
+            "id": 4587,
+            "word": "book"
+          },
+          {
+            "id": 69529,
+            "word": "autobiographies"
+          },
+          {
+            "id": 2066,
+            "word": "recueil"
+          },
+          {
+            "id": 31759,
+            "word": "autobiographiques"
+          },
+          {
+            "id": 341,
+            "word": "roman"
+          },
+          {
+            "id": 980275,
+            "word": "divre"
+          },
+          {
+            "id": 47199,
+            "word": "opuscule"
+          },
+          {
+            "id": 183445,
+            "word": "devisement"
+          },
+          {
+            "id": 923778,
+            "word": "livrea"
+          },
+          {
+            "id": 203788,
+            "word": "bibliopoche"
+          },
+          {
+            "id": 891755,
+            "word": "livrels"
+          },
+          {
+            "id": 5415,
+            "word": "rédigé"
+          },
+          {
+            "id": 1325,
+            "word": "intitulé"
+          },
+          {
+            "id": 744635,
+            "word": "livresemcc"
+          },
+          {
+            "id": 22313,
+            "word": "bouquin"
+          },
+          {
+            "id": 772225,
+            "word": "salondulivre"
+          },
+          {
+            "id": 20938,
+            "word": "pamphlet"
+          },
+          {
+            "id": 82581,
+            "word": "edilivre"
+          },
+          {
+            "id": 289396,
+            "word": "préfacera"
+          },
+          {
+            "id": 151691,
+            "word": "epître"
+          },
+          {
+            "id": 56599,
+            "word": "opuscules"
+          },
+          {
+            "id": 420167,
+            "word": "ouvragescycle"
+          },
+          {
+            "id": 33808,
+            "word": "recension"
+          },
+          {
+            "id": 333931,
+            "word": "bibliolife"
+          },
+          {
+            "id": 69266,
+            "word": "romancé"
+          },
+          {
+            "id": 944735,
+            "word": "démonomicon"
+          },
+          {
+            "id": 307384,
+            "word": "numlivre"
+          },
+          {
+            "id": 37088,
+            "word": "préfaces"
+          },
+          {
+            "id": 3073,
+            "word": "poème"
+          },
+          {
+            "id": 410027,
+            "word": "anarlivres"
+          },
+          {
+            "id": 118729,
+            "word": "bestseller"
+          },
+          {
+            "id": 310916,
+            "word": "publieur"
+          },
+          {
+            "id": 97412,
+            "word": "bouquine"
+          },
+          {
+            "id": 707111,
+            "word": "photobiographie"
+          },
+          {
+            "id": 321785,
+            "word": "ézechiel"
+          },
+          {
+            "id": 3029,
+            "word": "commentaire"
+          },
+          {
+            "id": 516150,
+            "word": "livredepoche"
+          },
+          {
+            "id": 79145,
+            "word": "publibook"
+          },
+          {
+            "id": 927658,
+            "word": "abook"
+          }
+        ],
+        "targetManifestSha256": "25d13b54378e13c57a08614122aa665d1bdd100b68e7d4205693b12c5593b10a",
+        "evidenceSha256": "45199548193104551bef13b62fff7caebb58ffab2c1f0b3ea175ec32eeaba585"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "roman",
+          "préface",
+          "manuscrit"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident plusieurs pistes littéraires accessibles. Le trio retenu associe genre, partie de l’ouvrage et état du texte, sans dérivé de la cible.",
+        "evidenceSha256": "45199548193104551bef13b62fff7caebb58ffab2c1f0b3ea175ec32eeaba585"
+      }
     },
     {
       "targetId": 764,
@@ -6099,16 +9335,286 @@
       },
       "word": "train",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 2450,
+            "word": "trains"
+          },
+          {
+            "id": 53349,
+            "word": "déraille"
+          },
+          {
+            "id": 108061,
+            "word": "dérailler"
+          },
+          {
+            "id": 13511,
+            "word": "wagon"
+          },
+          {
+            "id": 185346,
+            "word": "déraillent"
+          },
+          {
+            "id": 11848,
+            "word": "wagons"
+          },
+          {
+            "id": 45553,
+            "word": "déraillement"
+          },
+          {
+            "id": 722374,
+            "word": "pvtrain"
+          },
+          {
+            "id": 940678,
+            "word": "trainsde"
+          },
+          {
+            "id": 171363,
+            "word": "turbotrain"
+          },
+          {
+            "id": 111049,
+            "word": "déraillé"
+          },
+          {
+            "id": 12114,
+            "word": "tram"
+          },
+          {
+            "id": 982474,
+            "word": "trainbus"
+          },
+          {
+            "id": 8937,
+            "word": "locomotive"
+          },
+          {
+            "id": 127216,
+            "word": "dérailleur"
+          },
+          {
+            "id": 7329,
+            "word": "rail"
+          },
+          {
+            "id": 924006,
+            "word": "déraillés"
+          },
+          {
+            "id": 10667,
+            "word": "rame"
+          },
+          {
+            "id": 901282,
+            "word": "parcotrain"
+          },
+          {
+            "id": 278422,
+            "word": "intercityexpress"
+          },
+          {
+            "id": 227375,
+            "word": "dérailleurs"
+          },
+          {
+            "id": 280549,
+            "word": "caltrain"
+          },
+          {
+            "id": 617945,
+            "word": "déraillée"
+          },
+          {
+            "id": 12032,
+            "word": "rails"
+          },
+          {
+            "id": 877231,
+            "word": "wagonner"
+          },
+          {
+            "id": 411090,
+            "word": "metrorail"
+          },
+          {
+            "id": 277616,
+            "word": "dérailla"
+          },
+          {
+            "id": 3664,
+            "word": "passagers"
+          },
+          {
+            "id": 502,
+            "word": "gare"
+          },
+          {
+            "id": 85273,
+            "word": "wagonnets"
+          },
+          {
+            "id": 41283,
+            "word": "entrain"
+          },
+          {
+            "id": 132889,
+            "word": "wagonnet"
+          },
+          {
+            "id": 913393,
+            "word": "nightrain"
+          },
+          {
+            "id": 52335,
+            "word": "tracté"
+          },
+          {
+            "id": 26706,
+            "word": "intercités"
+          },
+          {
+            "id": 686408,
+            "word": "cargotram"
+          },
+          {
+            "id": 102749,
+            "word": "draisine"
+          },
+          {
+            "id": 13261,
+            "word": "passager"
+          },
+          {
+            "id": 169822,
+            "word": "déraillements"
+          },
+          {
+            "id": 29678,
+            "word": "automotrice"
+          },
+          {
+            "id": 1751,
+            "word": "ferroviaire"
+          },
+          {
+            "id": 875688,
+            "word": "traintrain"
+          },
+          {
+            "id": 38183,
+            "word": "monorail"
+          },
+          {
+            "id": 639302,
+            "word": "arrêtai"
+          },
+          {
+            "id": 147055,
+            "word": "turbotrains"
+          },
+          {
+            "id": 29905,
+            "word": "autorail"
+          },
+          {
+            "id": 711970,
+            "word": "trainsport"
+          },
+          {
+            "id": 908218,
+            "word": "intercitéa"
+          },
+          {
+            "id": 484519,
+            "word": "jettrain"
+          },
+          {
+            "id": 20837,
+            "word": "remorque"
+          },
+          {
+            "id": 149559,
+            "word": "trainant"
+          },
+          {
+            "id": 16964,
+            "word": "circulant"
+          },
+          {
+            "id": 385538,
+            "word": "trainz"
+          },
+          {
+            "id": 2404,
+            "word": "voyageurs"
+          },
+          {
+            "id": 26170,
+            "word": "fourgon"
+          },
+          {
+            "id": 78774,
+            "word": "talgo"
+          },
+          {
+            "id": 292700,
+            "word": "intercité"
+          },
+          {
+            "id": 321789,
+            "word": "turbotraction"
+          },
+          {
+            "id": 877451,
+            "word": "innorail"
+          },
+          {
+            "id": 26629,
+            "word": "automotrices"
+          },
+          {
+            "id": 25554,
+            "word": "autocar"
+          },
+          {
+            "id": 856174,
+            "word": "loisirail"
+          },
+          {
+            "id": 787533,
+            "word": "metrotram"
+          },
+          {
+            "id": 3287,
+            "word": "express"
+          }
+        ],
+        "targetManifestSha256": "f20ca731bff55fe1d332cf8bc6e8eaafd7aefb7f46fe14239fc116e5832db54c",
+        "evidenceSha256": "98638c79ca9a3b0258bb7ec67840998f05622fc115f89520133447da1eef6069"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "passagers",
+          "gare",
+          "locomotive"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes retiennent personnes transportées, lieu d’arrêt et élément moteur, trois notions familières et distinctes.",
+        "evidenceSha256": "98638c79ca9a3b0258bb7ec67840998f05622fc115f89520133447da1eef6069"
+      }
     },
     {
       "targetId": 1134,
@@ -6484,16 +9990,286 @@
       },
       "word": "mère",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 1294,
+            "word": "sœur"
+          },
+          {
+            "id": 6635,
+            "word": "tante"
+          },
+          {
+            "id": 252,
+            "word": "père"
+          },
+          {
+            "id": 17072,
+            "word": "paternelle"
+          },
+          {
+            "id": 27143,
+            "word": "adoptive"
+          },
+          {
+            "id": 421,
+            "word": "fille"
+          },
+          {
+            "id": 8848,
+            "word": "nièce"
+          },
+          {
+            "id": 9242,
+            "word": "cousine"
+          },
+          {
+            "id": 46367,
+            "word": "tantes"
+          },
+          {
+            "id": 8746,
+            "word": "aînée"
+          },
+          {
+            "id": 714,
+            "word": "épouse"
+          },
+          {
+            "id": 16514,
+            "word": "paternel"
+          },
+          {
+            "id": 26670,
+            "word": "nourrice"
+          },
+          {
+            "id": 1460,
+            "word": "parents"
+          },
+          {
+            "id": 12260,
+            "word": "maternel"
+          },
+          {
+            "id": 15121,
+            "word": "fiancé"
+          },
+          {
+            "id": 32982,
+            "word": "ainée"
+          },
+          {
+            "id": 21202,
+            "word": "gouvernante"
+          },
+          {
+            "id": 1969,
+            "word": "mari"
+          },
+          {
+            "id": 4062,
+            "word": "époux"
+          },
+          {
+            "id": 9800,
+            "word": "fiancée"
+          },
+          {
+            "id": 75399,
+            "word": "tutrice"
+          },
+          {
+            "id": 16056,
+            "word": "servante"
+          },
+          {
+            "id": 58704,
+            "word": "adoptifs"
+          },
+          {
+            "id": 48963,
+            "word": "nièces"
+          },
+          {
+            "id": 367,
+            "word": "femme"
+          },
+          {
+            "id": 49909,
+            "word": "paternels"
+          },
+          {
+            "id": 42833,
+            "word": "épousée"
+          },
+          {
+            "id": 3656,
+            "word": "amie"
+          },
+          {
+            "id": 565673,
+            "word": "coépouse"
+          },
+          {
+            "id": 237012,
+            "word": "adoptives"
+          },
+          {
+            "id": 2777,
+            "word": "oncle"
+          },
+          {
+            "id": 11729,
+            "word": "cadette"
+          },
+          {
+            "id": 29536,
+            "word": "prénommée"
+          },
+          {
+            "id": 449043,
+            "word": "paternellement"
+          },
+          {
+            "id": 3025,
+            "word": "sœurs"
+          },
+          {
+            "id": 601797,
+            "word": "prématernelle"
+          },
+          {
+            "id": 598,
+            "word": "frère"
+          },
+          {
+            "id": 158271,
+            "word": "enfante"
+          },
+          {
+            "id": 80475,
+            "word": "aïeule"
+          },
+          {
+            "id": 48372,
+            "word": "remariée"
+          },
+          {
+            "id": 16019,
+            "word": "adolescente"
+          },
+          {
+            "id": 49125,
+            "word": "remarié"
+          },
+          {
+            "id": 19681,
+            "word": "institutrice"
+          },
+          {
+            "id": 17021,
+            "word": "remarie"
+          },
+          {
+            "id": 19042,
+            "word": "fratrie"
+          },
+          {
+            "id": 38349,
+            "word": "maternels"
+          },
+          {
+            "id": 6201,
+            "word": "maîtresse"
+          },
+          {
+            "id": 62283,
+            "word": "filleule"
+          },
+          {
+            "id": 19440,
+            "word": "fillette"
+          },
+          {
+            "id": 45844,
+            "word": "remarier"
+          },
+          {
+            "id": 372156,
+            "word": "surprotectrice"
+          },
+          {
+            "id": 9809,
+            "word": "maman"
+          },
+          {
+            "id": 885,
+            "word": "enfant"
+          },
+          {
+            "id": 18568,
+            "word": "adoptif"
+          },
+          {
+            "id": 40807,
+            "word": "accouche"
+          },
+          {
+            "id": 224,
+            "word": "fils"
+          },
+          {
+            "id": 8132,
+            "word": "épouser"
+          },
+          {
+            "id": 25255,
+            "word": "oncles"
+          },
+          {
+            "id": 32665,
+            "word": "divorcent"
+          },
+          {
+            "id": 9212,
+            "word": "compagne"
+          },
+          {
+            "id": 99533,
+            "word": "divorcera"
+          },
+          {
+            "id": 6603,
+            "word": "âgée"
+          },
+          {
+            "id": 41036,
+            "word": "maitresse"
+          }
+        ],
+        "targetManifestSha256": "4e5df77a6b3aa6a78dc6e4235948c1f6702852deaf5f32dc01353d1207bbb678",
+        "evidenceSha256": "46341391f9f7847599b807a34932455ac17544f630204bc3f630c6cc075c7549"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "parents",
+          "enfant",
+          "père"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident catégorie familiale, filiation et rôle parental complémentaire, trois indices familiers, distincts et non dérivés.",
+        "evidenceSha256": "46341391f9f7847599b807a34932455ac17544f630204bc3f630c6cc075c7549"
+      }
     },
     {
       "targetId": 598,
@@ -6553,16 +10329,286 @@
       },
       "word": "enfant",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 158271,
+            "word": "enfante"
+          },
+          {
+            "id": 423,
+            "word": "enfants"
+          },
+          {
+            "id": 711078,
+            "word": "enfan"
+          },
+          {
+            "id": 475582,
+            "word": "enfantée"
+          },
+          {
+            "id": 3595,
+            "word": "garçon"
+          },
+          {
+            "id": 118747,
+            "word": "enfanté"
+          },
+          {
+            "id": 9629,
+            "word": "adolescent"
+          },
+          {
+            "id": 29242,
+            "word": "nourrisson"
+          },
+          {
+            "id": 6119,
+            "word": "bébé"
+          },
+          {
+            "id": 427704,
+            "word": "enfantant"
+          },
+          {
+            "id": 577321,
+            "word": "enfantés"
+          },
+          {
+            "id": 209888,
+            "word": "enfanta"
+          },
+          {
+            "id": 697483,
+            "word": "enfantasme"
+          },
+          {
+            "id": 105965,
+            "word": "enfantement"
+          },
+          {
+            "id": 19440,
+            "word": "fillette"
+          },
+          {
+            "id": 45411,
+            "word": "autiste"
+          },
+          {
+            "id": 191139,
+            "word": "accouchant"
+          },
+          {
+            "id": 181855,
+            "word": "allaité"
+          },
+          {
+            "id": 65079,
+            "word": "accouché"
+          },
+          {
+            "id": 40807,
+            "word": "accouche"
+          },
+          {
+            "id": 699195,
+            "word": "enfantes"
+          },
+          {
+            "id": 146770,
+            "word": "accouchée"
+          },
+          {
+            "id": 1955,
+            "word": "enfance"
+          },
+          {
+            "id": 151448,
+            "word": "allaite"
+          },
+          {
+            "id": 40573,
+            "word": "accoucher"
+          },
+          {
+            "id": 17161,
+            "word": "accouchement"
+          },
+          {
+            "id": 576442,
+            "word": "enfantômes"
+          },
+          {
+            "id": 16019,
+            "word": "adolescente"
+          },
+          {
+            "id": 120538,
+            "word": "accoucha"
+          },
+          {
+            "id": 421,
+            "word": "fille"
+          },
+          {
+            "id": 467,
+            "word": "mère"
+          },
+          {
+            "id": 567197,
+            "word": "enfantier"
+          },
+          {
+            "id": 58704,
+            "word": "adoptifs"
+          },
+          {
+            "id": 4639,
+            "word": "adulte"
+          },
+          {
+            "id": 651401,
+            "word": "allaitait"
+          },
+          {
+            "id": 1460,
+            "word": "parents"
+          },
+          {
+            "id": 844737,
+            "word": "accouchés"
+          },
+          {
+            "id": 766151,
+            "word": "enfançon"
+          },
+          {
+            "id": 522247,
+            "word": "enfantent"
+          },
+          {
+            "id": 44205,
+            "word": "nourrissons"
+          },
+          {
+            "id": 74378,
+            "word": "allaitant"
+          },
+          {
+            "id": 391,
+            "word": "jeune"
+          },
+          {
+            "id": 105329,
+            "word": "enfanter"
+          },
+          {
+            "id": 905366,
+            "word": "enfantées"
+          },
+          {
+            "id": 225107,
+            "word": "fillet"
+          },
+          {
+            "id": 23262,
+            "word": "prénommé"
+          },
+          {
+            "id": 206849,
+            "word": "accouchera"
+          },
+          {
+            "id": 730424,
+            "word": "enfantements"
+          },
+          {
+            "id": 918297,
+            "word": "accoucherait"
+          },
+          {
+            "id": 9516,
+            "word": "adolescence"
+          },
+          {
+            "id": 106903,
+            "word": "allaiter"
+          },
+          {
+            "id": 858120,
+            "word": "adolescenti"
+          },
+          {
+            "id": 19042,
+            "word": "fratrie"
+          },
+          {
+            "id": 3413,
+            "word": "aîné"
+          },
+          {
+            "id": 853046,
+            "word": "allaitée"
+          },
+          {
+            "id": 18568,
+            "word": "adoptif"
+          },
+          {
+            "id": 598390,
+            "word": "allaita"
+          },
+          {
+            "id": 308831,
+            "word": "préadolescent"
+          },
+          {
+            "id": 429755,
+            "word": "accouchait"
+          },
+          {
+            "id": 8746,
+            "word": "aînée"
+          },
+          {
+            "id": 12260,
+            "word": "maternel"
+          },
+          {
+            "id": 88989,
+            "word": "éduque"
+          },
+          {
+            "id": 627529,
+            "word": "adolescenza"
+          },
+          {
+            "id": 38490,
+            "word": "allaitement"
+          }
+        ],
+        "targetManifestSha256": "8734d2f127baa45da28a7f8d4eabb2b47c54c31257f817d55165f29a91591fb3",
+        "evidenceSha256": "0dae936252fc346a6f62529523071454ec6ee4ba6a27ad125f72805e5daa7509"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "parents",
+          "bébé",
+          "adolescent"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident lien familial et deux étapes de croissance, trois indices accessibles présents littéralement.",
+        "evidenceSha256": "0dae936252fc346a6f62529523071454ec6ee4ba6a27ad125f72805e5daa7509"
+      }
     },
     {
       "targetId": 213,
@@ -7208,16 +11254,286 @@
       },
       "word": "ingénieur",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 303998,
+            "word": "ingénieurie"
+          },
+          {
+            "id": 972857,
+            "word": "ingénieurhomme"
+          },
+          {
+            "id": 86508,
+            "word": "ingénieure"
+          },
+          {
+            "id": 4284,
+            "word": "ingénieurs"
+          },
+          {
+            "id": 325145,
+            "word": "ingénieures"
+          },
+          {
+            "id": 620718,
+            "word": "bioingénieur"
+          },
+          {
+            "id": 32409,
+            "word": "polytechnicien"
+          },
+          {
+            "id": 270007,
+            "word": "électrotechnicien"
+          },
+          {
+            "id": 13122,
+            "word": "mécanicien"
+          },
+          {
+            "id": 116402,
+            "word": "ingenieur"
+          },
+          {
+            "id": 106364,
+            "word": "hydraulicien"
+          },
+          {
+            "id": 10648,
+            "word": "concepteur"
+          },
+          {
+            "id": 392893,
+            "word": "ingénier"
+          },
+          {
+            "id": 18832,
+            "word": "agronome"
+          },
+          {
+            "id": 7805,
+            "word": "entrepreneur"
+          },
+          {
+            "id": 31801,
+            "word": "électricien"
+          },
+          {
+            "id": 241240,
+            "word": "électromécanicien"
+          },
+          {
+            "id": 11117,
+            "word": "technicien"
+          },
+          {
+            "id": 7025,
+            "word": "ingénierie"
+          },
+          {
+            "id": 304572,
+            "word": "géotechnicien"
+          },
+          {
+            "id": 168710,
+            "word": "organicien"
+          },
+          {
+            "id": 671798,
+            "word": "mecanicien"
+          },
+          {
+            "id": 949476,
+            "word": "dynamicien"
+          },
+          {
+            "id": 11510,
+            "word": "chaussées"
+          },
+          {
+            "id": 141641,
+            "word": "ingéniérie"
+          },
+          {
+            "id": 870641,
+            "word": "senieur"
+          },
+          {
+            "id": 650289,
+            "word": "electricien"
+          },
+          {
+            "id": 531367,
+            "word": "bioingénieurs"
+          },
+          {
+            "id": 948710,
+            "word": "anicien"
+          },
+          {
+            "id": 205207,
+            "word": "polytechnicienne"
+          },
+          {
+            "id": 621762,
+            "word": "géomaticien"
+          },
+          {
+            "id": 199833,
+            "word": "sénieur"
+          },
+          {
+            "id": 237796,
+            "word": "ingénieries"
+          },
+          {
+            "id": 457771,
+            "word": "thermicien"
+          },
+          {
+            "id": 182941,
+            "word": "ingénie"
+          },
+          {
+            "id": 1120,
+            "word": "architecte"
+          },
+          {
+            "id": 435753,
+            "word": "zootechnicien"
+          },
+          {
+            "id": 963658,
+            "word": "géodynamicien"
+          },
+          {
+            "id": 148871,
+            "word": "aérodynamicien"
+          },
+          {
+            "id": 814668,
+            "word": "polytechniciennes"
+          },
+          {
+            "id": 5513,
+            "word": "inventeur"
+          },
+          {
+            "id": 23749,
+            "word": "urbaniste"
+          },
+          {
+            "id": 906922,
+            "word": "architecteurbaniste"
+          },
+          {
+            "id": 221873,
+            "word": "acousticien"
+          },
+          {
+            "id": 260276,
+            "word": "technologue"
+          },
+          {
+            "id": 20579,
+            "word": "informaticien"
+          },
+          {
+            "id": 598305,
+            "word": "bauingenieur"
+          },
+          {
+            "id": 894354,
+            "word": "photographietechnicien"
+          },
+          {
+            "id": 243858,
+            "word": "polytechniqueécole"
+          },
+          {
+            "id": 404649,
+            "word": "automaticien"
+          },
+          {
+            "id": 63337,
+            "word": "géophysicien"
+          },
+          {
+            "id": 682706,
+            "word": "électrotechniciens"
+          },
+          {
+            "id": 650081,
+            "word": "atomicien"
+          },
+          {
+            "id": 124614,
+            "word": "électronicien"
+          },
+          {
+            "id": 5170,
+            "word": "physicien"
+          },
+          {
+            "id": 281339,
+            "word": "roboticien"
+          },
+          {
+            "id": 686343,
+            "word": "architecteur"
+          },
+          {
+            "id": 966006,
+            "word": "geotechnique"
+          },
+          {
+            "id": 871639,
+            "word": "biostatisticien"
+          },
+          {
+            "id": 971509,
+            "word": "wikitechnicien"
+          },
+          {
+            "id": 29620,
+            "word": "géomètre"
+          },
+          {
+            "id": 52847,
+            "word": "métallurgiste"
+          },
+          {
+            "id": 157212,
+            "word": "biophysicien"
+          },
+          {
+            "id": 5772,
+            "word": "polytechnique"
+          }
+        ],
+        "targetManifestSha256": "fcd685692ecff611092037c843299dea38be40c9fd947ce6c4ea44986a654c55",
+        "evidenceSha256": "255e5020823643ab491ca1e017131e13fc245f4082e38339795e602a43e478e1"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "technicien",
+          "concepteur",
+          "inventeur"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2h-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-08T21:17:29.657Z",
+        "rationale": "Deux relectures indépendantes valident le voisinage technique. Les indices retenus relient compétence technique, conception et invention, trois notions familières sans dérivé de la cible.",
+        "evidenceSha256": "255e5020823643ab491ca1e017131e13fc245f4082e38339795e602a43e478e1"
+      }
     },
     {
       "targetId": 1120,
