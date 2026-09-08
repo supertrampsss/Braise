@@ -16,6 +16,7 @@
 - L'index exact BRV2 se construit avec `npm run semantic:v2:index:build -- --corpus <staging-corpus> --output <staging-cibles>` puis se vérifie avec `npm run semantic:v2:index:verify`. Il ne fait aucun rapprochement approximatif V1.
 - Une cible de staging complète se retire uniquement avec `npm run semantic:v2:target:evict -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>`. Ne jamais supprimer manuellement un dossier cible ou une tombstone d'éviction.
 - Le staging des cibles reste borné par un quota global sérialisé. Une cible interrompue réserve aussi une place. Ne pas contourner ce quota en lançant plusieurs générateurs ou en copiant des colonnes hors du staging versionné.
+- Les preuves éditoriales BEE2 vivent hors du staging. Une preuve v1 à 12 voisins reste immuable ; son extension à 64 voisins passe par `semantic:v2:evidence:expand`, référence exactement le parent et conserve son préfixe. L'index, les preuves et les décisions gardent toute la chaîne de révision. Une approbation sur une preuve étendue sans historique complet est invalide.
 - Vérifier TypeScript et la construction après une modification du code.
 - Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.
 - Préserver `braise.v1.profile` et sa copie brute. Toute progression V2 passe par `lib/profile-storage.ts`, avec un événement stable par fait réel, sans réécriture additive du solde V1.

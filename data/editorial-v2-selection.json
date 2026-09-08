@@ -545,6 +545,83 @@
       "reviewedAt": "2026-09-08T11:58:00.000Z",
       "rationale": "Les douze voisins ne fournissent que deux indices exploitables sans reprendre la cible : filante et supergéante. Etoile et étoiles sont des variantes directes ; protoétoile et étoilement contiennent la réponse ; rivétoile, brisétoile, mantétoile, aubétoile, tombétoile et étoilerefroid sont inadaptés comme indices naturels. Un voisinage réel plus large est nécessaire.",
       "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+    },
+    {
+      "targetId": 834,
+      "decision": "approved",
+      "hints": ["plaine", "rivière", "versant"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes retiennent trois associations françaises complémentaires : un relief voisin, un cours d’eau et une pente latérale. Les variantes de vallée et de vallon sont écartées.",
+      "evidenceSha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+      "supersedesEvidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+    },
+    {
+      "targetId": 898,
+      "decision": "approved",
+      "hints": ["automne", "gelées", "luge"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes confirment trois relations distinctes : saison adjacente, phénomène météorologique et activité caractéristique. Aucun indice ne dérive de la cible.",
+      "evidenceSha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+      "supersedesEvidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+    },
+    {
+      "targetId": 1305,
+      "decision": "approved",
+      "hints": ["enneigée", "pentes", "sommet"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes valident le domaine. Les indices décrivent couverture, inclinaison et point culminant, sans reprendre la racine de la cible.",
+      "evidenceSha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+      "supersedesEvidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+    },
+    {
+      "targetId": 1572,
+      "decision": "approved",
+      "hints": ["exoplanète", "constellation", "nébuleuse"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes trouvent trois notions astronomiques naturelles et distinctes, sans variante ni dérivé de la cible.",
+      "evidenceSha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+      "supersedesEvidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+    },
+    {
+      "targetId": 1767,
+      "decision": "approved",
+      "hints": ["flore", "biodiversité", "mammifères"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes retiennent un ensemble complémentaire, la diversité du vivant et un groupe animal concret. Les composés en faune sont exclus.",
+      "evidenceSha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+      "supersedesEvidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+    },
+    {
+      "targetId": 1987,
+      "decision": "approved",
+      "hints": ["automne", "dégel", "floraison"],
+      "actor": "astra-b2d-consensus-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:22:00.000Z",
+      "rationale": "Deux relectures indépendantes valident une saison de comparaison, une transition thermique et un phénomène végétal. Aucun indice ne révèle la cible par sa forme.",
+      "evidenceSha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+      "supersedesEvidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+    },
+    {
+      "targetId": 2069,
+      "decision": "approved",
+      "hints": ["orbitant", "extraterrestre", "galaxie"],
+      "actor": "astra-b2d-arbitration-review",
+      "kind": "agent",
+      "reviewedAt": "2026-09-08T13:24:00.000Z",
+      "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations contextuelles françaises, naturelles, distinctes et non dérivées : mouvement orbital, contexte hors de la Terre et environnement astronomique. Le bruit restant est explicitement écarté.",
+      "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+      "supersedesEvidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
     }
   ],
   "reviews": [

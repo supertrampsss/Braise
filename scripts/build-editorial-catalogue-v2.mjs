@@ -5,6 +5,17 @@ import { loadEditorialEvidence, loadEditorialEvidenceIndex } from "./editorial-e
 
 const HASH = /^[0-9a-f]{64}$/;
 
+function catalogueEvidenceProjection(evidence) {
+  return {
+    sha256: evidence.sha256,
+    payload: {
+      targetManifest: { sha256: evidence.payload.targetManifest.sha256 },
+      neighborhood: { entries: evidence.payload.neighborhood.entries },
+      ...(evidence.payload.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: evidence.payload.supersedesEvidenceSha256 } : {}),
+    },
+  };
+}
+
 function parseArgs(argv) {
   const values = {};
   for (let index = 0; index < argv.length; index += 2) {
@@ -64,7 +75,7 @@ export async function buildEditorialCatalogue({ corpusDir, targetsDir, evidenceD
   for (const reference of evidenceIndex.entries) {
     if (!selected.some(entry => entry.targetId === reference.targetId)) continue;
     const evidence = await loadEditorialEvidence({ corpus, evidenceDir, targetId: reference.targetId, expectedSha256: reference.sha256 });
-    evidenceById.set(reference.targetId, evidence);
+    evidenceById.set(reference.targetId, catalogueEvidenceProjection(evidence));
     for (const neighbor of evidence.payload.neighborhood.entries) requiredIds.add(neighbor.id);
   }
   const liveById = new Map(); const resolvedTargets = resolve(targetsDir); const targetRoot = join(resolvedTargets, corpus.manifest.corpusId, "targets"); const guard = acquireTargetCacheGuard(targetRoot, "shared");
@@ -75,23 +86,38 @@ export async function buildEditorialCatalogue({ corpusDir, targetsDir, evidenceD
   if ([...requiredIds].some(id => !words.has(id))) throw new Error("Un identifiant éditorial est absent du corpus");
   const decisions = new Map();
   for (const decision of selection.decisions ?? []) {
-    if (!Number.isInteger(decision.targetId) || !selected.some(entry => entry.targetId === decision.targetId) || decisions.has(decision.targetId) || !["approved", "rejected"].includes(decision.decision) || decision.kind !== "agent" && decision.kind !== "human" || !decision.actor || !Number.isFinite(Date.parse(decision.reviewedAt)) || !decision.rationale || !Array.isArray(decision.hints) || !HASH.test(decision.evidenceSha256)) throw new Error(`Décision éditoriale invalide: ${decision.targetId}`);
-    decisions.set(decision.targetId, decision);
+    const chain = decisions.get(decision.targetId) ?? []; const previous = chain.at(-1);
+    if (!Number.isInteger(decision.targetId) || !selected.some(entry => entry.targetId === decision.targetId) || !["approved", "rejected"].includes(decision.decision) || decision.kind !== "agent" && decision.kind !== "human" || !decision.actor || !Number.isFinite(Date.parse(decision.reviewedAt)) || !decision.rationale || !Array.isArray(decision.hints) || !HASH.test(decision.evidenceSha256) ||
+        !previous && decision.supersedesEvidenceSha256 !== undefined || previous && (decision.supersedesEvidenceSha256 !== previous.evidenceSha256 || chain.some(item => item.evidenceSha256 === decision.evidenceSha256) || Date.parse(decision.reviewedAt) < Date.parse(previous.reviewedAt))) throw new Error(`Décision éditoriale invalide: ${decision.targetId}`);
+    const references = evidenceIndex.entries.find(entry => entry.targetId === decision.targetId);
+    if (![references, ...(references?.revisions ?? [])].filter(Boolean).some(reference => reference.sha256 === decision.evidenceSha256)) throw new Error(`Décision sans preuve historique: ${decision.targetId}`);
+    chain.push(decision); decisions.set(decision.targetId, chain);
+  }
+  for (const [targetId, chain] of decisions) {
+    const decision = chain.at(-1);
+    const current = evidenceById.get(targetId);
+    if (current?.sha256 !== decision.evidenceSha256) {
+      const historical = await loadEditorialEvidence({ corpus, evidenceDir, targetId, expectedSha256: decision.evidenceSha256 });
+      evidenceById.set(targetId, catalogueEvidenceProjection(historical));
+    }
+    const decisionEvidence = await loadEditorialEvidence({ corpus, evidenceDir, targetId, expectedSha256: decision.evidenceSha256 });
+    if ((decisionEvidence.payload.supersedesEvidenceSha256 ?? null) !== (decision.supersedesEvidenceSha256 ?? null) || decisionEvidence.payload.supersedesEvidenceSha256 && chain.length < 2) throw new Error(`Décision sans filiation de preuve exacte: ${targetId}`);
   }
   const entries = selected.map(entry => {
     const evidence = evidenceById.get(entry.targetId); const live = liveById.get(entry.targetId); const word = words.get(entry.targetId);
     if (live && evidence && live.manifestSha256 !== evidence.payload.targetManifest.sha256) throw new Error(`La colonne active diffère de la preuve éditoriale: ${entry.targetId}`);
     const neighbors = evidence?.payload.neighborhood.entries.map(({ id }) => ({ id, word: words.get(id) })) ?? [];
     const numericalStatus = evidence ? live ? "verified-staging-column" : "verified-archived-evidence" : "not-prepared";
-    const decision = decisions.get(entry.targetId);
+    const decisionChain = decisions.get(entry.targetId) ?? []; const decision = decisionChain.at(-1);
+    const approvalHistory = decisionChain.length > 1 ? decisionChain.map(item => ({ targetId: item.targetId, decision: item.decision, hints: item.hints, actor: item.actor, kind: item.kind, reviewedAt: item.reviewedAt, rationale: item.rationale, evidenceSha256: item.evidenceSha256, ...(item.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: item.supersedesEvidenceSha256 } : {}) })) : null;
     if (decision && (!evidence || decision.evidenceSha256 !== evidence.sha256)) throw new Error(`Décision sans preuve exacte: ${entry.targetId}`);
     if (decision?.decision === "approved") {
       const neighborWords = new Set(neighbors.map(item => item.word));
       if (decision.hints.length !== 3 || new Set(decision.hints).size !== 3 || decision.hints.some(hint => hint === word || !neighborWords.has(hint))) throw new Error(`Indices éditoriaux invalides: ${entry.targetId}`);
-      return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: { status: "reviewed-approved", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256 }, hints: { status: "reviewed", words: decision.hints }, approval: `approved-${decision.kind}`, approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale, evidenceSha256: evidence.sha256 } };
+      return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: { status: "reviewed-approved", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256, ...(evidence.payload.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: evidence.payload.supersedesEvidenceSha256 } : {}) }, hints: { status: "reviewed", words: decision.hints }, approval: `approved-${decision.kind}`, approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale, evidenceSha256: evidence.sha256, ...(decision.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: decision.supersedesEvidenceSha256 } : {}) }, ...(approvalHistory ? { approvalHistory } : {}) };
     }
-    if (decision?.decision === "rejected") return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: { status: "reviewed-rejected", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256 }, hints: { status: "not-reviewed", words: [] }, approval: "rejected", approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale, evidenceSha256: evidence.sha256 } };
-    return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: evidence ? { status: "evidence-ready-agent-review-pending", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256 } : { status: "not-measured", neighbors: [] }, hints: { status: "not-reviewed", words: [] }, approval: "pending" };
+    if (decision?.decision === "rejected") return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: { status: "reviewed-rejected", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256, ...(evidence.payload.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: evidence.payload.supersedesEvidenceSha256 } : {}) }, hints: { status: "not-reviewed", words: [] }, approval: "rejected", approvalReview: { actor: decision.actor, kind: decision.kind, reviewedAt: decision.reviewedAt, rationale: decision.rationale, evidenceSha256: evidence.sha256, ...(decision.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: decision.supersedesEvidenceSha256 } : {}) }, ...(approvalHistory ? { approvalHistory } : {}) };
+    return { ...entry, word, lexicalStatus: "agent-reviewed", numericalStatus, neighborhood: evidence ? { status: "evidence-ready-agent-review-pending", neighbors, targetManifestSha256: evidence.payload.targetManifest.sha256, evidenceSha256: evidence.sha256, ...(evidence.payload.supersedesEvidenceSha256 ? { supersedesEvidenceSha256: evidence.payload.supersedesEvidenceSha256 } : {}) } : { status: "not-measured", neighbors: [] }, hints: { status: "not-reviewed", words: [] }, approval: "pending" };
   });
   const payload = { schemaVersion: 1, id: "fr-v2-editorial-catalogue-1", corpus: { id: corpus.manifest.corpusId, manifestSha256: corpus.manifestSha256, semanticSha256: corpus.manifest.semanticSha256, dictionarySize: corpus.manifest.stats.accepted }, status: "inactive-editorial-workbench", counts: { selected: entries.length, lexicalReviewed: entries.filter(entry => entry.lexicalStatus === "agent-reviewed").length, neighborhoodEvidenceReady: entries.filter(entry => entry.neighborhood.status === "evidence-ready-agent-review-pending" || entry.neighborhood.status === "reviewed-approved").length, approved: entries.filter(entry => entry.approval.startsWith("approved")).length }, entries };
   const bytes = Buffer.from(JSON.stringify(payload, null, 2) + "\n");

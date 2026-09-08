@@ -132,8 +132,9 @@ async function findTarget(corpusDir, corpusManifest, targetId) {
 }
 
 /** Internal entry point for a caller that already owns the cache guard. */
-export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null }, cacheGuard) {
+export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null, neighborCount = 12 }, cacheGuard) {
   corpusDir = resolve(corpusDir); outputDir = resolve(outputDir);
+  if (!Number.isInteger(neighborCount) || neighborCount < 1 || neighborCount > 256) throw new Error("Target neighbor count is invalid");
   const corpus = await loadActiveCorpus(corpusDir); const targetDir = join(outputDir, corpus.manifest.corpusId, "targets", String(targetId).padStart(10, "0"));
   assertTargetCacheGuard(cacheGuard, join(outputDir, corpus.manifest.corpusId, "targets"));
   let active = null;
@@ -170,7 +171,7 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
     const order = orderRecords(targetDir, manifest, corpus.manifestSha256, contractHash)[Symbol.asyncIterator](); let position = 0;
     for (const row of database.prepare("SELECT id FROM scored ORDER BY score DESC, id ASC").iterate()) { const stored = await order.next(); if (stored.done || stored.value !== row.id) throw new Error(`Stable order mismatch at position ${position}`); position++; }
     if (!(await order.next()).done || position !== seen) throw new Error("Stable order contains extra or missing ids");
-    const topRows = [...database.prepare("SELECT id, score, rank FROM scored ORDER BY score DESC, id ASC LIMIT 13").iterate()].filter(row => row.id !== targetId).slice(0, 12);
+    const topRows = [...database.prepare("SELECT id, score, rank FROM scored ORDER BY score DESC, id ASC LIMIT ?").iterate(neighborCount + 1)].filter(row => row.id !== targetId).slice(0, neighborCount);
     const topWords = new Map(); const neededTopIds = new Set(topRows.map(row => row.id));
     for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) for (const entry of entries) if (neededTopIds.has(entry.id)) topWords.set(entry.id, entry.word);
     if (topWords.size !== topRows.length) throw new Error("Top-neighbor identities are absent from the corpus");

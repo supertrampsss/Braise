@@ -40,4 +40,16 @@ test("catalogue refuses duplicate identities and unproven approvals", () => {
   reviewed.approvalReview = { actor: "approval-agent", kind: "agent", reviewedAt: "2026-09-08T09:00:00.000Z", rationale: "Fixture.", evidenceSha256: hash };
   wrongHints.counts = { ...wrongHints.counts, neighborhoodEvidenceReady: 1, approved: 1 };
   assert.throws(() => validateEditorialCatalogue(wrongHints), /unproven-editorial-approval/);
+  const forgedSupersession = catalogue(); const superseded = forgedSupersession.entries[0];
+  superseded.numericalStatus = "verified-archived-evidence";
+  superseded.neighborhood = { status: "reviewed-approved", neighbors: Array.from({ length: 6 }, (_, id) => ({ id: id + 500, word: `voisin${String.fromCharCode(97 + id)}` })), targetManifestSha256: hash, evidenceSha256: hash };
+  superseded.hints = { status: "reviewed", words: superseded.neighborhood.neighbors.slice(0, 3).map(item => item.word) };
+  superseded.approval = "approved-agent";
+  superseded.approvalReview = { actor: "approval-agent", kind: "agent", reviewedAt: "2026-09-08T09:00:00.000Z", rationale: "Fixture.", evidenceSha256: hash, supersedesEvidenceSha256: "f".repeat(64) };
+  forgedSupersession.counts = { ...forgedSupersession.counts, neighborhoodEvidenceReady: 1, approved: 1 };
+  assert.throws(() => validateEditorialCatalogue(forgedSupersession), /missing-editorial-review-history/);
+  const hiddenHistory = structuredClone(forgedSupersession);
+  hiddenHistory.entries[0].neighborhood.supersedesEvidenceSha256 = "f".repeat(64);
+  delete hiddenHistory.entries[0].approvalReview!.supersedesEvidenceSha256;
+  assert.throws(() => validateEditorialCatalogue(hiddenHistory), /missing-editorial-review-history|invalid-editorial-evidence-history/);
 });

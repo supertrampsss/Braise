@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 10,
-    "approved": 10
+    "neighborhoodEvidenceReady": 17,
+    "approved": 17
   },
   "entries": [
     {
@@ -199,7 +199,7 @@
       "lexicalStatus": "agent-reviewed",
       "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 152913,
@@ -248,23 +248,264 @@
           {
             "id": 782281,
             "word": "transmontagne"
+          },
+          {
+            "id": 789453,
+            "word": "prémontagne"
+          },
+          {
+            "id": 918,
+            "word": "mont"
+          },
+          {
+            "id": 960661,
+            "word": "lantagne"
+          },
+          {
+            "id": 63231,
+            "word": "enneigées"
+          },
+          {
+            "id": 974581,
+            "word": "helicomontagne"
+          },
+          {
+            "id": 21519,
+            "word": "montagneuses"
+          },
+          {
+            "id": 8262,
+            "word": "pentes"
+          },
+          {
+            "id": 3330,
+            "word": "monts"
+          },
+          {
+            "id": 382371,
+            "word": "labellemontagne"
+          },
+          {
+            "id": 1005696,
+            "word": "montagnères"
+          },
+          {
+            "id": 1889,
+            "word": "massif"
+          },
+          {
+            "id": 764002,
+            "word": "grandmontagne"
+          },
+          {
+            "id": 68266,
+            "word": "enneigée"
+          },
+          {
+            "id": 57993,
+            "word": "enneigé"
+          },
+          {
+            "id": 357557,
+            "word": "plattemontagne"
+          },
+          {
+            "id": 61876,
+            "word": "escarpée"
+          },
+          {
+            "id": 745543,
+            "word": "muntagnera"
+          },
+          {
+            "id": 45799,
+            "word": "cimes"
+          },
+          {
+            "id": 458113,
+            "word": "antagnes"
+          },
+          {
+            "id": 68184,
+            "word": "enneigés"
+          },
+          {
+            "id": 62700,
+            "word": "escarpés"
+          },
+          {
+            "id": 54752,
+            "word": "escarpées"
+          },
+          {
+            "id": 362344,
+            "word": "montagnol"
+          },
+          {
+            "id": 252642,
+            "word": "montagnole"
+          },
+          {
+            "id": 193094,
+            "word": "montagnat"
+          },
+          {
+            "id": 217145,
+            "word": "céüse"
+          },
+          {
+            "id": 110318,
+            "word": "maladeta"
+          },
+          {
+            "id": 22905,
+            "word": "montagnard"
+          },
+          {
+            "id": 944826,
+            "word": "alpspitze"
+          },
+          {
+            "id": 1413,
+            "word": "sommet"
+          },
+          {
+            "id": 28043,
+            "word": "cime"
+          },
+          {
+            "id": 443372,
+            "word": "montagnan"
+          },
+          {
+            "id": 594230,
+            "word": "silvrettahorn"
+          },
+          {
+            "id": 184433,
+            "word": "grossglockner"
+          },
+          {
+            "id": 979100,
+            "word": "vorgebirge"
+          },
+          {
+            "id": 20970,
+            "word": "rocheuse"
+          },
+          {
+            "id": 549545,
+            "word": "lautagne"
+          },
+          {
+            "id": 21010,
+            "word": "ventoux"
+          },
+          {
+            "id": 5533,
+            "word": "collines"
+          },
+          {
+            "id": 988123,
+            "word": "alpilatte"
+          },
+          {
+            "id": 46478,
+            "word": "escarpé"
+          },
+          {
+            "id": 42371,
+            "word": "cervin"
+          },
+          {
+            "id": 861991,
+            "word": "mattagne"
+          },
+          {
+            "id": 742795,
+            "word": "lachenspitze"
+          },
+          {
+            "id": 3555,
+            "word": "colline"
+          },
+          {
+            "id": 17191,
+            "word": "crêtes"
+          },
+          {
+            "id": 925981,
+            "word": "noppenspitze"
+          },
+          {
+            "id": 2653,
+            "word": "plaine"
+          },
+          {
+            "id": 42112,
+            "word": "canigou"
+          },
+          {
+            "id": 855119,
+            "word": "macuègne"
+          },
+          {
+            "id": 13539,
+            "word": "rocheuses"
+          },
+          {
+            "id": 63907,
+            "word": "aravis"
           }
         ],
         "targetManifestSha256": "f4bc8565e560e185d2f1d63c596eed20c2fd04fe9cb7c870f15b6b3dd699b240",
-        "evidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+        "evidenceSha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+        "supersedesEvidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "enneigée",
+          "pentes",
+          "sommet"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2-neighborhood-review",
+        "actor": "astra-b2d-consensus-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Échantillon dominé par les formes apparentées et le bruit lexical ; examiner davantage de voisins avant approbation.",
-        "evidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
-      }
+        "reviewedAt": "2026-09-08T13:22:00.000Z",
+        "rationale": "Deux relectures indépendantes valident le domaine. Les indices décrivent couverture, inclinaison et point culminant, sans reprendre la racine de la cible.",
+        "evidenceSha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+        "supersedesEvidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 1305,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2-neighborhood-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T10:05:00.000Z",
+          "rationale": "Échantillon dominé par les formes apparentées et le bruit lexical ; examiner davantage de voisins avant approbation.",
+          "evidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+        },
+        {
+          "targetId": 1305,
+          "decision": "approved",
+          "hints": [
+            "enneigée",
+            "pentes",
+            "sommet"
+          ],
+          "actor": "astra-b2d-consensus-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:22:00.000Z",
+          "rationale": "Deux relectures indépendantes valident le domaine. Les indices décrivent couverture, inclinaison et point culminant, sans reprendre la racine de la cible.",
+          "evidenceSha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+          "supersedesEvidenceSha256": "428c321d0e0051484b495bada120b411d912e57db3ed819842f243d529bdad23"
+        }
+      ]
     },
     {
       "targetId": 834,
@@ -280,7 +521,7 @@
       "lexicalStatus": "agent-reviewed",
       "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 372815,
@@ -329,23 +570,264 @@
           {
             "id": 253776,
             "word": "vallees"
+          },
+          {
+            "id": 560803,
+            "word": "valléry"
+          },
+          {
+            "id": 9014,
+            "word": "vallon"
+          },
+          {
+            "id": 62944,
+            "word": "doire"
+          },
+          {
+            "id": 25757,
+            "word": "vallons"
+          },
+          {
+            "id": 541,
+            "word": "rivière"
+          },
+          {
+            "id": 170407,
+            "word": "vallés"
+          },
+          {
+            "id": 37429,
+            "word": "alluviale"
+          },
+          {
+            "id": 168368,
+            "word": "liepvrette"
+          },
+          {
+            "id": 8983,
+            "word": "gorges"
+          },
+          {
+            "id": 934219,
+            "word": "piémontvallée"
+          },
+          {
+            "id": 864311,
+            "word": "vallonée"
+          },
+          {
+            "id": 1495,
+            "word": "rive"
+          },
+          {
+            "id": 17216,
+            "word": "surplombant"
+          },
+          {
+            "id": 703943,
+            "word": "bourgvallées"
+          },
+          {
+            "id": 5559,
+            "word": "rives"
+          },
+          {
+            "id": 590231,
+            "word": "vallécule"
+          },
+          {
+            "id": 6130,
+            "word": "valley"
+          },
+          {
+            "id": 9684,
+            "word": "confluent"
+          },
+          {
+            "id": 118637,
+            "word": "ouzom"
+          },
+          {
+            "id": 5533,
+            "word": "collines"
+          },
+          {
+            "id": 18596,
+            "word": "surplombe"
+          },
+          {
+            "id": 868583,
+            "word": "valloneuse"
+          },
+          {
+            "id": 807406,
+            "word": "valleyre"
+          },
+          {
+            "id": 634324,
+            "word": "valloné"
+          },
+          {
+            "id": 862005,
+            "word": "valleille"
+          },
+          {
+            "id": 3748,
+            "word": "versant"
+          },
+          {
+            "id": 413354,
+            "word": "dôa"
+          },
+          {
+            "id": 102135,
+            "word": "baltée"
+          },
+          {
+            "id": 148185,
+            "word": "ubayette"
+          },
+          {
+            "id": 30021,
+            "word": "ubaye"
+          },
+          {
+            "id": 221553,
+            "word": "lièpvrette"
+          },
+          {
+            "id": 130301,
+            "word": "champorcher"
+          },
+          {
+            "id": 230052,
+            "word": "inovallée"
+          },
+          {
+            "id": 16555,
+            "word": "montagneuse"
+          },
+          {
+            "id": 13546,
+            "word": "versants"
+          },
+          {
+            "id": 116420,
+            "word": "rhêmes"
+          },
+          {
+            "id": 101978,
+            "word": "piémonts"
+          },
+          {
+            "id": 37624,
+            "word": "bruche"
+          },
+          {
+            "id": 15981,
+            "word": "coteau"
+          },
+          {
+            "id": 9811,
+            "word": "coteaux"
+          },
+          {
+            "id": 58466,
+            "word": "tardoire"
+          },
+          {
+            "id": 361179,
+            "word": "encavée"
+          },
+          {
+            "id": 588190,
+            "word": "confluait"
+          },
+          {
+            "id": 82751,
+            "word": "alagnon"
+          },
+          {
+            "id": 131253,
+            "word": "confluant"
+          },
+          {
+            "id": 192175,
+            "word": "santoire"
+          },
+          {
+            "id": 185010,
+            "word": "valsavarenche"
+          },
+          {
+            "id": 117534,
+            "word": "alluvial"
+          },
+          {
+            "id": 66092,
+            "word": "encaissées"
+          },
+          {
+            "id": 935568,
+            "word": "biovallée"
+          },
+          {
+            "id": 1315,
+            "word": "val"
+          },
+          {
+            "id": 390981,
+            "word": "conflué"
           }
         ],
         "targetManifestSha256": "387d63dd5fc3de0dd6e72b6ef6c816d7d20d212dde03602d6d99f12421607b71",
-        "evidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+        "evidenceSha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+        "supersedesEvidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "plaine",
+          "rivière",
+          "versant"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2-neighborhood-review",
+        "actor": "astra-b2d-consensus-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T10:05:00.000Z",
-        "rationale": "Deux indices exploitables seulement ; un voisinage réel plus large est nécessaire avant approbation.",
-        "evidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
-      }
+        "reviewedAt": "2026-09-08T13:22:00.000Z",
+        "rationale": "Deux relectures indépendantes retiennent trois associations françaises complémentaires : un relief voisin, un cours d’eau et une pente latérale. Les variantes de vallée et de vallon sont écartées.",
+        "evidenceSha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+        "supersedesEvidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 834,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2-neighborhood-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T10:05:00.000Z",
+          "rationale": "Deux indices exploitables seulement ; un voisinage réel plus large est nécessaire avant approbation.",
+          "evidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+        },
+        {
+          "targetId": 834,
+          "decision": "approved",
+          "hints": [
+            "plaine",
+            "rivière",
+            "versant"
+          ],
+          "actor": "astra-b2d-consensus-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:22:00.000Z",
+          "rationale": "Deux relectures indépendantes retiennent trois associations françaises complémentaires : un relief voisin, un cours d’eau et une pente latérale. Les variantes de vallée et de vallon sont écartées.",
+          "evidenceSha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+          "supersedesEvidenceSha256": "fa4a7adafc0a94ce3e3346656d0e4d157db53ab93049f3851a20cb37566d4b6f"
+        }
+      ]
     },
     {
       "targetId": 1677,
@@ -699,7 +1181,7 @@
       },
       "word": "ciel",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -869,9 +1351,9 @@
       },
       "word": "planète",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 725839,
@@ -920,23 +1402,264 @@
           {
             "id": 435689,
             "word": "terraformé"
+          },
+          {
+            "id": 26263,
+            "word": "exoplanète"
+          },
+          {
+            "id": 82989,
+            "word": "terraformation"
+          },
+          {
+            "id": 13221,
+            "word": "planétaire"
+          },
+          {
+            "id": 944296,
+            "word": "planétairement"
+          },
+          {
+            "id": 243424,
+            "word": "terraformer"
+          },
+          {
+            "id": 2602,
+            "word": "planètes"
+          },
+          {
+            "id": 131967,
+            "word": "planétoïde"
+          },
+          {
+            "id": 27914,
+            "word": "planétaires"
+          },
+          {
+            "id": 493143,
+            "word": "triplanétaire"
+          },
+          {
+            "id": 82326,
+            "word": "interplanétaires"
+          },
+          {
+            "id": 52061,
+            "word": "orbitant"
+          },
+          {
+            "id": 33561,
+            "word": "martiens"
+          },
+          {
+            "id": 676453,
+            "word": "terraformeur"
+          },
+          {
+            "id": 14155,
+            "word": "extraterrestre"
+          },
+          {
+            "id": 91756,
+            "word": "extrasolaire"
+          },
+          {
+            "id": 290511,
+            "word": "planétoïdes"
+          },
+          {
+            "id": 773550,
+            "word": "multiplanétaire"
+          },
+          {
+            "id": 63343,
+            "word": "planete"
+          },
+          {
+            "id": 644280,
+            "word": "terraformées"
+          },
+          {
+            "id": 512588,
+            "word": "terraform"
+          },
+          {
+            "id": 794223,
+            "word": "exoplanétaire"
+          },
+          {
+            "id": 16739,
+            "word": "extraterrestres"
+          },
+          {
+            "id": 5482,
+            "word": "galaxie"
+          },
+          {
+            "id": 71119,
+            "word": "intergalactique"
+          },
+          {
+            "id": 173597,
+            "word": "extragalactique"
+          },
+          {
+            "id": 641640,
+            "word": "extraterreste"
+          },
+          {
+            "id": 181035,
+            "word": "intergalactiques"
+          },
+          {
+            "id": 877073,
+            "word": "exoplanétaires"
+          },
+          {
+            "id": 99598,
+            "word": "extrasolaires"
+          },
+          {
+            "id": 763773,
+            "word": "extraterrestes"
+          },
+          {
+            "id": 29854,
+            "word": "interstellaire"
+          },
+          {
+            "id": 116469,
+            "word": "protoplanétaire"
+          },
+          {
+            "id": 206416,
+            "word": "extragalactiques"
+          },
+          {
+            "id": 17530,
+            "word": "galactique"
+          },
+          {
+            "id": 758795,
+            "word": "planétocentrique"
+          },
+          {
+            "id": 578589,
+            "word": "nuitosphère"
+          },
+          {
+            "id": 62841,
+            "word": "tellurique"
+          },
+          {
+            "id": 54811,
+            "word": "galactiques"
+          },
+          {
+            "id": 120701,
+            "word": "jovienne"
+          },
+          {
+            "id": 324464,
+            "word": "protoplanètes"
+          },
+          {
+            "id": 993344,
+            "word": "mégasphère"
+          },
+          {
+            "id": 27845,
+            "word": "martien"
+          },
+          {
+            "id": 44921,
+            "word": "centauri"
+          },
+          {
+            "id": 381105,
+            "word": "orbiterait"
+          },
+          {
+            "id": 311435,
+            "word": "protoplanétaires"
+          },
+          {
+            "id": 67335,
+            "word": "martiennes"
+          },
+          {
+            "id": 65040,
+            "word": "telluriques"
+          },
+          {
+            "id": 391721,
+            "word": "terraforming"
+          },
+          {
+            "id": 41011,
+            "word": "phobos"
+          },
+          {
+            "id": 71872,
+            "word": "interstellaires"
+          },
+          {
+            "id": 9379,
+            "word": "planet"
+          },
+          {
+            "id": 83350,
+            "word": "tatooine"
           }
         ],
         "targetManifestSha256": "2bb0aa0860377b520c69e4bce614d185d2ba91dd42ec742f4b16f32e60c495a6",
-        "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+        "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+        "supersedesEvidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "orbitant",
+          "extraterrestre",
+          "galaxie"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2c-review-a",
+        "actor": "astra-b2d-arbitration-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T11:58:00.000Z",
-        "rationale": "Le voisinage ne fournit pas trois indices distincts non révélateurs : terraformée et terraformé sont deux flexions du même indice, auxquelles seule martienne ajoute une association indépendante. Les neuf autres voisins sont des variantes, composés ou dérivés révélant directement la racine de planète, avec plusieurs formes bruitées.",
-        "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
-      }
+        "reviewedAt": "2026-09-08T13:24:00.000Z",
+        "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations contextuelles françaises, naturelles, distinctes et non dérivées : mouvement orbital, contexte hors de la Terre et environnement astronomique. Le bruit restant est explicitement écarté.",
+        "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+        "supersedesEvidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 2069,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2c-review-a",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T11:58:00.000Z",
+          "rationale": "Le voisinage ne fournit pas trois indices distincts non révélateurs : terraformée et terraformé sont deux flexions du même indice, auxquelles seule martienne ajoute une association indépendante. Les neuf autres voisins sont des variantes, composés ou dérivés révélant directement la racine de planète, avec plusieurs formes bruitées.",
+          "evidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+        },
+        {
+          "targetId": 2069,
+          "decision": "approved",
+          "hints": [
+            "orbitant",
+            "extraterrestre",
+            "galaxie"
+          ],
+          "actor": "astra-b2d-arbitration-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:24:00.000Z",
+          "rationale": "Après divergence entre deux relectures, l’arbitrage confirme trois associations contextuelles françaises, naturelles, distinctes et non dérivées : mouvement orbital, contexte hors de la Terre et environnement astronomique. Le bruit restant est explicitement écarté.",
+          "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+          "supersedesEvidenceSha256": "f79c112155b6879c89878167652d27e0bddab43ab78fc9c4307ddf27b86830dc"
+        }
+      ]
     },
     {
       "targetId": 1767,
@@ -958,9 +1681,9 @@
       ],
       "word": "faune",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 2497,
@@ -1009,23 +1732,264 @@
           {
             "id": 13919,
             "word": "endémiques"
+          },
+          {
+            "id": 711999,
+            "word": "paléofaune"
+          },
+          {
+            "id": 129481,
+            "word": "microfaune"
+          },
+          {
+            "id": 528405,
+            "word": "endofaune"
+          },
+          {
+            "id": 251062,
+            "word": "ichtyofaune"
+          },
+          {
+            "id": 27209,
+            "word": "avifaune"
+          },
+          {
+            "id": 126485,
+            "word": "mégafaune"
+          },
+          {
+            "id": 820489,
+            "word": "faunesque"
+          },
+          {
+            "id": 1289,
+            "word": "endémique"
+          },
+          {
+            "id": 225584,
+            "word": "herpétofaune"
+          },
+          {
+            "id": 1010387,
+            "word": "subendémiques"
+          },
+          {
+            "id": 91963,
+            "word": "fauniques"
+          },
+          {
+            "id": 753590,
+            "word": "paléobiodiversité"
+          },
+          {
+            "id": 67759,
+            "word": "endémisme"
+          },
+          {
+            "id": 561258,
+            "word": "endémismes"
+          },
+          {
+            "id": 14593,
+            "word": "écosystèmes"
+          },
+          {
+            "id": 7327,
+            "word": "biodiversité"
+          },
+          {
+            "id": 421797,
+            "word": "invertébrée"
+          },
+          {
+            "id": 277428,
+            "word": "faunis"
+          },
+          {
+            "id": 606071,
+            "word": "fauni"
+          },
+          {
+            "id": 824637,
+            "word": "arachnofaune"
+          },
+          {
+            "id": 362456,
+            "word": "endémicité"
+          },
+          {
+            "id": 201587,
+            "word": "méiofaune"
+          },
+          {
+            "id": 370065,
+            "word": "vertébrée"
+          },
+          {
+            "id": 6655,
+            "word": "végétation"
+          },
+          {
+            "id": 740077,
+            "word": "aranéofaune"
+          },
+          {
+            "id": 18333,
+            "word": "invertébrés"
+          },
+          {
+            "id": 31385,
+            "word": "faunique"
+          },
+          {
+            "id": 161831,
+            "word": "micromammifères"
+          },
+          {
+            "id": 589,
+            "word": "espèces"
+          },
+          {
+            "id": 117185,
+            "word": "endémie"
+          },
+          {
+            "id": 88926,
+            "word": "cavernicoles"
+          },
+          {
+            "id": 362,
+            "word": "espèce"
+          },
+          {
+            "id": 47296,
+            "word": "biotopes"
+          },
+          {
+            "id": 15992,
+            "word": "écosystème"
+          },
+          {
+            "id": 882819,
+            "word": "paléotropicale"
+          },
+          {
+            "id": 6679,
+            "word": "mammifères"
+          },
+          {
+            "id": 481176,
+            "word": "faunia"
+          },
+          {
+            "id": 159941,
+            "word": "macroinvertébrés"
+          },
+          {
+            "id": 231517,
+            "word": "endémies"
+          },
+          {
+            "id": 199940,
+            "word": "biocénoses"
+          },
+          {
+            "id": 725518,
+            "word": "sylvoécorégion"
+          },
+          {
+            "id": 445315,
+            "word": "biospéologiques"
+          },
+          {
+            "id": 828870,
+            "word": "paléobiosphère"
+          },
+          {
+            "id": 126739,
+            "word": "sauvagine"
+          },
+          {
+            "id": 928081,
+            "word": "avifaunes"
+          },
+          {
+            "id": 79612,
+            "word": "cavernicole"
+          },
+          {
+            "id": 467772,
+            "word": "biodiversités"
+          },
+          {
+            "id": 145899,
+            "word": "biocénose"
+          },
+          {
+            "id": 110922,
+            "word": "faunistiques"
+          },
+          {
+            "id": 2137,
+            "word": "oiseaux"
+          },
+          {
+            "id": 16672,
+            "word": "biosphère"
+          },
+          {
+            "id": 92725,
+            "word": "néotropicale"
           }
         ],
         "targetManifestSha256": "207b65c0705db9251b695be154449bd911d9d2c059e6dcdbbed888c1a5055f68",
-        "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+        "evidenceSha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+        "supersedesEvidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "flore",
+          "biodiversité",
+          "mammifères"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2c-review-a",
+        "actor": "astra-b2d-consensus-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T11:58:00.000Z",
-        "rationale": "Parmi les douze voisins, seuls flore et endémiques offrent des indices français naturels sans révéler la cible. Les dix autres formes reprennent directement faune, notamment ses flexions et composés spécialisés ; aucun troisième indice indépendant acceptable n'est disponible.",
-        "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
-      }
+        "reviewedAt": "2026-09-08T13:22:00.000Z",
+        "rationale": "Deux relectures indépendantes retiennent un ensemble complémentaire, la diversité du vivant et un groupe animal concret. Les composés en faune sont exclus.",
+        "evidenceSha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+        "supersedesEvidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 1767,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2c-review-a",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T11:58:00.000Z",
+          "rationale": "Parmi les douze voisins, seuls flore et endémiques offrent des indices français naturels sans révéler la cible. Les dix autres formes reprennent directement faune, notamment ses flexions et composés spécialisés ; aucun troisième indice indépendant acceptable n'est disponible.",
+          "evidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+        },
+        {
+          "targetId": 1767,
+          "decision": "approved",
+          "hints": [
+            "flore",
+            "biodiversité",
+            "mammifères"
+          ],
+          "actor": "astra-b2d-consensus-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:22:00.000Z",
+          "rationale": "Deux relectures indépendantes retiennent un ensemble complémentaire, la diversité du vivant et un groupe animal concret. Les composés en faune sont exclus.",
+          "evidenceSha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+          "supersedesEvidenceSha256": "4e7fc43f865db4b1171deab31b830df1936a2b308bdad5d647002e53dbf691fa"
+        }
+      ]
     },
     {
       "targetId": 1502,
@@ -1039,7 +2003,7 @@
       },
       "word": "jardin",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -1124,9 +2088,9 @@
       },
       "word": "printemps",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 2447,
@@ -1175,23 +2139,264 @@
           {
             "id": 898,
             "word": "hiver"
+          },
+          {
+            "id": 474313,
+            "word": "printania"
+          },
+          {
+            "id": 137226,
+            "word": "automnal"
+          },
+          {
+            "id": 70027,
+            "word": "printanières"
+          },
+          {
+            "id": 422919,
+            "word": "automnaux"
+          },
+          {
+            "id": 218047,
+            "word": "printaniers"
+          },
+          {
+            "id": 341199,
+            "word": "printant"
+          },
+          {
+            "id": 685967,
+            "word": "printannière"
+          },
+          {
+            "id": 590176,
+            "word": "printannières"
+          },
+          {
+            "id": 34742,
+            "word": "hivernales"
+          },
+          {
+            "id": 369573,
+            "word": "hiverna"
+          },
+          {
+            "id": 295,
+            "word": "mois"
+          },
+          {
+            "id": 32801,
+            "word": "estivales"
+          },
+          {
+            "id": 43759,
+            "word": "hivernation"
+          },
+          {
+            "id": 28434,
+            "word": "hivernal"
+          },
+          {
+            "id": 29508,
+            "word": "estival"
+          },
+          {
+            "id": 15801,
+            "word": "hivernale"
+          },
+          {
+            "id": 13119,
+            "word": "estivale"
+          },
+          {
+            "id": 966622,
+            "word": "hivernals"
+          },
+          {
+            "id": 87386,
+            "word": "hivernent"
+          },
+          {
+            "id": 188646,
+            "word": "hiverné"
+          },
+          {
+            "id": 39112,
+            "word": "dégel"
+          },
+          {
+            "id": 531602,
+            "word": "hivern"
+          },
+          {
+            "id": 914957,
+            "word": "hivernations"
+          },
+          {
+            "id": 822366,
+            "word": "juinjuillet"
+          },
+          {
+            "id": 124,
+            "word": "année"
+          },
+          {
+            "id": 25365,
+            "word": "gelées"
+          },
+          {
+            "id": 44514,
+            "word": "hiverne"
+          },
+          {
+            "id": 896133,
+            "word": "frühlingsfest"
+          },
+          {
+            "id": 76142,
+            "word": "hiverner"
+          },
+          {
+            "id": 765565,
+            "word": "septembreau"
+          },
+          {
+            "id": 146393,
+            "word": "floraisons"
+          },
+          {
+            "id": 216584,
+            "word": "estivage"
+          },
+          {
+            "id": 174,
+            "word": "début"
+          },
+          {
+            "id": 799617,
+            "word": "hivernat"
+          },
+          {
+            "id": 78747,
+            "word": "hivernaux"
+          },
+          {
+            "id": 13159,
+            "word": "floraison"
+          },
+          {
+            "id": 388479,
+            "word": "frühlings"
+          },
+          {
+            "id": 33966,
+            "word": "hivernage"
+          },
+          {
+            "id": 13072,
+            "word": "hivers"
+          },
+          {
+            "id": 28214,
+            "word": "fraîches"
+          },
+          {
+            "id": 245987,
+            "word": "autumnale"
+          },
+          {
+            "id": 435550,
+            "word": "etdeux"
+          },
+          {
+            "id": 375784,
+            "word": "dégels"
+          },
+          {
+            "id": 26275,
+            "word": "pluvieux"
+          },
+          {
+            "id": 293678,
+            "word": "dégelées"
+          },
+          {
+            "id": 170436,
+            "word": "véraison"
+          },
+          {
+            "id": 65440,
+            "word": "estivaux"
+          },
+          {
+            "id": 289096,
+            "word": "septembres"
+          },
+          {
+            "id": 12385,
+            "word": "étés"
+          },
+          {
+            "id": 98416,
+            "word": "hivernant"
+          },
+          {
+            "id": 248317,
+            "word": "dégèle"
+          },
+          {
+            "id": 332760,
+            "word": "frühlingserwachen"
           }
         ],
         "targetManifestSha256": "8051270d953b42680a7268448302d182cacb2d1a1b8a5f3c5379e703dee2957b",
-        "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+        "evidenceSha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+        "supersedesEvidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "automne",
+          "dégel",
+          "floraison"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2c-review-b",
+        "actor": "astra-b2d-consensus-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T11:58:00.000Z",
-        "rationale": "Les douze voisins ne fournissent que deux familles d’indices distinctes et non révélatrices : automne et hiver. Automnale, automnes et automnales répètent la première ; printanier et printanière révèlent directement la cible ; les autres formes sont bruitées ou contiennent la réponse. Un voisinage réel plus large est nécessaire.",
-        "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
-      }
+        "reviewedAt": "2026-09-08T13:22:00.000Z",
+        "rationale": "Deux relectures indépendantes valident une saison de comparaison, une transition thermique et un phénomène végétal. Aucun indice ne révèle la cible par sa forme.",
+        "evidenceSha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+        "supersedesEvidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 1987,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2c-review-b",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T11:58:00.000Z",
+          "rationale": "Les douze voisins ne fournissent que deux familles d’indices distinctes et non révélatrices : automne et hiver. Automnale, automnes et automnales répètent la première ; printanier et printanière révèlent directement la cible ; les autres formes sont bruitées ou contiennent la réponse. Un voisinage réel plus large est nécessaire.",
+          "evidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+        },
+        {
+          "targetId": 1987,
+          "decision": "approved",
+          "hints": [
+            "automne",
+            "dégel",
+            "floraison"
+          ],
+          "actor": "astra-b2d-consensus-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:22:00.000Z",
+          "rationale": "Deux relectures indépendantes valident une saison de comparaison, une transition thermique et un phénomène végétal. Aucun indice ne révèle la cible par sa forme.",
+          "evidenceSha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+          "supersedesEvidenceSha256": "1ead661b7afa8e4a3eee88e8d05774ee3ad77d893c7622e7d189287b4d15e421"
+        }
+      ]
     },
     {
       "targetId": 898,
@@ -1205,9 +2410,9 @@
       },
       "word": "hiver",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 34742,
@@ -1256,23 +2461,264 @@
           {
             "id": 920126,
             "word": "hivernam"
+          },
+          {
+            "id": 842030,
+            "word": "hiversère"
+          },
+          {
+            "id": 43759,
+            "word": "hivernation"
+          },
+          {
+            "id": 98416,
+            "word": "hivernant"
+          },
+          {
+            "id": 96482,
+            "word": "hivert"
+          },
+          {
+            "id": 566655,
+            "word": "hiverrier"
+          },
+          {
+            "id": 914957,
+            "word": "hivernations"
+          },
+          {
+            "id": 185172,
+            "word": "hivernante"
+          },
+          {
+            "id": 32801,
+            "word": "estivales"
+          },
+          {
+            "id": 93339,
+            "word": "automnales"
+          },
+          {
+            "id": 46526,
+            "word": "enneigement"
+          },
+          {
+            "id": 51000,
+            "word": "neigeux"
+          },
+          {
+            "id": 76142,
+            "word": "hiverner"
+          },
+          {
+            "id": 117745,
+            "word": "hivernants"
+          },
+          {
+            "id": 799617,
+            "word": "hivernat"
+          },
+          {
+            "id": 13119,
+            "word": "estivale"
+          },
+          {
+            "id": 705766,
+            "word": "enneigements"
+          },
+          {
+            "id": 313,
+            "word": "olympiques"
+          },
+          {
+            "id": 476968,
+            "word": "hivernait"
+          },
+          {
+            "id": 79627,
+            "word": "automnale"
+          },
+          {
+            "id": 87386,
+            "word": "hivernent"
+          },
+          {
+            "id": 44514,
+            "word": "hiverne"
+          },
+          {
+            "id": 73691,
+            "word": "neiger"
+          },
+          {
+            "id": 422919,
+            "word": "automnaux"
+          },
+          {
+            "id": 115166,
+            "word": "neigeuses"
+          },
+          {
+            "id": 324398,
+            "word": "hivernages"
+          },
+          {
+            "id": 185832,
+            "word": "enneigeurs"
+          },
+          {
+            "id": 468240,
+            "word": "hivernantes"
+          },
+          {
+            "id": 25365,
+            "word": "gelées"
+          },
+          {
+            "id": 33966,
+            "word": "hivernage"
+          },
+          {
+            "id": 805758,
+            "word": "neigel"
+          },
+          {
+            "id": 801407,
+            "word": "lhiver"
+          },
+          {
+            "id": 7814,
+            "word": "winter"
+          },
+          {
+            "id": 562078,
+            "word": "hivernaient"
+          },
+          {
+            "id": 137226,
+            "word": "automnal"
+          },
+          {
+            "id": 70027,
+            "word": "printanières"
+          },
+          {
+            "id": 30560,
+            "word": "placid"
+          },
+          {
+            "id": 16508,
+            "word": "sotchi"
+          },
+          {
+            "id": 28364,
+            "word": "universiade"
+          },
+          {
+            "id": 715090,
+            "word": "oympiques"
+          },
+          {
+            "id": 964551,
+            "word": "dhiver"
+          },
+          {
+            "id": 968198,
+            "word": "isolympiques"
+          },
+          {
+            "id": 87711,
+            "word": "neigeuse"
+          },
+          {
+            "id": 26275,
+            "word": "pluvieux"
+          },
+          {
+            "id": 752277,
+            "word": "enneigeur"
+          },
+          {
+            "id": 10601,
+            "word": "paralympiques"
+          },
+          {
+            "id": 216584,
+            "word": "estivage"
+          },
+          {
+            "id": 68266,
+            "word": "enneigée"
+          },
+          {
+            "id": 65440,
+            "word": "estivaux"
+          },
+          {
+            "id": 814385,
+            "word": "neigea"
+          },
+          {
+            "id": 48568,
+            "word": "printanière"
+          },
+          {
+            "id": 20295,
+            "word": "luge"
+          },
+          {
+            "id": 510633,
+            "word": "automn"
           }
         ],
         "targetManifestSha256": "40e379cfca5a5b8dbc3fa2db67ae936c118afd54590b5fd41d4e62df70b2b1d1",
-        "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+        "evidenceSha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+        "supersedesEvidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "automne",
+          "gelées",
+          "luge"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2c-review-b",
+        "actor": "astra-b2d-consensus-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T11:58:00.000Z",
-        "rationale": "Parmi les douze voisins, seuls automne et printemps sont des indices distincts non révélateurs. Les dix autres sont des flexions, dérivés ou formes bruitées d’hiver et ne permettent pas de sélectionner un troisième indice acceptable. Un voisinage réel plus large est nécessaire.",
-        "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
-      }
+        "reviewedAt": "2026-09-08T13:22:00.000Z",
+        "rationale": "Deux relectures indépendantes confirment trois relations distinctes : saison adjacente, phénomène météorologique et activité caractéristique. Aucun indice ne dérive de la cible.",
+        "evidenceSha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+        "supersedesEvidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 898,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2c-review-b",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T11:58:00.000Z",
+          "rationale": "Parmi les douze voisins, seuls automne et printemps sont des indices distincts non révélateurs. Les dix autres sont des flexions, dérivés ou formes bruitées d’hiver et ne permettent pas de sélectionner un troisième indice acceptable. Un voisinage réel plus large est nécessaire.",
+          "evidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+        },
+        {
+          "targetId": 898,
+          "decision": "approved",
+          "hints": [
+            "automne",
+            "gelées",
+            "luge"
+          ],
+          "actor": "astra-b2d-consensus-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:22:00.000Z",
+          "rationale": "Deux relectures indépendantes confirment trois relations distinctes : saison adjacente, phénomène météorologique et activité caractéristique. Aucun indice ne dérive de la cible.",
+          "evidenceSha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+          "supersedesEvidenceSha256": "c214fd995fead9dda12d5604bdac8a0bcac9b222e470358435e51ac405cf285f"
+        }
+      ]
     },
     {
       "targetId": 1488,
@@ -1294,7 +2740,7 @@
       ],
       "word": "cheval",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
         "status": "reviewed-approved",
         "neighbors": [
@@ -1379,9 +2825,9 @@
       },
       "word": "étoile",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "verified-staging-column",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "reviewed-rejected",
+        "status": "reviewed-approved",
         "neighbors": [
           {
             "id": 28936,
@@ -1430,23 +2876,264 @@
           {
             "id": 413991,
             "word": "étoilerefroid"
+          },
+          {
+            "id": 69656,
+            "word": "etoiles"
+          },
+          {
+            "id": 494744,
+            "word": "protoétoiles"
+          },
+          {
+            "id": 599735,
+            "word": "belgradeétoile"
+          },
+          {
+            "id": 365969,
+            "word": "cinétoile"
+          },
+          {
+            "id": 940448,
+            "word": "etoilee"
+          },
+          {
+            "id": 170696,
+            "word": "supergéantes"
+          },
+          {
+            "id": 115378,
+            "word": "ophiuchi"
+          },
+          {
+            "id": 248680,
+            "word": "hypergéante"
+          },
+          {
+            "id": 91756,
+            "word": "extrasolaire"
+          },
+          {
+            "id": 337864,
+            "word": "rivetoile"
+          },
+          {
+            "id": 252918,
+            "word": "étoilesclin"
+          },
+          {
+            "id": 100846,
+            "word": "rayet"
+          },
+          {
+            "id": 78605,
+            "word": "cygni"
+          },
+          {
+            "id": 17124,
+            "word": "stellaire"
+          },
+          {
+            "id": 44808,
+            "word": "gliese"
+          },
+          {
+            "id": 62065,
+            "word": "ursae"
+          },
+          {
+            "id": 44148,
+            "word": "étoilée"
+          },
+          {
+            "id": 264788,
+            "word": "substellaire"
+          },
+          {
+            "id": 102328,
+            "word": "pegasi"
+          },
+          {
+            "id": 93113,
+            "word": "ophiuchus"
+          },
+          {
+            "id": 26263,
+            "word": "exoplanète"
+          },
+          {
+            "id": 21009,
+            "word": "astre"
+          },
+          {
+            "id": 13521,
+            "word": "naine"
+          },
+          {
+            "id": 44921,
+            "word": "centauri"
+          },
+          {
+            "id": 608682,
+            "word": "nicetoile"
+          },
+          {
+            "id": 212644,
+            "word": "stellation"
+          },
+          {
+            "id": 318969,
+            "word": "hypergéantes"
+          },
+          {
+            "id": 99598,
+            "word": "extrasolaires"
+          },
+          {
+            "id": 857175,
+            "word": "stellat"
+          },
+          {
+            "id": 526910,
+            "word": "ophiucus"
+          },
+          {
+            "id": 794223,
+            "word": "exoplanétaire"
+          },
+          {
+            "id": 54595,
+            "word": "majoris"
+          },
+          {
+            "id": 74517,
+            "word": "filantes"
+          },
+          {
+            "id": 107535,
+            "word": "cassiopeiae"
+          },
+          {
+            "id": 90298,
+            "word": "scorpii"
+          },
+          {
+            "id": 117093,
+            "word": "fomalhaut"
+          },
+          {
+            "id": 41792,
+            "word": "véga"
+          },
+          {
+            "id": 100932,
+            "word": "sagittarii"
+          },
+          {
+            "id": 88403,
+            "word": "bételgeuse"
+          },
+          {
+            "id": 314808,
+            "word": "arcseconde"
+          },
+          {
+            "id": 29723,
+            "word": "pulsar"
+          },
+          {
+            "id": 5583,
+            "word": "constellation"
+          },
+          {
+            "id": 115081,
+            "word": "zodiacale"
+          },
+          {
+            "id": 329949,
+            "word": "protoplanète"
+          },
+          {
+            "id": 52061,
+            "word": "orbitant"
+          },
+          {
+            "id": 99392,
+            "word": "cephei"
+          },
+          {
+            "id": 83148,
+            "word": "eridani"
+          },
+          {
+            "id": 109125,
+            "word": "circumstellaire"
+          },
+          {
+            "id": 107059,
+            "word": "lyrae"
+          },
+          {
+            "id": 34605,
+            "word": "stellaires"
+          },
+          {
+            "id": 16141,
+            "word": "nébuleuse"
+          },
+          {
+            "id": 191187,
+            "word": "arcsecondes"
           }
         ],
         "targetManifestSha256": "0c2fed1a0ad5148e9aadcde4186eff5ad21444c2af1e68a36c477ceadf4283b0",
-        "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+        "evidenceSha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+        "supersedesEvidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "exoplanète",
+          "constellation",
+          "nébuleuse"
+        ]
       },
-      "approval": "rejected",
+      "approval": "approved-agent",
       "approvalReview": {
-        "actor": "astra-b2c-review-b",
+        "actor": "astra-b2d-consensus-review",
         "kind": "agent",
-        "reviewedAt": "2026-09-08T11:58:00.000Z",
-        "rationale": "Les douze voisins ne fournissent que deux indices exploitables sans reprendre la cible : filante et supergéante. Etoile et étoiles sont des variantes directes ; protoétoile et étoilement contiennent la réponse ; rivétoile, brisétoile, mantétoile, aubétoile, tombétoile et étoilerefroid sont inadaptés comme indices naturels. Un voisinage réel plus large est nécessaire.",
-        "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
-      }
+        "reviewedAt": "2026-09-08T13:22:00.000Z",
+        "rationale": "Deux relectures indépendantes trouvent trois notions astronomiques naturelles et distinctes, sans variante ni dérivé de la cible.",
+        "evidenceSha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+        "supersedesEvidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+      },
+      "approvalHistory": [
+        {
+          "targetId": 1572,
+          "decision": "rejected",
+          "hints": [],
+          "actor": "astra-b2c-review-b",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T11:58:00.000Z",
+          "rationale": "Les douze voisins ne fournissent que deux indices exploitables sans reprendre la cible : filante et supergéante. Etoile et étoiles sont des variantes directes ; protoétoile et étoilement contiennent la réponse ; rivétoile, brisétoile, mantétoile, aubétoile, tombétoile et étoilerefroid sont inadaptés comme indices naturels. Un voisinage réel plus large est nécessaire.",
+          "evidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+        },
+        {
+          "targetId": 1572,
+          "decision": "approved",
+          "hints": [
+            "exoplanète",
+            "constellation",
+            "nébuleuse"
+          ],
+          "actor": "astra-b2d-consensus-review",
+          "kind": "agent",
+          "reviewedAt": "2026-09-08T13:22:00.000Z",
+          "rationale": "Deux relectures indépendantes trouvent trois notions astronomiques naturelles et distinctes, sans variante ni dérivé de la cible.",
+          "evidenceSha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+          "supersedesEvidenceSha256": "ee22e22e178fa43566358e30c8e6cb7382df347ed86f31fcaf14eab23a48c636"
+        }
+      ]
     },
     {
       "targetId": 703,

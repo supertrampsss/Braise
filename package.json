@@ -18,6 +18,7 @@
     "semantic:v2:target:verify": "node scripts/verify-semantic-target-v2.mjs",
     "semantic:v2:target:evict": "node scripts/evict-semantic-target-v2.mjs",
     "semantic:v2:evidence:capture": "node scripts/editorial-evidence-v2.mjs capture",
+    "semantic:v2:evidence:expand": "node scripts/editorial-evidence-v2.mjs expand",
     "semantic:v2:evidence:verify": "node scripts/editorial-evidence-v2.mjs verify",
     "semantic:v2:catalogue:build": "node scripts/build-editorial-catalogue-v2.mjs",
     "semantic:v2:catalogue:verify": "node scripts/verify-editorial-catalogue-v2.mjs",
