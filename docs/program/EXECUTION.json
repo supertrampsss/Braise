@@ -7,8 +7,15 @@
   "contract": "docs/program/GOAL.md",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
   "audience": "owner_private",
-  "next_phase": "B1",
-  "next_action": "Obtenir la source française complète autorisée, exécuter B1b, BPI2 et B1c sur son volume réel, enregistrer les mesures exactes, puis provisionner et qualifier R2 ainsi que le lecteur Worker avant toute activation produit. Conserver V1 immuable.",
+  "next_phase": "B5",
+  "next_action": "Priorité Antoine : réaliser les fonctionnalités avant le corpus complet. Commencer B5 par une collection jouable de bout en bout sur les cibles V1 réellement disponibles, avec édition immuable, progression personnelle et reprise. Continuer expéditions, laboratoire et lots sociaux selon leurs capacités réelles. Revenir ensuite au dictionnaire complet et à sa qualification R2/Worker, sans déclarer B1/B2 terminés.",
+  "priority_override": {
+    "authority": "Antoine, directive confirmée dans la conversation",
+    "order": ["features_on_existing_verified_corpus", "complete_dictionary_and_runtime_qualification"],
+    "dependency_exception": "B5 and B8 may implement versioned content against verified V1 without waiting for full B2; server identity and authorization requirements remain mandatory for social features",
+    "models_requested": {"ingestion": "gpt-5.6-luna", "other_delegation": "gpt-6-astra", "other_reasoning_effort": "low"},
+    "root_model_override_performed": false
+  },
   "planning_models": {
     "orchestrator": {
       "model": "gpt-6-astra",

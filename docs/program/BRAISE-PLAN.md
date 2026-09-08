@@ -2,6 +2,14 @@
 
 Version 1 du plan. Objectifs de réalisation, pas fonctionnalités déjà livrées.
 
+## Priorité actualisée par Antoine
+
+Les fonctionnalités sont réalisées avant l'ingestion du dictionnaire complet. Commencer par B5 sur les cibles V1 vérifiées : collection jouable, progression et reprise, puis expéditions. B8 peut également utiliser V1 sans attendre le catalogue complet B2. Les éditions référencent explicitement leur corpus et restent immuables lors de son extension ultérieure. Les quotas éditoriaux restent des objectifs à vérifier, jamais des contenus fictifs.
+
+B1 et B2 restent partiels ou non terminés jusqu'à ingestion complète et qualification réelle. Les dépendances de sécurité, identité serveur et persistance D1 des fonctions sociales ne sont pas levées par ce changement de priorité. Continuer les fonctions indépendantes lorsqu'une capacité manque.
+
+Préférence de délégation actualisée : GPT-5.6 Luna pour l'ingestion, gpt-6-astra effort low pour le reste. Ces réglages concernent les délégations disponibles et ne prétendent pas modifier le modèle du propriétaire. Les paramètres historiques ci-dessous décrivent la planification initiale.
+
 ## 1. Mandat et décision
 
 Construire les dix évolutions acceptées par Antoine dans un seul programme : moteur sémantique, identité vivante, rituel, expéditions, cercles d'amis, duels, collections, laboratoire, studio créateurs et distribution web. Le produit reste un site français immédiatement jouable, financé par une publicité discrète.
