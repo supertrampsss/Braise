@@ -197,6 +197,11 @@ test("invalid V2 metadata never discards an otherwise valid V1 game", () => {
   assert.equal(restored.guesses.length, 1);
   assert.deepEqual(restored.pins, ["ancien"]);
   assert.equal(restored.profileV2StartIndex, undefined);
+  for (const completedMode of [["daily"], { toString: null }]) {
+    const corrupted = restoreLegacyGame("daily-2026-09-08", 2, { getItem: () => JSON.stringify({ guesses: [guess("ancien", 7)], pins: ["ancien"], hints: 0, startedAt: 1, completedMode }) });
+    assert.equal(corrupted.guesses.length, 1);
+    assert.equal(corrupted.completedMode, undefined);
+  }
 });
 
 test("append-only events converge across tabs without duplicate guesses or victories", () => {

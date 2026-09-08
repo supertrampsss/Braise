@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
-import { ArrowDownUp, ArrowRight, Award, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Snowflake, Sparkles, Target, Trophy, Users, Volume2, VolumeX, X, Zap } from "lucide-react";
+import { ArrowDownUp, ArrowRight, Award, CalendarDays, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Snowflake, Sparkles, Target, Trophy, Users, Volume2, VolumeX, X, Zap } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
@@ -14,9 +14,17 @@ import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } f
 import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
 import { isProfileStorageKey, recordLocalGameProgress, refreshLocalProfile, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
+import { archiveDateStatus, LEGACY_ARCHIVE_START_DATE, latestArchiveDate, parisDate } from "@/lib/calendar";
 
 type Modal = "help" | "stats" | "challenge" | "privacy" | "about" | "share" | null;
 function freshSeed() { return String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647); }
+function archiveDateError(date: string, now = new Date()) {
+  const status = archiveDateStatus(date, now);
+  if (status === "before-start") return "Aucune archive n’est disponible pour cette date.";
+  if (status === "today-or-future") return "Cette date est à venir. Choisissez une date passée.";
+  if (status === "invalid") return "Choisissez une date valide.";
+  return "";
+}
 function playTone(won: boolean) {
   try {
     const ctx = new AudioContext();
@@ -43,12 +51,17 @@ export default function Game() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [loadError, setLoadError] = useState("");
+  const [loadRetryable, setLoadRetryable] = useState(true);
   const [feedback, setFeedback] = useState<GameEffect | null>(null);
   const [sort, setSort] = useState<"heat" | "recent">("heat");
   const [modal, setModal] = useState<Modal>(null);
   const [now, setNow] = useState(0);
   const [shareText, setShareText] = useState("");
   const [storageWarning, setStorageWarning] = useState(false);
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const [archiveDraft, setArchiveDraft] = useState("");
+  const [archiveError, setArchiveError] = useState("");
+  const [archiveStatus, setArchiveStatus] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const requestRef = useRef(0);
   const submitting = useRef(false);
@@ -57,7 +70,7 @@ export default function Game() {
   const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const focusFrameRef = useRef<number | null>(null);
   const modalRef = useRef<Modal>(null);
-  const lastLoad = useRef<{ mode: Mode; seed: string }>({ mode: "daily", seed: "" });
+  const lastLoad = useRef<{ mode: Mode; locator: string }>({ mode: "daily", locator: "" });
   const victoryRef = useRef<HTMLHeadingElement>(null);
   modalRef.current = modal;
 
@@ -70,7 +83,10 @@ export default function Game() {
   const ordered = [...game.guesses].sort((a, b) => sort === "heat" ? b.temperature - a.temperature || b.order - a.order : b.order - a.order);
   const xp = profile.wins.length * 150 + Math.min(profile.guesses, 10000) * 2;
   const level = Math.floor(xp / 500) + 1;
-  const streak = puzzle ? getStreak(profile.wins, puzzle.date) : 0;
+  const today = now ? parisDate(new Date(now)) : "";
+  const streak = today ? getStreak(profile.wins, today) : 0;
+  const archiveMax = now ? latestArchiveDate(new Date(now)) : LEGACY_ARCHIVE_START_DATE;
+  const tabMode = mode === "archive" ? "daily" : mode;
   const countdown = puzzle && now ? Math.max(0, new Date(puzzle.resetAt).getTime() - now) : 0;
   const countdownLabel = `${String(Math.floor(countdown / 3600000)).padStart(2, "0")}:${String(Math.floor(countdown / 60000) % 60).padStart(2, "0")}:${String(Math.floor(countdown / 1000) % 60).padStart(2, "0")}`;
   const isRecord = feedback?.type === "bestImproved" && feedback.puzzleRef.id === puzzle?.id;
@@ -112,22 +128,29 @@ export default function Game() {
     });
   }
 
-  async function loadPuzzle(nextMode: Mode, seed = "") {
+  async function loadPuzzle(nextMode: Mode, locator = "") {
     const request = ++requestRef.current;
-    lastLoad.current = { mode: nextMode, seed };
+    lastLoad.current = { mode: nextMode, locator };
     clearDeferredUi();
     consumedFeedbackRef.current.clear();
     inputRevisionRef.current += 1;
+    setMode(nextMode); setGame(EMPTY_GAME); setPuzzle(null); setLoadRetryable(true);
+    if (nextMode === "archive") { setArchiveOpen(true); setArchiveDraft(locator); setArchiveStatus("Chargement de l’archive…"); }
+    else { setArchiveOpen(false); setArchiveStatus(""); }
     setLoading(true); setLoadError(""); setError(""); setInput(""); setFeedback(null);
     setBusy(false); submitting.current = false;
     try {
-      const response = await fetch(`/api/game?mode=${nextMode}&seed=${encodeURIComponent(seed)}`, { cache: "no-store" });
+      const query = nextMode === "archive" ? `mode=archive&date=${encodeURIComponent(locator)}` : `mode=${nextMode}&seed=${encodeURIComponent(locator)}`;
+      const response = await fetch(`/api/game?${query}`, { cache: "no-store" });
       const data = await response.json() as Puzzle & { error?: string };
-      if (!response.ok) throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant.");
       if (request !== requestRef.current) return false;
+      if (!response.ok) { if (request === requestRef.current) setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
       const restored = restoreLegacyGame(data.id);
       setGame(restored);
       setMode(nextMode); setPuzzle(data);
+      setArchiveOpen(nextMode === "archive");
+      setArchiveError("");
+      setArchiveStatus(nextMode === "archive" ? `Archive du ${new Date(`${data.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })} chargée.` : "");
       if (restored.profileV2StartIndex !== undefined) {
         const reconciled = recordLocalGameProgress(data, restored, undefined, profileSnapshot ?? undefined);
         setProfileSnapshot(reconciled);
@@ -136,11 +159,13 @@ export default function Game() {
       const url = new URL(window.location.href);
       if (nextMode === "challenge") url.searchParams.set("defi", data.seed);
       else url.searchParams.delete("defi");
+      if (nextMode === "archive") url.searchParams.set("archive", data.date);
+      else url.searchParams.delete("archive");
       window.history.replaceState(null, "", url);
       if (nextMode === "free") writeLocal("freeSeed", data.seed);
       return true;
     } catch (err) {
-      if (request === requestRef.current) setLoadError(err instanceof Error ? err.message : "Connexion impossible.");
+      if (request === requestRef.current) { setLoadError(err instanceof Error ? err.message : "Connexion impossible."); setArchiveStatus(""); }
       return false;
     } finally { if (request === requestRef.current) setLoading(false); }
   }
@@ -152,8 +177,12 @@ export default function Game() {
     const onVisibility = () => { if (document.visibilityState === "visible") refreshProfile(); };
     window.addEventListener("storage", onStorage);
     document.addEventListener("visibilitychange", onVisibility);
-    const challenge = new URLSearchParams(window.location.search).get("defi");
-    if (challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge);
+    const params = new URLSearchParams(window.location.search);
+    const archive = params.get("archive");
+    const challenge = params.get("defi");
+    setArchiveDraft(latestArchiveDate());
+    if (archive !== null) void loadPuzzle("archive", archive);
+    else if (challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge);
     else void loadPuzzle("daily");
     setNow(Date.now());
     const tick = setInterval(() => setNow(Date.now()), 1000);
@@ -189,6 +218,18 @@ export default function Game() {
     const url = new URL(window.location.href); url.searchParams.delete("defi"); window.history.replaceState(null, "", url);
     await loadPuzzle(value as Mode, value === "free" ? readLocal<string>("freeSeed", "") || freshSeed() : "");
   }
+  function revealArchives() {
+    setArchiveDraft(current => current || latestArchiveDate(new Date(now || Date.now())));
+    setArchiveError("");
+    setArchiveOpen(true);
+  }
+  async function openArchive(event: FormEvent) {
+    event.preventDefault();
+    const message = archiveDateError(archiveDraft, new Date(now || Date.now()));
+    setArchiveError(message);
+    if (message || busy) return;
+    await loadPuzzle("archive", archiveDraft);
+  }
   async function submit(event?: FormEvent, isHint = false) {
     event?.preventDefault();
     if (!puzzle || loading || submitting.current || solved) return;
@@ -204,7 +245,7 @@ export default function Game() {
     submitting.current = true; setBusy(true); setError("");
     const request = requestRef.current;
     try {
-      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: isHint ? "hint" : "guess", hintLevel: game.hints, guesses: isHint ? game.guesses.map(g => g.word) : undefined }) });
+      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: isHint ? "hint" : "guess", hintLevel: game.hints, guesses: isHint ? game.guesses.map(g => g.word) : undefined }) });
       const data = await response.json() as EvaluationResponse & { error?: string };
       if (request !== requestRef.current) return;
       if (!response.ok) throw new Error(data.error || "Impossible d’analyser ce mot.");
@@ -212,7 +253,7 @@ export default function Game() {
       if (game.guesses.some(g => g.word === data.word)) { setError(`« ${data.word} » est déjà dans vos essais.`); return; }
       const acceptedAt = new Date().toISOString();
       const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint: isHint, acceptedAt };
-      const next = { ...game, guesses: [...game.guesses, guess], hints: game.hints + (isHint ? 1 : 0), profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt) } : {}) };
+      const next = { ...game, guesses: [...game.guesses, guess], hints: game.hints + (isHint ? 1 : 0), profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt), completedMode: mode } : {}) };
       setInput(current => inputAfterAcceptedGuess(current, isHint, inputRevisionRef.current, submittedRevision));
       const nextFeedback = createGameFeedback(best?.temperature ?? null, guess, puzzle.ref);
       showFeedback(nextFeedback);
@@ -248,8 +289,10 @@ export default function Game() {
   function resultText() {
     const journey = game.guesses.filter(g => !g.hint).filter((_, i, all) => i % Math.max(1, Math.ceil(all.length / 8)) === 0).slice(0, 8).map(g => g.found ? "🟩" : g.temperature >= 55 ? "🟥" : g.temperature >= 35 ? "🟧" : g.temperature >= 18 ? "🟨" : "🟦").join("");
     const url = new URL(window.location.origin);
-    if (mode !== "daily") url.searchParams.set("defi", puzzle?.seed || "0");
-    return `🔥 Braise ${mode === "daily" ? `du ${puzzle?.date}` : "· Défi"}\n${solved ? "Trouvé" : "En piste"} en ${game.guesses.length} essais · ${game.hints ? `${game.hints} indice(s)` : "sans indice"}\n${journey}${solved && !journey.endsWith("🟩") ? "🟩" : ""}\nÀ vous de jouer ! ${url.toString()}`;
+    url.searchParams.delete("defi"); url.searchParams.delete("archive");
+    if (mode === "archive" && puzzle) url.searchParams.set("archive", puzzle.date);
+    else if (mode !== "daily") url.searchParams.set("defi", puzzle?.seed || "0");
+    return `🔥 Braise ${mode === "daily" ? `du ${puzzle?.date}` : mode === "archive" ? `· Archive du ${puzzle?.date}` : "· Défi"}\n${solved ? "Trouvé" : "En piste"} en ${game.guesses.length} essais · ${game.hints ? `${game.hints} indice(s)` : "sans indice"}\n${journey}${solved && !journey.endsWith("🟩") ? "🟩" : ""}\nÀ vous de jouer ! ${url.toString()}`;
   }
   async function shareResult() {
     const text = resultText();
@@ -277,14 +320,26 @@ export default function Game() {
     <main className="main-shell">
       <div className="page-heading"><div><div className="eyebrow"><span className="tiny-flame"><Flame size={13} /></span> FAITES CONFIANCE À VOTRE INTUITION</div><h1>Vous brûlez<span>.</span></h1><p>Un mot secret. Trouvez-le en vous rapprochant de son sens.</p></div><button className="streak-overview" onClick={() => setModal("stats")}><Flame size={24} /><span><strong>{streak} <small>jour{streak > 1 ? "s" : ""}</small></strong><span>de série quotidienne</span></span><ChevronRight size={16} /></button></div>
 
-      <Tabs value={mode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
+      <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
-      <TabsContent value={mode} className="game-tab-content"><div className="play-layout">
+      <TabsContent value={tabMode} className="game-tab-content">
+      <section className={`archive-access ${archiveOpen || mode === "archive" ? "is-open" : ""}`} aria-label="Archives des mots quotidiens">
+        {!archiveOpen && mode !== "archive" ? <button className="archive-reveal" type="button" onClick={revealArchives} disabled={busy}><CalendarDays size={18} /><span><strong>Archives</strong><small>Rejouer un ancien mot</small></span><ChevronRight size={16} /></button> : <form className="archive-form" onSubmit={openArchive}>
+          <label htmlFor="archive-date">Date du mot</label>
+          <input id="archive-date" type="date" min={LEGACY_ARCHIVE_START_DATE} max={archiveMax} value={archiveDraft} onChange={event => { setArchiveDraft(event.target.value); setArchiveError(""); }} aria-invalid={Boolean(archiveError)} aria-describedby={archiveError ? "archive-error" : undefined} disabled={busy || loading} />
+          <button className="secondary-button" type="submit" disabled={busy || loading}>Ouvrir</button>
+          {mode === "archive" ? <button className="archive-today" type="button" onClick={() => loadPuzzle("daily")} disabled={busy || loading}>Revenir au mot du jour</button> : <button className="archive-close" type="button" aria-label="Fermer les archives" onClick={() => { setArchiveOpen(false); setArchiveError(""); }}><X size={18} /></button>}
+          {archiveError && <p id="archive-error" className="archive-error">{archiveError}</p>}
+          {mode === "archive" && <p className="archive-rule">Une archive enrichit votre progression, sans prolonger votre série quotidienne.</p>}
+        </form>}
+        <span className="archive-status" role="status" aria-live="polite" aria-atomic="true">{archiveStatus}</span>
+      </section>
+      <div className="play-layout">
         <div className="play-column">
           <section id="game-board" tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
             <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedbackAnnouncement}</p>
-            <div className="game-topline"><div><span className="game-kicker">{mode === "daily" ? "LE MOT DU JOUR" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
-            {loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>Une petite pause imprévue.</h2><p>{loadError}</p><button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.seed)}>Réessayer<ArrowRight size={18} /></button></div> : <>
+            <div className="game-topline"><div><span className="game-kicker">{mode === "daily" ? "LE MOT DU JOUR" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
+            {loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator)}>Réessayer<ArrowRight size={18} /></button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour<ArrowRight size={16} /></button>}</div> : <>
               <div className={`heat-scene ${isRecord ? "heat-record" : ""} ${isAccepted ? "heat-accepted" : ""}`} style={{ "--heat-color": best ? heat.color : "#ff754d", "--heat-intensity": String(.18 + Math.max(0, temperature) / 140) } as CSSProperties}>
                 <div className="heat-atmosphere" aria-hidden="true" />
                 <svg className="heat-dial" viewBox="0 0 330 264" aria-hidden="true"><defs><linearGradient id="dial-gradient" x1="0" y1="1" x2="1" y2="0"><stop stopColor="#ff754d" /><stop offset="1" stopColor="#ffcc9c" /></linearGradient></defs><circle className="dial-orbit" cx="165" cy="146" r="129" /><path className="dial-track" d="M 78.73 232.27 A 122 122 0 1 1 251.27 232.27" pathLength="100" /><path className="dial-value" d="M 78.73 232.27 A 122 122 0 1 1 251.27 232.27" pathLength="100" strokeDasharray={`${best ? Math.max(2, Math.min(100, temperature)) : 0} 100`} /><path className="dial-inner" d="M 98 213 A 95 95 0 1 1 232 213" /></svg>
@@ -293,7 +348,7 @@ export default function Game() {
                 {isRecord && <span className="record-toast"><Zap size={14} />Nouvelle meilleure piste !</span>}
                 {isCelebratingWin && <div className="confetti" aria-hidden="true">{Array.from({ length: 20 }, (_, i) => <i key={i} style={{ "--i": i } as CSSProperties} />)}</div>}
               </div>
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">C’ÉTAIT BIEN</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma victoire</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Encore un mot<ArrowRight size={17} /></button></div><span className="xp-award"><Sparkles size={14} />+150 XP de victoire</span></div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="À quel mot pensez-vous ?" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : <ArrowRight size={24} />}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <>Le sens compte. Pas les lettres. <span className="keyboard-hint">Entrée ↵</span></>)}</div></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">C’ÉTAIT BIEN</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma victoire</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Encore un mot<ArrowRight size={17} /></button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="À quel mot pensez-vous ?" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : <ArrowRight size={24} />}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <>Le sens compte. Pas les lettres. <span className="keyboard-hint">Entrée ↵</span></>)}</div></div>}
               <div className="game-bottom"><span><Target size={16} /><b>{game.guesses.length}</b> essai{game.guesses.length > 1 ? "s" : ""}</span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `#${best.rank}` : "Hors top 1 000"}</b><span className="rank-suffix">{best.rank <= 1000 ? "en proximité" : ""}</span></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span><button className="hint-button" onClick={() => submit(undefined, true)} disabled={loading || busy || solved || game.hints >= 3 || game.guesses.length < 5} title={game.guesses.length < 5 ? "Votre premier indice se débloque après 5 essais" : "Ajouter une piste proche du mot secret"}><Lightbulb size={16} /><span>Un indice</span><span className="hint-count">{3 - game.hints}</span></button></div>
             </>}
           </section>
@@ -311,7 +366,7 @@ export default function Game() {
           <section className="tip-card"><span className="tip-icon"><Lightbulb size={20} /></span><div><span className="card-eyebrow">LE DÉCLIC</span><h3>Pensez autour du mot.</h3><p>« Plage » peut être proche de « vacances ». Les mots partagent un univers, pas forcément une définition.</p></div></section>
 
           <button className="friend-card" onClick={() => setModal("challenge")}><div className="friend-card-top"><span className="friends-glyph"><Users size={23} /></span><ArrowRight size={20} /></div><h2>Qui aura le déclic ?</h2><p>Un même mot. Vos amis.<br />À chacun son chemin.</p><span className="friend-link">Lancer un défi<ChevronRight size={15} /></span></button>
-          <div className="reset-note"><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => loadPuzzle("free", freshSeed())}>Tirer un nouveau mot <ArrowRight size={12} /></button></>}</span></div>
+          <div className="reset-note"><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : mode === "archive" ? <>Cette archive reste disponible<button disabled={busy} onClick={() => loadPuzzle("daily")}>Revenir au mot du jour <ArrowRight size={12} /></button></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => loadPuzzle("free", freshSeed())}>Tirer un nouveau mot <ArrowRight size={12} /></button></>}</span></div>
         </aside>
       </div>
 

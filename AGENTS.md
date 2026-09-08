@@ -13,6 +13,7 @@
 - Respecter prefers-reduced-motion, le clavier et la sauvegarde des parties.
 - Préserver `braise.v1.profile` et sa copie brute. Toute progression V2 passe par `lib/profile-storage.ts`, avec un événement stable par fait réel, sans réécriture additive du solde V1.
 - Une relecture ou synchronisation de profil ne déclenche jamais confettis, son, toast, focus ni récompense.
+- Une archive accepte uniquement une date civile passée depuis l’époque V1, validée côté serveur. Elle conserve l’identité `daily-YYYY-MM-DD`, utilise le contexte `archive` et ne prolonge jamais rétroactivement la série quotidienne.
 - Garder les effets visuels transitoires hors des sauvegardes et les déclencher uniquement depuis une réponse acceptée de la partie courante.
 - Les annonces sont réservées, aucune régie ne doit être activée avec des identifiants fictifs.
 - Toute publicité passe par lib/advertising.ts ; sans configuration commerciale réelle, la décision reste skip/not-configured.

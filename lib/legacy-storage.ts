@@ -31,9 +31,12 @@ export function restoreLegacyGame(puzzleId: string, now = Date.now(), storage?: 
   const stored = readLocal<unknown>(`game.${puzzleId}`, EMPTY_GAME, storage);
   if (!validLegacyGame(stored)) return { ...EMPTY_GAME, startedAt: now };
   const marker = Number.isSafeInteger(stored.profileV2StartIndex) && Number(stored.profileV2StartIndex) >= 0 && Number(stored.profileV2StartIndex) <= stored.guesses.length ? stored.profileV2StartIndex : undefined;
+  const completedMode = typeof stored.completedMode === "string" && ["daily", "archive", "free", "challenge"].includes(stored.completedMode) ? stored.completedMode : undefined;
   const restored = { ...stored, startedAt: stored.startedAt || now };
   if (marker === undefined) delete restored.profileV2StartIndex;
   else restored.profileV2StartIndex = marker;
+  if (completedMode === undefined) delete restored.completedMode;
+  else restored.completedMode = completedMode;
   return restored;
 }
 

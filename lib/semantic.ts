@@ -1,7 +1,7 @@
 // Server-only data path. Never import this module into a client component.
 import dataset from "@/data/semantic-v1-index.json";
 import type { Mode } from "./game-types";
-import { getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
+import { getLegacyArchivePuzzle, getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
 import { targetSegment } from "./semantic-storage";
 export { parisDate, nextParisMidnight } from "./calendar";
 
@@ -24,8 +24,12 @@ export function findWord(input: string): number | undefined {
   const alias = aliases.get(fold(word));
   return alias === null ? undefined : alias;
 }
-export function getPuzzle(mode: Mode, seed = "", now = new Date()) {
+export function getPuzzle(mode: Exclude<Mode, "archive">, seed = "", now = new Date()) {
   const { publicPuzzle, legacyIndex } = getLegacyPuzzle(mode, seed, now);
+  return { publicPuzzle, targetIndex: legacyTargetIndexes[legacyIndex] };
+}
+export function getArchivePuzzle(date: string, now = new Date()) {
+  const { publicPuzzle, legacyIndex } = getLegacyArchivePuzzle(date, now);
   return { publicPuzzle, targetIndex: legacyTargetIndexes[legacyIndex] };
 }
 export async function evaluateWord(targetIndex: number, index: number) {

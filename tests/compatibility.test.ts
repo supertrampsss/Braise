@@ -37,7 +37,7 @@ test("the frozen V1 corpus and target identities match the original source finge
 
 test("legacy daily dates and exact string seeds reproduce the pinned V1 oracle", () => {
   for (const fixture of [...reference.daily, ...reference.seeds, ...reference.boundaries]) {
-    const { publicPuzzle, targetIndex } = getPuzzle(fixture.mode as Mode, fixture.seed, new Date(fixture.now));
+    const { publicPuzzle, targetIndex } = getPuzzle(fixture.mode as Exclude<Mode, "archive">, fixture.seed, new Date(fixture.now));
     const { ref, resetAt, ...legacyFields } = publicPuzzle;
     const { resetAt: expectedReset, ...expectedFields } = fixture.publicPuzzle;
     assert.deepEqual(legacyFields, expectedFields, fixture.now + ":" + fixture.seed);
@@ -55,7 +55,7 @@ test("V1 selection survives a reordered and extended target catalogue", () => {
   const reordered = [{ word: "test-only-additional-target" }, ...dataset.puzzles.toReversed()];
   const indexes = resolveLegacyTargetIndexes(reordered);
   for (const fixture of [...reference.daily, ...reference.seeds]) {
-    const { legacyIndex } = getLegacyPuzzle(fixture.mode as Mode, fixture.seed, new Date(fixture.now));
+    const { legacyIndex } = getLegacyPuzzle(fixture.mode as Exclude<Mode, "archive">, fixture.seed, new Date(fixture.now));
     assert.equal(reordered[indexes[legacyIndex]].word, fixture.answer);
   }
   assert.throws(() => resolveLegacyTargetIndexes(dataset.puzzles.slice(1)), /Missing V1/);

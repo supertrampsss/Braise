@@ -1,5 +1,6 @@
 import type { PuzzleRef } from "./game-contracts";
 import type { Profile, Puzzle, SavedGame, Win } from "./game-types";
+import { parisDate } from "./calendar";
 import { EMPTY_PROFILE, LEGACY_STORAGE_PREFIX } from "./legacy-storage";
 
 export const PROFILE_SCHEMA_VERSION = 2 as const;
@@ -130,18 +131,50 @@ function isoFromTimestamp(value: unknown) {
   return Number.isFinite(date.getTime()) ? date.toISOString() : null;
 }
 
-function isWin(value: unknown): value is Win {
-  if (!isRecord(value) || !exactKeys(value, ["id", "date", "mode", "tries", "hints"])) return false;
+function validWinFields(value: Record<string, unknown>, modes: string[]) {
   return typeof value.id === "string" && value.id.length > 0 && value.id.length <= 160 && isIsoDate(value.date) &&
-    ["daily", "free", "challenge"].includes(String(value.mode)) && Number.isSafeInteger(value.tries) && Number(value.tries) >= 1 &&
+    modes.includes(String(value.mode)) && Number.isSafeInteger(value.tries) && Number(value.tries) >= 1 &&
     Number.isSafeInteger(value.hints) && Number(value.hints) >= 0 && Number(value.hints) <= 3 && Number(value.hints) <= Number(value.tries);
+}
+
+function isLegacyWin(value: unknown): value is Win {
+  if (!isRecord(value) || !exactKeys(value, ["id", "date", "mode", "tries", "hints"])) return false;
+  return validWinFields(value, ["daily", "free", "challenge"]);
+}
+
+function isWin(value: unknown): value is Win {
+  if (!isRecord(value)) return false;
+  const keys = value.completedAt === undefined ? ["id", "date", "mode", "tries", "hints"] : ["id", "date", "mode", "tries", "hints", "completedAt"];
+  return exactKeys(value, keys) && validWinFields(value, ["daily", "archive", "free", "challenge"]) &&
+    (value.completedAt === undefined || isIsoInstant(value.completedAt));
+}
+
+function preferredWin(first: Win, second: Win) {
+  if (first.mode !== second.mode && [first.mode, second.mode].includes("daily") && [first.mode, second.mode].includes("archive")) {
+    return first.mode === "daily" ? first : second;
+  }
+  if (first.completedAt !== second.completedAt) {
+    if (first.completedAt === undefined) return first;
+    if (second.completedAt === undefined) return second;
+    return first.completedAt < second.completedAt ? first : second;
+  }
+  return JSON.stringify(first) <= JSON.stringify(second) ? first : second;
 }
 
 function stableWin(wins: Win[], candidate: Win) {
   const existing = wins.find(win => win.id === candidate.id);
   if (!existing) return [...wins, candidate];
-  const selected = JSON.stringify(candidate) < JSON.stringify(existing) ? candidate : existing;
+  const selected = preferredWin(existing, candidate);
   return wins.map(win => win.id === candidate.id ? selected : win);
+}
+
+function preferredActivity(first: ProfileActivity, second: ProfileActivity) {
+  if (first.type === "puzzleWon" && second.type === "puzzleWon") return preferredWin(first.win, second.win) === first.win ? first : second;
+  if (first.type === "guessAccepted" && second.type === "guessAccepted" && first.puzzleRef.context !== second.puzzleRef.context &&
+      [first.puzzleRef.context, second.puzzleRef.context].includes("daily") && [first.puzzleRef.context, second.puzzleRef.context].includes("archive")) {
+    return first.puzzleRef.context === "daily" ? first : second;
+  }
+  return JSON.stringify(first) <= JSON.stringify(second) ? first : second;
 }
 
 function parsePuzzleRef(value: unknown): value is PuzzleRef {
@@ -163,7 +196,7 @@ function parseBase(value: unknown): ProfileBaseV2 | null {
       !(value.migration.backupKey === null || typeof value.migration.backupKey === "string" && value.migration.backupKey.startsWith(PROFILE_V1_BACKUP_PREFIX)) ||
       !["complete", "partial"].includes(String(value.migration.status)) || !Number.isSafeInteger(value.migration.excludedWins) || Number(value.migration.excludedWins) < 0 ||
       !isRecord(value.legacy) || !exactKeys(value.legacy, ["wins", "guesses"]) || !Array.isArray(value.legacy.wins) ||
-      !value.legacy.wins.every(isWin) || !Number.isSafeInteger(value.legacy.guesses) || Number(value.legacy.guesses) < 0) return null;
+      !value.legacy.wins.every(isLegacyWin) || !Number.isSafeInteger(value.legacy.guesses) || Number(value.legacy.guesses) < 0) return null;
   return value as ProfileBaseV2;
 }
 
@@ -213,7 +246,7 @@ function migrateLegacy(raw: string): ProfileBaseV2 | null {
   let excludedWins = 0;
   if (Array.isArray(value.wins)) {
     for (const candidate of value.wins) {
-      if (!isWin(candidate)) { partial = true; excludedWins += 1; continue; }
+      if (!isLegacyWin(candidate)) { partial = true; excludedWins += 1; continue; }
       if (wins.some(win => win.id === candidate.id)) partial = true;
       const next = stableWin(wins, candidate);
       wins.splice(0, wins.length, ...next);
@@ -256,7 +289,8 @@ function listActivities(storage: ProfileStorage) {
         if (!eventActivities) { ignored += 1; continue; }
         for (const activity of eventActivities) {
           const existing = byId.get(activity.id);
-          if (!existing || JSON.stringify(activity) < JSON.stringify(existing)) byId.set(activity.id, activity);
+          if (!existing) byId.set(activity.id, activity);
+          else byId.set(activity.id, preferredActivity(existing, activity));
         }
       } catch { ignored += 1; }
     }
@@ -303,10 +337,29 @@ function memorySnapshot(base: ProfileBaseV2, backupConfirmed: boolean): ProfileS
 
 function applyActivitiesInMemory(snapshot: ProfileSnapshot, activities: ProfileActivity[]): ProfileSnapshot {
   const knownIds = new Set(snapshot.activityIds);
-  const pending = new Map(snapshot.pendingActivities.map(activity => [activity.id, activity]));
+  const pending = new Map<string, ProfileActivity>();
+  for (const activity of snapshot.pendingActivities) {
+    const existing = pending.get(activity.id);
+    pending.set(activity.id, existing ? preferredActivity(existing, activity) : activity);
+  }
   let profile: Profile = { ...snapshot.profile, wins: [...snapshot.profile.wins] };
   for (const activity of activities) {
-    if (knownIds.has(activity.id)) continue;
+    const pendingActivity = pending.get(activity.id);
+    if (pendingActivity) {
+      const selected = preferredActivity(pendingActivity, activity);
+      pending.set(activity.id, selected);
+      if (selected.type === "puzzleWon") profile = { ...profile, wins: stableWin(profile.wins, selected.win) };
+      continue;
+    }
+    if (knownIds.has(activity.id)) {
+      if (activity.type === "puzzleWon") {
+        const before = profile.wins.find(win => win.id === activity.win.id);
+        const wins = stableWin(profile.wins, activity.win);
+        const after = wins.find(win => win.id === activity.win.id);
+        if (JSON.stringify(before) !== JSON.stringify(after)) { profile = { ...profile, wins }; pending.set(activity.id, activity); }
+      }
+      continue;
+    }
     knownIds.add(activity.id);
     pending.set(activity.id, activity);
     if (activity.type === "guessAccepted") profile = { ...profile, guesses: profile.guesses + 1 };
@@ -399,22 +452,26 @@ function eventKey(id: string, raw: string) {
 function persistActivities(storage: ProfileStorage | undefined, activities: ProfileActivity[], fallback?: ProfileSnapshot): ProfileSnapshot {
   const selected = storage ?? browserStorage();
   const pending = new Map<string, ProfileActivity>();
-  for (const activity of [...(fallback?.pendingActivities ?? []), ...activities]) if (!pending.has(activity.id)) pending.set(activity.id, activity);
+  for (const activity of [...(fallback?.pendingActivities ?? []), ...activities]) {
+    const existing = pending.get(activity.id);
+    pending.set(activity.id, existing ? preferredActivity(existing, activity) : activity);
+  }
   const requested = [...pending.values()];
   const initial = selected ? loadLocalProfile(selected) : fallback ?? EMPTY_SNAPSHOT;
   if (!selected || !initial.persisted) return applyActivitiesInMemory(fallback ?? initial, activities);
   const existingActivities = listActivities(selected);
   if (!existingActivities.ok) return applyActivitiesInMemory(initial, requested);
-  const knownIds = new Set(existingActivities.activities.map(activity => activity.id));
+  const existingById = new Map(existingActivities.activities.map(activity => [activity.id, activity]));
   for (const activity of requested) {
-    if (knownIds.has(activity.id)) continue;
+    const known = existingById.get(activity.id);
+    if (known && preferredActivity(known, activity) === known) continue;
     const raw = JSON.stringify(activity);
     const key = eventKey(activity.id, raw);
     const existing = read(selected, key);
     if (!existing.ok) return applyActivitiesInMemory(initial, requested);
     if (existing.value === raw) continue;
     if (existing.value !== null || !writeVerified(selected, key, raw)) return applyActivitiesInMemory(loadLocalProfile(selected), requested);
-    knownIds.add(activity.id);
+    existingById.set(activity.id, activity);
   }
   return loadLocalProfile(selected);
 }
@@ -429,8 +486,11 @@ function persistGameActivities(storage: ProfileStorage | undefined, activities: 
   if (!selected || !initial.persisted) return applyActivitiesInMemory(initial, activities);
   const listed = listActivities(selected);
   if (!listed.ok) return applyActivitiesInMemory(initial, activities);
-  const knownIds = new Set(listed.activities.map(activity => activity.id));
-  const missing = activities.filter(activity => !knownIds.has(activity.id));
+  const existingById = new Map(listed.activities.map(activity => [activity.id, activity]));
+  const missing = activities.filter(activity => {
+    const known = existingById.get(activity.id);
+    return !known || preferredActivity(known, activity) !== known;
+  });
   if (!missing.length) return initial;
   const batch: ProfileBatch = {
     schemaVersion: PROFILE_SCHEMA_VERSION,
@@ -461,12 +521,13 @@ function guessActivity(puzzle: Puzzle, word: string, order: number, occurredAt: 
 }
 
 function winActivity(puzzle: Puzzle, game: SavedGame, occurredAt: string): WinActivity {
+  const completedMode = game.completedMode ?? (puzzle.id.startsWith("daily-") && parisDate(new Date(occurredAt)) === puzzle.date ? "daily" : puzzle.mode);
   return {
     schemaVersion: PROFILE_SCHEMA_VERSION,
     id: `win:${puzzle.ref.id}`,
     type: "puzzleWon",
     puzzleRef: puzzle.ref,
-    win: { id: puzzle.id, date: puzzle.date, mode: puzzle.mode, tries: game.guesses.length, hints: game.hints },
+    win: { id: puzzle.id, date: puzzle.date, mode: completedMode, tries: game.guesses.length, hints: game.hints, completedAt: occurredAt },
     occurredAt,
     provenance: "personal-local",
   };
