@@ -1,0 +1,111 @@
+/* B3 UX: one working column, short navigation, progressive disclosure.
+   Scoped to the local game so server-backed screens retain their contracts. */
+.focused-interface { background: var(--coal-950); }
+.focused-interface [hidden] { display: none !important; }
+.focused-interface .site-header { max-width: 1120px; height: auto; min-height: 80px; padding: 16px 32px; gap: 24px; border-bottom: 1px solid var(--border); }
+.focused-interface .brand { font-size: 26px; letter-spacing: -1px; }
+.focused-interface .brand-icon { transform: none; background: transparent; color: var(--style-accent); margin-right: 6px; width: 28px; }
+.focused-interface .header-nav { display: flex; height: auto; gap: 4px; padding: 4px; border-radius: 999px; background: var(--muted); }
+.focused-interface .header-nav button { display: grid; place-items: center; min-height: 44px; padding: 8px 18px; border-radius: 999px; font-size: 14px; color: var(--muted-foreground); }
+.focused-interface .header-nav > button:last-child { display: grid; }
+.focused-interface .header-nav button[aria-current="page"] { color: var(--background); background: var(--foreground); }
+.focused-interface .header-nav button:hover:not([aria-current]) { background: var(--secondary); color: var(--foreground); }
+.focused-interface .header-actions { gap: 0; }
+.focused-interface .icon-button { min-width: 44px; min-height: 44px; }
+.focused-interface .main-shell { max-width: 760px; padding: 36px 24px 0; }
+.focused-interface .page-heading { margin-bottom: 24px; }
+.focused-interface .page-heading h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 34px); letter-spacing: -1px; line-height: 1.2; }
+.focused-interface .page-heading p { font-size: 16px; line-height: 1.6; max-width: none; }
+.focused-interface .mode-tabs { gap: 0; margin-bottom: 0; }
+.focused-interface .mode-list[data-slot="tabs-list"] { display: flex; width: 100%; height: auto; padding: 0; margin-bottom: 8px; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; gap: 20px; justify-content: flex-start; }
+.focused-interface .mode-list [data-slot="tabs-trigger"] { min-height: 46px; height: auto; padding: 10px 2px; flex: 0 1 auto; font-size: 14px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; }
+.focused-interface .mode-list [data-slot="tabs-trigger"][data-state="active"] { color: var(--style-accent); background: transparent; border-bottom-color: var(--style-accent); }
+.focused-interface .archive-access { margin: 0 0 16px; min-height: 44px; justify-content: flex-end; }
+.focused-interface .archive-reveal { padding: 4px 0 4px 12px; border: 0; background: transparent; min-height: 44px; }
+.focused-interface .archive-reveal small { display: none; }
+.focused-interface .archive-reveal strong { font-size: 14px; color: var(--muted-foreground); font-weight: 400; }
+.focused-interface .archive-form { font-size: 14px; }
+.focused-interface .archive-status:empty { display: none; }
+.focused-interface .play-layout { display: block; }
+.focused-interface .play-column { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.focused-interface .game-panel { border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: none; overflow: hidden; }
+.focused-interface .game-topline { padding: 20px 24px 0; margin: 0; gap: 12px; flex-wrap: wrap; }
+.focused-interface .game-kicker { font-size: 12px; letter-spacing: 1px; }
+.focused-interface .edition { font-size: 13px; }
+.focused-interface .daily-pill { font-size: 13px; border: 0; background: none; padding: 0; }
+.focused-interface .guess-area { padding: 24px 24px 8px; }
+.focused-interface .guess-form { border: 1px solid #707078; border-radius: 8px; min-height: 60px; background: var(--background); box-shadow: none; }
+.focused-interface .guess-form:focus-within { border-color: var(--style-accent); box-shadow: 0 0 0 2px var(--style-glow); }
+.focused-interface .guess-form input { font-size: 18px; padding: 16px; min-width: 0; }
+.focused-interface .guess-button { min-width: 44px; min-height: 44px; border-radius: 6px; background: var(--style-accent); color: var(--style-ink); }
+.focused-interface .input-feedback { min-height: 42px; height: auto; padding-top: 10px; font-size: 14px; line-height: 1.5; }
+.focused-interface .heat-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin: 4px 24px 20px; padding: 16px 0 0; border-top: 1px solid var(--border); }
+.focused-interface .heat-summary > div:first-child { display: grid; gap: 5px; }
+.focused-interface .heat-summary > div:first-child > span { font-size: 13px; color: var(--muted-foreground); }
+.focused-interface .heat-summary > div:first-child > strong { font-size: 20px; overflow-wrap: anywhere; }
+.focused-interface .heat-reading { display: grid; gap: 3px; text-align: right; color: var(--heat-color); }
+.focused-interface .heat-reading strong { font-size: 26px; font-variant-numeric: tabular-nums; font-weight: 600; }
+.focused-interface .heat-reading span { font-size: 14px; }
+.focused-interface .heat-meter { grid-column: 1 / -1; height: 4px; background: var(--secondary); border-radius: 2px; overflow: hidden; }
+.focused-interface .heat-meter > span { display: block; height: 100%; background: var(--heat-color); transition: width var(--motion-feedback) var(--ease-out); }
+.focused-interface .compact-record { grid-column: 1 / -1; color: var(--heat-color); font-size: 13px; }
+.focused-interface .game-bottom { min-height: 56px; padding: 10px 24px; gap: 12px; flex-wrap: wrap; font-size: 14px; }
+.focused-interface .hint-button { margin-left: auto; min-height: 44px; font-size: 14px; }
+.focused-interface .game-bottom .rank-info { display: flex; font-size: 13px; }
+.focused-interface .history-panel { margin-top: 0; }
+.focused-interface .section-topline { margin-bottom: 14px; }
+.focused-interface .section-topline h2 { font-size: 18px; }
+.focused-interface .sort-button { font-size: 14px; min-height: 44px; }
+.focused-interface .empty-history { border: 0; background: transparent; padding: 16px 0; min-height: 80px; }
+.focused-interface .empty-history .empty-icon { display: none; }
+.focused-interface .empty-history h3 { font-size: 16px; }
+.focused-interface .empty-history p { font-size: 14px; line-height: 1.6; }
+.focused-interface .guess-word { min-width: 0; }
+.focused-interface .guess-word strong { overflow-wrap: anywhere; }
+.focused-interface .notebook-card { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; padding: 0 0 16px; }
+.focused-interface .notebook-card > p, .focused-interface .empty-pin { display: none; }
+.focused-interface .notebook-pins button { min-height: 44px; font-size: 14px; }
+.focused-interface .reset-note { margin: 20px 0 0; padding: 0; justify-content: center; font-size: 13px; }
+.focused-interface .reset-note button { min-height: 44px; font-size: 14px; }
+.focused-interface .reset-note small { display: none; }
+.focused-interface .explore-group { margin: 0 0 28px; }
+.focused-interface .explore-group > h2 { font-size: 14px; font-weight: 500; color: var(--muted-foreground); margin: 0 0 10px; }
+.focused-interface .explore-link { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px; text-align: left; padding: 18px 0; color: var(--foreground); background: transparent; border: 0; border-bottom: 1px solid var(--border); }
+.focused-interface .explore-link span { display: grid; gap: 5px; }
+.focused-interface .explore-link strong { font-size: 17px; font-weight: 500; }
+.focused-interface .explore-link small { color: var(--muted-foreground); font-size: 14px; line-height: 1.5; }
+.focused-interface .explore-link:hover strong { color: var(--style-accent); }
+.focused-interface .collection-picker { margin: 0; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; }
+.focused-interface .collection-picker > summary { min-height: 66px; padding: 16px 0; font-size: 17px; font-weight: 500; }
+.focused-interface .collection-picker > summary > span { font-size: 14px; }
+.focused-interface .collection-content { padding: 8px 0 20px; }
+.focused-interface .collection-content p { font-size: 14px; line-height: 1.7; }
+.focused-interface .collection-grid button { min-height: 48px; font-size: 14px; }
+.focused-interface .site-footer { margin-top: 40px; padding: 24px 0; gap: 16px; flex-wrap: wrap; }
+.focused-interface .site-footer > div { display: flex; flex-wrap: wrap; gap: 16px; }
+.focused-interface .site-footer button { min-height: 44px; font-size: 14px; }
+.focused-interface .victory-box { padding: 24px; }
+.focused-interface .victory-actions { flex-wrap: wrap; }
+.focused-interface .victory-actions button { font-size: 14px; white-space: normal; }
+.braise-dialog[data-slot="dialog-content"] .progress-card { padding: 16px; margin-bottom: 16px; }
+.braise-dialog[data-slot="dialog-content"] .weekly-card { margin: 16px 0; }
+.braise-dialog[data-slot="dialog-content"] .sound-setting { margin: 16px 0; }
+@media (max-width: 640px) {
+  .focused-interface .site-header { padding: 12px 20px; gap: 8px; flex-wrap: wrap; }
+  .focused-interface .brand { font-size: 24px; }
+  .focused-interface .header-actions { margin-left: auto; }
+  .focused-interface .header-nav { order: 3; width: 100%; justify-content: stretch; margin: 4px 0; }
+  .focused-interface .header-nav button { flex: 1; padding-inline: 8px; }
+  .focused-interface .main-shell { padding: 24px 16px 0; }
+  .focused-interface .page-heading p { font-size: 16px; }
+  .focused-interface .mode-list[data-slot="tabs-list"] { gap: 16px; }
+  .focused-interface .mode-list [data-slot="tabs-trigger"] { font-size: 14px; gap: 6px; }
+  .focused-interface .game-topline { padding: 16px 16px 0; }
+  .focused-interface .guess-area { padding: 20px 16px 8px; }
+  .focused-interface .guess-form input { padding: 12px; font-size: 16px; }
+  .focused-interface .heat-summary { margin-inline: 16px; }
+  .focused-interface .game-bottom { padding: 8px 16px; }
+  .focused-interface .sort-button { font-size: 13px; }
+  .focused-interface .guess-row { min-height: 54px; }
+  .focused-interface .best-tag { display: none; }
+}
