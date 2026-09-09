@@ -22,6 +22,7 @@
     "semantic:v2:evidence:verify": "node scripts/editorial-evidence-v2.mjs verify",
     "semantic:v2:catalogue:build": "node scripts/build-editorial-catalogue-v2.mjs",
     "semantic:v2:catalogue:verify": "node scripts/verify-editorial-catalogue-v2.mjs",
+    "semantic:v2:restore": "node scripts/restore-semantic-v2.mjs",
     "qa:hosted:private": "node scripts/qualify-hosted-private.mjs",
     "qa:hosted:social": "node scripts/qualify-hosted-social.mjs",
     "qa:hosted:studio": "node scripts/qualify-hosted-studio.mjs",
