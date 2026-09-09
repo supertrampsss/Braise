@@ -98,12 +98,12 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B6d-private-hosted-authority-qualification",
+  "last_checkpoint": "B7b-private-hosted-social-functional-qualification",
   "last_run": {
-    "completed_at": "2026-09-08T23:11:38.606Z",
-    "phase": "B6",
+    "completed_at": "2026-09-09T00:10:50.581Z",
+    "phase": "B7",
     "progress": true,
-    "source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
+    "source_commit": "89c69767e44eea4abc06f50ca380c248af4336ba",
     "publication": {
       "status": "unchanged",
       "version": 7
@@ -111,12 +111,7 @@
     "main_model_override_performed": false
   },
   "last_verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
-  "lease": {
-    "owner": "root-b7-hosted-social-qualification",
-    "acquired_at": "2026-09-08T23:47:00.000Z",
-    "expires_at": "2026-09-09T01:17:00.000Z",
-    "base_commit": "81624e3fa138068ce877460d31226f2644ad3bfb"
-  },
+  "lease": null,
   "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota, puis qualifier le studio B9. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
   "next_phase": "B7",
   "phases": [
@@ -359,7 +354,8 @@
         "Astra review blockers corrected",
         "docs/program/B7B-DELIVERY.md",
         "docs/program/B7B-MEASUREMENTS.json",
-        "Private v7 D1 preserved circle membership, exclusion, revoked invite, shared weekly game, duel replay/concurrency secrecy and terminal forfeit facts"
+        "Private v7 D1 preserved circle membership, exclusion, revoked invite, shared weekly game, duel replay/concurrency secrecy and terminal forfeit facts",
+        "gpt-6-astra max review: no code blocker; keep validation pending until one clean hosted teardown rerun"
       ],
       "id": "B7",
       "implementation": "completed_on_verified_V1",
