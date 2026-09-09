@@ -85,7 +85,7 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "157_tests_typecheck_build_targeted_lint_and_real_private_B7_functional_D1_sequence_passed_with_cleanup_retry_pending",
+    "automated_checks": "157_tests_typecheck_build_targeted_lint_and_real_private_B9_hosted_D1_qualification_passed",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
@@ -387,10 +387,8 @@
       "verified_source_commit": "0ef21582387ef19201df83177f713223b3568e26"
     },
     {
-      "automated_checks": "passed_local_sqlite",
-      "blockers": [
-        "Hosted authenticated route qualification pending"
-      ],
+      "automated_checks": "157_tests_typecheck_build_targeted_lint_and_private_hosted_studio_D1_passed",
+      "blockers": [],
       "browser_validation": "not_requested",
       "depends_on": [
         "B5",
@@ -398,13 +396,18 @@
       ],
       "evidence": [
         "docs/program/B9-DELIVERY.md",
-        "138 tests, TypeScript and production build passed"
+        "138 tests, TypeScript and production build passed",
+        "docs/program/B9B-DELIVERY.md",
+        "docs/program/B9B-MEASUREMENTS.json",
+        "Private v7 D1 preserved draft ownership, immutable edition projection, participant game barrier and owner withdrawal"
       ],
       "id": "B9",
       "implementation": "completed_on_verified_V1",
-      "publication": "published_owner_private_v5",
-      "status": "implemented_validation_pending",
-      "title": "Studio créateurs"
+      "publication": "qualified_on_current_owner_private_v7",
+      "status": "verified",
+      "title": "Studio créateurs",
+      "completed_at": "2026-09-09T00:21:56.212Z",
+      "verified_source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
     },
     {
       "automated_checks": "passed_local",

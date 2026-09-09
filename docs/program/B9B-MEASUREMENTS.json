@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "scope": "hosted-private-d1-studio",
+  "site_version": 7,
+  "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96",
+  "started_at": "2026-09-09T00:19:18.046Z",
+  "completed_at": "2026-09-09T00:21:56.212Z",
+  "browser_validation": "not_requested",
+  "result": "passed",
+  "worker_events": {
+    "total": 28,
+    "outcomes": ["ok"],
+    "session_creations_200": 2,
+    "studio_reads_200": 4,
+    "studio_reads_404": 2,
+    "studio_mutations_200": 8,
+    "studio_mutations_409": 2,
+    "server_game_reads_200": 1,
+    "server_game_reads_404": 1,
+    "server_game_mutations_200": 1,
+    "server_game_mutations_404": 1,
+    "session_deletions_200": 2,
+    "session_reads_200": 4
+  },
+  "persisted_facts": {
+    "qa_guests": 2,
+    "qa_sessions_revoked": 2,
+    "qa_sessions_active": 0,
+    "draft_revision": 1,
+    "draft_entries": 1,
+    "edition_revision": 0,
+    "edition_entries": 2,
+    "edition_state": "withdrawn",
+    "studio_games": 1,
+    "accepted_real_guesses": 1,
+    "accepted_word": "maison"
+  },
+  "automated_gates": {
+    "tests": 157,
+    "tests_failed": 0,
+    "typecheck": "passed",
+    "targeted_lint": "passed",
+    "production_build": "passed"
+  }
+}

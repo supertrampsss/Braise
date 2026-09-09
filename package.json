@@ -24,6 +24,7 @@
     "semantic:v2:catalogue:verify": "node scripts/verify-editorial-catalogue-v2.mjs",
     "qa:hosted:private": "node scripts/qualify-hosted-private.mjs",
     "qa:hosted:social": "node scripts/qualify-hosted-social.mjs",
+    "qa:hosted:studio": "node scripts/qualify-hosted-studio.mjs",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "node scripts/test-game.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
