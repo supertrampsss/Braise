@@ -530,10 +530,10 @@
       "full_history_transferred": false,
       "notice": "GITHUB-DATA-ASSETS.md",
       "repository": "supertrampsss/Braise",
-      "snapshot_commit": "10775061254849acade89c282bba2ef4288889d9",
-      "snapshot_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6",
+      "snapshot_commit": "4374c0ffd5daa59ef99533dfd07cd7590028a00c",
+      "snapshot_source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b",
       "standalone_build": false,
-      "status": "application_editorial_and_B2i_verifier_snapshot_present_runtime_data_transfer_incomplete"
+      "status": "application_editorial_B2i_verifier_and_controlled_restore_snapshot_present_runtime_data_transfer_incomplete"
     },
     "private_site": {
       "audience_changed": false,
