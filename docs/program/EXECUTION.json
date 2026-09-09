@@ -111,7 +111,12 @@
     "main_model_override_performed": false
   },
   "last_verified_source_commit": "4fe217ffc470999911c702b1ef3ceee702be392f",
-  "lease": null,
+  "lease": {
+    "owner": "automation-b7-clean-hosted-qualification",
+    "acquired_at": "2026-09-09T16:46:03Z",
+    "expires_at": "2026-09-09T18:16:03Z",
+    "base_commit": "5170884b7cd0460826984b8123badccee7ac72d8"
+  },
   "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
   "next_phase": "B7",
   "phases": [
