@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "scope": "hosted-private-d1-circles-duels",
+  "site_version": 7,
+  "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96",
+  "started_at": "2026-09-08T23:51:44.861Z",
+  "last_observed_at": "2026-09-08T23:54:54.367Z",
+  "browser_validation": "not_requested",
+  "functional_result": "passed",
+  "worker_events": {
+    "total": 39,
+    "unexpected_worker_errors": 0,
+    "circle_mutations_200": 12,
+    "circle_reads_200": 1,
+    "circle_denials_404": 2,
+    "circle_denials_409": 1,
+    "server_game_mutations_200": 1,
+    "server_game_denials_404": 2,
+    "duel_mutations_200": 7,
+    "duel_denials_409": 4,
+    "duel_reads_200": 2,
+    "duel_denials_404": 1
+  },
+  "persisted_facts": {
+    "qa_guests": 3,
+    "circle_active_members": 1,
+    "circle_excluded_members": 1,
+    "circle_revoked_invites": 1,
+    "circle_challenges": 1,
+    "circle_games": 1,
+    "circle_accepted_guesses": 1,
+    "duel_state": "forfeit",
+    "duel_forfeiter_matches_opponent": true,
+    "duel_accepted_guesses": 2,
+    "duel_accepted_rounds": [0, 1]
+  },
+  "session_cleanup": {
+    "revoked": 1,
+    "inaccessible_active": 2,
+    "reason": "executor_transport_disconnected_after_functional_assertions",
+    "automatic_expiry_days": 30,
+    "tokens_persisted": false
+  },
+  "automated_gates": {
+    "tests": 157,
+    "tests_failed": 0,
+    "typecheck": "passed",
+    "targeted_lint": "passed",
+    "production_build": "passed"
+  }
+}

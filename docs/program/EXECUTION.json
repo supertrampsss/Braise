@@ -85,7 +85,7 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "157_tests_typecheck_build_targeted_lint_and_real_private_B6_hosted_D1_qualification_passed",
+    "automated_checks": "157_tests_typecheck_build_targeted_lint_and_real_private_B7_functional_D1_sequence_passed_with_cleanup_retry_pending",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
@@ -117,7 +117,7 @@
     "expires_at": "2026-09-09T01:17:00.000Z",
     "base_commit": "81624e3fa138068ce877460d31226f2644ad3bfb"
   },
-  "next_action": "Qualifier sur l'hébergement privé les parcours cercles et duels, puis studio, avec données QA identifiées, assertions de droits et nettoyage. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
+  "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota, puis qualifier le studio B9. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
   "next_phase": "B7",
   "phases": [
     {
@@ -344,9 +344,9 @@
       "verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa"
     },
     {
-      "automated_checks": "passed_local_sqlite",
+      "automated_checks": "157_tests_typecheck_build_targeted_lint_and_private_hosted_functional_sequence_passed",
       "blockers": [
-        "Hosted authenticated route/concurrency qualification pending"
+        "One clean hosted rerun pending after the shared creation quota renews; the interrupted run left two inaccessible QA sessions to expire automatically"
       ],
       "browser_validation": "not_requested",
       "depends_on": [
@@ -356,11 +356,14 @@
       "evidence": [
         "docs/program/B7-DELIVERY.md",
         "138 tests, TypeScript and production build passed",
-        "Astra review blockers corrected"
+        "Astra review blockers corrected",
+        "docs/program/B7B-DELIVERY.md",
+        "docs/program/B7B-MEASUREMENTS.json",
+        "Private v7 D1 preserved circle membership, exclusion, revoked invite, shared weekly game, duel replay/concurrency secrecy and terminal forfeit facts"
       ],
       "id": "B7",
       "implementation": "completed_on_verified_V1",
-      "publication": "published_owner_private_v5",
+      "publication": "published_owner_private_v7",
       "status": "implemented_validation_pending",
       "title": "Cercles et duels"
     },
