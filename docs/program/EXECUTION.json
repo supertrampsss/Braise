@@ -111,7 +111,12 @@
     "main_model_override_performed": false
   },
   "last_verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
-  "lease": null,
+  "lease": {
+    "owner": "root-b9-hosted-studio-qualification",
+    "acquired_at": "2026-09-09T00:14:35.000Z",
+    "expires_at": "2026-09-09T01:44:35.000Z",
+    "base_commit": "76e127f56e4c7239d6fa82536ebc1dfe31e2ef18"
+  },
   "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota, puis qualifier le studio B9. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
   "next_phase": "B7",
   "phases": [
