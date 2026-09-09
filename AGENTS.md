@@ -12,6 +12,7 @@
 - Conserver l'attribution et la licence CC BY-SA des données.
 - Vérifier les modifications de calendrier, normalisation et API avec npm test.
 - Vérifier une génération V2 avec `npm run semantic:v2:verify -- --source <fichier.vec> --output <staging>` ; les sorties sous `work/` restent non publiées.
+- Restaurer le corpus complet uniquement avec `npm run semantic:v2:restore`. La commande impose le nom, la taille, le SHA-256 et toutes les empreintes B1E, refuse une URL arbitraire et ne télécharge que si `--download` est explicitement fourni. Une récupération de verrou exige l'identifiant exact enregistré par la commande.
 - Une cible BRV2 se prépare localement avec `npm run semantic:v2:target:build -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>` puis se contrôle avec `npm run semantic:v2:target:verify`. Ne jamais activer une cible avant couverture et vérification exhaustives de ses scores, rangs et ordre.
 - L'index exact BRV2 se construit avec `npm run semantic:v2:index:build -- --corpus <staging-corpus> --output <staging-cibles>` puis se vérifie avec `npm run semantic:v2:index:verify`. Il ne fait aucun rapprochement approximatif V1.
 - Une cible de staging complète se retire uniquement avec `npm run semantic:v2:target:evict -- --corpus <staging-corpus> --output <staging-cibles> --target-id <id>`. Ne jamais supprimer manuellement un dossier cible ou une tombstone d'éviction.
