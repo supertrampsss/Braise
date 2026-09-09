@@ -85,7 +85,7 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "157_tests_typecheck_build_targeted_lint_and_real_private_B9_hosted_D1_qualification_passed",
+    "automated_checks": "167_tests_typecheck_build_targeted_lint_and_controlled_V2_restore_tests_passed",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
@@ -98,27 +98,22 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B9b-private-hosted-studio-qualification",
+  "last_checkpoint": "B1f-controlled-corpus-restoration-command",
   "last_run": {
-    "completed_at": "2026-09-09T00:29:46.533Z",
-    "phase": "B9",
+    "completed_at": "2026-09-09T17:09:41Z",
+    "phase": "B1",
     "progress": true,
-    "source_commit": "4fe217ffc470999911c702b1ef3ceee702be392f",
+    "source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b",
     "publication": {
       "status": "unchanged",
       "version": 7
     },
     "main_model_override_performed": false
   },
-  "last_verified_source_commit": "4fe217ffc470999911c702b1ef3ceee702be392f",
-  "lease": {
-    "owner": "automation-b7-clean-hosted-qualification",
-    "acquired_at": "2026-09-09T16:46:03Z",
-    "expires_at": "2026-09-09T18:16:03Z",
-    "base_commit": "5170884b7cd0460826984b8123badccee7ac72d8"
-  },
-  "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
-  "next_phase": "B7",
+  "last_verified_source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b",
+  "lease": null,
+  "next_action": "Exécuter `npm run semantic:v2:restore -- --download` dès qu'un transfert sortant durable est disponible, enregistrer la mesure réelle, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
+  "next_phase": "B1",
   "phases": [
     {
       "automated_checks": "passed",
@@ -143,11 +138,12 @@
       "verified_source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd"
     },
     {
-      "automated_checks": "140_tests_typecheck_build_passed_real_corpus_independently_verified",
+      "automated_checks": "167_tests_typecheck_build_targeted_lint_and_controlled_restore_tests_passed; prior_real_corpus_independently_verified",
       "blockers": [
         "Real R2 binding is not provisioned or qualified",
         "Cloudflare Worker runtime memory remains unqualified",
-        "Durable transfer and product activation remain; local full-source ingestion and measurements passed"
+        "The 3 GB source and ignored work outputs are absent from the current checkout; the pinned controlled restore command is ready but its real full-volume run remains pending",
+        "Durable transfer and product activation remain; prior local full-source ingestion and measurements passed"
       ],
       "browser_validation": "not_requested",
       "depends_on": [
@@ -160,6 +156,8 @@
         "docs/program/B1B-DELIVERY.md",
         "docs/program/B1C-DELIVERY.md",
         "docs/program/B1D-DELIVERY.md",
+        "docs/program/B1F-DELIVERY.md",
+        "docs/program/B1F-MEASUREMENTS.json",
         "120 immutable BRZ1 shards generated from the frozen V1 source",
         "3,600,000 scores, ranks and stable order positions verified",
         "Complete-source local ingestion CLI and independent verifier",
@@ -168,17 +166,17 @@
         "Shared-reader and exclusive-mutator target cache guard with resumable explicit eviction",
         "109 tests passed; TypeScript passed; production build passed",
         "Compiled Worker 1,128,880 bytes; V1 score sentinel absent",
-        "Independent gpt-6-astra max review: no remaining local B1d blocker"
+        "Independent gpt-6-astra max review: no remaining controlled-restore blocker"
       ],
       "external_dependencies": [
         "R2 binding provisioned and accessible"
       ],
       "id": "B1",
-      "implementation": "complete_real_source_index_eight_targets_and_bounded_reader_verified_locally",
+      "implementation": "complete_real_source_index_eight_targets_and_bounded_reader_previously_verified; controlled_exact_restore_command_verified_locally",
       "publication": "b1a_published_owner_private_v2",
       "status": "partial",
       "title": "Versions et stockage sémantique",
-      "verified_source_commit": "d047abf15be61a8193154e6c94236eafbf2516b0"
+      "verified_source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b"
     },
     {
       "automated_checks": "157_tests_typecheck_build_and_57_real_evidence_batched_exhaustive_verification_passed",
@@ -346,7 +344,8 @@
     {
       "automated_checks": "157_tests_typecheck_build_targeted_lint_and_private_hosted_functional_sequence_passed",
       "blockers": [
-        "One clean hosted rerun pending after the shared creation quota renews; the interrupted run left two inaccessible QA sessions to expire automatically"
+        "One clean hosted rerun is still pending; a second attempt on 2026-09-09 was interrupted by the execution transport after 17 successful hosted calls and before duel assertions or cleanup",
+        "Three additional inaccessible QA sessions from the interrupted attempt retain only opaque expiring D1 rows; their tokens were never persisted"
       ],
       "browser_validation": "not_requested",
       "depends_on": [
@@ -491,12 +490,17 @@
   },
   "project_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b",
   "recovery": {
+    "controlled_restore_command": {
+      "evidence": "docs/program/B1F-DELIVERY.md",
+      "measurements": "docs/program/B1F-MEASUREMENTS.json",
+      "status": "verified_locally_real_full_volume_run_pending"
+    },
     "editorial_dossiers_numerically_reverified": 33,
     "evidence": "docs/program/RECOVERY-DELIVERY.md",
     "measurements": "docs/program/RECOVERY-MEASUREMENTS.json",
     "new_approvals": 0,
     "next_resume_must_confirm_canonical_checkpoint": false,
-    "source_corpus_and_presence_index": "restored_exactly_and_independently_verified",
+    "source_corpus_and_presence_index": "previous_exact_restoration_evidenced_but_absent_from_current_checkout; controlled_restore_ready",
     "source_read_retries": "three_HTTP_500_responses_before_checkpoint_push_attempt",
     "staged_target_columns": 0,
     "work_outputs_durably_backed_up": false
