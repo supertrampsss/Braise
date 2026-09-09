@@ -98,26 +98,21 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B7b-private-hosted-social-functional-qualification",
+  "last_checkpoint": "B9b-private-hosted-studio-qualification",
   "last_run": {
-    "completed_at": "2026-09-09T00:10:50.581Z",
-    "phase": "B7",
+    "completed_at": "2026-09-09T00:29:46.533Z",
+    "phase": "B9",
     "progress": true,
-    "source_commit": "89c69767e44eea4abc06f50ca380c248af4336ba",
+    "source_commit": "4fe217ffc470999911c702b1ef3ceee702be392f",
     "publication": {
       "status": "unchanged",
       "version": 7
     },
     "main_model_override_performed": false
   },
-  "last_verified_source_commit": "c9cbdb3dbc24a6edd3f6a6c995e38a92fab015fa",
-  "lease": {
-    "owner": "root-b9-hosted-studio-qualification",
-    "acquired_at": "2026-09-09T00:14:35.000Z",
-    "expires_at": "2026-09-09T01:44:35.000Z",
-    "base_commit": "76e127f56e4c7239d6fa82536ebc1dfe31e2ef18"
-  },
-  "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota, puis qualifier le studio B9. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
+  "last_verified_source_commit": "4fe217ffc470999911c702b1ef3ceee702be392f",
+  "lease": null,
+  "next_action": "Rejouer une fois la qualification hébergée B7 avec le nettoyage anticipé après renouvellement du quota. Ajouter ensuite une commande de restauration contrôlée du corpus local ignoré, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Préserver V1 et l'interface publiée.",
   "next_phase": "B7",
   "phases": [
     {
@@ -399,7 +394,8 @@
         "138 tests, TypeScript and production build passed",
         "docs/program/B9B-DELIVERY.md",
         "docs/program/B9B-MEASUREMENTS.json",
-        "Private v7 D1 preserved draft ownership, immutable edition projection, participant game barrier and owner withdrawal"
+        "Private v7 D1 preserved draft ownership, immutable edition projection, participant game barrier and owner withdrawal",
+        "gpt-6-astra max review: no blocker to B9 hosted verification"
       ],
       "id": "B9",
       "implementation": "completed_on_verified_V1",
