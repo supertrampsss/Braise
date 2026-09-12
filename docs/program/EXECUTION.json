@@ -58,7 +58,7 @@
       "measurements": "docs/program/B1G-MEASUREMENTS.json",
       "product_active": false,
       "source_rows_read": 1152449,
-      "real_restore_status": "passed_local_runtime"
+      "real_restore_status": "passed_then_ephemeral_runtime_assets_removed"
     },
     "status": "complete_real_source_verified_locally_runtime_activation_pending"
   },
@@ -111,9 +111,14 @@
     },
     "main_model_override_performed": false
   },
+  "github_mirror": {
+    "commit": "e5625362ce4780511920e777707f17cb6bbb55b2",
+    "scope": "B1g and B2j public-safe evidence, catalogue and delivery reports",
+    "runtime_assets_included": false
+  },
   "last_verified_source_commit": "adf3e287d12699bdea9cc58a671543fd636accca",
   "lease": null,
-  "next_action": "Poursuivre les rotations B2 par groupes de huit jusqu'aux 365 puis 400 approbations. Produire alors le calendrier immuable, puis provisionner et qualifier R2 et le Worker avant activation V2. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
+  "next_action": "Restaurer le staging exact si les actifs ignorés sont absents, puis poursuivre les rotations B2 par groupes de huit jusqu'aux 365 puis 400 approbations. Produire alors le calendrier immuable, puis provisionner et qualifier R2 et le Worker avant activation V2. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
   "next_phase": "B2",
   "phases": [
     {
@@ -143,7 +148,7 @@
       "blockers": [
         "Real R2 binding is not provisioned or qualified",
         "Cloudflare Worker runtime memory remains unqualified",
-        "The restored 3 GB source and ignored work outputs are local runtime assets, not a durable production store",
+        "The real restore passed, but the 3 GB source and ignored work outputs were ephemeral runtime assets and are absent from the fresh checkout",
         "Durable R2 transfer and product activation remain"
       ],
       "browser_validation": "not_requested",
