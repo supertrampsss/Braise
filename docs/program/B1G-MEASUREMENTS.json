@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": "controlled-restore-real-full-volume",
+  "measuredAt": "2026-09-12T09:20:00Z",
+  "source": {
+    "file": "wiki.fr.vec",
+    "bytes": 3027096151,
+    "sha256": "bc68b0703375da9e81c3c11d0c28f3f8375dd944c209e697c4075e579455ac2a",
+    "downloadPerformed": true,
+    "independentSha256Recalculation": "passed"
+  },
+  "corpus": {
+    "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+    "rowsRead": 1152449,
+    "accepted": 1013881,
+    "segments": 248,
+    "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+    "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d"
+  },
+  "index": {
+    "dictionarySize": 1013881,
+    "leaves": 65536,
+    "manifestSha256": "77178f6fc85de9d5523db3f13141b751abdeb1c6b2d3ad6a4d020346a795c426"
+  },
+  "restore": {
+    "commandStatus": "passed",
+    "catalogueVerification": "passed",
+    "productActivated": false,
+    "publicationChanged": false
+  },
+  "browserValidation": "not_requested",
+  "runtimeQualification": {
+    "r2": "not_provisioned",
+    "workerMemory": "not_qualified"
+  }
+}
