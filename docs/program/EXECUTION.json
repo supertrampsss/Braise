@@ -111,7 +111,12 @@
     "main_model_override_performed": false
   },
   "last_verified_source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b",
-  "lease": null,
+  "lease": {
+    "owner": "automation-b1-real-corpus-restoration",
+    "acquired_at": "2026-09-12T08:42:31Z",
+    "expires_at": "2026-09-12T10:12:31Z",
+    "base_commit": "af5f81ff5993d8383703127d28602b995d3539cd"
+  },
   "next_action": "Exécuter `npm run semantic:v2:restore -- --download` dès qu'un transfert sortant durable est disponible, enregistrer la mesure réelle, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
   "next_phase": "B1",
   "phases": [
