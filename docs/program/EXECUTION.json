@@ -10,19 +10,19 @@
       "targets": 120
     },
     "editorial_workbench": {
-      "approved": 54,
+      "approved": 62,
       "calendar_created": false,
-      "durable_evidence_dossiers": 57,
-      "evidence": "docs/program/B2H-DELIVERY.md",
-      "immutable_proof_files": 64,
+      "durable_evidence_dossiers": 65,
+      "evidence": "docs/program/B2J-DELIVERY.md",
+      "immutable_proof_files": 72,
       "lexically_reviewed": 400,
-      "measurements": "docs/program/B2H-MEASUREMENTS.json",
+      "measurements": "docs/program/B2J-MEASUREMENTS.json",
       "product_active": false,
       "rejected_pending_broader_evidence": 3,
-      "remaining_approvals_for_calendar": 311,
-      "remaining_approvals_for_main_target": 346,
+      "remaining_approvals_for_calendar": 303,
+      "remaining_approvals_for_main_target": 338,
       "selected": 400,
-      "verified_archived_evidence": 57,
+      "verified_archived_evidence": 65,
       "verified_staging_columns": 0,
       "verification": {
         "evidence": "docs/program/B2I-DELIVERY.md",
@@ -44,7 +44,7 @@
     "specification": "docs/program/B1B-CORPUS-DIRECTIVE.md",
     "staging": {
       "dictionary_entries": 1013881,
-      "evidence": "docs/program/B1E-DELIVERY.md",
+      "evidence": "docs/program/B1G-DELIVERY.md",
       "independently_verified_target_ids": [
         0,
         1013880,
@@ -55,9 +55,10 @@
         1080,
         1344
       ],
-      "measurements": "docs/program/B1E-MEASUREMENTS.json",
+      "measurements": "docs/program/B1G-MEASUREMENTS.json",
       "product_active": false,
-      "source_rows_read": 1152449
+      "source_rows_read": 1152449,
+      "real_restore_status": "passed_local_runtime"
     },
     "status": "complete_real_source_verified_locally_runtime_activation_pending"
   },
@@ -85,7 +86,7 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "167_tests_typecheck_build_targeted_lint_and_controlled_V2_restore_tests_passed",
+    "automated_checks": "167_tests_typecheck_build_real_restore_and_65_target_catalogue_verification_passed",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
@@ -98,27 +99,22 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B1f-controlled-corpus-restoration-command",
+  "last_checkpoint": "B2j-real-restore-editorial-rotation",
   "last_run": {
-    "completed_at": "2026-09-09T17:09:41Z",
-    "phase": "B1",
+    "completed_at": "2026-09-12T09:27:00Z",
+    "phase": "B2",
     "progress": true,
-    "source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b",
+    "source_commit": "adf3e287d12699bdea9cc58a671543fd636accca",
     "publication": {
       "status": "unchanged",
       "version": 7
     },
     "main_model_override_performed": false
   },
-  "last_verified_source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b",
-  "lease": {
-    "owner": "automation-b1-real-corpus-restoration",
-    "acquired_at": "2026-09-12T08:42:31Z",
-    "expires_at": "2026-09-12T10:12:31Z",
-    "base_commit": "af5f81ff5993d8383703127d28602b995d3539cd"
-  },
-  "next_action": "Exécuter `npm run semantic:v2:restore -- --download` dès qu'un transfert sortant durable est disponible, enregistrer la mesure réelle, puis reprendre les rotations B2 jusqu'aux 365 puis 400 approbations. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
-  "next_phase": "B1",
+  "last_verified_source_commit": "adf3e287d12699bdea9cc58a671543fd636accca",
+  "lease": null,
+  "next_action": "Poursuivre les rotations B2 par groupes de huit jusqu'aux 365 puis 400 approbations. Produire alors le calendrier immuable, puis provisionner et qualifier R2 et le Worker avant activation V2. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
+  "next_phase": "B2",
   "phases": [
     {
       "automated_checks": "passed",
@@ -143,12 +139,12 @@
       "verified_source_commit": "7f68fbb3a70fc5637e79a7935fd2ebd6437422cd"
     },
     {
-      "automated_checks": "167_tests_typecheck_build_targeted_lint_and_controlled_restore_tests_passed; prior_real_corpus_independently_verified",
+      "automated_checks": "167_tests_typecheck_build_and_real_full_volume_restore_passed; independent_source_sha_and_manifest_review_passed",
       "blockers": [
         "Real R2 binding is not provisioned or qualified",
         "Cloudflare Worker runtime memory remains unqualified",
-        "The 3 GB source and ignored work outputs are absent from the current checkout; the pinned controlled restore command is ready but its real full-volume run remains pending",
-        "Durable transfer and product activation remain; prior local full-source ingestion and measurements passed"
+        "The restored 3 GB source and ignored work outputs are local runtime assets, not a durable production store",
+        "Durable R2 transfer and product activation remain"
       ],
       "browser_validation": "not_requested",
       "depends_on": [
@@ -163,6 +159,8 @@
         "docs/program/B1D-DELIVERY.md",
         "docs/program/B1F-DELIVERY.md",
         "docs/program/B1F-MEASUREMENTS.json",
+        "docs/program/B1G-DELIVERY.md",
+        "docs/program/B1G-MEASUREMENTS.json",
         "120 immutable BRZ1 shards generated from the frozen V1 source",
         "3,600,000 scores, ranks and stable order positions verified",
         "Complete-source local ingestion CLI and independent verifier",
@@ -171,22 +169,22 @@
         "Shared-reader and exclusive-mutator target cache guard with resumable explicit eviction",
         "109 tests passed; TypeScript passed; production build passed",
         "Compiled Worker 1,128,880 bytes; V1 score sentinel absent",
-        "Independent gpt-6-astra max review: no remaining controlled-restore blocker"
+        "Independent gpt-6-astra max review: source SHA, BRV2 and BPI2 pins match the real restored runtime"
       ],
       "external_dependencies": [
         "R2 binding provisioned and accessible"
       ],
       "id": "B1",
-      "implementation": "complete_real_source_index_eight_targets_and_bounded_reader_previously_verified; controlled_exact_restore_command_verified_locally",
+      "implementation": "complete_real_source_and_index_restored_and_verified_locally; runtime_storage_activation_pending",
       "publication": "b1a_published_owner_private_v2",
       "status": "partial",
       "title": "Versions et stockage sémantique",
-      "verified_source_commit": "b210eaa35f704e7876bd0d24f8d03e3eb54bdb0b"
+      "verified_source_commit": "adf3e287d12699bdea9cc58a671543fd636accca"
     },
     {
-      "automated_checks": "157_tests_typecheck_build_and_57_real_evidence_batched_exhaustive_verification_passed",
+      "automated_checks": "167_tests_typecheck_build_and_65_real_evidence_batched_exhaustive_verification_passed",
       "blockers": [
-        "311 further approved targets are required before a 365-day edition can be created; 346 are required for the main 400-target acceptance goal",
+        "303 further approved targets are required before a 365-day edition can be created; 338 are required for the main 400-target acceptance goal",
         "R2 and Worker runtime qualification remain required before product activation"
       ],
       "browser_validation": "not_requested",
@@ -228,14 +226,19 @@
         "docs/program/B2I-DELIVERY.md",
         "docs/program/B2I-MEASUREMENTS.json",
         "Bounded groups of eight preserve exact scalar scores, immutable evidence and full-corpus coverage; real eight-target benchmark 6.71x faster",
-        "157 tests, TypeScript, production build and 57-target real catalogue verification passed; max review corrections covered"
+        "157 tests, TypeScript, production build and 57-target real catalogue verification passed; max review corrections covered",
+        "docs/program/B2J-DELIVERY.md",
+        "docs/program/B2J-MEASUREMENTS.json",
+        "Eight additional exact proofs and eight approvals after two independent reviews and max arbitration",
+        "Seventy-two immutable proofs across sixty-five target identities; sixty-two approved",
+        "167 tests, TypeScript, production build and 65-target real catalogue verification passed"
       ],
       "id": "B2",
-      "implementation": "inactive_editorial_workbench_400_reviewed_54_approved_57_targets_64_immutable_proofs",
+      "implementation": "inactive_editorial_workbench_400_reviewed_62_approved_65_targets_72_immutable_proofs",
       "publication": "not_published",
       "status": "partial",
       "title": "Catalogue et calendrier",
-      "verified_source_commit": "96a20e917bee7cc56adf7c321bd36be3324fd5d6"
+      "verified_source_commit": "adf3e287d12699bdea9cc58a671543fd636accca"
     },
     {
       "automated_checks": "passed",
