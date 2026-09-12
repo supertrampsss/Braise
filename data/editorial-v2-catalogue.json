@@ -11,8 +11,8 @@
   "counts": {
     "selected": 400,
     "lexicalReviewed": 400,
-    "neighborhoodEvidenceReady": 54,
-    "approved": 54
+    "neighborhoodEvidenceReady": 62,
+    "approved": 62
   },
   "entries": [
     {
@@ -8180,16 +8180,286 @@
       },
       "word": "navire",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 657980,
+            "word": "navireà"
+          },
+          {
+            "id": 1490,
+            "word": "navires"
+          },
+          {
+            "id": 1836,
+            "word": "bateau"
+          },
+          {
+            "id": 12420,
+            "word": "paquebot"
+          },
+          {
+            "id": 8120,
+            "word": "croiseur"
+          },
+          {
+            "id": 13116,
+            "word": "voilier"
+          },
+          {
+            "id": 38345,
+            "word": "remorqueur"
+          },
+          {
+            "id": 100112,
+            "word": "chavire"
+          },
+          {
+            "id": 698086,
+            "word": "avire"
+          },
+          {
+            "id": 28435,
+            "word": "torpilleur"
+          },
+          {
+            "id": 8518,
+            "word": "frégate"
+          },
+          {
+            "id": 13341,
+            "word": "mâts"
+          },
+          {
+            "id": 9920,
+            "word": "cuirassé"
+          },
+          {
+            "id": 21978,
+            "word": "goélette"
+          },
+          {
+            "id": 47671,
+            "word": "appareille"
+          },
+          {
+            "id": 43478,
+            "word": "torpillé"
+          },
+          {
+            "id": 8458,
+            "word": "naufrage"
+          },
+          {
+            "id": 62976,
+            "word": "navigua"
+          },
+          {
+            "id": 36788,
+            "word": "remorqué"
+          },
+          {
+            "id": 35491,
+            "word": "sloop"
+          },
+          {
+            "id": 78138,
+            "word": "goélettes"
+          },
+          {
+            "id": 44771,
+            "word": "chalutier"
+          },
+          {
+            "id": 65014,
+            "word": "torpillage"
+          },
+          {
+            "id": 68670,
+            "word": "sabordage"
+          },
+          {
+            "id": 60945,
+            "word": "remorqueurs"
+          },
+          {
+            "id": 86151,
+            "word": "vraquier"
+          },
+          {
+            "id": 775277,
+            "word": "sabordages"
+          },
+          {
+            "id": 288947,
+            "word": "chavirement"
+          },
+          {
+            "id": 6395,
+            "word": "hms"
+          },
+          {
+            "id": 28807,
+            "word": "cargos"
+          },
+          {
+            "id": 4064,
+            "word": "bateaux"
+          },
+          {
+            "id": 37989,
+            "word": "naviguant"
+          },
+          {
+            "id": 59814,
+            "word": "baleinier"
+          },
+          {
+            "id": 576656,
+            "word": "torpillant"
+          },
+          {
+            "id": 114956,
+            "word": "arraisonné"
+          },
+          {
+            "id": 8794,
+            "word": "coulé"
+          },
+          {
+            "id": 73982,
+            "word": "mouilleur"
+          },
+          {
+            "id": 25950,
+            "word": "paquebots"
+          },
+          {
+            "id": 31253,
+            "word": "gréement"
+          },
+          {
+            "id": 25072,
+            "word": "navigue"
+          },
+          {
+            "id": 65497,
+            "word": "renfloué"
+          },
+          {
+            "id": 15068,
+            "word": "ship"
+          },
+          {
+            "id": 27111,
+            "word": "torpilleurs"
+          },
+          {
+            "id": 359285,
+            "word": "torpillée"
+          },
+          {
+            "id": 88929,
+            "word": "appareiller"
+          },
+          {
+            "id": 38930,
+            "word": "coula"
+          },
+          {
+            "id": 68934,
+            "word": "escorteur"
+          },
+          {
+            "id": 53330,
+            "word": "cotre"
+          },
+          {
+            "id": 250217,
+            "word": "torpilla"
+          },
+          {
+            "id": 20973,
+            "word": "cargaison"
+          },
+          {
+            "id": 43122,
+            "word": "bâbord"
+          },
+          {
+            "id": 64688,
+            "word": "accostage"
+          },
+          {
+            "id": 23255,
+            "word": "embarcation"
+          },
+          {
+            "id": 99370,
+            "word": "brigantin"
+          },
+          {
+            "id": 39051,
+            "word": "gouvernail"
+          },
+          {
+            "id": 250291,
+            "word": "appareilleur"
+          },
+          {
+            "id": 215290,
+            "word": "arraisonne"
+          },
+          {
+            "id": 121658,
+            "word": "temeraire"
+          },
+          {
+            "id": 207301,
+            "word": "torpillés"
+          },
+          {
+            "id": 15323,
+            "word": "destroyer"
+          },
+          {
+            "id": 84890,
+            "word": "naviguait"
+          },
+          {
+            "id": 38540,
+            "word": "tribord"
+          },
+          {
+            "id": 413612,
+            "word": "remorqua"
+          },
+          {
+            "id": 42501,
+            "word": "sabordé"
+          }
+        ],
+        "targetManifestSha256": "ba2f9dd137c877bb208597cfd163359b4d9d6e14e4ebf836a9c1c1d3a8f81305",
+        "evidenceSha256": "16b9e5261ec2098fe61b148dfb1a76da34a47d22fed89d8d599d9d5dad2bc416"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "cargaison",
+          "naufrage",
+          "gouvernail"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final retiennent contenu transporté, événement et équipement, trois associations concrètes et distinctes.",
+        "evidenceSha256": "16b9e5261ec2098fe61b148dfb1a76da34a47d22fed89d8d599d9d5dad2bc416"
+      }
     },
     {
       "targetId": 2147,
@@ -12209,16 +12479,286 @@
       },
       "word": "guitare",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 865426,
+            "word": "guitarebasse"
+          },
+          {
+            "id": 8041,
+            "word": "guitares"
+          },
+          {
+            "id": 888118,
+            "word": "chantguitare"
+          },
+          {
+            "id": 336175,
+            "word": "rguitare"
+          },
+          {
+            "id": 374762,
+            "word": "lguitare"
+          },
+          {
+            "id": 6285,
+            "word": "percussions"
+          },
+          {
+            "id": 23607,
+            "word": "mandoline"
+          },
+          {
+            "id": 17122,
+            "word": "harmonica"
+          },
+          {
+            "id": 627133,
+            "word": "laguitare"
+          },
+          {
+            "id": 873582,
+            "word": "guitarman"
+          },
+          {
+            "id": 12929,
+            "word": "contrebasse"
+          },
+          {
+            "id": 25183,
+            "word": "guitaristes"
+          },
+          {
+            "id": 5858,
+            "word": "claviers"
+          },
+          {
+            "id": 12567,
+            "word": "guitar"
+          },
+          {
+            "id": 527682,
+            "word": "guitarron"
+          },
+          {
+            "id": 1337,
+            "word": "chant"
+          },
+          {
+            "id": 146117,
+            "word": "guitarist"
+          },
+          {
+            "id": 310883,
+            "word": "guitarre"
+          },
+          {
+            "id": 3361,
+            "word": "guitariste"
+          },
+          {
+            "id": 52109,
+            "word": "guitars"
+          },
+          {
+            "id": 14914,
+            "word": "synthétiseur"
+          },
+          {
+            "id": 22627,
+            "word": "banjo"
+          },
+          {
+            "id": 2016,
+            "word": "batterie"
+          },
+          {
+            "id": 355975,
+            "word": "guitart"
+          },
+          {
+            "id": 39629,
+            "word": "vibraphone"
+          },
+          {
+            "id": 993407,
+            "word": "classicguitare"
+          },
+          {
+            "id": 7946,
+            "word": "saxophone"
+          },
+          {
+            "id": 215781,
+            "word": "mandoloncelle"
+          },
+          {
+            "id": 318655,
+            "word": "guitaristique"
+          },
+          {
+            "id": 21727,
+            "word": "synthétiseurs"
+          },
+          {
+            "id": 120330,
+            "word": "mélodica"
+          },
+          {
+            "id": 5100,
+            "word": "chœurs"
+          },
+          {
+            "id": 60372,
+            "word": "mellotron"
+          },
+          {
+            "id": 324789,
+            "word": "guitarists"
+          },
+          {
+            "id": 176953,
+            "word": "autoharpe"
+          },
+          {
+            "id": 146737,
+            "word": "mandolin"
+          },
+          {
+            "id": 819248,
+            "word": "mandolinen"
+          },
+          {
+            "id": 159574,
+            "word": "clavieriste"
+          },
+          {
+            "id": 7198,
+            "word": "bassiste"
+          },
+          {
+            "id": 13384,
+            "word": "accordéon"
+          },
+          {
+            "id": 538139,
+            "word": "guitaristiques"
+          },
+          {
+            "id": 75075,
+            "word": "contrebasses"
+          },
+          {
+            "id": 112527,
+            "word": "mandolines"
+          },
+          {
+            "id": 674482,
+            "word": "vguitar"
+          },
+          {
+            "id": 23951,
+            "word": "percussionniste"
+          },
+          {
+            "id": 108072,
+            "word": "fretless"
+          },
+          {
+            "id": 436077,
+            "word": "guitarras"
+          },
+          {
+            "id": 189694,
+            "word": "contrebassistes"
+          },
+          {
+            "id": 474286,
+            "word": "autoharp"
+          },
+          {
+            "id": 62025,
+            "word": "percussionnistes"
+          },
+          {
+            "id": 8861,
+            "word": "rythmique"
+          },
+          {
+            "id": 27830,
+            "word": "vocals"
+          },
+          {
+            "id": 1303,
+            "word": "piano"
+          },
+          {
+            "id": 22456,
+            "word": "claviériste"
+          },
+          {
+            "id": 3223,
+            "word": "violon"
+          },
+          {
+            "id": 5487,
+            "word": "batteur"
+          },
+          {
+            "id": 651596,
+            "word": "mandolina"
+          },
+          {
+            "id": 24538,
+            "word": "contrebassiste"
+          },
+          {
+            "id": 108649,
+            "word": "clavinet"
+          },
+          {
+            "id": 135398,
+            "word": "mandoliniste"
+          },
+          {
+            "id": 826772,
+            "word": "clavié"
+          },
+          {
+            "id": 229346,
+            "word": "percussif"
+          },
+          {
+            "id": 9441,
+            "word": "clarinette"
+          },
+          {
+            "id": 15794,
+            "word": "trombone"
+          }
+        ],
+        "targetManifestSha256": "0986117bfa1039d91f2d8c74931150b32900a99ec365831590a06ea6c27281f9",
+        "evidenceSha256": "c303b406e4d4d196fbdc62bfccd17362f7d38fbbe69d0f8027dea6c5bd079201"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "chant",
+          "batterie",
+          "rythmique"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final valident voix, instrument d'accompagnement et dimension musicale, sans dérivé de la cible.",
+        "evidenceSha256": "c303b406e4d4d196fbdc62bfccd17362f7d38fbbe69d0f8027dea6c5bd079201"
+      }
     },
     {
       "targetId": 2196,
@@ -18095,16 +18635,286 @@
       },
       "word": "lune",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 8728,
+            "word": "lunaire"
+          },
+          {
+            "id": 21793,
+            "word": "lunaires"
+          },
+          {
+            "id": 19795,
+            "word": "lunes"
+          },
+          {
+            "id": 715150,
+            "word": "cislunaire"
+          },
+          {
+            "id": 187348,
+            "word": "lunaison"
+          },
+          {
+            "id": 41011,
+            "word": "phobos"
+          },
+          {
+            "id": 830058,
+            "word": "périlune"
+          },
+          {
+            "id": 24236,
+            "word": "astres"
+          },
+          {
+            "id": 14032,
+            "word": "saturne"
+          },
+          {
+            "id": 930070,
+            "word": "illunaire"
+          },
+          {
+            "id": 217903,
+            "word": "sublunaire"
+          },
+          {
+            "id": 205530,
+            "word": "lunaisons"
+          },
+          {
+            "id": 1344,
+            "word": "soleil"
+          },
+          {
+            "id": 32269,
+            "word": "martienne"
+          },
+          {
+            "id": 986805,
+            "word": "aralunaires"
+          },
+          {
+            "id": 928733,
+            "word": "orbitera"
+          },
+          {
+            "id": 412087,
+            "word": "orbité"
+          },
+          {
+            "id": 372462,
+            "word": "translunaire"
+          },
+          {
+            "id": 21009,
+            "word": "astre"
+          },
+          {
+            "id": 334137,
+            "word": "supralunaire"
+          },
+          {
+            "id": 381105,
+            "word": "orbiterait"
+          },
+          {
+            "id": 318631,
+            "word": "circumlunaire"
+          },
+          {
+            "id": 27845,
+            "word": "martien"
+          },
+          {
+            "id": 12055,
+            "word": "éclipse"
+          },
+          {
+            "id": 48912,
+            "word": "interplanétaire"
+          },
+          {
+            "id": 149585,
+            "word": "tærre"
+          },
+          {
+            "id": 652629,
+            "word": "lunesse"
+          },
+          {
+            "id": 603595,
+            "word": "sublunaires"
+          },
+          {
+            "id": 34631,
+            "word": "éclipses"
+          },
+          {
+            "id": 656376,
+            "word": "lunaise"
+          },
+          {
+            "id": 6144,
+            "word": "vénus"
+          },
+          {
+            "id": 10900,
+            "word": "comète"
+          },
+          {
+            "id": 21805,
+            "word": "uranus"
+          },
+          {
+            "id": 422301,
+            "word": "alunir"
+          },
+          {
+            "id": 35661,
+            "word": "orbiter"
+          },
+          {
+            "id": 792720,
+            "word": "planétes"
+          },
+          {
+            "id": 131967,
+            "word": "planétoïde"
+          },
+          {
+            "id": 2069,
+            "word": "planète"
+          },
+          {
+            "id": 67335,
+            "word": "martiennes"
+          },
+          {
+            "id": 148886,
+            "word": "héliosphère"
+          },
+          {
+            "id": 33561,
+            "word": "martiens"
+          },
+          {
+            "id": 91676,
+            "word": "orbitent"
+          },
+          {
+            "id": 578589,
+            "word": "nuitosphère"
+          },
+          {
+            "id": 396559,
+            "word": "planéte"
+          },
+          {
+            "id": 6466,
+            "word": "jupiter"
+          },
+          {
+            "id": 449641,
+            "word": "photométéore"
+          },
+          {
+            "id": 979706,
+            "word": "orbiters"
+          },
+          {
+            "id": 243613,
+            "word": "vénusiens"
+          },
+          {
+            "id": 132815,
+            "word": "lunain"
+          },
+          {
+            "id": 82326,
+            "word": "interplanétaires"
+          },
+          {
+            "id": 108329,
+            "word": "vénusienne"
+          },
+          {
+            "id": 448655,
+            "word": "seaorbiter"
+          },
+          {
+            "id": 68922,
+            "word": "sidéral"
+          },
+          {
+            "id": 54113,
+            "word": "équinoxes"
+          },
+          {
+            "id": 683098,
+            "word": "aluni"
+          },
+          {
+            "id": 919844,
+            "word": "alunit"
+          },
+          {
+            "id": 117519,
+            "word": "déimos"
+          },
+          {
+            "id": 18001,
+            "word": "pluton"
+          },
+          {
+            "id": 867719,
+            "word": "circumplanétaire"
+          },
+          {
+            "id": 302452,
+            "word": "sélénographie"
+          },
+          {
+            "id": 508927,
+            "word": "lunisolaire"
+          },
+          {
+            "id": 52061,
+            "word": "orbitant"
+          },
+          {
+            "id": 130348,
+            "word": "phœbé"
+          },
+          {
+            "id": 90936,
+            "word": "sidérale"
+          }
+        ],
+        "targetManifestSha256": "3de430bab8adacd116a3702bcc9b251810b6e4ef9d1d23cd654f8368d183a8f2",
+        "evidenceSha256": "0244364b0ffebac7041c10de35865f1362216f32bf946d24bcc37ca4632324a3"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "soleil",
+          "éclipse",
+          "planète"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final valident trois associations astronomiques familières, distinctes et non dérivées de la cible.",
+        "evidenceSha256": "0244364b0ffebac7041c10de35865f1362216f32bf946d24bcc37ca4632324a3"
+      }
     },
     {
       "targetId": 2447,
@@ -18233,16 +19043,286 @@
       },
       "word": "chien",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 5411,
+            "word": "chiens"
+          },
+          {
+            "id": 33840,
+            "word": "chienne"
+          },
+          {
+            "id": 59901,
+            "word": "chiot"
+          },
+          {
+            "id": 3260,
+            "word": "chat"
+          },
+          {
+            "id": 82525,
+            "word": "dogue"
+          },
+          {
+            "id": 96714,
+            "word": "canidé"
+          },
+          {
+            "id": 8311,
+            "word": "lapin"
+          },
+          {
+            "id": 113355,
+            "word": "aboie"
+          },
+          {
+            "id": 89060,
+            "word": "caniche"
+          },
+          {
+            "id": 57351,
+            "word": "canin"
+          },
+          {
+            "id": 869144,
+            "word": "chienn"
+          },
+          {
+            "id": 578975,
+            "word": "chient"
+          },
+          {
+            "id": 72553,
+            "word": "bouledogue"
+          },
+          {
+            "id": 92214,
+            "word": "molosse"
+          },
+          {
+            "id": 13640,
+            "word": "cochon"
+          },
+          {
+            "id": 44644,
+            "word": "lévrier"
+          },
+          {
+            "id": 8301,
+            "word": "chats"
+          },
+          {
+            "id": 167723,
+            "word": "molossoïde"
+          },
+          {
+            "id": 75288,
+            "word": "épagneul"
+          },
+          {
+            "id": 83854,
+            "word": "retriever"
+          },
+          {
+            "id": 143094,
+            "word": "aboiement"
+          },
+          {
+            "id": 38700,
+            "word": "canine"
+          },
+          {
+            "id": 39148,
+            "word": "hound"
+          },
+          {
+            "id": 885041,
+            "word": "aboies"
+          },
+          {
+            "id": 60108,
+            "word": "chiots"
+          },
+          {
+            "id": 15386,
+            "word": "lièvre"
+          },
+          {
+            "id": 660144,
+            "word": "chienis"
+          },
+          {
+            "id": 15587,
+            "word": "terrier"
+          },
+          {
+            "id": 36458,
+            "word": "blaireau"
+          },
+          {
+            "id": 407601,
+            "word": "coonhound"
+          },
+          {
+            "id": 183637,
+            "word": "épagneuls"
+          },
+          {
+            "id": 16597,
+            "word": "troupeau"
+          },
+          {
+            "id": 613928,
+            "word": "chienes"
+          },
+          {
+            "id": 980972,
+            "word": "chienné"
+          },
+          {
+            "id": 199935,
+            "word": "lupoïde"
+          },
+          {
+            "id": 286515,
+            "word": "chieng"
+          },
+          {
+            "id": 159097,
+            "word": "viverrin"
+          },
+          {
+            "id": 8802,
+            "word": "dog"
+          },
+          {
+            "id": 10045,
+            "word": "poil"
+          },
+          {
+            "id": 25533,
+            "word": "félin"
+          },
+          {
+            "id": 221428,
+            "word": "retrievers"
+          },
+          {
+            "id": 17531,
+            "word": "poney"
+          },
+          {
+            "id": 17181,
+            "word": "sanglier"
+          },
+          {
+            "id": 267688,
+            "word": "malamute"
+          },
+          {
+            "id": 142178,
+            "word": "teckel"
+          },
+          {
+            "id": 64374,
+            "word": "canidés"
+          },
+          {
+            "id": 427900,
+            "word": "grogneur"
+          },
+          {
+            "id": 567648,
+            "word": "cyno"
+          },
+          {
+            "id": 2453,
+            "word": "animal"
+          },
+          {
+            "id": 83808,
+            "word": "cynologique"
+          },
+          {
+            "id": 11134,
+            "word": "âne"
+          },
+          {
+            "id": 177823,
+            "word": "braccoïde"
+          },
+          {
+            "id": 50469,
+            "word": "belette"
+          },
+          {
+            "id": 29354,
+            "word": "canis"
+          },
+          {
+            "id": 124260,
+            "word": "aboiements"
+          },
+          {
+            "id": 203452,
+            "word": "schnauzer"
+          },
+          {
+            "id": 6270,
+            "word": "renard"
+          },
+          {
+            "id": 45328,
+            "word": "anthropomorphe"
+          },
+          {
+            "id": 83370,
+            "word": "chiennes"
+          },
+          {
+            "id": 4944,
+            "word": "berger"
+          },
+          {
+            "id": 247503,
+            "word": "barzoï"
+          },
+          {
+            "id": 248140,
+            "word": "bouledogues"
+          },
+          {
+            "id": 216920,
+            "word": "graïoïde"
+          },
+          {
+            "id": 526906,
+            "word": "glapit"
+          }
+        ],
+        "targetManifestSha256": "a25e8214a2fc596c9adf3936e5d75ab4a292b3da3a3d53ae48c5212de4d455f0",
+        "evidenceSha256": "edce4b116370e7d2fbac98e5e815847e41e476767cbec780846d061fa73d93c3"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "chat",
+          "aboiement",
+          "poil"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final retiennent animal voisin, manifestation sonore et caractéristique physique, trois accès concrets et distincts.",
+        "evidenceSha256": "edce4b116370e7d2fbac98e5e815847e41e476767cbec780846d061fa73d93c3"
+      }
     },
     {
       "targetId": 2543,
@@ -18425,16 +19505,286 @@
       },
       "word": "neige",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 814385,
+            "word": "neigea"
+          },
+          {
+            "id": 805758,
+            "word": "neigel"
+          },
+          {
+            "id": 51000,
+            "word": "neigeux"
+          },
+          {
+            "id": 3609,
+            "word": "pluie"
+          },
+          {
+            "id": 87711,
+            "word": "neigeuse"
+          },
+          {
+            "id": 115166,
+            "word": "neigeuses"
+          },
+          {
+            "id": 156663,
+            "word": "verglaçante"
+          },
+          {
+            "id": 73691,
+            "word": "neiger"
+          },
+          {
+            "id": 12911,
+            "word": "brouillard"
+          },
+          {
+            "id": 989602,
+            "word": "neigert"
+          },
+          {
+            "id": 9928,
+            "word": "neiges"
+          },
+          {
+            "id": 63231,
+            "word": "enneigées"
+          },
+          {
+            "id": 68266,
+            "word": "enneigée"
+          },
+          {
+            "id": 57993,
+            "word": "enneigé"
+          },
+          {
+            "id": 406170,
+            "word": "verglaçantes"
+          },
+          {
+            "id": 347227,
+            "word": "verglacée"
+          },
+          {
+            "id": 705766,
+            "word": "enneigements"
+          },
+          {
+            "id": 68184,
+            "word": "enneigés"
+          },
+          {
+            "id": 46526,
+            "word": "enneigement"
+          },
+          {
+            "id": 185832,
+            "word": "enneigeurs"
+          },
+          {
+            "id": 876688,
+            "word": "neigeos"
+          },
+          {
+            "id": 57221,
+            "word": "verglas"
+          },
+          {
+            "id": 920763,
+            "word": "enneigeable"
+          },
+          {
+            "id": 714372,
+            "word": "verglacés"
+          },
+          {
+            "id": 537536,
+            "word": "neigre"
+          },
+          {
+            "id": 729736,
+            "word": "déneigeuse"
+          },
+          {
+            "id": 731173,
+            "word": "interneige"
+          },
+          {
+            "id": 499865,
+            "word": "verglacé"
+          },
+          {
+            "id": 361393,
+            "word": "neigeait"
+          },
+          {
+            "id": 804972,
+            "word": "enneigeables"
+          },
+          {
+            "id": 377445,
+            "word": "neigem"
+          },
+          {
+            "id": 648810,
+            "word": "deneige"
+          },
+          {
+            "id": 973307,
+            "word": "neigera"
+          },
+          {
+            "id": 400470,
+            "word": "maneige"
+          },
+          {
+            "id": 339086,
+            "word": "verglacées"
+          },
+          {
+            "id": 6471,
+            "word": "précipitations"
+          },
+          {
+            "id": 314410,
+            "word": "congère"
+          },
+          {
+            "id": 49219,
+            "word": "flocons"
+          },
+          {
+            "id": 99127,
+            "word": "poudreuse"
+          },
+          {
+            "id": 966631,
+            "word": "neigezug"
+          },
+          {
+            "id": 752277,
+            "word": "enneigeur"
+          },
+          {
+            "id": 158721,
+            "word": "neigé"
+          },
+          {
+            "id": 56180,
+            "word": "brouillards"
+          },
+          {
+            "id": 11043,
+            "word": "orage"
+          },
+          {
+            "id": 851528,
+            "word": "laneige"
+          },
+          {
+            "id": 49907,
+            "word": "givre"
+          },
+          {
+            "id": 732218,
+            "word": "florineige"
+          },
+          {
+            "id": 553469,
+            "word": "avalancheux"
+          },
+          {
+            "id": 34742,
+            "word": "hivernales"
+          },
+          {
+            "id": 81755,
+            "word": "déneigement"
+          },
+          {
+            "id": 94203,
+            "word": "bourrasques"
+          },
+          {
+            "id": 183277,
+            "word": "snowkite"
+          },
+          {
+            "id": 120326,
+            "word": "congères"
+          },
+          {
+            "id": 55587,
+            "word": "nuageux"
+          },
+          {
+            "id": 145241,
+            "word": "grésil"
+          },
+          {
+            "id": 10825,
+            "word": "snow"
+          },
+          {
+            "id": 26275,
+            "word": "pluvieux"
+          },
+          {
+            "id": 56404,
+            "word": "averses"
+          },
+          {
+            "id": 594724,
+            "word": "snowglobe"
+          },
+          {
+            "id": 8359,
+            "word": "pluies"
+          },
+          {
+            "id": 720305,
+            "word": "avalancheuse"
+          },
+          {
+            "id": 29405,
+            "word": "banquise"
+          },
+          {
+            "id": 54677,
+            "word": "flocon"
+          },
+          {
+            "id": 13072,
+            "word": "hivers"
+          }
+        ],
+        "targetManifestSha256": "3f52df0564c2a4fe4c292fce47bf242a8d05090d83efc833672973f49993d52e",
+        "evidenceSha256": "effeda80ae37344633deb973886e02330ef383a3b1830f41104fb1011b1f30d7"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "verglas",
+          "flocons",
+          "banquise"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final valident trois associations hivernales familières et distinctes parmi un voisinage riche en dérivés.",
+        "evidenceSha256": "effeda80ae37344633deb973886e02330ef383a3b1830f41104fb1011b1f30d7"
+      }
     },
     {
       "targetId": 3170,
@@ -18663,16 +20013,286 @@
       },
       "word": "pluie",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 8359,
+            "word": "pluies"
+          },
+          {
+            "id": 3162,
+            "word": "neige"
+          },
+          {
+            "id": 11043,
+            "word": "orage"
+          },
+          {
+            "id": 706190,
+            "word": "pluieurs"
+          },
+          {
+            "id": 6471,
+            "word": "précipitations"
+          },
+          {
+            "id": 12911,
+            "word": "brouillard"
+          },
+          {
+            "id": 156663,
+            "word": "verglaçante"
+          },
+          {
+            "id": 72346,
+            "word": "diluviennes"
+          },
+          {
+            "id": 406170,
+            "word": "verglaçantes"
+          },
+          {
+            "id": 170137,
+            "word": "diluvienne"
+          },
+          {
+            "id": 8619,
+            "word": "humidité"
+          },
+          {
+            "id": 55587,
+            "word": "nuageux"
+          },
+          {
+            "id": 27556,
+            "word": "pleut"
+          },
+          {
+            "id": 585065,
+            "word": "coprécipitation"
+          },
+          {
+            "id": 26275,
+            "word": "pluvieux"
+          },
+          {
+            "id": 51857,
+            "word": "torrentielles"
+          },
+          {
+            "id": 93704,
+            "word": "torrentielle"
+          },
+          {
+            "id": 15401,
+            "word": "orages"
+          },
+          {
+            "id": 63374,
+            "word": "averse"
+          },
+          {
+            "id": 519257,
+            "word": "diluviens"
+          },
+          {
+            "id": 58616,
+            "word": "pluvieuses"
+          },
+          {
+            "id": 24683,
+            "word": "précipitation"
+          },
+          {
+            "id": 56404,
+            "word": "averses"
+          },
+          {
+            "id": 117739,
+            "word": "grêlons"
+          },
+          {
+            "id": 56996,
+            "word": "pluvieuse"
+          },
+          {
+            "id": 94203,
+            "word": "bourrasques"
+          },
+          {
+            "id": 733994,
+            "word": "précipitateur"
+          },
+          {
+            "id": 13353,
+            "word": "boue"
+          },
+          {
+            "id": 475686,
+            "word": "humidités"
+          },
+          {
+            "id": 31043,
+            "word": "ruissellement"
+          },
+          {
+            "id": 487331,
+            "word": "diluvien"
+          },
+          {
+            "id": 452296,
+            "word": "précipitable"
+          },
+          {
+            "id": 46806,
+            "word": "orageux"
+          },
+          {
+            "id": 56180,
+            "word": "brouillards"
+          },
+          {
+            "id": 2122,
+            "word": "vent"
+          },
+          {
+            "id": 59129,
+            "word": "pleuvoir"
+          },
+          {
+            "id": 115166,
+            "word": "neigeuses"
+          },
+          {
+            "id": 308498,
+            "word": "grêlon"
+          },
+          {
+            "id": 142522,
+            "word": "ruisselle"
+          },
+          {
+            "id": 969624,
+            "word": "pluit"
+          },
+          {
+            "id": 10972,
+            "word": "poussière"
+          },
+          {
+            "id": 347227,
+            "word": "verglacée"
+          },
+          {
+            "id": 150135,
+            "word": "ruissellements"
+          },
+          {
+            "id": 778164,
+            "word": "luie"
+          },
+          {
+            "id": 20490,
+            "word": "grêle"
+          },
+          {
+            "id": 8491,
+            "word": "nuages"
+          },
+          {
+            "id": 608167,
+            "word": "ensoleillements"
+          },
+          {
+            "id": 51000,
+            "word": "neigeux"
+          },
+          {
+            "id": 58303,
+            "word": "ensoleillée"
+          },
+          {
+            "id": 308527,
+            "word": "humidite"
+          },
+          {
+            "id": 703278,
+            "word": "pluvia"
+          },
+          {
+            "id": 37130,
+            "word": "ensoleillé"
+          },
+          {
+            "id": 714372,
+            "word": "verglacés"
+          },
+          {
+            "id": 469214,
+            "word": "ruisselante"
+          },
+          {
+            "id": 507763,
+            "word": "ruisselantes"
+          },
+          {
+            "id": 821606,
+            "word": "ensoleille"
+          },
+          {
+            "id": 129988,
+            "word": "bruine"
+          },
+          {
+            "id": 20501,
+            "word": "ensoleillement"
+          },
+          {
+            "id": 871700,
+            "word": "poussièreuse"
+          },
+          {
+            "id": 436624,
+            "word": "pluvis"
+          },
+          {
+            "id": 60376,
+            "word": "battante"
+          },
+          {
+            "id": 339086,
+            "word": "verglacées"
+          },
+          {
+            "id": 15175,
+            "word": "tempêtes"
+          },
+          {
+            "id": 499865,
+            "word": "verglacé"
+          }
+        ],
+        "targetManifestSha256": "53ce13d667d0d93dc3b75bdb3130c3d2d156e30858ddddc5baa0b568b7f42fdd",
+        "evidenceSha256": "946a672cbea4aab0f555497fb187f3cbe7a0920023d4c4c2f62e0ebaef0022a9"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "orage",
+          "humidité",
+          "ruissellement"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final retiennent phénomène associé, état et écoulement, trois indices accessibles et complémentaires.",
+        "evidenceSha256": "946a672cbea4aab0f555497fb187f3cbe7a0920023d4c4c2f62e0ebaef0022a9"
+      }
     },
     {
       "targetId": 3830,
@@ -22149,16 +23769,286 @@
       },
       "word": "épée",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 7639,
+            "word": "sabre"
+          },
+          {
+            "id": 57130,
+            "word": "epée"
+          },
+          {
+            "id": 696396,
+            "word": "épéefleuretsabre"
+          },
+          {
+            "id": 16435,
+            "word": "épées"
+          },
+          {
+            "id": 35432,
+            "word": "dague"
+          },
+          {
+            "id": 527048,
+            "word": "épéefleuret"
+          },
+          {
+            "id": 26411,
+            "word": "poignard"
+          },
+          {
+            "id": 78762,
+            "word": "hallebarde"
+          },
+          {
+            "id": 29586,
+            "word": "glaive"
+          },
+          {
+            "id": 10392,
+            "word": "armure"
+          },
+          {
+            "id": 14480,
+            "word": "hache"
+          },
+          {
+            "id": 76513,
+            "word": "estoc"
+          },
+          {
+            "id": 74988,
+            "word": "tranchante"
+          },
+          {
+            "id": 22303,
+            "word": "tranchant"
+          },
+          {
+            "id": 41603,
+            "word": "épéiste"
+          },
+          {
+            "id": 35209,
+            "word": "arbalète"
+          },
+          {
+            "id": 473074,
+            "word": "dégainée"
+          },
+          {
+            "id": 2091,
+            "word": "arme"
+          },
+          {
+            "id": 150787,
+            "word": "épéistes"
+          },
+          {
+            "id": 453112,
+            "word": "dégaina"
+          },
+          {
+            "id": 128110,
+            "word": "hallebardes"
+          },
+          {
+            "id": 88124,
+            "word": "dagues"
+          },
+          {
+            "id": 67374,
+            "word": "tranchants"
+          },
+          {
+            "id": 39898,
+            "word": "fourreau"
+          },
+          {
+            "id": 15932,
+            "word": "fleuret"
+          },
+          {
+            "id": 103050,
+            "word": "gantelet"
+          },
+          {
+            "id": 180105,
+            "word": "transpercée"
+          },
+          {
+            "id": 38704,
+            "word": "katana"
+          },
+          {
+            "id": 46388,
+            "word": "heaume"
+          },
+          {
+            "id": 311430,
+            "word": "dégainant"
+          },
+          {
+            "id": 958997,
+            "word": "escrimer"
+          },
+          {
+            "id": 75081,
+            "word": "transpercer"
+          },
+          {
+            "id": 92626,
+            "word": "arbalètes"
+          },
+          {
+            "id": 7993,
+            "word": "lame"
+          },
+          {
+            "id": 114406,
+            "word": "nunchaku"
+          },
+          {
+            "id": 73183,
+            "word": "transpercé"
+          },
+          {
+            "id": 65466,
+            "word": "transperce"
+          },
+          {
+            "id": 25349,
+            "word": "sceptre"
+          },
+          {
+            "id": 979606,
+            "word": "épéeordre"
+          },
+          {
+            "id": 20390,
+            "word": "sword"
+          },
+          {
+            "id": 375190,
+            "word": "nunchakus"
+          },
+          {
+            "id": 164504,
+            "word": "gantelets"
+          },
+          {
+            "id": 773819,
+            "word": "escrima"
+          },
+          {
+            "id": 213216,
+            "word": "transperça"
+          },
+          {
+            "id": 10238,
+            "word": "couteau"
+          },
+          {
+            "id": 11489,
+            "word": "poing"
+          },
+          {
+            "id": 53990,
+            "word": "poignards"
+          },
+          {
+            "id": 204640,
+            "word": "gantée"
+          },
+          {
+            "id": 235540,
+            "word": "dégainé"
+          },
+          {
+            "id": 86585,
+            "word": "estocade"
+          },
+          {
+            "id": 133213,
+            "word": "transperçant"
+          },
+          {
+            "id": 96256,
+            "word": "rapière"
+          },
+          {
+            "id": 9744,
+            "word": "marteau"
+          },
+          {
+            "id": 326350,
+            "word": "transpercera"
+          },
+          {
+            "id": 746941,
+            "word": "désarçonnée"
+          },
+          {
+            "id": 157501,
+            "word": "poignardant"
+          },
+          {
+            "id": 230008,
+            "word": "scramasaxe"
+          },
+          {
+            "id": 535824,
+            "word": "dégainage"
+          },
+          {
+            "id": 398257,
+            "word": "reforgée"
+          },
+          {
+            "id": 116141,
+            "word": "cimeterre"
+          },
+          {
+            "id": 8512,
+            "word": "pistolet"
+          },
+          {
+            "id": 181926,
+            "word": "sabreuse"
+          },
+          {
+            "id": 59472,
+            "word": "brandit"
+          },
+          {
+            "id": 430366,
+            "word": "shurikenjutsu"
+          }
+        ],
+        "targetManifestSha256": "b03baa05cf3d0752471115547763d27333ec7a911bd93924275ffcf720d9a961",
+        "evidenceSha256": "a1a147934a3860dd14c8487d88deda8b09ab5f16c911831a15be1655e06f8a02"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "armure",
+          "lame",
+          "fourreau"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Deux relectures indépendantes et l'arbitrage final valident protection associée, partie constitutive et étui, trois indices immédiatement compréhensibles.",
+        "evidenceSha256": "a1a147934a3860dd14c8487d88deda8b09ab5f16c911831a15be1655e06f8a02"
+      }
     },
     {
       "targetId": 4133,
@@ -22748,16 +24638,286 @@
       },
       "word": "moto",
       "lexicalStatus": "agent-reviewed",
-      "numericalStatus": "not-prepared",
+      "numericalStatus": "verified-archived-evidence",
       "neighborhood": {
-        "status": "not-measured",
-        "neighbors": []
+        "status": "reviewed-approved",
+        "neighbors": [
+          {
+            "id": 28264,
+            "word": "motocycliste"
+          },
+          {
+            "id": 76323,
+            "word": "motocyclisme"
+          },
+          {
+            "id": 74650,
+            "word": "motocycle"
+          },
+          {
+            "id": 76653,
+            "word": "motocyclistes"
+          },
+          {
+            "id": 18354,
+            "word": "motogp"
+          },
+          {
+            "id": 18928,
+            "word": "motos"
+          },
+          {
+            "id": 23106,
+            "word": "motocyclette"
+          },
+          {
+            "id": 801806,
+            "word": "motocyliste"
+          },
+          {
+            "id": 34250,
+            "word": "motocross"
+          },
+          {
+            "id": 416666,
+            "word": "motocrossmx"
+          },
+          {
+            "id": 343008,
+            "word": "motorbike"
+          },
+          {
+            "id": 45778,
+            "word": "motocyclettes"
+          },
+          {
+            "id": 488873,
+            "word": "motoc"
+          },
+          {
+            "id": 116806,
+            "word": "motocycles"
+          },
+          {
+            "id": 36885,
+            "word": "superbike"
+          },
+          {
+            "id": 41353,
+            "word": "motard"
+          },
+          {
+            "id": 818949,
+            "word": "voituret"
+          },
+          {
+            "id": 559025,
+            "word": "motosport"
+          },
+          {
+            "id": 1234,
+            "word": "automobile"
+          },
+          {
+            "id": 957364,
+            "word": "motocyclettiste"
+          },
+          {
+            "id": 450270,
+            "word": "superbikes"
+          },
+          {
+            "id": 722965,
+            "word": "superbiker"
+          },
+          {
+            "id": 782612,
+            "word": "utomobile"
+          },
+          {
+            "id": 372050,
+            "word": "moton"
+          },
+          {
+            "id": 855650,
+            "word": "hoverbike"
+          },
+          {
+            "id": 643634,
+            "word": "automobilepilote"
+          },
+          {
+            "id": 154012,
+            "word": "supermotard"
+          },
+          {
+            "id": 85030,
+            "word": "cyclomoteur"
+          },
+          {
+            "id": 677891,
+            "word": "overbike"
+          },
+          {
+            "id": 1012590,
+            "word": "motocrossed"
+          },
+          {
+            "id": 408033,
+            "word": "motobi"
+          },
+          {
+            "id": 800807,
+            "word": "motoclub"
+          },
+          {
+            "id": 619036,
+            "word": "monocycliste"
+          },
+          {
+            "id": 87756,
+            "word": "voiturette"
+          },
+          {
+            "id": 805407,
+            "word": "supermotards"
+          },
+          {
+            "id": 1797,
+            "word": "voiture"
+          },
+          {
+            "id": 590900,
+            "word": "motoball"
+          },
+          {
+            "id": 789398,
+            "word": "automobiel"
+          },
+          {
+            "id": 293591,
+            "word": "motarde"
+          },
+          {
+            "id": 55479,
+            "word": "voiturettes"
+          },
+          {
+            "id": 44054,
+            "word": "enduro"
+          },
+          {
+            "id": 102882,
+            "word": "motonautisme"
+          },
+          {
+            "id": 748146,
+            "word": "motojet"
+          },
+          {
+            "id": 151347,
+            "word": "capirossi"
+          },
+          {
+            "id": 84432,
+            "word": "cyclomoteurs"
+          },
+          {
+            "id": 853082,
+            "word": "motoei"
+          },
+          {
+            "id": 650587,
+            "word": "motosacoche"
+          },
+          {
+            "id": 303068,
+            "word": "automobilia"
+          },
+          {
+            "id": 119918,
+            "word": "speedcar"
+          },
+          {
+            "id": 929864,
+            "word": "cyberbike"
+          },
+          {
+            "id": 113358,
+            "word": "automobili"
+          },
+          {
+            "id": 157956,
+            "word": "vélomobile"
+          },
+          {
+            "id": 909284,
+            "word": "motopilote"
+          },
+          {
+            "id": 850722,
+            "word": "motorazr"
+          },
+          {
+            "id": 155161,
+            "word": "automobil"
+          },
+          {
+            "id": 598123,
+            "word": "motogodille"
+          },
+          {
+            "id": 28528,
+            "word": "karting"
+          },
+          {
+            "id": 757935,
+            "word": "motono"
+          },
+          {
+            "id": 264199,
+            "word": "motordu"
+          },
+          {
+            "id": 40127,
+            "word": "ducati"
+          },
+          {
+            "id": 437785,
+            "word": "motorcyclist"
+          },
+          {
+            "id": 983030,
+            "word": "motodrone"
+          },
+          {
+            "id": 183160,
+            "word": "supermoto"
+          },
+          {
+            "id": 248338,
+            "word": "motorland"
+          }
+        ],
+        "targetManifestSha256": "21a7b8285c9f610a99aea18c2522d147c8698abf16ee05006525d6f5ca318b28",
+        "evidenceSha256": "1ac6e7cd4f8a36e0d21920e486d510420072c2b53f4d11a64ca81a1d3a2ca1c4"
       },
       "hints": {
-        "status": "not-reviewed",
-        "words": []
+        "status": "reviewed",
+        "words": [
+          "voiture",
+          "cyclomoteur",
+          "karting"
+        ]
       },
-      "approval": "pending"
+      "approval": "approved-agent",
+      "approvalReview": {
+        "actor": "astra-b2j-independent-review-with-max-arbitration",
+        "kind": "agent",
+        "reviewedAt": "2026-09-12T09:20:00.000Z",
+        "rationale": "Après désaccord des deux relectures, l'arbitrage final retient trois associations motorisées familières et distinctes qui évitent les dérivés, variantes et marques dominant le voisinage.",
+        "evidenceSha256": "1ac6e7cd4f8a36e0d21920e486d510420072c2b53f4d11a64ca81a1d3a2ca1c4"
+      }
     },
     {
       "targetId": 3646,

@@ -1,6 +1,6 @@
 # Données nécessaires au miroir GitHub
 
-Le dépôt public `supertrampsss/Braise` contient un instantané du code applicatif, des tests, des dossiers éditoriaux et de la documentation de la source Sites `5f349c1f1eaf0dc114bc85cbfa9a4fe3c69e23da`.
+Le dépôt public `supertrampsss/Braise` contient un instantané du code applicatif, des tests, des dossiers éditoriaux et de la documentation. La restauration réelle et la rotation B2j sont liées à la source Sites `adf3e287d12699bdea9cc58a671543fd636accca`.
 
 **Un clone GitHub seul ne permet pas encore de construire le jeu.** Le transfert des données n'est pas complet. Les éléments suivants n'ont pas été copiés :
 
@@ -12,6 +12,6 @@ Le contrôle de publication de cette session a refusé l'envoi des fichiers comp
 
 Pour une construction reproductible, il faut obtenir la source V1 exacte par une voie autorisée et contrôler son SHA-256 : `7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16`. `npm run build` peut ensuite recréer les fragments et l'export. Le générateur Python ne garantit pas à lui seul des octets identiques ; ne jamais modifier l'empreinte historique pour accepter un résultat différent. La régénération de l'oracle historique exige aussi le commit `85b05a71cba67b3283e1a19a1745d2d90570bcd2`, absent de ce miroir instantané.
 
-Le corpus V2 complet et ses fichiers de calcul locaux ne font pas partie du transfert GitHub et ne sont pas activés sur le Site. Les preuves éditoriales versionnées ne sont pas une copie des colonnes numériques nécessaires au fonctionnement V2.
+Le corpus V2 complet de 1 013 881 mots a été restauré et vérifié localement, mais sa source de 3 Go et ses fichiers de calcul ne font pas partie du transfert GitHub et ne sont pas activés sur le Site. Le miroir contient 65 dossiers éditoriaux prouvés et 62 mots secrets approuvés. Ces preuves versionnées ne sont pas une copie des colonnes numériques nécessaires au fonctionnement V2.
 
 Version utilisable pour la revue : https://braise-mots.yellow-drake-7186.chatgpt.site (accès privé inchangé).

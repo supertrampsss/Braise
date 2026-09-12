@@ -1082,6 +1082,118 @@
       "kind": "agent",
       "reviewedAt": "2026-09-08T21:17:29.657Z",
       "evidenceSha256": "255e5020823643ab491ca1e017131e13fc245f4082e38339795e602a43e478e1"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "soleil",
+        "éclipse",
+        "planète"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final valident trois associations astronomiques familières, distinctes et non dérivées de la cible.",
+      "targetId": 2341,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "0244364b0ffebac7041c10de35865f1362216f32bf946d24bcc37ca4632324a3"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "chat",
+        "aboiement",
+        "poil"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final retiennent animal voisin, manifestation sonore et caractéristique physique, trois accès concrets et distincts.",
+      "targetId": 2528,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "edce4b116370e7d2fbac98e5e815847e41e476767cbec780846d061fa73d93c3"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "verglas",
+        "flocons",
+        "banquise"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final valident trois associations hivernales familières et distinctes parmi un voisinage riche en dérivés.",
+      "targetId": 3162,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "effeda80ae37344633deb973886e02330ef383a3b1830f41104fb1011b1f30d7"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "orage",
+        "humidité",
+        "ruissellement"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final retiennent phénomène associé, état et écoulement, trois indices accessibles et complémentaires.",
+      "targetId": 3609,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "946a672cbea4aab0f555497fb187f3cbe7a0920023d4c4c2f62e0ebaef0022a9"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "chant",
+        "batterie",
+        "rythmique"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final valident voix, instrument d'accompagnement et dimension musicale, sans dérivé de la cible.",
+      "targetId": 1364,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "c303b406e4d4d196fbdc62bfccd17362f7d38fbbe69d0f8027dea6c5bd079201"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "cargaison",
+        "naufrage",
+        "gouvernail"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final retiennent contenu transporté, événement et équipement, trois associations concrètes et distinctes.",
+      "targetId": 1523,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "16b9e5261ec2098fe61b148dfb1a76da34a47d22fed89d8d599d9d5dad2bc416"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "armure",
+        "lame",
+        "fourreau"
+      ],
+      "rationale": "Deux relectures indépendantes et l'arbitrage final valident protection associée, partie constitutive et étui, trois indices immédiatement compréhensibles.",
+      "targetId": 3986,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "a1a147934a3860dd14c8487d88deda8b09ab5f16c911831a15be1655e06f8a02"
+    },
+    {
+      "decision": "approved",
+      "hints": [
+        "voiture",
+        "cyclomoteur",
+        "karting"
+      ],
+      "rationale": "Après désaccord des deux relectures, l'arbitrage final retient trois associations motorisées familières et distinctes qui évitent les dérivés, variantes et marques dominant le voisinage.",
+      "targetId": 4073,
+      "actor": "astra-b2j-independent-review-with-max-arbitration",
+      "kind": "agent",
+      "reviewedAt": "2026-09-12T09:20:00.000Z",
+      "evidenceSha256": "1ac6e7cd4f8a36e0d21920e486d510420072c2b53f4d11a64ca81a1d3a2ca1c4"
     }
   ],
   "reviews": [
