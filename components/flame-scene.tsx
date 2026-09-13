@@ -105,7 +105,8 @@ export default function FlameScene({ temperature, celebrating, paused }: {
         if (now - last >= 1000 / 30) {
           const dt = last ? Math.min(.06, (now - last) / 1000) : 0;
           last = now;
-          uniforms.time.value += dt;
+          // Integrate energy so a warmer guess accelerates flow without a phase jump.
+          uniforms.time.value += dt * (.65 + uniforms.heat.value * .95);
           uniforms.heat.value += (targetHeat() - uniforms.heat.value) * (1 - Math.exp(-dt * 3));
           uniforms.celebration.value += ((values.current.celebrating ? 1 : 0) - uniforms.celebration.value) * (1 - Math.exp(-dt * 2));
           uniforms.gaze.value.lerp(new T.Vector2(pointer.current.x, pointer.current.y), 1 - Math.exp(-dt * 2.5));
@@ -149,7 +150,7 @@ export default function FlameScene({ temperature, celebrating, paused }: {
     return () => { disposed = true; cleanup(); };
   }, []);
 
-  return <div className="foyer-scene" aria-hidden="true" data-paused={paused} data-renderer={ready ? "volume" : "fallback"}>
+  return <div className="foyer-scene" aria-hidden="true" data-paused={paused} data-renderer={ready ? "volume" : "fallback"} style={{ "--flame-energy": Math.min(1, Math.max(0, temperature) / 100) } as CSSProperties}>
     <div className="flame-light"><span className="flame-halo"/><span className="flame-reflection"/></div>
     <img src="/art/flame.webp" alt="" className="foyer-fallback" style={{ opacity: ready ? 0 : 1 }}/>
     <div ref={host} className="foyer-canvas" style={{ opacity: ready ? 1 : 0 }}/>

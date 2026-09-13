@@ -31,3 +31,7 @@ TypeScript et construction vérifiés pour cette correction. Aucun nouveau test 
 ## Scène interactive volumétrique
 
 Voir VOLUME-DELIVERY.md : la voie WebGL principale utilise désormais un champ de densité 3D turbulent. L’asset flame.webp devient uniquement le repli. L’étude filmée est un rendu logiciel isolé du shader, pas une capture du jeu ni une qualification Safari. Les limites d’animation des livraisons précédentes restent historiques.
+
+## Flamme et commandes, retour suivant
+
+Voir HEAT-DELIVERY.md. La flamme est plus large et son intensité suit nettement la meilleure température réelle. Les flèches décoratives disparaissent. Les retours et envois utilisent des mots explicites ; les pages secondaires partagent les surfaces, la typographie et les interactions sobres du Foyer.

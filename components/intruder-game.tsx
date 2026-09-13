@@ -50,15 +50,15 @@ export default function IntruderGame() {
     finally { submitting.current = false; if (request === generation.current) setBusy(false); }
   }
   return <main className="main-shell laboratory-shell">
-    <a className="text-action" href="/">← Revenir à Braise</a>
+    <a className="text-action" href="/">Revenir à Braise</a>
     <div className="page-heading"><div><div className="eyebrow">LE LABORATOIRE</div><h1>L’intrus<span>.</span></h1><p>Quatre mots. Une différence à repérer.</p></div></div>
-    <a className="text-action" href="/laboratoire/deux-braises">Jouer à Deux braises →</a>
+    <a className="text-action" href="/laboratoire/deux-braises">Jouer à Deux braises</a>
     <section className="collection-picker laboratory-card" aria-label="L’intrus">
       <p>Choisissez le mot qui n’appartient pas à la même catégorie. Une seule réponse par énigme, puis l’explication. Aucun score chaud/froid dans ce mode.</p>
       <p>{attempts.length} / 20 énigmes jouées · historique personnel sur cet appareil</p>
       {question && <><h2>Énigme {question.index + 1} / {question.total}</h2><div className="collection-grid">{question.words.map((word, choice) => <button type="button" key={word} disabled={busy || Boolean(answer)} onClick={() => void choose(choice)} aria-label={`Choisir ${word}`}>{word}{answer && choice === answer.answer && <small>✓ L’intrus</small>}{answer && choice === answer.choice && <small>Votre réponse</small>}</button>)}</div></>}
       {busy && <p role="status">Chargement…</p>}
-      {answer && <div className="laboratory-explanation" aria-live="polite"><h2>{answer.correct ? "Bien vu !" : "Une autre piste à retenir"}</h2><p>{answer.explanation}</p>{question && question.index < 19 && <button className="primary-button" disabled={busy} onClick={() => void load(question.index + 1)}>Énigme suivante →</button>}</div>}
+      {answer && <div className="laboratory-explanation" aria-live="polite"><h2>{answer.correct ? "Bien vu !" : "Une autre piste à retenir"}</h2><p>{answer.explanation}</p>{question && question.index < 19 && <button className="primary-button" disabled={busy} onClick={() => void load(question.index + 1)}>Énigme suivante</button>}</div>}
       {error && <p role="alert">{error} {!question && <button onClick={() => void load(retryIndex.current)}>Réessayer</button>}</p>}
       {warning && <p role="status">La sauvegarde est indisponible. Cette réponse reste visible pendant la session.</p>}
       <details><summary>Choisir une énigme</summary><div className="collection-grid">{Array.from({ length: 20 }, (_, i) => <button type="button" key={i} disabled={busy} onClick={() => void load(i)}>{i + 1}{attempts.some(item => item.index === i) ? " ✓" : ""}</button>)}</div></details>

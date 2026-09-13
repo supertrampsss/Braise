@@ -42,14 +42,14 @@ export default function TwoBraisesGame() {
     finally { submitting.current = false; setBusy(false); }
   }
   return <main className="main-shell laboratory-shell">
-    <a className="text-action" href="/">← Revenir à Braise</a>
+    <a className="text-action" href="/">Revenir à Braise</a>
     <div className="page-heading"><div><div className="eyebrow">LE LABORATOIRE</div><h1>Deux braises<span>.</span></h1><p>Un essai. Deux températures. Deux mots à découvrir.</p></div></div>
-    <a className="text-action" href="/laboratoire">Jouer à L’intrus →</a>
+    <a className="text-action" href="/laboratoire">Jouer à L’intrus</a>
     <section className="collection-picker laboratory-card" aria-label="Deux braises">
       <p>Les deux colonnes utilisent les vrais scores du jeu classique. Trouvez les deux mots pour terminer. Une cible trouvée reste acquise. Pas d’indice dans cette variante.</p>
       <label htmlFor="pair-select">Paire </label><select id="pair-select" value={pair} disabled={busy || !ready} onChange={event => changePair(Number(event.target.value))}>{Array.from({ length: 12 }, (_, index) => <option key={index} value={index}>Paire {index + 1} / 12</option>)}</select>
       <p aria-live="polite">Braise 1 : {found[0] ? "trouvée ✓" : "à découvrir"} · Braise 2 : {found[1] ? "trouvée ✓" : "à découvrir"}</p>
-      {found.every(Boolean) ? <h2>Les deux mots sont trouvés ! {guesses.length} essais.</h2> : <form className="guess-form" onSubmit={submit}><label className="sr-only" htmlFor="two-guess">Votre proposition</label><input id="two-guess" value={input} onChange={event => { revision.current++; setInput(event.target.value); }} maxLength={50} autoComplete="off" autoCapitalize="none" placeholder="Un mot français…" disabled={!ready} /><button type="submit" className="guess-button" disabled={busy || !ready || !input.trim()} aria-label="Proposer ce mot">{busy ? "…" : "→"}</button></form>}
+      {found.every(Boolean) ? <h2>Les deux mots sont trouvés ! {guesses.length} essais.</h2> : <form className="guess-form" onSubmit={submit}><label className="sr-only" htmlFor="two-guess">Votre proposition</label><input id="two-guess" value={input} onChange={event => { revision.current++; setInput(event.target.value); }} maxLength={50} autoComplete="off" autoCapitalize="none" placeholder="Un mot français…" disabled={!ready} /><button type="submit" className="guess-button" disabled={busy || !ready || !input.trim()} aria-label="Tester ce mot">{busy ? "…" : "Tester"}</button></form>}
       {error && <p role="alert">{error}</p>}{warning && <p role="status">Sauvegarde indisponible : vos essais restent en mémoire dans cette page.</p>}
       <div className="two-braises-history"><table><caption>{guesses.length} essais distincts</caption><thead><tr><th>Mot</th><th>Braise 1</th><th>Braise 2</th></tr></thead><tbody>{[...guesses].reverse().map(guess => <tr key={guess.word}><th scope="row">{guess.word}</th>{guess.values.map((value, index) => <td key={index} style={{ color: warmth(value.temperature).color }}>{value.temperature.toFixed(1).replace(".", ",")}°<small>{value.found ? "Trouvé ✓" : `Rang ${value.rank}`}</small></td>)}</tr>)}</tbody></table></div>
       <p>Historique personnel, séparé du classique et exclu de son export. Aucun classement compétitif ni score combiné.</p>
