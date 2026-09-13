@@ -117,10 +117,7 @@
     "runtime_assets_included": false
   },
   "last_verified_source_commit": "adf3e287d12699bdea9cc58a671543fd636accca",
-  "lease": {
-    "owner": "braise-redesign-foreground",
-    "expires_at": "2026-09-13T16:54:55.540708+00:00"
-  },
+  "lease": null,
   "next_action": "Restaurer le staging exact si les actifs ignorés sont absents, puis poursuivre les rotations B2 par groupes de huit jusqu'aux 365 puis 400 approbations. Produire alors le calendrier immuable, puis provisionner et qualifier R2 et le Worker avant activation V2. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
   "next_phase": "B2",
   "phases": [
@@ -563,5 +560,20 @@
       "version_id": "appgprj_6a9f1dfb001081918c9323599f7d8d6b~appgver_eb5305327df4819199d70c94f66fdd0d"
     }
   },
-  "status": "running"
+  "status": "running",
+  "redesign": {
+    "status": "implemented_awaiting_visual_and_gameplay_qualification",
+    "scope": "Foyer play screen with decorative Three.js flame and SVG fallback",
+    "automation": "disabled_by_user",
+    "checks": {
+      "tests": "167 passed",
+      "typecheck": "passed",
+      "build": "passed",
+      "desktop_layout": "inspected in managed preview",
+      "webgl": "unavailable in QA browser; not visually qualified",
+      "gameplay_browser": "preview returned semantic-storage 503; no score validated",
+      "mobile_keyboard": "not tested"
+    },
+    "next": "Qualify GPU flame and gameplay on a supported preview before publishing the first redesign milestone."
+  }
 }

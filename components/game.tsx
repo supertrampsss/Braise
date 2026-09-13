@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Progress } from "@/components/ui/progress";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import FlameScene from "@/components/flame-scene";
 import AdPlacement from "@/components/ad-placement";
 import { CosmeticPicker, WeeklyRitualCard } from "@/components/weekly-ritual";
 import { ProfileTransfer } from "@/components/profile-transfer";
@@ -47,6 +48,7 @@ function playTone(won: boolean) {
 }
 
 export default function Game() {
+  const [flamePaused, setFlamePaused] = useState(false);
   const [view, setView] = useState<"play" | "explore">("play");
   const viewRef = useRef<"play" | "explore">("play");
   const exploreHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -337,15 +339,15 @@ export default function Game() {
     await copy(url.toString(), "Lien du défi copié. Envoyez-le à vos amis !");
   }
 
-  return <div className={`app-shell focused-interface cosmetic-${selectedCosmetic}`}>
+  return <div className={`app-shell focused-interface foyer-interface cosmetic-${selectedCosmetic}`}>
     <Toaster position="bottom-center" theme="dark" />
     <a className="skip-link" href={view === "play" ? "#game-board" : "#explore-heading"}>Aller au contenu</a>
     <header className="site-header">
       <a className="brand" href="/" aria-label="Braise, accueil"><span className="brand-icon"><Flame strokeWidth={2.5} /></span>braise<span className="brand-period">.</span></a>
       <nav className="header-nav" aria-label="Navigation principale">
         <button type="button" aria-current={view === "play" ? "page" : undefined} onClick={() => setView("play")}>Jouer</button>
-        <button type="button" aria-current={view === "explore" ? "page" : undefined} onClick={() => setView("explore")}>Explorer</button>
-        <button type="button" onClick={() => setModal("stats")}>Progression</button>
+        <button type="button" aria-current={view === "explore" ? "page" : undefined} onClick={() => setView("explore")}>Autres modes</button>
+        <button type="button" onClick={() => setModal("stats")}>Profil</button>
       </nav>
       <div className="header-actions"><button className="icon-button" aria-label="Comment jouer" onClick={() => setModal("help")}><CircleHelp size={21} /></button></div>
     </header>
@@ -353,6 +355,7 @@ export default function Game() {
     <main className="main-shell">
       <div className="page-heading" hidden={view !== "play"}><div><h1>{mode === "daily" ? "Le mot du jour" : mode === "archive" ? "Un mot des archives" : mode === "free" ? "Un mot, à votre rythme" : "Votre défi"}</h1><p>Proposez un mot. Plus son sens est proche, plus ça chauffe.</p></div></div>
       <div hidden={view !== "play"} className="play-view">
+      <details className="foyer-options"><summary>Changer de partie</summary><div className="foyer-mode-options"><button disabled={busy} onClick={() => changeMode("daily")}>Mot du jour</button><button disabled={busy} onClick={() => changeMode("free")}>Partie libre</button><button disabled={busy} onClick={() => { revealArchives(); }}>Archives</button></div></details>
       <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
       <TabsContent value={tabMode} className="game-tab-content">
@@ -372,8 +375,11 @@ export default function Game() {
           <section id="game-board" ref={gameBoardRef} tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
             <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedbackAnnouncement}</p>
             <div className="game-topline"><div><span className="game-kicker">{mode === "daily" ? "LE MOT DU JOUR" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
+<FlameScene temperature={temperature} celebrating={isCelebratingWin} paused={flamePaused || view !== "play"} />
+            <div className="foyer-reading"><strong>{best ? `${temperature.toFixed(1).replace(".", ",")}°` : "Un mot à trouver."}</strong><span>{best ? `${best.word} · ${heat.label}` : "Le sens compte. Pas les lettres."}</span></div>
+            <button className="foyer-motion" type="button" aria-pressed={flamePaused} onClick={() => setFlamePaused(v => !v)}>{flamePaused ? "Animer la flamme" : "Mettre la flamme en pause"}</button>
 {loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator, lastLoad.current.sessionSave)}>Réessayer<ArrowRight size={18} /></button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour<ArrowRight size={16} /></button>}</div> : <>
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">C’ÉTAIT BIEN</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma victoire</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Encore un mot<ArrowRight size={17} /></button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="À quel mot pensez-vous ?" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : <ArrowRight size={24} />}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <>Le sens compte. Pas les lettres. <span className="keyboard-hint">Entrée ↵</span></>)}</div></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">C’ÉTAIT BIEN</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma victoire</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Encore un mot<ArrowRight size={17} /></button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : <ArrowRight size={24} />}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <>Le sens compte. Pas les lettres. <span className="keyboard-hint">Entrée ↵</span></>)}</div></div>}
               {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
                 <div><span>Meilleure piste</span><strong>{best.word}</strong></div>
                 <div className="heat-reading"><strong>{temperature.toFixed(1).replace(".", ",")}°</strong><span>{heat.label}</span></div>

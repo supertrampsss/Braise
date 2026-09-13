@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./foyer.css";
 import { OfflineRegistration } from "@/components/offline-registration";
 export const metadata: Metadata = {
   metadataBase: new URL("https://braise-mots.yellow-drake-7186.chatgpt.site"),
