@@ -572,7 +572,8 @@
       "desktop_layout": "inspected in managed preview",
       "webgl": "unavailable in QA browser; not visually qualified",
       "gameplay_browser": "preview returned semantic-storage 503; no score validated",
-      "mobile_keyboard": "not tested"
+      "mobile_keyboard": "not tested",
+      "lint": "New flame component passes; existing game.tsx lint findings remain."
     },
     "next": "Qualify GPU flame and gameplay on a supported preview before publishing the first redesign milestone."
   }

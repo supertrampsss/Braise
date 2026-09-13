@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 export default function FlameScene({ temperature, celebrating, paused }: { temperature: number; celebrating: boolean; paused: boolean }) {
   const host = useRef<HTMLDivElement>(null);
   const values = useRef({ temperature, celebrating, paused });
-  values.current = { temperature, celebrating, paused };
+  useEffect(() => { values.current = { temperature, celebrating, paused }; }, [temperature, celebrating, paused]);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     let disposed = false;
