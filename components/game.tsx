@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from "react";
-import { Palette, UserRound, Award, CalendarDays, Check, CheckCheck, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Trophy, Users, Volume2, VolumeX, X, Zap } from "lucide-react";
+import { Palette, Menu, Award, CalendarDays, Check, CheckCheck, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Trophy, Users, Volume2, VolumeX, X, Zap } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
@@ -348,7 +349,21 @@ export default function Game() {
     <a className="skip-link" href="#braise-main">Aller au contenu</a>
     <header className="site-header reference-header">
       <button aria-label="Accueil" className="brand" onClick={() => setSurface("home")}>BRAISE</button>
-      <div className="reference-header-actions"><button className="icon-button" aria-label="Profil" onClick={() => setSurface("profile")}><UserRound size={20}/></button><button className="icon-button" aria-label={surface === "home" ? "Comment jouer" : "Autres modes"} onClick={() => surface === "home" ? setModal("help") : setSurface(surface === "modes" ? "home" : "modes")}>{surface === "home" ? <CircleHelp size={22}/> : <X size={22}/>}</button></div>
+      <div className="reference-header-actions"><DropdownMenu>
+        <DropdownMenuTrigger asChild><button className="icon-button" aria-label="Ouvrir le menu"><Menu size={23}/></button></DropdownMenuTrigger>
+        <DropdownMenuContent className="braise-navigation" align="end" sideOffset={10}>
+          <DropdownMenuLabel>Changer de partie</DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuItem disabled={busy || loading} onSelect={() => { setSurface("game"); setView("play"); void changeMode("daily"); }}><span>Mot du jour<small>Le même mot pour tous, jusqu’à minuit.</small></span></DropdownMenuItem>
+            <DropdownMenuItem disabled={busy || loading} onSelect={() => { setSurface("game"); setView("play"); void changeMode("free"); }}>Partie libre</DropdownMenuItem>
+            <DropdownMenuItem disabled={busy || loading} onSelect={() => { setSurface("game"); setView("play"); revealArchives(); }}>Archives</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setSurface("modes")}>Autres modes</DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator/>
+          <DropdownMenuItem onSelect={() => setSurface("profile")}>Profil</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setModal("help")}>Comment jouer</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu></div>
     </header>
 
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
@@ -358,7 +373,6 @@ export default function Game() {
 
       <div className="page-heading" hidden={view !== "play"}><div><h1>{mode === "daily" ? "Le mot du jour" : mode === "archive" ? "Un mot des archives" : mode === "free" ? "Un mot, à votre rythme" : "Votre défi"}</h1><p>Proposez un mot. Plus son sens est proche, plus ça chauffe.</p></div></div>
       <div hidden={surface !== "game"} className="play-view">
-      <details className="foyer-options"><summary>Changer de partie</summary><div className="foyer-mode-options"><button disabled={busy} onClick={() => changeMode("daily")}>Mot du jour</button><button disabled={busy} onClick={() => changeMode("free")}>Partie libre</button><button disabled={busy} onClick={() => { revealArchives(); }}>Archives</button></div></details>
       <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
       <TabsContent value={tabMode} className="game-tab-content">

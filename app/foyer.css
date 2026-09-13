@@ -121,3 +121,12 @@ body{background:#0c0d0e;font-family:system-ui,-apple-system,BlinkMacSystemFont,"
 .foyer-fallback{transform:scaleX(calc(1.3 + var(--flame-energy,0)*.45));filter:brightness(calc(.8 + var(--flame-energy,0)*.4));transition:opacity .4s ease,transform .7s ease,filter .7s ease}
 
 :is(.foyer-interface,.laboratory-shell) .guess-button:disabled{background:#282c2d;color:#90958e;opacity:1;cursor:default}
+
+/* One navigation entry point, aligned with the top-right burger. */
+.braise-navigation[data-slot=dropdown-menu-content]{width:min(310px,calc(100vw - 32px));padding:10px;background:#17191a;border:1px solid #ffffff20;border-radius:18px;color:#f3f1ec;box-shadow:0 16px 48px #0006}
+.braise-navigation [data-slot=dropdown-menu-label]{padding:10px 12px 8px;font-size:13px;font-weight:400;color:#a3a59f}
+.braise-navigation [data-slot=dropdown-menu-item]{min-height:46px;padding:12px;border-radius:10px;font-size:16px;line-height:1.4;cursor:pointer}
+.braise-navigation [data-slot=dropdown-menu-item][data-highlighted]{background:#292c2d;color:#fff8e9}
+.braise-navigation small{display:block;margin-top:5px;font-size:13px;color:#a3a59f;line-height:1.5}
+.braise-navigation [data-slot=dropdown-menu-separator]{margin:8px 2px;background:#ffffff17}
+@media(prefers-reduced-motion:reduce){.braise-navigation{animation:none!important;transition:none!important}}
