@@ -63,3 +63,11 @@
 .motion-paused *,.motion-paused *:before,.motion-paused *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 .foyer-scene[data-paused=true] *,.foyer-scene[data-visible=false] *{animation-play-state:paused!important}
 @media(prefers-reduced-motion:reduce){.foyer-interface *,.foyer-interface *:before,.foyer-interface *:after,.reference-friends *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.flame-embers{display:none}}
+/* The volume fills its camera viewport. The image exists only as a safe fallback. */
+.foyer-canvas{inset:0;width:100%;height:100%}
+.foyer-scene[data-renderer=volume] .flame-light,.foyer-scene[data-renderer=volume] .flame-embers{display:none}
+.reference-home .foyer-scene{height:clamp(260px,42svh,420px);margin:8px 0 16px}
+.foyer-interface .play-view .foyer-scene{height:clamp(220px,36svh,350px)}
+.reference-home h1{position:relative;z-index:1}
+@media(max-height:720px){.reference-home .foyer-scene{height:30svh;min-height:190px}}
+@media(max-width:600px){.foyer-interface .play-view:has(#guess:focus) .foyer-scene{height:80px}}

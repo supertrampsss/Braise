@@ -27,3 +27,7 @@ Ancien programme automatique toujours suspendu. Cette livraison concerne la refo
 Le Foyer conserve sa flamme, sa navigation et ses écrans choisis, mais retire le décor volcanique photographique derrière le jeu, les boutons brillants et les phrases décoratives autour du feu. Fond encre uniforme, commandes ivoire mates, saisie nette, flamme moins envahissante. Le décor forêt reste limité à Voyage. La feuille Foyer est consolidée au lieu d’empiler une nouvelle couche d’ajustements.
 
 TypeScript et construction vérifiés pour cette correction. Aucun nouveau test navigateur ni contrôle GPU : les observations de la passe précédente ne qualifient pas cette nouvelle composition.
+
+## Scène interactive volumétrique
+
+Voir VOLUME-DELIVERY.md : la voie WebGL principale utilise désormais un champ de densité 3D turbulent. L’asset flame.webp devient uniquement le repli. L’étude filmée est un rendu logiciel isolé du shader, pas une capture du jeu ni une qualification Safari. Les limites d’animation des livraisons précédentes restent historiques.
