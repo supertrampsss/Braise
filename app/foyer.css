@@ -33,6 +33,65 @@
 .reference-friends{max-width:480px!important;min-height:100svh;background:#090a0b;padding:30px 28px!important;color:#f5f1e9}.reference-friends .page-heading h1{font-size:40px;font-weight:400;margin:44px 0 15px}.reference-friends .laboratory-card{background:none;border:0;padding:0}.reference-friends .primary-button{border-radius:40px;background:#fff0d9;color:#12100a;width:100%;min-height:58px;justify-content:center}.reference-friends form{display:grid;gap:12px;margin:20px 0}.reference-friends input{background:#151515;border:1px solid #ffffff30;padding:12px;border-radius:10px;color:#fff;width:100%}.friends-rules{font-size:13px;color:#aaa}.friends-list{margin:32px 0;min-height:150px}.friends-list h2{font-size:16px;color:#b6aea2}.friends-list button{display:flex;width:100%;justify-content:space-between;padding:20px 0;border-top:1px solid #ffffff22;font-size:20px}.friends-list small{display:block;font-size:14px;color:#eaba73}.friends-groups{display:block;text-align:center;color:#aaa}.reference-friends .text-action{color:#f3eadc}
 @media(max-width:600px){.voyage-stage{min-height:calc(100svh - 140px)}.voyage-actions{margin-top:280px}}
 .foyer-interface:has(.surface-modes),.foyer-interface:has(.surface-profile),.foyer-interface:has(.surface-voyage){background:#090909}.reference-modes{position:relative;isolation:isolate}.reference-modes:before{content:'';position:absolute;z-index:-1;inset:35% -28px 0;background:url('/art/flame.webp') -70px 200px/340px auto no-repeat;mix-blend-mode:screen;opacity:.65;pointer-events:none}.foyer-interface .is-won .victory-box{display:contents}.foyer-interface .is-won .victory-eyebrow{order:0;text-align:center;margin-top:24px}.foyer-interface .is-won .victory-box h2{order:1;text-align:center}.foyer-interface .is-won .victory-box p{order:2;text-align:center}.foyer-interface .is-won .foyer-scene{order:3}.foyer-interface .is-won .victory-actions{order:4}.foyer-interface .is-won .xp-award{order:5}.foyer-interface .is-won .game-bottom{display:none}.foyer-interface .surface-home~*{color:inherit}
-.foyer-interface .mode-list[data-slot="tabs-list"]{display:none!important}.foyer-interface .archive-access:not(.is-open){display:none}.foyer-reading.no-guess strong{font-size:30px}.foyer-interface .guess-form{background:#15120ee8}.foyer-interface .input-feedback{background:#0c0808a6}.reference-interface .foyer-options{margin-bottom:0}.foyer-interface .play-view .foyer-scene{height:350px}
+.foyer-interface .mode-list[data-slot="tabs-list"]{display:none!important}.foyer-interface .archive-access:not(.is-open){display:none}.foyer-reading.no-guess strong{font-size:30px}.foyer-interface .guess-form{background:#15120ee8}.foyer-interface .input-feedback{background:#0c0808a6}.reference-interface .foyer-options{margin-bottom:0}.foyer-interface .play-view .foyer-scene{height:clamp(220px,41svh,380px)}
 @media(max-width:600px){.foyer-interface .play-view:has(#guess:focus) .foyer-scene{height:85px}}
 .reference-friends .friends-empty{min-height:55svh;display:flex;flex-direction:column;justify-content:space-between;padding-top:26px}.friends-empty p{color:#aaa}.reference-friends .laboratory-card[hidden]{display:none}.reference-friends>.text-action{font-size:20px}
+
+/* Astra visual pass: stable silhouette, restrained lighting, responsive controls. */
+.foyer-interface,.reference-friends{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.foyer-interface .main-shell{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.reference-home{padding-bottom:env(safe-area-inset-bottom)}
+.reference-home h1{font-size:clamp(32px,8.7vw,38px);line-height:1.12;font-weight:400;letter-spacing:-.04em;text-wrap:balance}
+.reference-home>p{font-size:14px;line-height:1.6;color:#c6bcb0;margin-top:16px;text-wrap:balance}
+.foyer-scene{isolation:isolate;pointer-events:none;mix-blend-mode:screen}
+.foyer-canvas,.foyer-fallback{inset:0 17.5%;width:65%;height:100%;transition:opacity .4s ease;mix-blend-mode:screen}
+.foyer-fallback{object-fit:contain}
+.flame-light{position:absolute;inset:0;z-index:-1;animation:flame-breathe 5.8s ease-in-out infinite}
+.flame-halo{position:absolute;inset:17% 12% 4%;border-radius:50%;background:radial-gradient(ellipse,#d7882224, #9e54100c 43%,transparent 70%);filter:blur(14px)}
+.flame-reflection{position:absolute;bottom:7%;left:27%;width:46%;height:5%;border-radius:50%;background:radial-gradient(ellipse,#ffc3713b,#b35e121a 40%,transparent 72%);filter:blur(7px)}
+.flame-embers{position:absolute;inset:4% 8% 10%;overflow:hidden;mask-image:linear-gradient(transparent,#000 20%,#000 75%,transparent)}
+.flame-embers i{position:absolute;left:var(--x);bottom:8%;width:2px;height:3px;border-radius:50%;background:#ffc779;box-shadow:0 0 6px #ff9d3280;opacity:0;animation:ember-rise var(--duration) var(--delay) linear infinite}
+.flame-embers i:nth-child(3n){width:1px;height:2px}
+@keyframes ember-rise{0%{transform:translate3d(0,0,0);opacity:0}18%{opacity:.55}70%{opacity:.3}100%{transform:translate3d(var(--drift),-230px,0);opacity:0}}
+@keyframes flame-breathe{0%,100%{opacity:.65;transform:scale(.97)}50%{opacity:1;transform:scale(1.025)}}
+.reference-cta{background:linear-gradient(175deg,#ffd187 0%,#edaa51 46%,#d9913b 100%);border-color:#ffdda1a6;box-shadow:inset 0 1px 0 #fff2cead,inset 0 -2px 4px #71340333,0 8px 32px #e78b2324;font-size:20px;font-weight:600;letter-spacing:-.02em}
+.foyer-interface button,.foyer-interface a,.reference-friends button,.reference-friends a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.reference-cta,.reference-mode,.reference-underlink,.foyer-interface .guess-button,.foyer-interface .primary-button,.reference-friends .primary-button{transition:transform .12s ease,background-color .2s ease,box-shadow .2s ease,color .2s ease}
+.reference-cta:active:not(:disabled),.reference-mode:active,.foyer-interface .guess-button:active:not(:disabled),.foyer-interface .primary-button:active:not(:disabled),.reference-friends .primary-button:active:not(:disabled){transform:scale(.985)}
+.foyer-interface :is(button,a,input,summary):focus-visible,.reference-friends :is(button,a,input,summary):focus-visible{outline:2px solid #ffe7b9;outline-offset:5px}
+.foyer-interface .guess-form{transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 1px 0 #ffffff08}
+.foyer-interface .guess-form:focus-within{border-color:#d4ad76;box-shadow:0 0 0 3px #d4ad7612,inset 0 1px 0 #ffffff08}
+.foyer-interface .guess-button{flex:0 0 50px;background:linear-gradient(145deg,#f9c27e,#dc9147);box-shadow:inset 0 1px 0 #ffe8bd70}
+.foyer-interface .foyer-reading strong{font-size:58px;font-variant-numeric:tabular-nums;letter-spacing:-.055em;font-weight:400}
+.foyer-interface .foyer-reading.no-guess strong{font-size:30px;letter-spacing:-.025em}
+.foyer-interface .foyer-reading span{font-size:17px;margin-bottom:16px;color:#e2d5c2}
+.foyer-interface .guess-row{border-bottom-color:#ffffff1a;padding:14px 4px}
+.foyer-interface .guess-score{font-variant-numeric:tabular-nums}
+.foyer-interface .victory-box h2{font-size:clamp(27px,7.5vw,42px);letter-spacing:.14em;overflow-wrap:anywhere;max-width:100%;line-height:1.2}
+.reference-mode{border-radius:16px}.reference-mode.selected{background:linear-gradient(125deg,#fff0d6,#f4dfb9);box-shadow:inset 0 1px 0 #fff8e8}
+.reference-mode small{color:#b6ada0}.reference-mode.selected small{color:#514433}
+.reference-setting{border-top-color:#ffffff1a}.reference-setting>summary{min-height:32px}.ref-switch{box-shadow:inset 0 1px 4px #0004}.ref-switch:before{box-shadow:0 2px 4px #0005}
+.voyage-stage{box-shadow:inset 0 0 80px #0005}.voyage-title h1{letter-spacing:-.035em;text-wrap:balance}.voyage-title>span{font-size:15px;color:#e4d8c3;letter-spacing:.03em}
+.voyage-chapters{position:relative;isolation:isolate}.voyage-chapters:before{content:"";position:absolute;top:54px;bottom:54px;left:34px;width:1px;background:linear-gradient(transparent,#b88d5370 10%,#b88d5370 90%,transparent);z-index:-1}
+.chapter-medal{background:radial-gradient(circle at 35% 25%,#3e3324,#171511 75%);box-shadow:inset 0 1px 2px #f9df9c20;border-color:#79603d}
+.voyage-chapters .current .chapter-medal{background:radial-gradient(circle at 50% 60%,#81551e,#21170c 75%);color:#ffe5b4}
+.surface-modes>.reference-modes,.surface-profile>.reference-profile,.surface-voyage>.reference-voyage{animation:surface-arrive .32s ease-out both}
+@keyframes surface-arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.foyer-interface .is-record .flame-light{animation:flame-record .65s ease-out}
+.foyer-interface .is-celebrating .flame-light{animation:flame-victory 1.6s ease-out}
+.foyer-interface .is-celebrating .victory-box h2{animation:surface-arrive .6s ease-out both}
+@keyframes flame-record{0%,100%{opacity:.7}35%{opacity:1;transform:scale(1.1)}}
+@keyframes flame-victory{0%{opacity:.7;transform:scale(.96)}30%{opacity:1;transform:scale(1.2)}100%{opacity:.7;transform:scale(1)}}
+@media(hover:hover){.reference-cta:hover{box-shadow:inset 0 1px 0 #fff2cead,0 10px 40px #e78b2340}.reference-mode:not(.selected):hover{background:#ffffff06}.reference-underlink:hover{color:#fff2da}.reference-header-actions button:hover{background:#ffffff0a}}
+@media(max-width:600px){.foyer-interface .play-view:has(#guess:focus) .foyer-reading strong{font-size:36px}.play-view:has(#guess:focus) .flame-embers{display:none}}
+/* The product switch and OS preference both stop decorative motion. */
+.motion-paused *,.motion-paused *:before,.motion-paused *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.foyer-scene[data-paused=true] *,.foyer-scene[data-visible=false] *{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.foyer-interface *,.foyer-interface *:before,.foyer-interface *:after,.reference-friends *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.flame-embers{display:none}}
+.foyer-interface:has(.surface-game){background-image:linear-gradient(transparent 45%,#070504b3 79%,#070504eb),url('/art/foyer.webp')}
+.foyer-interface .input-feedback{background:none;color:#bdb1a2}
+.foyer-interface .input-feedback.error{color:#ffc6a0}
+.foyer-interface .game-bottom{color:#c0b4a4}
+.foyer-interface .reset-note{color:#b3a89a}
+.foyer-interface .is-new-guess{animation:surface-arrive .28s ease-out both}
+.reference-modes{background:#090909}
