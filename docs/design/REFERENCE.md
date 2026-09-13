@@ -21,3 +21,9 @@ La flamme est une texture animée dans Three.js, pas une simulation volumétriqu
 167 tests passent. TypeScript et build vérifiés. Accueil, menu, profil, Voyage et jeu inspectés dans le navigateur d’aperçu. WebGL indisponible dans ce navigateur. Clavier logiciel mobile non testé. Victoire conservée sur logique réelle, non forcée pour une capture. Aucun score ni participant créé artificiellement pour la revue.
 
 Ancien programme automatique toujours suspendu. Cette livraison concerne la refonte autorisée.
+
+## Correction de direction après retour « site de 14 ans »
+
+Le Foyer conserve sa flamme, sa navigation et ses écrans choisis, mais retire le décor volcanique photographique derrière le jeu, les boutons brillants et les phrases décoratives autour du feu. Fond encre uniforme, commandes ivoire mates, saisie nette, flamme moins envahissante. Le décor forêt reste limité à Voyage. La feuille Foyer est consolidée au lieu d’empiler une nouvelle couche d’ajustements.
+
+TypeScript et construction vérifiés pour cette correction. Aucun nouveau test navigateur ni contrôle GPU : les observations de la passe précédente ne qualifient pas cette nouvelle composition.
