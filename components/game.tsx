@@ -48,6 +48,9 @@ function playTone(won: boolean) {
 }
 
 export default function Game() {
+  const [surface, setSurface] = useState<"home" | "game" | "modes" | "voyage" | "profile">("home");
+  useEffect(() => { if (location.search) setSurface("game"); }, []);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [surface]);
   const [flamePaused, setFlamePaused] = useState(false);
   const [view, setView] = useState<"play" | "explore">("play");
   const viewRef = useRef<"play" | "explore">("play");
@@ -141,6 +144,7 @@ export default function Game() {
   }
 
   function closeHelpAndFocusGame() {
+    setSurface("game");
     setView("play");
     modalRef.current = null;
     setModal(null);
@@ -339,22 +343,21 @@ export default function Game() {
     await copy(url.toString(), "Lien du défi copié. Envoyez-le à vos amis !");
   }
 
-  return <div className={`app-shell focused-interface foyer-interface cosmetic-${selectedCosmetic}`}>
+  return <div className={`app-shell focused-interface foyer-interface reference-interface cosmetic-${selectedCosmetic}`}>
     <Toaster position="bottom-center" theme="dark" />
-    <a className="skip-link" href={view === "play" ? "#game-board" : "#explore-heading"}>Aller au contenu</a>
-    <header className="site-header">
-      <a className="brand" href="/" aria-label="Braise, accueil"><span className="brand-icon"><Flame strokeWidth={2.5} /></span>braise<span className="brand-period">.</span></a>
-      <nav className="header-nav" aria-label="Navigation principale">
-        <button type="button" aria-current={view === "play" ? "page" : undefined} onClick={() => setView("play")}>Jouer</button>
-        <button type="button" aria-current={view === "explore" ? "page" : undefined} onClick={() => setView("explore")}>Autres modes</button>
-        <button type="button" onClick={() => setModal("stats")}>Profil</button>
-      </nav>
-      <div className="header-actions"><button className="icon-button" aria-label="Comment jouer" onClick={() => setModal("help")}><CircleHelp size={21} /></button></div>
+    <a className="skip-link" href="#braise-main">Aller au contenu</a>
+    <header className="site-header reference-header">
+      <button aria-label="Accueil" className="brand" onClick={() => setSurface("home")}>BRAISE</button>
+      <div className="reference-header-actions"><button className="icon-button" aria-label="Profil" onClick={() => setSurface("profile")}><Users size={20}/></button><button className="icon-button" aria-label={surface === "home" ? "Comment jouer" : "Autres modes"} onClick={() => surface === "home" ? setModal("help") : setSurface(surface === "modes" ? "home" : "modes")}>{surface === "home" ? <CircleHelp size={22}/> : <X size={22}/>}</button></div>
     </header>
 
-    <main className="main-shell">
+    <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
+      {surface === "home" && <section className="reference-home"><h1>Un mot.<br/>À vous de le trouver.</h1><p>Proposez un mot. La chaleur vous guide.</p><FlameScene temperature={temperature} celebrating={false} paused={flamePaused}/><button className="reference-cta" onClick={() => { setView("play"); setSurface("game"); }}>Jouer</button><button className="reference-underlink" onClick={() => setSurface("modes")}>Autres modes</button></section>}
+      {surface === "modes" && <section className="reference-modes" aria-label="Autres modes"><button className="reference-mode selected" onClick={() => {setView("play");setSurface("game");void changeMode("daily");}}><span><strong>Le mot du jour</strong><small>Un mot à découvrir chaque jour</small></span><ChevronRight/></button><button className="reference-mode" onClick={() => {setView("explore");setSurface("voyage");}}><span><strong>Voyage</strong><small>Des chapitres à votre rythme</small></span><ChevronRight/></button><a className="reference-mode" href="/duels"><span><strong>Entre amis</strong><small>Un défi, chacun son tour</small></span><ChevronRight/></a></section>}
+      {surface === "profile" && <section className="reference-profile"><button className="reference-back" onClick={() => setSurface("home")}>← &nbsp; Profil</button><h1>Votre profil</h1><p>{profile.wins.length} mots trouvés<br/>{streak} jours de suite</p><details className="reference-setting"><summary>◉ &nbsp; Apparence <ChevronRight/></summary>{ritual && <CosmeticPicker projection={ritual} disabled={busy || loading} onSelect={selectCosmetic}/>}</details><button className="reference-setting" role="switch" aria-checked={profile.sound} onClick={() => saveSound(!profile.sound)}><span><Volume2/> Son</span><i className={profile.sound ? "ref-switch on" : "ref-switch"}/></button><button className="reference-setting" role="switch" aria-checked={!flamePaused} onClick={() => setFlamePaused(v => !v)}><span><Sparkles/> Animations</span><i className={!flamePaused ? "ref-switch on" : "ref-switch"}/></button><details className="reference-setting"><summary><span>Sauvegarde<small>Exporter ou importer</small></span><ChevronRight/></summary>{profileSnapshot && <ProfileTransfer snapshot={profileSnapshot} onSnapshot={setProfileSnapshot}/>}</details><details className="reference-setting"><summary>Progression détaillée <ChevronRight/></summary><button className="text-action" onClick={() => setModal("stats")}>Voir mes réussites</button><a className="text-action" href="/espace">Mes parties en ligne</a><a className="text-action" href="/studio">Studio</a></details></section>}
+
       <div className="page-heading" hidden={view !== "play"}><div><h1>{mode === "daily" ? "Le mot du jour" : mode === "archive" ? "Un mot des archives" : mode === "free" ? "Un mot, à votre rythme" : "Votre défi"}</h1><p>Proposez un mot. Plus son sens est proche, plus ça chauffe.</p></div></div>
-      <div hidden={view !== "play"} className="play-view">
+      <div hidden={surface !== "game"} className="play-view">
       <details className="foyer-options"><summary>Changer de partie</summary><div className="foyer-mode-options"><button disabled={busy} onClick={() => changeMode("daily")}>Mot du jour</button><button disabled={busy} onClick={() => changeMode("free")}>Partie libre</button><button disabled={busy} onClick={() => { revealArchives(); }}>Archives</button></div></details>
       <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
@@ -375,12 +378,12 @@ export default function Game() {
           <section id="game-board" ref={gameBoardRef} tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
             <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedbackAnnouncement}</p>
             <div className="game-topline"><div><span className="game-kicker">{mode === "daily" ? "LE MOT DU JOUR" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
-<div className="foyer-intro"><h1>Suivez<br />la chaleur.</h1><p>Trouvez le mot secret. Chaque proposition<br className="desktop-break" /> vous dit si vous vous rapprochez.</p></div>
-<FlameScene temperature={temperature} celebrating={isCelebratingWin} paused={flamePaused || view !== "play"} />
-            <div className="foyer-reading"><strong>{best ? `${temperature.toFixed(1).replace(".", ",")}°` : "À vous de jouer."}</strong><span>{best ? `${best.word} · ${heat.label}` : "Le sens compte. Pas les lettres."}</span></div>
+<div className="reference-whispers"><span>Les mots<br/>rapprochent<br/>les mondes.</span><span>Une idée<br/>peut tout<br/>enflammer.</span></div>
+<FlameScene temperature={temperature} celebrating={isCelebratingWin} paused={flamePaused || surface !== "game"} />
+            <div className={`foyer-reading ${best ? "" : "no-guess"}`}><strong>{best ? `${temperature.toFixed(1).replace(".", ",")}°` : "À vous de jouer"}</strong><span>{best ? `${best.word} · ${heat.label}` : "Le sens compte. Pas les lettres."}</span></div>
             <button className="foyer-motion" type="button" aria-pressed={flamePaused} onClick={() => setFlamePaused(v => !v)}>{flamePaused ? "Animer la flamme" : "Mettre la flamme en pause"}</button>
 {loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator, lastLoad.current.sessionSave)}>Réessayer<ArrowRight size={18} /></button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour<ArrowRight size={16} /></button>}</div> : <>
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">C’ÉTAIT BIEN</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma victoire</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Encore un mot<ArrowRight size={17} /></button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : <ArrowRight size={24} />}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <>Le sens compte. Pas les lettres. <span className="keyboard-hint">Entrée ↵</span></>)}</div></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Continuer à jouer<ArrowRight size={17} /></button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : <ArrowRight size={24} />}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <>Le sens compte. Pas les lettres. <span className="keyboard-hint">Entrée ↵</span></>)}</div></div>}
               {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
                 <div><span>Meilleure piste</span><strong>{best.word}</strong></div>
                 <div className="heat-reading"><strong>{temperature.toFixed(1).replace(".", ",")}°</strong><span>{heat.label}</span></div>
@@ -403,25 +406,16 @@ export default function Game() {
       <div className="reset-note"><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : mode === "archive" ? <>Cette archive reste disponible<button disabled={busy} onClick={() => loadPuzzle("daily")}>Revenir au mot du jour <ArrowRight size={12} /></button></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => loadPuzzle("free", freshSeed())}>Tirer un nouveau mot <ArrowRight size={12} /></button></>}</span></div>
       </TabsContent></Tabs>
       </div>
-      <section className="explore-view" hidden={view !== "explore"} aria-labelledby="explore-heading">
-        <div className="page-heading"><div><h1 id="explore-heading" ref={exploreHeadingRef} tabIndex={-1}>Explorer</h1><p>Choisissez une autre façon de jouer. Votre partie vous attend.</p></div></div>
-        <section className="explore-group" aria-labelledby="solo-heading"><h2 id="solo-heading">À votre rythme</h2>
-      <ExpeditionPicker disabled={busy || loading} puzzle={puzzle} game={game} navigationGeneration={() => requestRef.current} onSelect={(seed, saved) => { setView("play"); return loadPuzzle("challenge", seed, saved); }} />
-      <CollectionPicker wins={profile.wins} seed={mode === "challenge" || mode === "free" ? puzzle?.seed : undefined} disabled={busy || loading} onSelect={seed => {
+      <section className="explore-view reference-voyage" hidden={surface !== "voyage"} aria-labelledby="explore-heading">
+        <button className="reference-back" onClick={() => setSurface("modes")}>← &nbsp; Voyage</button>
+        <section className="explore-group" aria-label="Voyage">
+      <ExpeditionPicker disabled={busy || loading} puzzle={puzzle} game={game} navigationGeneration={() => requestRef.current} onSelect={(seed, saved) => { setView("play"); setSurface("game"); return loadPuzzle("challenge", seed, saved); }} />
+      <details className="reference-extra"><summary>Collections et variantes</summary><CollectionPicker wins={profile.wins} seed={mode === "challenge" || mode === "free" ? puzzle?.seed : undefined} disabled={busy || loading} onSelect={seed => {
         const url = new URL(window.location.href); url.searchParams.delete("archive"); url.searchParams.set("defi", seed);
-        window.history.replaceState(null, "", url); setView("play"); void loadPuzzle("challenge", seed);
+        window.history.replaceState(null, "", url); setView("play"); setSurface("game"); void loadPuzzle("challenge", seed);
       }} />
 
-          <a className="explore-link" href="/laboratoire"><span><strong>Laboratoire</strong><small>L’intrus et Deux braises</small></span><ArrowRight size={18} /></a>
-        </section>
-        <section className="explore-group" aria-labelledby="friends-heading"><h2 id="friends-heading">Avec d’autres joueurs</h2>
-          <button type="button" className="explore-link" onClick={() => { setView("play"); setModal("challenge"); }}><span><strong>Partager un mot</strong><small>Un lien, le même mot pour vos amis</small></span><ArrowRight size={18} /></button>
-          <a className="explore-link" href="/cercles"><span><strong>Cercles</strong><small>Retrouvez votre groupe</small></span><ArrowRight size={18} /></a>
-          <a className="explore-link" href="/duels"><span><strong>Duels</strong><small>Trois manches à deux</small></span><ArrowRight size={18} /></a>
-        </section>
-        <section className="explore-group" aria-labelledby="space-heading"><h2 id="space-heading">Votre espace</h2>
-          <a className="explore-link" href="/espace"><span><strong>Mes parties en ligne</strong><small>Retrouver les parties conservées sur le serveur</small></span><ArrowRight size={18} /></a>
-          <a className="explore-link" href="/studio"><span><strong>Studio</strong><small>Composer et partager une création</small></span><ArrowRight size={18} /></a>
+          <a className="explore-link" href="/laboratoire"><span><strong>Laboratoire</strong><small>L’intrus et Deux braises</small></span><ArrowRight size={18} /></a></details>
         </section>
       </section>
       {(storageWarning || profileSnapshot && ["partial", "corrupt", "unsupported", "conflict", "memory-only"].includes(profileSnapshot.status)) && <p className="storage-warning" role="status" aria-live="polite" aria-atomic="true">{profileSnapshot?.status === "unsupported" ? "Cette sauvegarde provient d’une version plus récente de Braise. Elle n’a pas été modifiée." : profileSnapshot?.status === "corrupt" ? "La sauvegarde locale est illisible. Les données existantes ont été conservées sans être remplacées." : profileSnapshot?.status === "conflict" ? "Deux anciennes sauvegardes différentes ont été détectées. Elles ont été conservées sans fusion automatique." : profileSnapshot?.status === "partial" ? "Une partie de votre ancienne sauvegarde n’a pas pu être reprise. Les éléments valides restent disponibles." : "La sauvegarde est indisponible dans ce navigateur. Vous pouvez continuer à jouer, mais votre progression risque d’être perdue en quittant ou en rechargeant cette page."}</p>}

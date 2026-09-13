@@ -562,19 +562,26 @@
   },
   "status": "running",
   "redesign": {
-    "status": "publishing_first_foyer_revision",
-    "scope": "Foyer play screen with decorative Three.js flame and SVG fallback",
-    "automation": "disabled_by_user",
+    "status": "reference_based_implementation_ready_for_private_publish",
+    "reference": "docs/design/REFERENCE.md",
+    "screens": [
+      "home A flame",
+      "play A flame",
+      "victory A flame",
+      "modes A",
+      "voyage A chapters B",
+      "friends B",
+      "profile B"
+    ],
     "checks": {
       "tests": "167 passed",
       "typecheck": "passed",
       "build": "passed",
-      "desktop_layout": "Inspected: two-column Foyer, large flame fallback, primary input, reduced navigation",
-      "webgl": "unavailable in QA browser; not visually qualified",
-      "gameplay_browser": "preview returned semantic-storage 503; no score validated",
+      "desktop": "inspected managed preview",
+      "gpu": "unavailable in QA browser",
       "mobile_keyboard": "not tested",
-      "lint": "New flame component passes; existing game.tsx lint findings remain."
+      "live_gameplay": "not requalified this visual change"
     },
-    "next": "Confirm private publishing, then qualify remaining GPU and mobile checks; other pages still pending."
+    "automation": "disabled_by_user"
   }
 }

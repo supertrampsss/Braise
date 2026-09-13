@@ -1,0 +1,23 @@
+# BRAISE : référence de refonte
+
+Choix explicites d’Antoine : accueil, jeu et victoire A / Le Foyer, avec une flamme remplaçant le rocher. Autres modes A ; Voyage A et navigation chapitres B ; Entre amis B ; Profil B.
+
+Composition : une colonne mobile, fond obsidienne immersif, titre centré, flamme centrale, bouton principal bas. Aucun split desktop promotionnel. Interface native et données réelles, jamais une capture de maquette utilisée comme interface.
+
+Les statistiques et invitations des images sont illustratives. Les titres et nombres d’épreuves restent ceux des parcours réels. Aucune Camille fictive. Profil utilise les compteurs locaux réels.
+
+## Assets
+
+Génération intégrée imagegen. Assets consommés : public/art/foyer.webp, flame.webp, forest.webp. Sources PNG conservées dans les sorties générées. Conversion WebP sans altération de composition.
+
+Brief foyer : décor vertical cinématique obsidienne, corniche volcanique en bas, braises éparses, atmosphère noire ambrée, centre libre, aucun texte ni interface.
+Brief flamme : flamme dorée réaliste isolée sur noir, rubans lumineux fins, cœur ivoire, pas de rocher ni icône vectorielle.
+Brief forêt : forêt ancienne sombre, racines et marches moussues, brasero central, arche en ruine, haut et bas libres pour l’interface.
+
+La flamme est une texture animée dans Three.js, pas une simulation volumétrique physique. Sans WebGL : même visuel statique. Préférence réduction de mouvement respectée.
+
+## Contrôles
+
+167 tests passent. TypeScript et build vérifiés. Accueil, menu, profil, Voyage et jeu inspectés dans le navigateur d’aperçu. WebGL indisponible dans ce navigateur. Clavier logiciel mobile non testé. Victoire conservée sur logique réelle, non forcée pour une capture. Aucun score ni participant créé artificiellement pour la revue.
+
+Ancien programme automatique toujours suspendu. Cette livraison concerne la refonte autorisée.
