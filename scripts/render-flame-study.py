@@ -36,7 +36,7 @@ texture.repeat_x = texture.repeat_y = True
 texture.use(0)
 program['noiseMap'] = 0
 vao = ctx.vertex_array(program, [])
-for name,width,height,heat,time in [('idle',390,420,0,4),('warm',390,420,.5,4),('hot',390,420,1,4),('compact',342,80,.7,5)]:
+for name,width,height,heat,time in [('idle',390,420,0,4),('quarter',390,420,.25,4),('warm',390,420,.5,4),('three-quarter',390,420,.75,4),('hot',390,420,1,4),('compact',342,80,.7,5)]:
     fbo=ctx.simple_framebuffer((width,height));fbo.use()
     program['time']=time;program['heat']=heat;program['celebration']=0
     program['aspect']=width/height;program['gaze']=(0,0)

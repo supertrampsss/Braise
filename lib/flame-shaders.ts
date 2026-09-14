@@ -19,25 +19,25 @@ float volumeNoise(vec3 p){
 }
 float densityAt(vec3 p){
   p.x/=1.5; // Broad flame body, with unchanged vertical framing.
-  float height=1.94+heat*.58;
+  float height=2.52; // The full silhouette stays visible as the target to fill.
   float h=p.y/height;
   if(h<=0.||h>=1.) return 0.;
   float lift=smoothstep(.12,.95,h);
-  p.x-=sin(h*5.-time*.95)*(.07+heat*.11)*lift+sin(h*11.-time*1.6)*(.024+heat*.055)*lift;
-  p.z-=cos(h*6.-time*.7)*(.05+heat*.055)*lift;
-  float radius=(.105+.42*sin(pow(h,.7)*3.14159))*pow(1.-h,.62)*(1.55+heat*.65);
+  p.x-=sin(h*5.-time*.95)*.13*lift+sin(h*11.-time*1.6)*.045*lift;
+  p.z-=cos(h*6.-time*.7)*.075*lift;
+  float radius=(.105+.42*sin(pow(h,.7)*3.14159))*pow(1.-h,.62)*2.2;
   float radial=length(p.xz)/max(radius,.012);
   vec3 flow=vec3(p.x*4.8,p.y*1.65-time*.9,p.z*4.8);
   float turbulence=volumeNoise(flow)*.68+volumeNoise(flow*2.15+vec3(0.,-time*.37,0.))*.32;
   float angle=atan(p.z,p.x);
-  float fold=sin(angle*3.+h*9.-time*1.1)*(.12+heat*.10);
-  float surface=.73+fold+(turbulence-.5)*(.26+heat*.12);
+  float fold=sin(angle*3.+h*9.-time*1.1)*.18;
+  float surface=.73+fold+(turbulence-.5)*.34;
   float shell=exp(-abs(radial-surface)*16.);
-  float inner=exp(-abs(radial-surface*.46)*14.)*(.28+heat*.12);
+  float inner=exp(-abs(radial-surface*.46)*14.)*.4;
   float envelope=smoothstep(0.,.07,h)*(1.-smoothstep(.88,1.,h));
   float ribbon=.18+.82*smoothstep(.25,.69,turbulence);
   float core=exp(-radial*radial*35.)*(1.-smoothstep(.16,.54,h));
-  return envelope*((shell+inner)*ribbon*(1.8+heat*.65)+core*(.35+heat*.65));
+  return envelope*((shell+inner)*ribbon*2.45+core*1.);
 }
 vec2 boxIntersection(vec3 ro,vec3 rd){
   vec3 inverse=1./rd;
@@ -62,8 +62,8 @@ void main(){
     vec3 floorPoint=ro+rd*floorDistance;
     float reflection=exp(-dot(floorPoint.xz,floorPoint.xz)*3.6);
     float rim=exp(-abs(length(floorPoint.xz)-.28)*23.);
-    color+=vec3(.40,.16,.035)*reflection*(.28+heat*.72+celebration*.25)*pulse;
-    color+=vec3(.10,.055,.022)*rim*.17;
+    color+=vec3(.40,.16,.035)*reflection*(heat+celebration*.25)*pulse;
+    color+=vec3(.10,.055,.022)*rim*.17*heat;
   }
   vec2 bounds=boxIntersection(ro,rd);
   float nearDistance=max(0.,bounds.x),farDistance=bounds.y;
@@ -79,7 +79,7 @@ void main(){
       float core=smoothstep(.2,1.55,density);
       vec3 emission=mix(vec3(1.5,.19,.008),vec3(3.1,1.9,.6),core);
       emission=mix(emission,vec3(2.7,2.45,1.75),smoothstep(.8,1.45,density)*.8);
-      color+=transmission*alpha*emission*(.72+heat*.48+celebration*.14);
+      color+=transmission*alpha*emission*(1.2+celebration*.14);
       transmission*=1.-alpha;
       if(transmission<.02) break;
       distanceAlong+=stepLength;
@@ -96,11 +96,19 @@ void main(){
     vec2 projected=vec2(dot(relative,right),dot(relative,up))*2.38/depth;
     float dist=length(screen-projected);
     float fade=sin(life*3.14159)*(1.-smoothstep(3.+heat*11.,5.+heat*11.,id));
-    color+=vec3(.8,.32,.07)*exp(-dist*dist/0.000025)*fade*(.2+heat*.8);
+    color+=vec3(.8,.32,.07)*exp(-dist*dist/0.000025)*fade*heat;
   }
   // Gentle exposure roll-off retains warm detail rather than clipping to white.
   color=vec3(1.)-exp(-color*1.08);
   color=pow(max(color,vec3(0.)),vec3(.82));
+  // A steady empty silhouette with fire rising through it. Screen-space
+  // bounds match the fallback poster mask and the current fixed camera.
+  float level=clamp((v.y-.14)/.75,0.,1.);
+  float filled=(1.-smoothstep(heat-.018,heat+.018,level))*step(.0001,heat);
+  if(heat>=.9999) filled=1.;
+  float luminance=dot(color,vec3(.2126,.7152,.0722));
+  vec3 unlit=vec3(.48,.51,.54)*luminance*.36;
+  color=mix(unlit,color,filled);
   gl_FragColor=vec4(color,1.);
 }
 `;

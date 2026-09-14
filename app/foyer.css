@@ -147,3 +147,10 @@ body{background:#0c0d0e;font-family:system-ui,-apple-system,BlinkMacSystemFont,"
 @keyframes braise-menu-enter{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
 @media(hover:hover){.reference-cta:hover,.foyer-interface .primary-button:hover:not(:disabled),.laboratory-shell .primary-button:hover:not(:disabled),.braise-dialog .primary-button:hover:not(:disabled){background:var(--braise-action-hover)}}
 @media(prefers-reduced-motion:reduce){:is(.foyer-interface,.laboratory-shell) .guess-form,.braise-navigation[data-state=open]{animation:none!important;transition:none!important}}
+
+/* The fallback fills the same silhouette while WebGL starts or is unavailable. */
+.foyer-fallback{overflow:hidden}
+.flame-gauge-layer{position:absolute;top:0;left:50%;width:auto;max-width:none;height:100%;transform:translateX(-50%)}
+.flame-gauge-fill{transition:clip-path .9s cubic-bezier(.2,.8,.2,1)}
+.foyer-scene[data-paused=true] .flame-gauge-fill{transition:none}
+@media(prefers-reduced-motion:reduce){.flame-gauge-fill{transition:none}}

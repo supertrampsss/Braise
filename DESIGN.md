@@ -35,7 +35,7 @@ Aligner texte, champs et listes. Une liste emploie des filets, pas une accumulat
 
 ## Mouvement et premier affichage
 
-La température réelle pilote la largeur, la hauteur, la lumière et l’activité de la flamme dans `lib/flame-shaders.ts`. Le composant initialise la chaleur avant sa première image. Les posters froid/tiède/chaud de `public/art/flame-*.webp` sont rendus depuis ce même shader via `scripts/render-flame-study.py --posters`. Ne pas réintroduire l’ancien dessin pendant le chargement.
+La flamme est une jauge : silhouette entière sombre à 0°, remplissage lumineux de bas en haut selon la meilleure température réelle, embrasement complet à 100°. Sa hauteur reste fixe pour rendre la destination visible. Une proposition plus froide ne diminue pas le niveau acquis. Ne pas ajouter la phrase « 100° = le mot trouvé ». Le composant initialise la chaleur avant sa première image. Les deux posters `public/art/flame-gauge-empty.webp` et `flame-gauge-full.webp` viennent du même shader via `scripts/render-flame-study.py --posters` (idle et hot), avec un masque de remplissage pour toute température. Les modes pause et réduction des animations conservent le niveau. Ne pas réintroduire l’ancien dessin pendant le chargement.
 
 Retour d’interaction : 160 ms, courbe `cubic-bezier(.2,.8,.2,1)`. Le menu apparaît depuis son bouton, avec un déplacement de 4 px et une échelle de .98 à 1. La flamme est l’animation continue ; les commandes restent stables et immédiatement utilisables. Respecter le réglage Animations, la visibilité et `prefers-reduced-motion`. Les effets ne créent jamais de progression.
 

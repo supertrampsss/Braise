@@ -150,10 +150,15 @@ export default function FlameScene({ temperature, celebrating, paused }: {
     return () => { disposed = true; cleanup(); };
   }, []);
 
-  // The first paint is rendered from this same shader, never the old artwork.
-  const poster = temperature >= 75 ? "hot" : temperature >= 25 ? "warm" : "idle";
-  return <div className="foyer-scene" aria-hidden="true" data-paused={paused} data-renderer={ready ? "volume" : "fallback"}>
-    <img src={`/art/flame-${poster}.webp`} alt="" className="foyer-fallback" style={{ opacity: ready ? 0 : 1 }}/>
-    <div ref={host} className="foyer-canvas" style={{ opacity: ready ? 1 : 0 }}/>
+  // Both fallback layers come from the same shader and fixed silhouette.
+  // A colder guess never drains the gauge: the caller supplies the best score.
+  const progress = Math.min(1, Math.max(0, temperature / 100));
+  const fillTop = progress === 0 ? 100 : progress === 1 ? 0 : (1 - (.14 + .75 * progress)) * 100;
+  return <div className="foyer-scene" role="meter" aria-label="Chaleur de votre meilleure piste" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.max(0, Math.min(100, temperature))} aria-valuetext={`${temperature.toFixed(1).replace(".", ",")} degrés sur 100${temperature >= 100 ? ", mot trouvé" : ""}`} data-paused={paused} data-renderer={ready ? "volume" : "fallback"}>
+    <div className="foyer-fallback" aria-hidden="true" style={{ opacity: ready ? 0 : 1 }}>
+      <img src="/art/flame-gauge-empty.webp" alt="" className="flame-gauge-layer" />
+      <img src="/art/flame-gauge-full.webp" alt="" className="flame-gauge-layer flame-gauge-fill" style={{ clipPath: `inset(${fillTop}% 0 0)` }} />
+    </div>
+    <div ref={host} aria-hidden="true" className="foyer-canvas" style={{ opacity: ready ? 1 : 0 }}/>
   </div>;
 }
