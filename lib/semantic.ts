@@ -3,6 +3,7 @@ import dataset from "@/data/semantic-v1-index.json";
 import type { Mode } from "./game-types";
 import { getLegacyArchivePuzzle, getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
 import { targetSegment } from "./semantic-storage";
+import { chooseEditorialHint } from "./editorial-hints";
 export { parisDate, nextParisMidnight } from "./calendar";
 
 const words: string[] = dataset.words;
@@ -47,7 +48,10 @@ export async function nextHint(targetIndex: number, hintLevel: number, guesses: 
   // Avoid obvious inflections of the target as hints: keep the discovery moment.
   const target = targets[targetIndex].word;
   const stem = fold(target).slice(0, Math.max(3, target.length - 2));
-  const candidate = order.slice(desiredRank, Math.min(bestRank - 1, desiredRank + 1000)).find(i => !used.has(words[i]) && words[i] !== target && !fold(words[i]).startsWith(stem));
+  const candidates = Array.from(order.slice(desiredRank, Math.min(bestRank - 1, desiredRank + 1000)))
+    .filter(i => !used.has(words[i]) && words[i] !== target && !fold(words[i]).startsWith(stem))
+    .map(i => ({ index: i, word: words[i] }));
+  const candidate = chooseEditorialHint(candidates, target)?.index;
   return candidate === undefined ? null : evaluateWord(targetIndex, candidate);
 }
 export const datasetMetadata = dataset.meta;
