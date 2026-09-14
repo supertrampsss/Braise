@@ -1,6 +1,8 @@
 export const BRAISE_ORIGIN = "https://braise-mots.yellow-drake-7186.chatgpt.site";
+const ALLOWED_ORIGINS = new Set([BRAISE_ORIGIN, "https://braiz.io"]);
 export function validMutationOrigin(request: Request) {
-  return request.headers.get("origin") === BRAISE_ORIGIN && request.headers.get("content-type")?.split(";")[0].trim() === "application/json";
+  const origin = request.headers.get("origin");
+  return origin !== null && ALLOWED_ORIGINS.has(origin) && origin === new URL(request.url).origin && request.headers.get("content-type")?.split(";")[0].trim() === "application/json";
 }
 export function randomToken() {
   return [...crypto.getRandomValues(new Uint8Array(32))].map(value => value.toString(16).padStart(2, "0")).join("");

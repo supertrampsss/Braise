@@ -9,5 +9,5 @@ export function EmbedBridge() {
     window.addEventListener("message", receive); const observer = new ResizeObserver(send); observer.observe(document.body);
     return () => { observer.disconnect(); window.removeEventListener("message", receive); };
   }, []);
-  return <p>Braise · Jeu sémantique français. <a href="/" target="_blank" rel="noopener noreferrer">Ouvrir le site</a></p>;
+  return <p>BRAIZ · Jeu sémantique français. <a href="/" target="_blank" rel="noopener noreferrer">Ouvrir le site</a></p>;
 }

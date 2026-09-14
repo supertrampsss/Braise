@@ -1,4 +1,6 @@
-# BRAISE · Le Foyer
+# BRAIZ · Le Foyer
+
+Version de test public : marque **BRAIZ**, domaine **braiz.io**. Voyage, Entre amis, Studio, Laboratoire, intégration et espace serveur restent masqués par `lib/release.ts`. Le jeu principal, ses archives, son aide et le profil local sont les seuls parcours proposés.
 
 Consulter ce contrat pour une modification visuelle. Les corrections explicites d’Antoine et ses maquettes choisies priment. Ce document décrit la direction actuelle ; il ne vaut pas validation visuelle du navigateur.
 

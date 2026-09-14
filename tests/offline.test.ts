@@ -22,7 +22,7 @@ test("offline cache contains only the neutral fallback and preserves unrelated s
   h.handlers.install({ waitUntil: (p: Promise<unknown>) => pending = p }); await pending;
   assert.deepEqual([...h.stored.keys()], ["/offline.html"]);
   h.handlers.activate({ waitUntil: (p: Promise<unknown>) => pending = p }); await pending;
-  assert.deepEqual(h.removed, ["braise-offline-v0"]);
+  assert.deepEqual(h.removed, ["braise-offline-v0", "braise-offline-v1"]);
 });
 
 test("offline worker ignores API, foreign origins and mutations", () => {

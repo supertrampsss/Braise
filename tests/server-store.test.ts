@@ -210,6 +210,10 @@ test("session revocation and competing revisions reject stale mutations", async 
   assert.equal(await store.submit(session, "game", 1, "revoked", { word: "fleur", temperature: 20, rank: 500, found: false }, 102), "conflict"); sqlite.close();
 });
 test("CSRF boundary rejects absent and foreign origins", () => {
+  assert.equal(validMutationOrigin(new Request("https://braiz.io/api/session", { headers: { Origin: "https://braiz.io", "Content-Type": "application/json" } })), true);
+  for (const origin of ["https://braiz.io.evil.test", "http://braiz.io", BRAISE_ORIGIN]) {
+    assert.equal(validMutationOrigin(new Request("https://braiz.io/api/session", { headers: { Origin: origin, "Content-Type": "application/json" } })), false);
+  }
   assert.equal(validMutationOrigin(new Request(BRAISE_ORIGIN, { headers: { Origin: BRAISE_ORIGIN, "Content-Type": "application/json" } })), true);
   assert.equal(validMutationOrigin(new Request(BRAISE_ORIGIN)), false);
   assert.equal(validMutationOrigin(new Request(BRAISE_ORIGIN, { headers: { Origin: "https://evil.test", "Content-Type": "application/json" } })), false);

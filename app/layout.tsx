@@ -3,10 +3,10 @@ import "./globals.css";
 import "./foyer.css";
 import { OfflineRegistration } from "@/components/offline-registration";
 export const metadata: Metadata = {
-  metadataBase: new URL("https://braise-mots.yellow-drake-7186.chatgpt.site"),
+  metadataBase: new URL("https://braiz.io"),
   manifest: "/manifest.webmanifest",
-  title: "Braise · Le jeu de mots qui chauffe",
-  description: "Un mot secret, mille chemins pour le trouver. Le défi sémantique quotidien, le mode libre et les défis entre amis. Gratuit, en français.",
+  title: "BRAIZ · Le jeu de mots qui chauffe",
+  description: "Trouvez le mot secret grâce à la chaleur. Un jeu de mots gratuit en français, avec un défi quotidien et des parties libres.",
   icons: { icon: "/favicon.svg" },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {

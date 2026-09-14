@@ -13,6 +13,6 @@ export async function POST(request: Request) {
     const text = await request.text(); if (text.length > 512) throw new Error();
     const body = JSON.parse(text); if (body.edition !== TWO_BRAISES_EDITION) throw new Error();
     const result = await evaluateTwoBraises(body.pair, body.word);
-    return result ? Response.json(result, { headers }) : Response.json({ error: "Ce mot n’est pas dans le dictionnaire de Braise." }, { status: 422, headers });
+    return result ? Response.json(result, { headers }) : Response.json({ error: "Ce mot n’est pas dans le dictionnaire de BRAIZ." }, { status: 422, headers });
   } catch (error) { return Response.json({ error: error instanceof SemanticStorageError ? "Le moteur est indisponible. Réessayez, votre saisie est conservée." : "Proposition invalide." }, { status: error instanceof SemanticStorageError ? 503 : 400, headers }); }
 }

@@ -925,7 +925,7 @@ export function createLocalProfileExport(snapshot: ProfileSnapshot, exportedAt =
   };
   const text = `${JSON.stringify(envelope, null, 2)}\n`;
   if (encodedByteLength(text) > PROFILE_TRANSFER_MAX_BYTES) return { ok: false as const, reason: "La progression dépasse la taille maximale de 8 Mio pour cet export." };
-  return { ok: true as const, text, filename: `braise-profil-${exportedAt.toISOString().slice(0, 10)}.json`, summary: envelope.summary };
+  return { ok: true as const, text, filename: `braiz-profil-${exportedAt.toISOString().slice(0, 10)}.json`, summary: envelope.summary };
 }
 
 function parseTransferEnvelope(text: string, now = new Date()) {
@@ -940,7 +940,7 @@ function parseTransferEnvelope(text: string, now = new Date()) {
       value.provenance !== "personal-local" || value.scope !== "profile-only" || !isIsoInstant(value.exportedAt) || Date.parse(value.exportedAt) > now.getTime() ||
       typeof value.sourceStatus !== "string" || !["ready", "migrated", "partial", "memory-only", "corrupt", "unsupported", "conflict"].includes(value.sourceStatus) ||
       !isRecord(value.summary) || !exactKeys(value.summary, ["guesses", "wins", "activities"]) || !Array.isArray(value.activities) || !Array.isArray(value.evidence)) {
-    return { ok: false as const, status: "invalid" as const, reason: "Ce fichier n’est pas une sauvegarde Braise valide." };
+    return { ok: false as const, status: "invalid" as const, reason: "Ce fichier n’est pas une sauvegarde BRAIZ valide." };
   }
   if (typeof value.sourceStatus === "string" && ["corrupt", "unsupported", "conflict"].includes(value.sourceStatus)) {
     return { ok: false as const, status: "conflict" as const, reason: "Ce fichier est une copie de secours d’un profil en conflit et ne peut pas être fusionné automatiquement." };

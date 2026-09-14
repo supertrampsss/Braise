@@ -1,6 +1,6 @@
-# Braise
+# BRAIZ
 
-Jeu web français de proximité sémantique : mot quotidien, archives, mode libre, défis par lien, objectifs hebdomadaires, styles à débloquer et partage sans spoiler.
+Jeu web français de proximité sémantique. Version de test BRAIZ : mot quotidien, archives, partie libre, profil local et partage sans spoiler. Domaine : braiz.io. Les modes avancés sont conservés dans le code mais non proposés au public (`lib/release.ts`). Les clés historiques `braise.*` restent compatibles.
 
 ## Développement
 

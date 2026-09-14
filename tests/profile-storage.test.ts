@@ -240,7 +240,7 @@ test("a migrated profile exports in clear and imports atomically into a fresh pr
   assert.equal(exported.ok, true);
   if (!exported.ok) return;
   assert.match(exported.text, /"format": "braise-personal-profile"/);
-  assert.match(exported.filename, /^braise-profil-2026-09-08\.json$/);
+  assert.match(exported.filename, /^braiz-profil-2026-09-08\.json$/);
 
   const destination = new MemoryStorage();
   const fresh = loadLocalProfile(destination);

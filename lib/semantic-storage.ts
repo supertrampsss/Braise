@@ -35,7 +35,9 @@ export async function loadSemanticObjectFromRuntime(runtime: Record<string, unkn
   const assets = runtime.ASSETS as Assets | undefined;
   if (!assets?.fetch) throw new SemanticStorageError("binding_missing", "Static semantic asset binding is unavailable");
   try {
-    const response = await assets.fetch(new Request(new URL(`/${key}`, "https://braise-assets.invalid")));
+    // ASSETS resolves by path. A localhost origin also passes Vite's development
+    // host check, unlike the former artificial .invalid host rejected in preview.
+    const response = await assets.fetch(new Request(new URL(`/${key}`, "http://localhost")));
     return response.ok ? await response.arrayBuffer() : null;
   } catch (error) { throw new SemanticStorageError("read_failed", error instanceof Error ? error.message : "Asset read failed"); }
 }

@@ -1,12 +1,12 @@
 {
   "id": "/",
-  "name": "Braise · Le jeu de mots qui chauffe",
-  "short_name": "Braise",
+  "name": "BRAIZ · Le jeu de mots qui chauffe",
+  "short_name": "BRAIZ",
   "lang": "fr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#191919",
-  "theme_color": "#191919",
+  "background_color": "#0c0d0e",
+  "theme_color": "#0c0d0e",
   "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
 }

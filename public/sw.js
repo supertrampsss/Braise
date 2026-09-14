@@ -1,5 +1,5 @@
 /* Only this public, non-personal fallback is cached. Never cache games or API data. */
-const CACHE = "braise-offline-v1";
+const CACHE = "braise-offline-v2";
 const FALLBACK = "/offline.html";
 self.addEventListener("install", event => {
   event.waitUntil((async () => {

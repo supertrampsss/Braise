@@ -3,7 +3,7 @@ import { isCalendarDate, parisDate, shiftCalendarDate } from "./calendar";
 export const WEEKLY_RULES_VERSION = "weekly-ritual-v1" as const;
 
 export const COSMETICS = [
-  { id: "classic", name: "Braise classique", description: "Le charbon et l’orange d’origine." },
+  { id: "classic", name: "BRAIZ classique", description: "Le charbon et l’orange d’origine." },
   { id: "copper", name: "Cuivre ardent", description: "Des reflets cuivrés autour de votre partie." },
   { id: "aurora", name: "Aurore violette", description: "Une lueur violette douce, sans changer les scores." },
   { id: "solar", name: "Cendre solaire", description: "Un halo clair pour les longues séries." },

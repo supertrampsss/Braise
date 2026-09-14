@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     }
     if (body.action !== "guess" || typeof body.word !== "string" || body.word.length > 50 || !/^[\p{L}]+(?:['-][\p{L}]+)*$/u.test(normalizeWord(body.word))) return reply({ error: "Proposez un seul mot français, sans chiffre ni espace." }, 400);
     const index = findWord(body.word);
-    if (index === undefined) return reply({ error: "Ce mot n’est pas dans le dictionnaire de Braise. Essayez le singulier ou l’infinitif, avec les accents." }, 422);
+    if (index === undefined) return reply({ error: "Ce mot n’est pas dans le dictionnaire de BRAIZ. Essayez le singulier ou l’infinitif, avec les accents." }, 422);
     return reply({ ...await evaluateWord(targetIndex, index), puzzleRef: publicPuzzle.ref });
   } catch (error) {
     if (error instanceof SemanticStorageError) {

@@ -50,7 +50,7 @@ export default function IntruderGame() {
     finally { submitting.current = false; if (request === generation.current) setBusy(false); }
   }
   return <main className="main-shell laboratory-shell">
-    <a className="text-action" href="/">Revenir à Braise</a>
+    <a className="text-action" href="/">Revenir à BRAIZ</a>
     <div className="page-heading"><div><div className="eyebrow">LE LABORATOIRE</div><h1>L’intrus<span>.</span></h1><p>Quatre mots. Une différence à repérer.</p></div></div>
     <a className="text-action" href="/laboratoire/deux-braises">Jouer à Deux braises</a>
     <section className="collection-picker laboratory-card" aria-label="L’intrus">

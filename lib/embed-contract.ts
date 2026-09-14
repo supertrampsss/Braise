@@ -1,5 +1,5 @@
 export const EMBED_PROTOCOL = "braise-embed-v1";
-export const EMBED_ORIGIN = "https://braise-mots.yellow-drake-7186.chatgpt.site";
+export const EMBED_ORIGIN = "https://braiz.io";
 export function validEmbedMessage(origin: string, data: unknown, type: "hello" | "resize") {
   if (origin !== EMBED_ORIGIN || !data || typeof data !== "object") return false;
   const value = data as Record<string, unknown>;
