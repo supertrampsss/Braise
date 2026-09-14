@@ -13,4 +13,5 @@ test("editorial choice keeps a readable fallback without changing candidate iden
   const candidates = [{ index: 1, word: "de" }, { index: 2, word: "plage" }, { index: 3, word: "très-long-mot-qui-reste" }];
   assert.deepEqual(chooseEditorialHint(candidates, "sable"), candidates[1]);
   assert.equal(chooseEditorialHint([{ index: 4, word: "très-long-mot-qui-reste" }], "sable")?.index, 4);
+  assert.equal(chooseEditorialHint([{ index: 5, word: "désert" }, { index: 6, word: "plage" }], "sable", ["plage"])?.index, 6);
 });

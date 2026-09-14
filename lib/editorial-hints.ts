@@ -51,7 +51,10 @@ export function editorialCandidateQuality(candidate: string, target: string): Ed
   return "preferred";
 }
 
-export function chooseEditorialHint<T extends { word: string }>(candidates: T[], target: string) {
+export function chooseEditorialHint<T extends { word: string }>(candidates: T[], target: string, preferredWords: readonly string[] = []) {
+  const preferred = new Set(preferredWords.map(foldEditorialWord));
+  const curated = candidates.find(candidate => preferred.has(foldEditorialWord(candidate.word)) && editorialCandidateQuality(candidate.word, target) === "preferred");
+  if (curated) return curated;
   return candidates.find(candidate => editorialCandidateQuality(candidate.word, target) === "preferred") ??
     candidates.find(candidate => editorialCandidateQuality(candidate.word, target) === "fallback") ?? null;
 }

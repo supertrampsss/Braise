@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     }
     if (body.action === "hint") {
       if (!Number.isInteger(body.hintLevel) || body.hintLevel < 0 || body.hintLevel > 2 || !Array.isArray(body.guesses) || body.guesses.length < 5 || body.guesses.length > 3000 || !body.guesses.every((word: unknown) => typeof word === "string" && word.length <= 50)) return reply({ error: "Les indices sont disponibles après cinq essais, trois fois par partie." }, 400);
-      const hint = await nextHint(targetIndex, body.hintLevel, body.guesses);
+      const hint = await nextHint(targetIndex, body.hintLevel, body.guesses, body.mode === "daily" ? publicPuzzle.date : undefined);
       return hint ? reply({ ...hint, puzzleRef: publicPuzzle.ref }) : reply({ error: "Votre meilleure piste est déjà toute proche. Essayez ses variantes ou ses synonymes." }, 400);
     }
     if (body.action !== "guess" || typeof body.word !== "string" || body.word.length > 50 || !/^[\p{L}]+(?:['-][\p{L}]+)*$/u.test(normalizeWord(body.word))) return reply({ error: "Proposez un seul mot français, sans chiffre ni espace." }, 400);

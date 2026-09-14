@@ -20,5 +20,10 @@ colonnes et le calendrier n’ont pas été qualifiés. Cette séparation est
 intentionnelle : elle permet d’améliorer l’expérience V1 sans présenter des
 voisins V2 comme des données réellement actives.
 
+Pour le quotidien du 14 septembre 2026, `data/editorial-v1-active.json`
+priorise huit voisins lisibles de `sable` quand ils se trouvent dans la fenêtre
+de progression de l’indice. Cette préférence ne s’applique qu’au mode
+quotidien et ne remplace jamais le score calculé.
+
 Vérification de livraison : `npm run typecheck`, `node scripts/test-game.mjs`
 (169 tests passés), puis construction Sites.
