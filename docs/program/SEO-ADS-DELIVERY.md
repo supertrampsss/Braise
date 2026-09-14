@@ -14,11 +14,11 @@
 - `npm test` : 169 tests réussis.
 - `npm run build` : réussi.
 - Le sitemap et `robots.txt` sont présents dans `dist/client`.
-- Aucune publicité réelle n'est activée.
+- Le script AdSense réel du compte éditeur est présent dans le `<head>` uniquement pour permettre la validation du domaine. Aucune publicité réelle, aucun emplacement et aucune demande d'annonce ne sont activés.
 
 ## Activation commerciale restante
 
-L'adaptateur publicitaire conserve la décision `skip / not-configured` tant qu'un compte éditeur approuvé, un identifiant AdSense, des emplacements, `ads.txt` et un consentement conforme ne sont pas disponibles. Aucun identifiant fictif ne doit être ajouté au dépôt ou au Site.
+L'adaptateur publicitaire conserve la décision `skip / not-configured` tant qu'un compte éditeur approuvé, des emplacements, `ads.txt` et un consentement conforme ne sont pas disponibles. L'identifiant AdSense fourni par Antoine sert à la validation du domaine et ne déclenche pas à lui seul une annonce. Aucun identifiant fictif ne doit être ajouté au dépôt ou au Site.
 
 ## Prochaine action externe
 

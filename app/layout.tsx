@@ -24,5 +24,11 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg" },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="fr"><body>{children}<OfflineRegistration /></body></html>;
+  return <html lang="fr"><head>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6705187262207125"
+      crossOrigin="anonymous"
+    />
+  </head><body>{children}<OfflineRegistration /></body></html>;
 }
