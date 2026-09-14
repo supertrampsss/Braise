@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { flameFragment, flameVertex } from "@/lib/flame-shaders";
 
@@ -72,7 +72,7 @@ export default function FlameScene({ temperature, celebrating, paused }: {
       const scene = new T.Scene();
       const camera = new T.Camera();
       const geometry = new T.PlaneGeometry(2, 2);
-      const uniforms = { noiseMap: { value: texture }, time: { value: 4 }, heat: { value: 0 }, celebration: { value: 0 }, gaze: { value: new T.Vector2() }, aspect: { value: 1 } };
+      const uniforms = { noiseMap: { value: texture }, time: { value: 4 }, heat: { value: Math.min(1, Math.max(0, values.current.temperature) / 100) }, celebration: { value: 0 }, gaze: { value: new T.Vector2() }, aspect: { value: 1 } };
       const material = new T.ShaderMaterial({
         transparent: true, uniforms, fragmentShader: flameFragment, vertexShader: flameVertex,
       });
@@ -150,13 +150,10 @@ export default function FlameScene({ temperature, celebrating, paused }: {
     return () => { disposed = true; cleanup(); };
   }, []);
 
-  return <div className="foyer-scene" aria-hidden="true" data-paused={paused} data-renderer={ready ? "volume" : "fallback"} style={{ "--flame-energy": Math.min(1, Math.max(0, temperature) / 100) } as CSSProperties}>
-    <div className="flame-light"><span className="flame-halo"/><span className="flame-reflection"/></div>
-    <img src="/art/flame.webp" alt="" className="foyer-fallback" style={{ opacity: ready ? 0 : 1 }}/>
+  // The first paint is rendered from this same shader, never the old artwork.
+  const poster = temperature >= 75 ? "hot" : temperature >= 25 ? "warm" : "idle";
+  return <div className="foyer-scene" aria-hidden="true" data-paused={paused} data-renderer={ready ? "volume" : "fallback"}>
+    <img src={`/art/flame-${poster}.webp`} alt="" className="foyer-fallback" style={{ opacity: ready ? 0 : 1 }}/>
     <div ref={host} className="foyer-canvas" style={{ opacity: ready ? 1 : 0 }}/>
-    <div className="flame-embers">{Array.from({ length: 12 }, (_, i) => <i key={i} style={{
-      "--x": `${22 + (i * 37 % 59)}%`, "--drift": `${(i * 19 % 51) - 25}px`,
-      "--duration": `${4 + i % 5}s`, "--delay": `${-i * 1.17}s`,
-    } as CSSProperties}/>)}</div>
   </div>;
 }

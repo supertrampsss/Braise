@@ -18,6 +18,7 @@ float volumeNoise(vec3 p){
   return mix(sampleValue.x,sampleValue.y,f.z);
 }
 float densityAt(vec3 p){
+  p.x/=1.5; // Broad flame body, with unchanged vertical framing.
   float height=1.94+heat*.58;
   float h=p.y/height;
   if(h<=0.||h>=1.) return 0.;
@@ -40,8 +41,8 @@ float densityAt(vec3 p){
 }
 vec2 boxIntersection(vec3 ro,vec3 rd){
   vec3 inverse=1./rd;
-  vec3 a=(vec3(-1.15,-.04,-1.15)-ro)*inverse;
-  vec3 b=(vec3(1.15,2.65,1.15)-ro)*inverse;
+  vec3 a=(vec3(-1.7,-.04,-1.15)-ro)*inverse;
+  vec3 b=(vec3(1.7,2.65,1.15)-ro)*inverse;
   vec3 nearPlane=min(a,b),farPlane=max(a,b);
   return vec2(max(max(nearPlane.x,nearPlane.y),nearPlane.z),min(min(farPlane.x,farPlane.y),farPlane.z));
 }

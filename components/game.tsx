@@ -13,6 +13,8 @@ import AdPlacement from "@/components/ad-placement";
 import { CosmeticPicker, WeeklyRitualCard } from "@/components/weekly-ritual";
 import { ProfileTransfer } from "@/components/profile-transfer";
 import { CollectionPicker } from "@/components/collection-picker";
+import { EXPEDITIONS, type ExpeditionStatus } from "@/lib/expeditions";
+import { resumeExpedition } from "@/lib/expedition-resume";
 import { ExpeditionPicker } from "@/components/expedition-picker";
 import { getStreak, warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
@@ -52,6 +54,18 @@ export default function Game() {
   const [surface, setSurface] = useState<"home" | "game" | "modes" | "voyage" | "profile">("home");
   useEffect(() => { if (location.search) setSurface("game"); }, []);
   useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [surface]);
+  const [journey, setJourney] = useState<ExpeditionStatus | null>(null);
+  const [journeyBusy, setJourneyBusy] = useState(false);
+  const [journeyError, setJourneyError] = useState("");
+  const journeyMemory = useRef(new Map<string, SavedGame>());
+  const journeyController = useRef<AbortController | null>(null);
+  const navigationEpoch = useRef(0);
+  function navigate(destination: typeof surface) {
+    navigationEpoch.current++;
+    journeyController.current?.abort();
+    setJourneyBusy(false);
+    setSurface(destination);
+  }
   const [flamePaused, setFlamePaused] = useState(false);
   const [view, setView] = useState<"play" | "explore">("play");
   const viewRef = useRef<"play" | "explore">("play");
@@ -144,9 +158,12 @@ export default function Game() {
     }, duration);
   }
 
+  function enterGame() {
+    navigate("game"); setView("play");
+    if (!loading && (!puzzle || journey?.reward)) void loadPuzzle("daily");
+  }
   function closeHelpAndFocusGame() {
-    setSurface("game");
-    setView("play");
+    enterGame();
     modalRef.current = null;
     setModal(null);
     if (focusFrameRef.current !== null) cancelAnimationFrame(focusFrameRef.current);
@@ -157,8 +174,10 @@ export default function Game() {
     });
   }
 
-  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame) {
+  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus) {
+    if (puzzle) journeyMemory.current.set(puzzle.id, game);
     const request = ++requestRef.current;
+    setJourney(expedition ?? null);
     lastLoad.current = { mode: nextMode, locator, sessionSave };
     clearDeferredUi();
     consumedFeedbackRef.current.clear();
@@ -186,6 +205,8 @@ export default function Game() {
         if (!reconciled.persisted) setStorageWarning(true);
       }
       const url = new URL(window.location.href);
+      if (expedition) url.searchParams.set("voyage", expedition.id);
+      else url.searchParams.delete("voyage");
       if (nextMode === "challenge") url.searchParams.set("defi", data.seed);
       else url.searchParams.delete("defi");
       if (nextMode === "archive") url.searchParams.set("archive", data.date);
@@ -199,6 +220,42 @@ export default function Game() {
     } finally { if (request === requestRef.current) setLoading(false); }
   }
 
+  async function openJourney(id: string) {
+    journeyController.current?.abort();
+    if (puzzle) journeyMemory.current.set(puzzle.id, game);
+    const controller = new AbortController();
+    journeyController.current = controller;
+    const epoch = ++navigationEpoch.current;
+    const generation = requestRef.current;
+    const current = () => !controller.signal.aborted && epoch === navigationEpoch.current && generation === requestRef.current;
+    setJourneyBusy(true); setJourneyError(""); setLoading(false);
+    try {
+      const result = await resumeExpedition(id, {
+        status: async (id, proofs) => {
+          const response = await fetch("/api/expeditions", { method: "POST", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, proofs }) });
+          const data = await response.json() as ExpeditionStatus & { error?: string };
+          if (!response.ok) throw new Error(data.error || "Connexion impossible.");
+          return data;
+        },
+        readGame: id => puzzle?.id === id ? game : journeyMemory.current.get(id) ?? restoreLegacyGame(id),
+        isCurrent: current,
+      });
+      if (!result || !current()) return;
+      setJourney(result.status);
+      if (result.status.seed) {
+        setSurface("game"); setView("play");
+        await loadPuzzle("challenge", result.status.seed, result.saved, result.status);
+      } else {
+        const url = new URL(window.location.href);
+        url.searchParams.set("voyage", id); url.searchParams.delete("defi"); url.searchParams.delete("archive");
+        window.history.replaceState(null, "", url);
+        setSurface("voyage"); setView("explore");
+      }
+    } catch (cause) {
+      if (current()) { setJourneyError(cause instanceof Error ? cause.message : "Connexion impossible."); setSurface("voyage"); setView("explore"); }
+    } finally { if (epoch === navigationEpoch.current) setJourneyBusy(false); }
+  }
+
   useEffect(() => {
     const refreshProfile = (preservePending = true) => setProfileSnapshot(current => refreshLocalProfile(preservePending ? current ?? undefined : undefined));
     refreshProfile();
@@ -210,12 +267,16 @@ export default function Game() {
     const archive = params.get("archive");
     const challenge = params.get("defi");
     setArchiveDraft(latestArchiveDate());
-    if (archive !== null) void loadPuzzle("archive", archive);
+    const voyage = params.get("voyage");
+    if (voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface("voyage"); setView("explore"); void openJourney(voyage); }
+    else if (archive !== null) void loadPuzzle("archive", archive);
     else if (challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge);
     else void loadPuzzle("daily");
     setNow(Date.now());
     const tick = setInterval(() => setNow(Date.now()), 1000);
     return () => {
+      journeyController.current?.abort();
+      navigationEpoch.current++;
       requestRef.current += 1;
       submitting.current = false;
       clearInterval(tick);
@@ -348,31 +409,32 @@ export default function Game() {
     <Toaster position="bottom-center" theme="dark" />
     <a className="skip-link" href="#braise-main">Aller au contenu</a>
     <header className="site-header reference-header">
-      <button aria-label="Accueil" className="brand" onClick={() => setSurface("home")}>BRAISE</button>
+      <button aria-label="Accueil" className="brand" onClick={() => navigate("home")}>BRAISE</button>
       <div className="reference-header-actions"><DropdownMenu>
         <DropdownMenuTrigger asChild><button className="icon-button" aria-label="Ouvrir le menu"><Menu size={23}/></button></DropdownMenuTrigger>
         <DropdownMenuContent className="braise-navigation" align="end" sideOffset={10}>
           <DropdownMenuLabel>Changer de partie</DropdownMenuLabel>
           <DropdownMenuGroup>
-            <DropdownMenuItem disabled={busy || loading} onSelect={() => { setSurface("game"); setView("play"); void changeMode("daily"); }}><span>Mot du jour<small>Le même mot pour tous, jusqu’à minuit.</small></span></DropdownMenuItem>
-            <DropdownMenuItem disabled={busy || loading} onSelect={() => { setSurface("game"); setView("play"); void changeMode("free"); }}>Partie libre</DropdownMenuItem>
-            <DropdownMenuItem disabled={busy || loading} onSelect={() => { setSurface("game"); setView("play"); revealArchives(); }}>Archives</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setSurface("modes")}>Autres modes</DropdownMenuItem>
+            <DropdownMenuItem disabled={busy || loading} onSelect={() => { navigate("game"); setView("play"); void changeMode("daily"); }}><span>Mot du jour<small>Le même mot pour tous, jusqu’à minuit.</small></span></DropdownMenuItem>
+            <DropdownMenuItem disabled={busy || loading} onSelect={() => { navigate("game"); setView("play"); void changeMode("free"); }}>Partie libre</DropdownMenuItem>
+            <DropdownMenuItem disabled={busy || loading} onSelect={() => { navigate("game"); setView("play"); revealArchives(); }}>Archives</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => navigate("modes")}>Autres modes</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator/>
-          <DropdownMenuItem onSelect={() => setSurface("profile")}>Profil</DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setModal("help")}>Comment jouer</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => navigate("profile")}>Profil</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => { navigate(surface); setModal("help"); }}>Comment jouer</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu></div>
     </header>
 
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
-      {surface === "home" && <section className="reference-home"><h1>Un mot.<br/>À vous de le trouver.</h1><p>Proposez un mot. La chaleur vous guide.</p><FlameScene temperature={temperature} celebrating={false} paused={flamePaused}/><button className="reference-cta" onClick={() => { setView("play"); setSurface("game"); }}>Jouer</button><button className="reference-underlink" onClick={() => setSurface("modes")}>Autres modes</button></section>}
-      {surface === "modes" && <section className="reference-modes" aria-label="Autres modes"><button className="reference-mode selected" onClick={() => {setView("play");setSurface("game");void changeMode("daily");}}><span><strong>Le mot du jour</strong><small>Un mot à découvrir chaque jour</small></span></button><button className="reference-mode" onClick={() => {setView("explore");setSurface("voyage");}}><span><strong>Voyage</strong><small>Des chapitres à votre rythme</small></span></button><a className="reference-mode" href="/duels"><span><strong>Entre amis</strong><small>Un défi, chacun son tour</small></span></a></section>}
-      {surface === "profile" && <section className="reference-profile"><button className="reference-back" onClick={() => setSurface("home")}>Accueil</button><h1>Votre profil</h1><p>{profile.wins.length} mots trouvés<br/>{streak} jours de suite</p><details className="reference-setting"><summary><span><Palette/>Apparence</span></summary>{ritual && <CosmeticPicker projection={ritual} disabled={busy || loading} onSelect={selectCosmetic}/>}</details><button className="reference-setting" role="switch" aria-checked={profile.sound} onClick={() => saveSound(!profile.sound)}><span><Volume2/> Son</span><i className={profile.sound ? "ref-switch on" : "ref-switch"}/></button><button className="reference-setting" role="switch" aria-checked={!flamePaused} onClick={() => setFlamePaused(v => !v)}><span><Sparkles/> Animations</span><i className={!flamePaused ? "ref-switch on" : "ref-switch"}/></button><details className="reference-setting"><summary><span>Sauvegarde<small>Exporter ou importer</small></span></summary>{profileSnapshot && <ProfileTransfer snapshot={profileSnapshot} onSnapshot={setProfileSnapshot}/>}</details><details className="reference-setting"><summary>Progression détaillée </summary><button className="text-action" onClick={() => setModal("stats")}>Voir mes réussites</button><a className="text-action" href="/espace">Mes parties en ligne</a><a className="text-action" href="/studio">Studio</a></details></section>}
+      {surface === "home" && <section className="reference-home"><h1>Un mot.<br/>À vous de le trouver.</h1><FlameScene temperature={temperature} celebrating={false} paused={flamePaused}/><button className="reference-cta" onClick={enterGame}>Jouer</button><button className="reference-underlink" onClick={() => navigate("modes")}>Autres modes</button></section>}
+      {surface === "modes" && <section className="reference-modes" aria-label="Autres modes"><button className="reference-mode selected" onClick={() => {setView("play");navigate("game");void changeMode("daily");}}><span><strong>Le mot du jour</strong><small>Un mot à découvrir chaque jour</small></span></button><button className="reference-mode" onClick={() => {setView("explore");navigate("voyage");}}><span><strong>Voyage</strong><small>Des chapitres à votre rythme</small></span></button><a className="reference-mode" href="/duels"><span><strong>Entre amis</strong><small>Un défi, chacun son tour</small></span></a></section>}
+      {surface === "profile" && <section className="reference-profile"><button className="reference-back" onClick={() => navigate("home")}>Accueil</button><h1>Votre profil</h1><p>{profile.wins.length} mots trouvés<br/>{streak} jours de suite</p><details className="reference-setting"><summary><span><Palette/>Apparence</span></summary>{ritual && <CosmeticPicker projection={ritual} disabled={busy || loading} onSelect={selectCosmetic}/>}</details><button className="reference-setting" role="switch" aria-checked={profile.sound} onClick={() => saveSound(!profile.sound)}><span><Volume2/> Son</span><i className={profile.sound ? "ref-switch on" : "ref-switch"}/></button><button className="reference-setting" role="switch" aria-checked={!flamePaused} onClick={() => setFlamePaused(v => !v)}><span><Sparkles/> Animations</span><i className={!flamePaused ? "ref-switch on" : "ref-switch"}/></button><details className="reference-setting"><summary><span>Sauvegarde<small>Exporter ou importer</small></span></summary>{profileSnapshot && <ProfileTransfer snapshot={profileSnapshot} onSnapshot={setProfileSnapshot}/>}</details><details className="reference-setting"><summary>Progression détaillée </summary><button className="text-action" onClick={() => setModal("stats")}>Voir mes réussites</button><a className="text-action" href="/espace">Mes parties en ligne</a><a className="text-action" href="/studio">Studio</a></details></section>}
 
       <div className="page-heading" hidden={view !== "play"}><div><h1>{mode === "daily" ? "Le mot du jour" : mode === "archive" ? "Un mot des archives" : mode === "free" ? "Un mot, à votre rythme" : "Votre défi"}</h1><p>Proposez un mot. Plus son sens est proche, plus ça chauffe.</p></div></div>
-      <div hidden={surface !== "game"} className="play-view">
+      <div hidden={surface !== "game"} className={`play-view ${journey ? "voyage-play" : ""}`}>
+      {journey && !journey.reward && <div className="voyage-game-heading"><button className="text-action" onClick={() => { navigate("voyage"); setView("explore"); }}>Voyage</button><h1>{EXPEDITIONS.find(item => item.id === journey.id)?.title}</h1><p>Épreuve {journey.completed + 1} sur {journey.length}</p><progress value={journey.completed + (solved ? 1 : 0)} max={journey.length} aria-label="Progression du chapitre"/></div>}
       <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger><TabsTrigger value="challenge" disabled={busy}><Users />Entre amis</TabsTrigger></TabsList>
 
       <TabsContent value={tabMode} className="game-tab-content">
@@ -394,17 +456,17 @@ export default function Game() {
             <div className="game-topline"><div><span className="game-kicker">{mode === "daily" ? "LE MOT DU JOUR" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
 <div className="reference-whispers"><span>Les mots<br/>rapprochent<br/>les mondes.</span><span>Une idée<br/>peut tout<br/>enflammer.</span></div>
 <FlameScene temperature={temperature} celebrating={isCelebratingWin} paused={flamePaused || surface !== "game"} />
-            <div className={`foyer-reading ${best ? "" : "no-guess"}`}><strong>{best ? `${temperature.toFixed(1).replace(".", ",")}°` : "À vous de jouer"}</strong><span>{best ? `${best.word} · ${heat.label}` : "Le sens compte. Pas les lettres."}</span></div>
+            <div className={`foyer-reading ${best ? "" : "no-guess"}`}><strong>{best ? `${temperature.toFixed(1).replace(".", ",")}°` : "À vous de jouer"}</strong>{best && <span>{best.word} · {heat.label}</span>}</div>
             <button className="foyer-motion" type="button" aria-pressed={flamePaused} onClick={() => setFlamePaused(v => !v)}>{flamePaused ? "Animer la flamme" : "Mettre la flamme en pause"}</button>
-{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator, lastLoad.current.sessionSave)}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => loadPuzzle("free", freshSeed())}>Continuer à jouer</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Tester ce mot"} disabled={loading || busy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : "Tester"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <span className="keyboard-hint">Entrée pour proposer</span>)}</div></div>}
+{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator, lastLoad.current.sessionSave, journey ?? undefined)}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" disabled={journeyBusy} onClick={() => journey ? void openJourney(journey.id) : void loadPuzzle("free", freshSeed())}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <Loader2 aria-hidden="true" className="spinner" size={21} /> : "Envoyer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <><span style={{ color: warmth(latest.temperature).color }}>{latest.word} : {latest.temperature.toFixed(1).replace(".", ",")}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></> : <span className="keyboard-hint">Entrée pour proposer</span>)}</div></div>}
               {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
                 <div><span>Meilleure piste</span><strong>{best.word}</strong></div>
                 <div className="heat-reading"><strong>{temperature.toFixed(1).replace(".", ",")}°</strong><span>{heat.label}</span></div>
                 <div className="heat-meter" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, temperature))}%` }} /></div>
                 {isRecord && <span className="compact-record">Nouvelle meilleure piste</span>}
               </div>}
-              <div className="game-bottom"><span><Target size={16} /><b>{game.guesses.length}</b> essai{game.guesses.length > 1 ? "s" : ""}</span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `#${best.rank}` : "Hors top 1 000"}</b><span className="rank-suffix">{best.rank <= 1000 ? "en proximité" : ""}</span></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span><button className="hint-button" onClick={() => submit(undefined, true)} disabled={loading || busy || solved || game.hints >= 3 || game.guesses.length < 5} title={game.guesses.length < 5 ? "Votre premier indice se débloque après 5 essais" : "Ajouter une piste proche du mot secret"}><Lightbulb size={16} /><span>Un indice</span><span className="hint-count">{3 - game.hints}</span></button></div>
+              <div className="game-bottom"><span><Target size={16} /><b>{game.guesses.length}</b> essai{game.guesses.length > 1 ? "s" : ""}</span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `#${best.rank}` : "Hors top 1 000"}</b><span className="rank-suffix">{best.rank <= 1000 ? "en proximité" : ""}</span></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span><button className="hint-button" onClick={() => submit(undefined, true)} disabled={loading || busy || solved || game.hints >= 3 || game.guesses.length < 5} title={game.guesses.length < 5 ? "Votre premier indice se débloque après 5 essais" : "Ajouter une piste proche du mot secret"}><Lightbulb size={16} /><span>Indice</span><span className="hint-count">{3 - game.hints}</span></button></div>
             </>}
           </section>
 
@@ -417,16 +479,16 @@ export default function Game() {
 
       </div>
 
-      <div className="reset-note"><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : mode === "archive" ? <>Cette archive reste disponible<button disabled={busy} onClick={() => loadPuzzle("daily")}>Revenir au mot du jour </button></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => loadPuzzle("free", freshSeed())}>Tirer un nouveau mot </button></>}</span></div>
+      <div className="reset-note" hidden={Boolean(journey)}><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : mode === "archive" ? <>Cette archive reste disponible<button disabled={busy} onClick={() => loadPuzzle("daily")}>Revenir au mot du jour </button></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => loadPuzzle("free", freshSeed())}>Tirer un nouveau mot </button></>}</span></div>
       </TabsContent></Tabs>
       </div>
       <section className="explore-view reference-voyage" hidden={surface !== "voyage"} aria-labelledby="explore-heading">
-        <button className="reference-back" onClick={() => setSurface("modes")}>Tous les modes</button>
+        <button className="reference-back" onClick={() => navigate("modes")}>Tous les modes</button>
         <section className="explore-group" aria-label="Voyage">
-      <ExpeditionPicker disabled={busy || loading} puzzle={puzzle} game={game} navigationGeneration={() => requestRef.current} onSelect={(seed, saved) => { setView("play"); setSurface("game"); return loadPuzzle("challenge", seed, saved); }} />
+      <ExpeditionPicker disabled={busy || loading || journeyBusy} journey={journey} currentStageSolved={Boolean(journey?.seed && journey.seed === puzzle?.seed && solved)} error={journeyError} onContinue={id => void openJourney(id)} />
       <details className="reference-extra"><summary>Collections et variantes</summary><CollectionPicker wins={profile.wins} seed={mode === "challenge" || mode === "free" ? puzzle?.seed : undefined} disabled={busy || loading} onSelect={seed => {
         const url = new URL(window.location.href); url.searchParams.delete("archive"); url.searchParams.set("defi", seed);
-        window.history.replaceState(null, "", url); setView("play"); setSurface("game"); void loadPuzzle("challenge", seed);
+        window.history.replaceState(null, "", url); setView("play"); navigate("game"); void loadPuzzle("challenge", seed);
       }} />
 
           <a className="explore-link" href="/laboratoire"><span><strong>Laboratoire</strong><small>L’intrus et Deux braises</small></span></a></details>

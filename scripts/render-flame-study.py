@@ -42,6 +42,8 @@ for name,width,height,heat,time in [('idle',390,420,0,4),('warm',390,420,.5,4),(
     program['aspect']=width/height;program['gaze']=(0,0)
     vao.render(vertices=3)
     Image.frombytes('RGB',(width,height),fbo.read(components=3)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(out/f'{name}.png')
+    if '--posters' in sys.argv and name != 'compact':
+        Image.frombytes('RGB',(width,height),fbo.read(components=3)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(out/f'{name}.webp', quality=90)
     fbo.release()
 print('Compiled and rendered via',ctx.info['GL_RENDERER'])
 print(out)
