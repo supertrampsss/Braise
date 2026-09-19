@@ -52,7 +52,7 @@ export default function FlameScene({ temperature, celebrating, paused, solved = 
     <svg className="approved-flame-defs" aria-hidden="true"><defs><filter id={filterId} x="-5%" y="-5%" width="110%" height="110%"><feTurbulence ref={turbulence} type="fractalNoise" baseFrequency=".015 .035" numOctaves="2" seed="4" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
     <img src="/art/braiz-approved-flame.png" alt="" className="approved-flame-cold" aria-hidden="true" />
     <img src="/art/braiz-approved-flame.png" alt="" className="approved-flame-hot" style={{ filter:`url(#${filterId})` }} aria-hidden="true" />
-    <span className="approved-sparks" aria-hidden="true"><i/><i/><i/></span>
+    <span className="approved-sparks" aria-hidden="true"><i/><i/><i/><i/><i/><i/></span>
   </div>;
 }
 

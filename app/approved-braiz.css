@@ -13,11 +13,15 @@
 .approved-interface .game-topline .daily-pill { display:none; }
 .approved-game-title { font:550 35px/1.2 system-ui,sans-serif; letter-spacing:-.045em; text-align:center; margin:16px 24px 2px; }
 .approved-interface .play-view .approved-flame { height:310px; width:322px; max-width:100%; margin:0 auto; mix-blend-mode:normal; }
-.approved-flame img { position:absolute; width:100%; height:100%; inset:0; object-fit:contain; pointer-events:none; mask-image:radial-gradient(ellipse 49% 58% at 50% 54%,#000 65%,transparent 100%); }
+.approved-flame img { position:absolute; width:100%; height:100%; inset:0; object-fit:contain; pointer-events:none; mask-image:radial-gradient(ellipse 49% 58% at 50% 54%,#000 65%,transparent 100%); transform-origin:50% 72%; }
 .approved-flame-cold { filter:grayscale(.8) brightness(.55); opacity:.55; }
 .approved-flame .approved-flame-hot { mask-image:linear-gradient(to bottom,transparent calc(var(--reveal-top) - 10%),#000 calc(var(--reveal-top) + 10%)),radial-gradient(ellipse 49% 58% at 50% 54%,#000 65%,transparent 100%); mask-composite:intersect; }
+.approved-flame .approved-flame-cold { animation:approved-flame-sway 2.6s ease-in-out infinite alternate; }
+.approved-flame .approved-flame-hot { animation:approved-flame-sway 1.85s ease-in-out infinite alternate-reverse, approved-flame-glow 2.4s ease-in-out infinite; }
 .approved-flame[data-celebrating=true] .approved-flame-hot { animation:approved-win 1.4s ease-out; }
 @keyframes approved-win { 0%,100% { opacity:1; } 35% { opacity:.75; } }
+@keyframes approved-flame-sway { 0% { transform:translate3d(-1.5%,0,0) rotate(-1.2deg) scale(.985); } 48% { transform:translate3d(1.8%,-1%,0) rotate(1.4deg) scale(1.025); } 100% { transform:translate3d(-.8%,.5%,0) rotate(-.8deg) scale(1); } }
+@keyframes approved-flame-glow { 0%,100% { opacity:.9; filter:brightness(1); } 50% { opacity:1; filter:brightness(1.14) saturate(1.08); } }
 .approved-interface .foyer-reading { margin:0 auto; padding:0 24px 24px; text-align:center; }
 .approved-interface .foyer-reading strong { font-size:22px; font-weight:550; }
 .approved-interface .foyer-reading span { font-size:14px; color:#c5b5a8; display:block; margin-top:6px; }
@@ -84,8 +88,11 @@
 .approved-flame-defs { position:absolute; width:0; height:0; overflow:hidden; }
 .approved-sparks { position:absolute; inset:15% 22% 12%; pointer-events:none; overflow:hidden; }
 .approved-sparks i { position:absolute; left:20%; bottom:0; width:2px; height:3px; border-radius:50%; background:#ffb057; opacity:0; animation:approved-spark 5s linear infinite; }
-.approved-sparks i:nth-child(2) { left:70%; animation-delay:1.8s; }
-.approved-sparks i:nth-child(3) { left:45%; animation-delay:3.3s; }
+.approved-sparks i:nth-child(2) { left:70%; animation-delay:1.1s; animation-duration:4.2s; }
+.approved-sparks i:nth-child(3) { left:45%; animation-delay:2.2s; animation-duration:3.8s; }
+.approved-sparks i:nth-child(4) { left:34%; animation-delay:.5s; animation-duration:4.7s; }
+.approved-sparks i:nth-child(5) { left:58%; animation-delay:2.9s; animation-duration:4.4s; }
+.approved-sparks i:nth-child(6) { left:82%; animation-delay:1.7s; animation-duration:5.1s; }
 @keyframes approved-spark { 0%,100% { opacity:0; transform:translateY(0); } 20% { opacity:.6; } 80% { opacity:0; transform:translate(8px,-130px); } }
 .approved-flame[data-paused=true] .approved-sparks i,.approved-flame[data-visible=false] .approved-sparks i { animation-play-state:paused; }
 @media(prefers-reduced-motion:reduce) { .approved-sparks { display:none; } .approved-flame .approved-flame-hot { filter:none!important; } }
