@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./foyer.css";
+import "./approved-braiz.css";
 import { OfflineRegistration } from "@/components/offline-registration";
 export const metadata: Metadata = {
   metadataBase: new URL("https://braiz.io"),
@@ -32,3 +33,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     />
   </head><body>{children}<OfflineRegistration /></body></html>;
 }
+

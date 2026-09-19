@@ -1,0 +1,5 @@
+# BRAIZ approved artwork provenance
+The presentation uses an exact pixel crop of the user-approved image `outputs/assets/braiz-approved.png` from the design report, not a regenerated flame. The source image dimensions are 941×1672; the crop rectangle is x=273, y=213, width=398, height=384. It excludes all source lettering. CSS masks feather the background and reveal the hot layer from bottom to top.
+The renderer receives only best accepted temperature, solved state, accepted victory feedback and animation preference. Its initial reveal is synchronous, so restored progress does not animate up from zero. Internal SVG displacement is updated at most 30 times per second, with three decorative sparks. Both stop for animation preference, reduced motion, document visibility and intersection visibility; the flame never scales. No WebGL or external assets are required.
+The game retains the canonical Sites version28 engine, request guards, APIs, saves, V2 profile and release flags. The approved report supersedes DESIGN.md's old home/Jouer gate and dark input surface. Home now opens the playable board.
+

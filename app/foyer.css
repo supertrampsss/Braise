@@ -59,7 +59,7 @@
 @keyframes flame-record{0%,100%{opacity:.6}35%{opacity:1;transform:scale(1.12)}}
 @media(hover:hover){.reference-cta:hover,.foyer-interface .guess-button:hover:not(:disabled){background:#fff8e9}.reference-mode:not(.selected):hover{color:#e5bc7c}.reference-underlink:hover{color:#f3f1ec}.reference-header-actions button:hover{color:#f3f1ec;background:none}}
 @media(max-height:720px){.reference-home{padding-top:12px}.reference-home .foyer-scene{height:28svh;margin:16px 0 24px}.reference-home h1{font-size:32px}}
-@media(max-width:600px){.foyer-interface .site-header{padding:20px 24px}.foyer-interface .main-shell{padding-left:24px;padding-right:24px}.foyer-interface .play-view:has(#guess:focus) .foyer-scene{height:80px}.foyer-interface .play-view:has(#guess:focus) .foyer-reading strong{font-size:36px}.play-view:has(#guess:focus) .flame-embers{display:none}.voyage-stage{min-height:calc(100svh - 160px)}}
+@media(max-width:600px){.foyer-interface .site-header{padding:20px 24px}.foyer-interface .main-shell{padding-left:24px;padding-right:24px}.foyer-interface:not(.approved-interface) .play-view:has(#guess:focus) .foyer-scene{height:80px}.foyer-interface:not(.approved-interface) .play-view:has(#guess:focus) .foyer-reading strong{font-size:36px}.play-view:has(#guess:focus) .flame-embers{display:none}.voyage-stage{min-height:calc(100svh - 160px)}}
 .motion-paused *,.motion-paused *:before,.motion-paused *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 .foyer-scene[data-paused=true] *,.foyer-scene[data-visible=false] *{animation-play-state:paused!important}
 @media(prefers-reduced-motion:reduce){.foyer-interface *,.foyer-interface *:before,.foyer-interface *:after,.reference-friends *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.flame-embers{display:none}}
@@ -70,7 +70,7 @@
 .foyer-interface .play-view .foyer-scene{height:clamp(220px,36svh,350px)}
 .reference-home h1{position:relative;z-index:1}
 @media(max-height:720px){.reference-home .foyer-scene{height:30svh;min-height:190px}}
-@media(max-width:600px){.foyer-interface .play-view:has(#guess:focus) .foyer-scene{height:80px}}
+@media(max-width:600px){.foyer-interface:not(.approved-interface) .play-view:has(#guess:focus) .foyer-scene{height:80px}}
 
 /* Shared rhythm across game, settings and supporting routes. */
 :root{--background:#0c0d0e;--foreground:#f3f1ec;--card:#141617;--card-foreground:#f3f1ec;--muted-foreground:#a3a59f;--popover:#17191a;--popover-foreground:#f3f1ec;--border:#ffffff17;--ring:#dfbd89;--space-page:clamp(24px,5vw,40px)}
@@ -154,3 +154,4 @@ body{background:#0c0d0e;font-family:system-ui,-apple-system,BlinkMacSystemFont,"
 .flame-gauge-fill{transition:clip-path .9s cubic-bezier(.2,.8,.2,1)}
 .foyer-scene[data-paused=true] .flame-gauge-fill{transition:none}
 @media(prefers-reduced-motion:reduce){.flame-gauge-fill{transition:none}}
+
