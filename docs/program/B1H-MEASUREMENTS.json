@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "scope": "real-score-and-rank-staging-for-all-currently-approved-editorial-targets",
+  "measuredAt": "2026-09-24T15:05:30.692Z",
+  "sourceCodeCommit": "e490d7f15054aeb9de00c1b57b8b14d2a07d955e",
+  "corpus": {
+    "id": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+    "rowsRead": 1152449,
+    "acceptedEntries": 1013881,
+    "segments": 248,
+    "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+    "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d"
+  },
+  "targets": {
+    "approvedAtRunStart": 62,
+    "generatedAndVerified": 62,
+    "uniqueTargetTables": 62,
+    "dictionaryEntriesPerTarget": 1013881,
+    "verifiedScorePagesPerTarget": 16,
+    "verifiedOrderPagesPerTarget": 16,
+    "aggregateTargetManifestSha256": "f1578807f47d184353f8b0119c73fc94b7e9bf75eac5dc2b448480ddd83a5d2d"
+  },
+  "verification": {
+    "generator": "scripts/build-semantic-target-v2.mjs",
+    "perTargetExhaustiveVerifier": "passed for all generated targets",
+    "independentAggregateCoverageCheck": "passed; score and order pages each cover every admitted dictionary entry",
+    "productActivated": false,
+    "durableTransfer": "pending; generated data are ignored local work assets",
+    "r2": "not provisioned or qualified",
+    "workerMemory": "not qualified",
+    "browserValidation": "not requested",
+    "publicationChanged": false
+  }
+}
