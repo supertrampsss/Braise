@@ -126,7 +126,12 @@
     "runtime_assets_included": false
   },
   "last_verified_source_commit": "e490d7f15054aeb9de00c1b57b8b14d2a07d955e",
-  "lease": null,
+  "lease": {
+    "owner": "foreground-r2-20260924",
+    "acquired_at": "2026-09-24T16:33:48.829816+00:00",
+    "expires_at": "2026-09-24T20:33:48.829830+00:00",
+    "scope": "durable semantic storage and transfer"
+  },
   "next_action": "Finaliser les approbations éditoriales jusqu’à 365 mots et construire le calendrier immuable. Provisionner et qualifier R2 et la mémoire du Worker, puis transférer les actifs ignorés locaux vers le stockage durable avec manifeste et contrôles de reprise avant toute activation V2. Préserver le dictionnaire V1 et la publication existante.",
   "next_phase": "B2",
   "phases": [
