@@ -44,7 +44,7 @@ export async function loadSemanticObjectFromRuntime(runtime: Record<string, unkn
 
 async function runtimeLoad(key: string) {
   if (testLoader) return testLoader(key);
-  return loadSemanticObjectFromRuntime(env as unknown as Record<string, unknown>, hostingConfig.r2, key);
+  return loadSemanticObjectFromRuntime(env as unknown as Record<string, unknown>, (env as unknown as Record<string, unknown>).BRAIZ_V1_STORAGE === "r2" ? hostingConfig.r2 : null, key);
 }
 
 const CACHE_BUDGET_BYTES = 4 * 1024 * 1024;
