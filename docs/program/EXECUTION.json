@@ -1,7 +1,9 @@
 {
-  "audience": "owner_private",
+  "audience": "public",
   "baseline_commit": "85b05a71cba67b3283e1a19a1745d2d90570bcd2",
-  "blockers": [],
+  "blockers": [
+    "Cloudflare Browser Integrity Check rejects the authenticated transfer client with HTTP 403 / error 1010. No corpus bytes transferred."
+  ],
   "catalogue_directive": {
     "current": {
       "dictionary_entries": 30000,
@@ -95,11 +97,11 @@
   "consecutive_runs_without_progress": 0,
   "contract": "docs/program/GOAL.md",
   "delivery": {
-    "automated_checks": "171_tests_typecheck_build_real_full_volume_restore_and_62_real_target_score_rank_tables_verified_locally",
+    "automated_checks": "174_tests_typecheck_build_passed",
     "browser_validation": "not_requested",
     "commercial_activation": "not_configured",
     "implementation": "in_progress",
-    "publication": "unchanged_v31_public"
+    "publication": "public_v32_r2_configured_v1_preserved"
   },
   "goal_id": "braise-ten-paths-v1",
   "interface_revision": {
@@ -108,15 +110,15 @@
     "evidence": "docs/program/UI-SIMPLIFICATION.md",
     "source_commit": "4f7852afd69f05593d8e02a33f08b0e781dbcb96"
   },
-  "last_checkpoint": "B1h-real-staging-score-tables",
+  "last_checkpoint": "durable-storage-provisioned-transfer-blocked",
   "last_run": {
-    "completed_at": "2026-09-24T15:07:50.916Z",
+    "completed_at": "2026-09-24T16:41:18.030138+00:00",
     "phase": "B1",
     "progress": true,
-    "source_commit": "e490d7f15054aeb9de00c1b57b8b14d2a07d955e",
+    "source_commit": "3bfd5a722186304c587100bebed5837022c33eaa",
     "publication": {
-      "status": "unchanged",
-      "version": 31
+      "status": "succeeded",
+      "version": 32
     },
     "main_model_override_performed": false
   },
@@ -126,13 +128,8 @@
     "runtime_assets_included": false
   },
   "last_verified_source_commit": "e490d7f15054aeb9de00c1b57b8b14d2a07d955e",
-  "lease": {
-    "owner": "foreground-r2-20260924",
-    "acquired_at": "2026-09-24T16:33:48.829816+00:00",
-    "expires_at": "2026-09-24T20:33:48.829830+00:00",
-    "scope": "durable semantic storage and transfer"
-  },
-  "next_action": "Finaliser les approbations éditoriales jusqu’à 365 mots et construire le calendrier immuable. Provisionner et qualifier R2 et la mémoire du Worker, puis transférer les actifs ignorés locaux vers le stockage durable avec manifeste et contrôles de reprise avant toute activation V2. Préserver le dictionnaire V1 et la publication existante.",
+  "lease": null,
+  "next_action": "Autoriser le client de transfert authentifié sur /api/semantic-transfer dans Cloudflare (Browser Integrity Check retourne 1010). Réémettre ensuite un secret temporaire, vérifier le transfert R2 réel, puis restaurer et sauvegarder durablement le corpus avant génération. V1 reste actif.",
   "next_phase": "B2",
   "phases": [
     {
