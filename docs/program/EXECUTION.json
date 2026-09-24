@@ -117,7 +117,10 @@
     "runtime_assets_included": false
   },
   "last_verified_source_commit": "adf3e287d12699bdea9cc58a671543fd636accca",
-  "lease": null,
+  "lease": {
+    "owner": "braise-dictionary-generation",
+    "expires_at": "2026-09-24T19:51:37.227Z"
+  },
   "next_action": "Restaurer le staging exact si les actifs ignorés sont absents, puis poursuivre les rotations B2 par groupes de huit jusqu'aux 365 puis 400 approbations. Produire alors le calendrier immuable, puis provisionner et qualifier R2 et le Worker avant activation V2. Rejouer B7 seulement quand les appels hébergés restent disponibles jusqu'au nettoyage. Préserver V1 et l'interface publiée.",
   "next_phase": "B2",
   "phases": [
