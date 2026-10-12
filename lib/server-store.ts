@@ -20,6 +20,18 @@ export class ServerStore {
     ]);
     return { id, name };
   }
+  async syncSnapshot(guest: string) {
+    return this.db.prepare('SELECT revision,version,payload,updated_at FROM braise_device_snapshots WHERE guest_id=?').bind(guest).first<{revision:number;version:number;payload:string|null;updated_at:number}>();
+  }
+  async saveSync(session:GuestSession, revision:number, payload:string|null, now=Date.now()) {
+    const result=await this.db.prepare(`INSERT INTO braise_device_snapshots(guest_id,revision,version,payload,updated_at)
+      SELECT guest_id,0,1,?,? FROM braise_sessions WHERE token_hash=? AND guest_id=? AND revoked=0 AND expires_at>? AND ?=-1
+      ON CONFLICT(guest_id) DO NOTHING`).bind(payload,now,session.token_hash,session.guest_id,now,revision).run();
+    if(result.meta.changes)return this.syncSnapshot(session.guest_id);
+    const updated=await this.db.prepare(`UPDATE braise_device_snapshots SET revision=revision+1,payload=?,updated_at=? WHERE guest_id=? AND revision=? AND version=1
+      AND EXISTS(SELECT 1 FROM braise_sessions WHERE token_hash=? AND guest_id=? AND revoked=0 AND expires_at>?)`).bind(payload,now,session.guest_id,revision,session.token_hash,session.guest_id,now).run();
+    return updated.meta.changes?this.syncSnapshot(session.guest_id):null;
+  }
   async listGames(guest: string) {
     return (await this.db.prepare(`SELECT id,state,revision,created_at,completed_at FROM braise_server_games g WHERE guest_id=? AND ${CIRCLE_ACCESS} ORDER BY created_at DESC LIMIT 50`).bind(guest).all()).results;
   }

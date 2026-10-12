@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Volume2, Sparkles } from "lucide-react";
+import { DeviceSync, type DeviceSyncGuard } from "@/components/device-sync";
 import { ProfileTransfer } from "@/components/profile-transfer";
 import { CosmeticPicker, WeeklyRitualCard } from "@/components/weekly-ritual";
 import { ProductDiagnostics } from "@/components/product-diagnostics";
@@ -12,8 +13,8 @@ import type { CosmeticId, WeeklyProjection } from "@/lib/weekly-ritual";
 import { formatDateFr, formatNumberFr } from "@/lib/format-fr";
 import "@/components/profile-panel.css";
 
-type Props = { snapshot: ProfileSnapshot; ritual: WeeklyProjection | null; now: string; busy: boolean; flamePaused: boolean; onSound: (value: boolean) => void; onAnimations: () => void; onCosmetic: (id: CosmeticId) => void; onSnapshot: (snapshot: ProfileSnapshot) => void; onBack: () => void };
-export function ProfilePanel({ snapshot, ritual, now, busy, flamePaused, onSound, onAnimations, onCosmetic, onSnapshot, onBack }: Props) {
+type Props = { snapshot: ProfileSnapshot; ritual: WeeklyProjection | null; now: string; busy: boolean; flamePaused: boolean; onSound: (value: boolean) => void; onAnimations: () => void; onCosmetic: (id: CosmeticId) => void; onSnapshot: (snapshot: ProfileSnapshot) => void; onDeviceSync?: (snapshot: ProfileSnapshot) => void; deviceSyncGuard?: DeviceSyncGuard; onBack: () => void };
+export function ProfilePanel({ snapshot, ritual, now, busy, flamePaused, onSound, onAnimations, onCosmetic, onSnapshot, onDeviceSync, deviceSyncGuard, onBack }: Props) {
   const [visibleHistory, setVisibleHistory] = useState(50);
   const profile = snapshot.profile;
   const statistics = personalStatistics(profile.wins, new Date(now));
@@ -56,6 +57,7 @@ export function ProfilePanel({ snapshot, ritual, now, busy, flamePaused, onSound
       <p>{snapshot.persisted ? `Profil enregistré dans ce navigateur · format v${snapshot.formatVersion}. Les onglets partagent cette progression.` : "Sauvegarde locale indisponible : les éléments de cette session peuvent être perdus au rechargement."}</p>
       {snapshot.backupConfirmed && <p>Une copie brute de l’ancien profil est conservée ici.</p>}
       <ProfileTransfer snapshot={snapshot} onSnapshot={onSnapshot} />
+      <DeviceSync snapshot={snapshot} onSnapshot={onDeviceSync ?? onSnapshot} disabled={busy} mergeGuard={deviceSyncGuard} />
       <ProductDiagnostics />
     </details>
   </section>;

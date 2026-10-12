@@ -6,7 +6,7 @@ type Duel = { id: string; host_id: string; opponent_id: string | null; targets: 
 const ACTIVE = "EXISTS (SELECT 1 FROM braise_sessions s WHERE s.token_hash=? AND s.guest_id=? AND s.revoked=0 AND s.expires_at>?)";
 export class DuelStore {
   constructor(private db: D1Database) {}
-  async list(guest: string) { return (await this.db.prepare("SELECT id,state,deadline,invite_expires FROM braise_duels WHERE host_id=? OR opponent_id=? ORDER BY created_at DESC LIMIT 50").bind(guest, guest).all()).results; }
+  async list(guest: string) { return (await this.db.prepare("SELECT id,CASE WHEN state='pending' AND invite_expires<=? THEN 'expired' WHEN state='forfeit' OR (state='active' AND (deadline<=? OR (SELECT count(*) FROM (SELECT guest_id,round FROM braise_duel_guesses WHERE duel_id=braise_duels.id GROUP BY guest_id,round HAVING max(found)=1 OR count(*)=30))=6)) THEN 'finished' ELSE state END AS state,CASE state WHEN 'forfeit' THEN 1 ELSE 0 END AS abandoned,deadline,invite_expires FROM braise_duels WHERE host_id=? OR opponent_id=? ORDER BY created_at DESC LIMIT 50").bind(Date.now(),Date.now(),guest, guest).all()).results; }
   async get(guest: string, id: string) { return this.db.prepare("SELECT * FROM braise_duels WHERE id=? AND (host_id=? OR opponent_id=?)").bind(id, guest, guest).first<Duel>(); }
   async create(session: GuestSession, id: string, token: string, targets: number[], now = Date.now()) {
     if (targets.length !== 3 || new Set(targets).size !== 3 || targets.some(target => !Number.isInteger(target) || target < 0 || target >= 120)) throw new Error("invalid-targets");
@@ -40,13 +40,13 @@ export class DuelStore {
   }
   async view(guest: string, id: string, now = Date.now()) {
     // One SQL snapshot includes lifecycle and accepted facts.
-    const row = await this.db.prepare(`SELECT d.*, (SELECT json_group_array(json_object('guest_id',g.guest_id,'round',g.round,'word',g.word,'ordinal',g.ordinal,'temperature',g.temperature/10000.0,'rank',g.rank,'found',g.found)) FROM (SELECT * FROM braise_duel_guesses WHERE duel_id=d.id ORDER BY round,ordinal) g) AS facts FROM braise_duels d WHERE d.id=? AND (d.host_id=? OR d.opponent_id=?)`).bind(id, guest, guest).first<Duel & { facts: string }>();
+    const row = await this.db.prepare(`SELECT d.*, (SELECT name FROM braise_guests WHERE id=d.host_id) AS hostName,(SELECT name FROM braise_guests WHERE id=d.opponent_id) AS opponentName, (SELECT json_group_array(json_object('guest_id',g.guest_id,'round',g.round,'word',g.word,'ordinal',g.ordinal,'temperature',g.temperature/10000.0,'rank',g.rank,'found',g.found)) FROM (SELECT * FROM braise_duel_guesses WHERE duel_id=d.id ORDER BY round,ordinal) g) AS facts FROM braise_duels d WHERE d.id=? AND (d.host_id=? OR d.opponent_id=?)`).bind(id, guest, guest).first<Duel & { facts: string;hostName:string;opponentName:string|null }>();
     if (!row) return null;
     const guesses = JSON.parse(row.facts) as DuelGuess[];
     const rounds = [0, 1, 2].map(round => ({ host: roundFacts(guesses, row.host_id, round), opponent: roundFacts(guesses, row.opponent_id ?? "", round) }));
     const closed = row.state === "forfeit" || (row.state === "active" && ((row.deadline ?? 0) <= now || rounds.every(round => round.host.closed && round.opponent.closed)));
     const state = row.state === "pending" && row.invite_expires <= now ? "expired" : closed ? "finished" : row.state;
     const decisions = closed ? rounds.map(round => compareRound(round.host, round.opponent)) : null;
-    return { id: row.id, state, rules: row.rules, deadline: row.deadline, inviteExpires: row.invite_expires, role: guest === row.host_id ? "host" : "opponent", forfeiter: row.forfeiter === null ? null : row.forfeiter === row.host_id ? "host" : "opponent", guesses: guesses.filter(guess => guess.guest_id === guest).map(({ guest_id: _guest, ...guess }) => guess), rounds: closed ? rounds : rounds.map(round => ({ own: guest === row.host_id ? round.host : round.opponent })), decisions };
+    return { id: row.id, hostName:row.hostName,opponentName:row.opponentName,state, rules: row.rules, deadline: row.deadline, inviteExpires: row.invite_expires, role: guest === row.host_id ? "host" : "opponent", forfeiter: row.forfeiter === null ? null : row.forfeiter === row.host_id ? "host" : "opponent", guesses: guesses.filter(guess => guess.guest_id === guest).map(({round,word,ordinal,temperature,rank,found}) => ({round,word,ordinal,temperature,rank,found})), rounds: closed ? rounds : rounds.map(round => ({ own: guest === row.host_id ? round.host : round.opponent })), decisions };
   }
 }

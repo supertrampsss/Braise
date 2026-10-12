@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { Menu, CalendarDays, Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -11,6 +11,7 @@ import { EXTRA_MODES_ENABLED } from "@/lib/release";
 import { clientId } from "@/lib/client-id";
 import FlameScene from "@/components/flame-scene";
 import AdPlacement from "@/components/ad-placement";
+import { deviceBoardRevision, admitDeviceBoardMerge } from "@/lib/device-sync-admission";
 import { ProfilePanel } from "@/components/profile-panel";
 import { COLLECTIONS, collectionProgress } from "@/lib/collections";
 import { CollectionPicker } from "@/components/collection-picker";
@@ -238,6 +239,19 @@ export default function Game() {
     focusFrameRef.current = null;
   }
 
+  const deviceSyncRevisionRef=useRef<()=>string|null>(()=>null);
+  useLayoutEffect(()=>{deviceSyncRevisionRef.current=()=>deviceBoardRevision({busy:loading||busy||submitting.current||journeyBusy,request:requestRef.current,navigation:navigationEpoch.current,puzzle:puzzle?.id??null});});
+  const deviceSyncGuard={revision:()=>deviceSyncRevisionRef.current(),admit:(expected:string|null)=>{
+    return admitDeviceBoardMerge(expected,()=>deviceSyncRevisionRef.current(),()=>{requestRef.current++;clearDeferredUi();setFeedback(null);});
+  }};
+  const boardStorageRef=useRef<(key:string|null)=>void>(()=>{});
+  useLayoutEffect(()=>{boardStorageRef.current=(key)=>{
+    if (!puzzle || loading || key !== `braise.v1.game.${puzzle.id}`) return;
+    if (!canWriteGameDocument(undefined,puzzle.id)) { gameWriteAllowed.current=false; setStorageWarning(true); return; }
+    requestRef.current++; submitting.current=false; setBusy(false); clearDeferredUi(); setFeedback(null);
+    setGame(restoreLegacyGame(puzzle.id)); refreshPlays();
+  };});
+
   function showFeedback(next: GameEffect) {
     if (!shouldAdmitGameFeedback(consumedFeedbackRef.current, next)) return;
     consumedFeedbackRef.current.add(next.id);
@@ -269,6 +283,8 @@ export default function Game() {
 
   async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string, destination?: GameSurface) {
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
+    // This ref is the mutable cancellation epoch shared with the sync commit gate.
+    // eslint-disable-next-line react-hooks/immutability
     const request = ++requestRef.current;
     setJourney(expedition ?? null);
     collection=COLLECTIONS.find(item=>item.id===collection && item.seeds.includes(locator))?.id;
@@ -373,7 +389,7 @@ export default function Game() {
   useEffect(() => {
     const refreshProfile = (preservePending = true) => setProfileSnapshot(current => refreshLocalProfile(preservePending ? current ?? undefined : undefined));
     refreshProfile();
-    const onStorage = (event: StorageEvent) => { if (isProfileStorageKey(event.key)) refreshProfile(event.key !== null); };
+    const onStorage = (event: StorageEvent) => { if (isProfileStorageKey(event.key)) refreshProfile(event.key !== null); boardStorageRef.current(event.key); };
     const onVisibility = () => { if (document.visibilityState === "visible") refreshProfile(); };
     window.addEventListener("storage", onStorage);
     document.addEventListener("visibilitychange", onVisibility);
@@ -415,6 +431,13 @@ export default function Game() {
     }
   }, [now, puzzle, mode, loading, busy, loadError]);
 
+  // Device imports change durable saves; refresh the already selected board silently.
+  // No navigation, input reset, focus, progress projection or gameplay effect is emitted.
+  function receiveDeviceSync(snapshot: ProfileSnapshot) {
+    setProfileSnapshot(snapshot);
+    if (puzzle && canWriteGameDocument(undefined, puzzle.id)) setGame(restoreLegacyGame(puzzle.id));
+    refreshPlays();
+  }
   function saveGame(next: SavedGame) {
     setGame(next);
     if (puzzle && (!gameWriteAllowed.current || !writeAdmittedGame(undefined,puzzle.id,next))) setStorageWarning(true);
@@ -568,7 +591,7 @@ export default function Game() {
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
       {surface === "modes" && <section aria-label="Explorer"><ResumeHub plays={localPlays} currentId={puzzle?.id} onResume={play=>void resumePlay(play)} onDiscover={()=>void discover()} /><div className="play-hub"><button className="secondary-button" onClick={()=>{ navigate("game");revealArchives(); }}>Explorer les archives</button><button className="secondary-button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer le tutoriel</button>{discoveryNote && <p role="status">{discoveryNote}</p>}{discoveryExhausted && <button className="secondary-button" onClick={()=>void discover(true)}>Rejouer une cible</button>}</div></section>}
       {EXTRA_MODES_ENABLED && surface === "modes" && <section className="reference-modes" aria-label="Autres modes"><button className="reference-mode selected" onClick={() => {setView("play");navigate("game");void changeMode("daily");}}><span><strong>Le mot du jour</strong><small>Un mot à découvrir chaque jour</small></span></button><button className="reference-mode" onClick={() => {setView("explore");navigate("voyage");}}><span><strong>Voyage</strong><small>Des chapitres à votre rythme</small></span></button><a className="reference-mode" href="/duels"><span><strong>Entre amis</strong><small>Un défi, chacun son tour</small></span></a></section>}
-      {surface === "profile" && (profileSnapshot && now ? <ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onBack={() => navigate("game")} /> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
+      {surface === "profile" && (profileSnapshot && now ? <ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onDeviceSync={receiveDeviceSync} deviceSyncGuard={deviceSyncGuard} onBack={() => navigate("game")} /> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
 
       <div hidden={surface !== "game"} className={`play-view ${journey ? "voyage-play" : ""}`}>
       {currentCollection && <div className="voyage-game-heading"><button className="text-action" onClick={()=>navigate("voyage")}>Collections</button><h1>{currentCollection.title}</h1><p>Énigme {currentCollection.seeds.indexOf(puzzle?.seed ?? "")+1} sur {currentCollection.seeds.length}</p></div>}

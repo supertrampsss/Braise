@@ -77,3 +77,13 @@ export const serverGuesses = sqliteTable("braise_server_guesses", {
   requestId: text("request_id").notNull(), word: text("word").notNull(), ordinal: integer("ordinal").notNull(),
   temperature: integer("temperature").notNull(), rank: integer("rank").notNull(), found: integer("found").notNull(), acceptedAt: integer("accepted_at").notNull(),
 }, table => [uniqueIndex("braise_guess_word").on(table.gameId, table.word), uniqueIndex("braise_guess_request").on(table.gameId, table.requestId), uniqueIndex("braise_guess_ordinal").on(table.gameId, table.ordinal), check("braise_guess_bounds", sql`${table.ordinal} BETWEEN 1 AND 3000 AND ${table.found} IN (0,1) AND ${table.rank} BETWEEN 1 AND 30000 AND ${table.temperature} BETWEEN -1000000 AND 1000000`)]);
+
+export const deviceSnapshots = sqliteTable('braise_device_snapshots', {
+  guestId: text('guest_id').primaryKey().references(() => guests.id),
+  revision: integer('revision').notNull(), version: integer('version').notNull(),
+  payload: text('payload'), updatedAt: integer('updated_at').notNull(),
+}, table => [check('braise_sync_revision', sql`${table.revision}>=0`),check('braise_sync_version',sql`${table.version}=1`)]);
+export const circleGoals = sqliteTable('braise_circle_goals', {
+  id:text('id').primaryKey(), circleId:text('circle_id').notNull().references(()=>circles.id),
+  week:text('week').notNull(), target:integer('target').notNull(),updatedAt:integer('updated_at').notNull(),
+}, table=>[uniqueIndex('braise_circle_goal_week').on(table.circleId,table.week),check('braise_circle_goal_target',sql`${table.target} BETWEEN 0 AND 20`)]);

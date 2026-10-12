@@ -36,6 +36,13 @@
       "when": 1788855736004,
       "tag": "0004_minor_ravenous",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1791805558434,
+      "tag": "0005_sudden_toro",
+      "breakpoints": true
     }
   ]
 }

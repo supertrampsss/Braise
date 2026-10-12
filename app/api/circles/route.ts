@@ -15,7 +15,8 @@ export async function GET(request: Request) {
     const details = await store.details(session.guest_id, id);
     if (!details) return reply({ error: "Cercle inaccessible." }, 404);
     const challenge = query.get("challenge");
-    return reply({ ...details, results: challenge ? await store.results(session.guest_id, challenge) : [] });
+    if(challenge&&!details.challenges.some(item=>item.id===challenge))return reply({error:"Défi inaccessible."},404);
+    return reply({ ...details, goal: await store.goal(session.guest_id,id), selectedChallenge: challenge ?? details.challenges[0]?.id ?? null, results: (challenge ?? details.challenges[0]?.id) ? await store.results(session.guest_id, String(challenge ?? details.challenges[0]?.id)) : [] });
   } catch { return unavailable(); }
 }
 export async function POST(request: Request) {
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
     }
     const member = await store.member(session.guest_id, body.id);
     if (!member) return reply({ error: "Cercle inaccessible." }, 404);
+    if (body.action === 'goal') return await store.setGoal(session,body.id,body.target) ? reply({updated:true}) : reply({error:'Seul le propriétaire peut choisir un objectif de 0 à 20.'},403);
     if (body.action === "invite" && typeof body.token === "string" && /^[a-f0-9]{64}$/.test(body.token)) {
       return await store.invite(session, body.id, body.token) ? reply({ created: true }) : reply({ error: "Invitation non créée. Seul le propriétaire peut inviter, dans la limite prévue." }, 409);
     }

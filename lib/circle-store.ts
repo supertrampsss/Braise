@@ -1,9 +1,33 @@
+import { weekStartParis } from './weekly-ritual';
+import { parisDate,shiftCalendarDate } from './calendar';
+function parisMidnight(date:string){const utc=Date.parse(date+'T00:00:00Z');let lo=utc-14*3600000,hi=utc+14*3600000;while(hi-lo>1){const mid=Math.floor((lo+hi)/2);if(parisDate(new Date(mid))<date)lo=mid;else hi=mid;}return hi;}
 import type { GuestSession } from "./server-store";
 import { tokenHash } from "./server-security";
 
 const ACTIVE = "EXISTS (SELECT 1 FROM braise_sessions s WHERE s.token_hash=? AND s.guest_id=? AND s.revoked=0 AND s.expires_at>?)";
 export class CircleStore {
   constructor(private db: D1Database) {}
+  async setGoal(session:GuestSession,circle:string,target:number,now=Date.now()) {
+    if(!Number.isInteger(target)||target<0||target>20)return false;
+    const week=weekStartParis(new Date(now));
+    const result=await this.db.prepare(`INSERT INTO braise_circle_goals(id,circle_id,week,target,updated_at)
+      SELECT ?,id,?,?,? FROM braise_circles WHERE id=? AND owner_id=? AND ${ACTIVE}
+      ON CONFLICT(circle_id,week) DO UPDATE SET target=excluded.target,updated_at=excluded.updated_at`).bind(crypto.randomUUID(),week,target,now,circle,session.guest_id,session.token_hash,session.guest_id,now).run();
+    return Boolean(result.meta.changes);
+  }
+  async goal(guest:string,circle:string,now=Date.now()) {
+    if(!await this.member(guest,circle))return null;
+    const week=weekStartParis(new Date(now));
+    const start=parisMidnight(week);
+    const end=parisMidnight(shiftCalendarDate(week,7)!);
+    const goal=await this.db.prepare('SELECT target FROM braise_circle_goals WHERE circle_id=? AND week=?').bind(circle,week).first<{target:number}>();
+    const contributions=(await this.db.prepare(`SELECT g.id,g.name,COUNT(DISTINCT cg.game_id) AS completed FROM braise_circle_games cg
+      JOIN braise_circle_challenges c ON c.id=cg.challenge_id JOIN braise_server_games sg ON sg.id=cg.game_id AND sg.guest_id=cg.guest_id
+      JOIN braise_guests g ON g.id=cg.guest_id JOIN braise_circle_members m ON m.circle_id=c.circle_id AND m.guest_id=cg.guest_id AND m.state='active'
+      WHERE c.circle_id=? AND c.week=? AND sg.state='won' AND sg.completed_at>=? AND sg.completed_at<? GROUP BY g.id,g.name`).bind(circle,week,start,end).all<{id:string;name:string;completed:number}>()).results;
+    const completed=contributions.reduce((n,item)=>n+item.completed,0),target=goal?.target??0;
+    return await this.member(guest,circle)?{week,target,completed,achieved:target>0&&completed>=target,endsAt:end,contributions}:null;
+  }
   async list(guest: string) {
     return (await this.db.prepare("SELECT c.id,c.name,c.owner_id FROM braise_circles c JOIN braise_circle_members m ON m.circle_id=c.id WHERE m.guest_id=? AND m.state='active' ORDER BY c.created_at DESC LIMIT 50").bind(guest).all()).results;
   }
