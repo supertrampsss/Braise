@@ -28,3 +28,18 @@ test('actual merge admission invalidates late POST and resumed next guess retain
 test('hint union never restores already consumed hints and rejects more than three distinct clues',()=>{
  const a=source(),b=new Memory();const hint=(word:string,order:number)=>({...game(word).guesses[0],hint:true,order});a.setItem('braise.v1.game.free-0012',JSON.stringify({...game(),guesses:[hint('a',1),hint('b',2)],hints:2}));b.setItem('braise.v1.game.free-0012',JSON.stringify({...game(),guesses:[hint('c',1),hint('d',2)],hints:2}));const text=createDeviceEnvelope(a,loadLocalProfile(a),now),snapshot=loadLocalProfile(b),before=[...b.values];assert.throws(()=>inspectDeviceMerge(text,b,snapshot,now),/limite/);assert.deepEqual([...b.values],before);
 });
+
+
+test('game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order',()=>{
+ const date='2026-10-01T12:00:00Z',other='2026-10-01T13:00:00Z';
+ for(const remoteDated of [false,true]){
+  const a=source(),b=source();const dated={...game(),guesses:[{...game().guesses[0],acceptedAt:date,order:5}]};
+  (remoteDated?a:b).setItem('braise.v1.game.free-0012',JSON.stringify(dated));
+  const plan=inspectDeviceMerge(createDeviceEnvelope(a,loadLocalProfile(a),now),b,loadLocalProfile(b),now);
+  const merged=JSON.parse(plan.staged.getItem('braise.v1.game.free-0012')!);assert.equal(merged.guesses[0].acceptedAt,date);assert.equal(merged.guesses[0].order,remoteDated?1:5);
+ }
+ for(const changed of [{hint:true},{acceptedAt:other}]){
+  const a=source(),b=source();a.setItem('braise.v1.game.free-0012',JSON.stringify({...game(),guesses:[{...game().guesses[0],acceptedAt:date}]}));b.setItem('braise.v1.game.free-0012',JSON.stringify({...game(),guesses:[{...game().guesses[0],acceptedAt:date,...changed}]}));
+  const snapshot=loadLocalProfile(b),before=[...b.values];assert.throws(()=>inspectDeviceMerge(createDeviceEnvelope(a,loadLocalProfile(a),now),b,snapshot,now),/incompatibles/);assert.deepEqual([...b.values],before);
+ }
+});

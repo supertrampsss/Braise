@@ -41,9 +41,34 @@ export function createDeviceEnvelope(storage:ProfileStorage,snapshot:ProfileSnap
   for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(PREFIX))continue;const id=key.slice(PREFIX.length);const game=parseSavedGame(storage.getItem(key)!);validateGame(game,now);if(!validId(id,now))fail('Une partie locale utilise une identité inconnue.');if(game.guesses.some(g=>g.found)||game.solvedAt)continue;games.push({id,game,...(contexts[id]?{context:contexts[id]}:{})});}
   const value:DeviceEnvelope={format:'braiz-personal-device-sync',version:1,corpus:'fr-fasttext-30000-v1',rules:'classic-v1',provenance:'personal-unverified',createdAt:now.toISOString(),profile:profile.text,games};const text=JSON.stringify(value);parseDeviceEnvelope(text,now);return text;
 }
+/** Reconcile the current memory facts and latest disk facts in a private staging copy only. */
+export function prepareDeviceUpload(storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date()){
+  const exported=createLocalProfileExport(snapshot,now);if(!exported.ok)fail(exported.reason);
+  const staged=new SyncMemory(storage);
+  const preview=inspectLocalProfileImport(exported.text,staged,now,snapshot);
+  if(!preview.planId||!['ready','unchanged'].includes(preview.status))fail(preview.reason);
+  const imported=importLocalProfile(exported.text,preview.planId,staged,snapshot,now);
+  if(!imported.persisted||!imported.snapshot)fail(imported.reason);
+  return createDeviceEnvelope(staged,imported.snapshot,now);
+}
+/** Order is device-local; score, clue/proposition identity and known acceptance time are facts. */
+function mergeGuessFacts(local:SavedGame['guesses'][number],incoming:SavedGame['guesses'][number]){
+  if(local.word!==incoming.word||local.temperature!==incoming.temperature||local.rank!==incoming.rank||local.found!==incoming.found||Boolean(local.hint)!==Boolean(incoming.hint)||local.acceptedAt&&incoming.acceptedAt&&local.acceptedAt!==incoming.acceptedAt)fail('Essais incompatibles : les deux copies sont conservées.');
+  return {...local,...(local.acceptedAt||incoming.acceptedAt?{acceptedAt:local.acceptedAt??incoming.acceptedAt}:{})};
+}
+/** A cloud replacement must contain every existing fact, including known metadata. */
+export function assertGameFactsPreserved(existing:SavedGame,incoming:SavedGame){
+  if(incoming.hints<existing.hints||existing.pins.some(pin=>!incoming.pins.includes(pin)))fail('Des indices ou épingles distants manquent. Fusionnez avant de remplacer.');
+  for(const guess of existing.guesses){
+    const next=incoming.guesses.find(g=>g.word===guess.word);
+    if(!next)fail('Des essais distants manquent. Fusionnez avant de remplacer.');
+    const merged=mergeGuessFacts(guess,next);
+    if(merged.acceptedAt!==next.acceptedAt)fail('La date connue d’un essai distant manque. Fusionnez avant de remplacer.');
+  }
+}
 function relevantRevision(storage:ProfileStorage,snapshot:ProfileSnapshot){const records=[];for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&(k.startsWith('braise.v1.')||k.startsWith('braise.v2.profile.')||k.startsWith('braise.v2.backup.')||k===PLAY_CONTEXT_KEY))records.push([k,storage.getItem(k)]);}return JSON.stringify([records.sort((a,b)=>String(a[0]).localeCompare(String(b[0]))),snapshot.pendingActivities,snapshot.activities,snapshot.transferLegacyRaw]);}
 function unionGame(local:SavedGame,incoming:SavedGame,now:Date):SavedGame{
-  validateGame(local,now);const guesses=[...local.guesses];for(const g of incoming.guesses){const existing=guesses.find(x=>x.word===g.word);if(existing){if(existing.temperature!==g.temperature||existing.rank!==g.rank||existing.found!==g.found||Boolean(existing.hint)!==Boolean(g.hint))fail('Essais incompatibles : les deux copies sont conservées.');}else guesses.push({...g,order:Math.max(0,...guesses.map(x=>x.order))+1});}
+  validateGame(local,now);const guesses=[...local.guesses];for(const g of incoming.guesses){const existing=guesses.find(x=>x.word===g.word);if(existing){guesses[guesses.indexOf(existing)]=mergeGuessFacts(existing,g);}else guesses.push({...g,order:Math.max(0,...guesses.map(x=>x.order))+1});}
   const pins=[...new Set([...local.pins,...incoming.pins])];const hints=Math.max(local.hints,incoming.hints,guesses.filter(g=>g.hint).length);if(pins.length>3||guesses.length>3000||hints>3)fail('La fusion dépasserait la limite des épingles ou essais. Aucun élément supprimé.');
   return {...local,guesses,pins,hints,startedAt:Math.min(local.startedAt,incoming.startedAt),profileV2StartIndex:guesses.length};
 }

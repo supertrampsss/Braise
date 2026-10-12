@@ -10,7 +10,7 @@ async function identities(){const db=database();const token=randomToken(),other=
 function request(token:string,csrf:string,method:string,body?:unknown,origin='https://braiz.io'){return new Request('https://braiz.io/api/sync',{method,headers:{origin,'Content-Type':'application/json',cookie:'__Host-braise_session='+token,'X-Braise-CSRF':csrf},...(body?{body:JSON.stringify(body)}:{})});}
 test('sync API validates authentication, origin, CSRF, own copies, stale revisions, deletion and revoked sessions',async()=>{const db=await identities();env.DB=db.d1;try{const s=new SyncMemory(),payload=createDeviceEnvelope(s,loadLocalProfile(s));assert.equal((await GET(request('',db.csrf,'GET'))).status,401);assert.equal((await PUT(request(db.token,'wrong','PUT',{revision:-1,payload}))).status,403);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload},'https://evil.example'))).status,403);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload}))).status,200);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload}))).status,409);assert.equal((await db.store.syncSnapshot(db.b.guest_id)),null);assert.equal((await DELETE(request(db.other,db.csrf,'DELETE',{revision:0}))).status,409);assert.ok((await db.store.syncSnapshot(db.a.guest_id))?.payload);assert.equal((await DELETE(request(db.token,db.csrf,'DELETE',{revision:0}))).status,200);assert.equal((await db.store.syncSnapshot(db.a.guest_id))?.payload,null);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:0,payload}))).status,409);await db.store.revokeSession(db.a);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:1,payload}))).status,403);}finally{db.sqlite.close();delete env.DB;}});
 test('corrupt/future/unknown envelopes never create server rows; no blind replacement loses remote games',async()=>{const db=await identities();env.DB=db.d1;try{const s=new SyncMemory();s.setItem('braise.v1.game.free-001',{guesses:[]}.toString());const empty=new SyncMemory(),good=createDeviceEnvelope(empty,loadLocalProfile(empty));for(const payload of ['broken',JSON.stringify({...JSON.parse(good),version:2}),JSON.stringify({...JSON.parse(good),credentials:'secret'})])assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload}))).status,400);assert.equal(await db.store.syncSnapshot(db.a.guest_id),null);
- const full=JSON.parse(good);full.games=[{id:'free-001',game:{guesses:[],pins:[],hints:0,startedAt:1}}];assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload:JSON.stringify(full)}))).status,200);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:0,payload:good}))).status,400);assert.ok((await db.store.syncSnapshot(db.a.guest_id))?.payload?.includes('free-001'));
+ const full=JSON.parse(good);full.games=[{id:'free-001',game:{guesses:[],pins:[],hints:0,startedAt:1}}];assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload:JSON.stringify(full)}))).status,200);assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:0,payload:good}))).status,409);assert.ok((await db.store.syncSnapshot(db.a.guest_id))?.payload?.includes('free-001'));
 }finally{db.sqlite.close();delete env.DB;}});
 test('optional circle goal owner bounds, real completed IDs, replay dedup and Paris weekly boundary',async()=>{const db=await identities();try{const now=Date.parse('2026-10-25T12:00:00Z'); // DST week: Sunday in Paris
  // Sessions in this fixture cover the selected instant.
@@ -26,3 +26,31 @@ test('invitation preview distinguishes unavailable, ready, accepted, expired, re
  }finally{db.sqlite.close();delete env.DB;}});
 
 test('sync request body is bounded during streaming, before JSON parsing or writes',async()=>{const db=await identities();env.DB=db.d1;try{const response=await PUT(new Request('https://braiz.io/api/sync',{method:'PUT',headers:{origin:'https://braiz.io','Content-Type':'application/json',cookie:'__Host-braise_session='+db.token,'X-Braise-CSRF':db.csrf},body:'x'.repeat(2*1024*1024+1025)}));assert.equal(response.status,413);assert.equal(await db.store.syncSnapshot(db.a.guest_id),null);}finally{db.sqlite.close();delete env.DB;}});
+
+
+test('replacement rejects hint/date metadata loss or conflict with 409 and unchanged bytes; reordered superset is allowed',async()=>{
+ const db=await identities();env.DB=db.d1;try{
+  const memory=new SyncMemory(),envelope=JSON.parse(createDeviceEnvelope(memory,loadLocalProfile(memory)));
+  const guess={word:'arbre',temperature:12,rank:200,found:false,order:1,hint:true,acceptedAt:'2026-10-01T12:00:00Z'};
+  envelope.games=[{id:'free-001',game:{guesses:[guess],pins:['arbre'],hints:1,startedAt:1}}];const payload=JSON.stringify(envelope);
+  assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:-1,payload}))).status,200);
+  const initial=await db.store.syncSnapshot(db.a.guest_id);
+  for(const changed of [{hint:undefined},{hint:false},{acceptedAt:undefined},{acceptedAt:'2026-10-01T13:00:00Z'},{hint:undefined,acceptedAt:undefined}]){
+   const incoming=structuredClone(envelope);incoming.games[0].game.guesses[0]={...guess,...changed};
+   assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:0,payload:JSON.stringify(incoming)}))).status,409);assert.deepEqual(await db.store.syncSnapshot(db.a.guest_id),initial);
+  }
+  const incoming=structuredClone(envelope);incoming.games[0].game.guesses=[{word:'bois',temperature:20,rank:100,found:false,order:1},{...guess,order:2}];
+  assert.equal((await PUT(request(db.token,db.csrf,'PUT',{revision:0,payload:JSON.stringify(incoming)}))).status,200);
+ }finally{db.sqlite.close();delete env.DB;}
+});
+
+test('invitation destinations are returned only to actual circle members and duel participants',async()=>{
+ const {POST}=await import('../app/api/invitations/route');const db=await identities();env.DB=db.d1;try{
+  const now=Date.now(),circleToken=randomToken(),duelToken=randomToken();await db.circles.create(db.a,'circle-owned','Friends',now);await db.circles.invite(db.a,'circle-owned',circleToken,now);await db.duels.create(db.a,'duel-owned',duelToken,[0,1,2],now);
+  const preview=async(kind:string,token:string,identity:string)=>(await(await POST(new Request('https://braiz.io/api/invitations',{method:'POST',headers:{origin:'https://braiz.io','Content-Type':'application/json',cookie:'__Host-braise_session='+identity},body:JSON.stringify({kind,token})}))).json()) as {state:string;destination?:{kind:string;id:string}};
+  for(const identity of ['',db.other])for(const [kind,token] of [['circle',circleToken],['duel',duelToken]])assert.equal((await preview(kind,token,identity)).destination,undefined);
+  assert.deepEqual((await preview('circle',circleToken,db.token)).destination,{kind:'circle',id:'circle-owned'});assert.equal((await preview('duel',duelToken,db.token)).state,'owner');assert.deepEqual((await preview('duel',duelToken,db.token)).destination,{kind:'duel',id:'duel-owned'});
+  await db.duels.accept(db.b,duelToken,now+1);assert.equal((await preview('duel',duelToken,db.other)).state,'accepted');assert.deepEqual((await preview('duel',duelToken,db.other)).destination,{kind:'duel',id:'duel-owned'});
+  db.sqlite.prepare("UPDATE braise_circle_members SET state='excluded' WHERE guest_id=?").run(db.a.guest_id);assert.equal((await preview('circle',circleToken,db.token)).destination,undefined);
+ }finally{db.sqlite.close();delete env.DB;}
+});
