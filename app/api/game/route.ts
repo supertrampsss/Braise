@@ -1,3 +1,4 @@
+import { discoverFree, withTargetIdentity } from "@/lib/free-discovery.server";
 import { samePuzzleRef } from "@/lib/game-contracts";
 import { archiveDateStatus } from "@/lib/calendar";
 import { evaluateWord, findWord, getArchivePuzzle, getPuzzle, nextHint, normalizeWord } from "@/lib/semantic";
@@ -28,14 +29,20 @@ export async function GET(request: Request) {
   const now = new Date();
   const url = new URL(request.url); const mode = url.searchParams.get("mode") || "daily";
   if (!validMode(mode)) return reply({ error: "Ce mode de jeu n’existe pas." }, 400);
+  if (url.searchParams.get("tutorial") === "1") {
+    // A real, identified V1 example, always distinct from today's daily target.
+    const daily = getPuzzle("daily", "", now);
+    const example = ["042", "43", "44"].map(seed => getPuzzle("free", seed, now)).find(item => item.targetIndex !== daily.targetIndex)!;
+    return reply(example.publicPuzzle);
+  }
   const seed = url.searchParams.get("seed") || "";
   if ((mode === "free" || mode === "challenge") && !validSeed(seed)) return reply({ error: "Le lien de ce défi n’est pas valide. Lancez un nouveau défi." }, 400);
   if (mode === "archive") {
     const date = url.searchParams.get("date");
     const status = archiveDateStatus(date, now);
-    return status === "available" ? reply(getArchivePuzzle(date!, now).publicPuzzle) : reply({ error: archiveError(status) }, 400);
+    return status === "available" ? reply(await withTargetIdentity(getArchivePuzzle(date!, now).publicPuzzle)) : reply({ error: archiveError(status) }, 400);
   }
-  return reply(getPuzzle(mode, seed, now).publicPuzzle);
+  return reply(await withTargetIdentity(getPuzzle(mode, seed, now).publicPuzzle));
 }
 export async function POST(request: Request) {
   if (limited(request)) return reply({ error: "Quelques secondes de pause, puis à vous de rejouer." }, 429);
@@ -43,6 +50,10 @@ export async function POST(request: Request) {
     const text = await request.text();
     if (text.length > 64000) return reply({ error: "La proposition est trop longue." }, 413);
     const body = JSON.parse(text);
+    if (body?.action === "discover") {
+      try { return reply(await discoverFree(body)); }
+      catch (error) { return reply({ error: error instanceof Error ? error.message : "Découverte indisponible." }, 400); }
+    }
     if (!body || !validMode(body.mode) || ((body.mode === "free" || body.mode === "challenge") && !validSeed(body.seed))) return reply({ error: "La partie n’est pas valide. Rechargez le jeu." }, 400);
     const now = new Date();
     let resolved;
