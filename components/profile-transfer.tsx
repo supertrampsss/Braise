@@ -31,7 +31,7 @@ export function ProfileTransfer({ snapshot, onSnapshot }: { snapshot: ProfileSna
     link.href = url; link.download = result.filename; link.click();
     try { recordProductEvent(window.localStorage, "profileExported", "profile"); } catch { /* The explicit export is independent of optional diagnostics. */ }
     window.setTimeout(() => URL.revokeObjectURL(url), 0);
-    setMessage("Téléchargement lancé. Le fichier contient votre progression personnelle en clair.");
+    setMessage("Téléchargement lancé. Le fichier contient votre progression personnelle et ses mots associés en clair.");
   }
 
   async function chooseFile(event: ChangeEvent<HTMLInputElement>) {
@@ -82,11 +82,12 @@ export function ProfileTransfer({ snapshot, onSnapshot }: { snapshot: ProfileSna
 
   const ready = candidate?.preview.status === "ready";
   return <section className="profile-transfer" aria-labelledby="profile-transfer-title">
-    <div className="profile-transfer-heading"><FileCheck2 size={18} aria-hidden="true" /><div><h4 id="profile-transfer-title">Copier votre progression</h4><p>Le profil, les récompenses et préférences uniquement. Les parties en cours et les épingles restent sur cet appareil.</p></div></div>
+    <div className="profile-transfer-heading"><FileCheck2 size={18} aria-hidden="true" /><div><h4 id="profile-transfer-title">Copier votre progression</h4><p>Le profil comprend les faits de progression et leurs mots associés, les récompenses et la préférence de son. Les sauvegardes complètes des parties en cours et les épingles restent sur cet appareil.</p></div></div>
     <div className="profile-table-scroll" tabIndex={0} role="region" aria-label="Portée du transfert de profil"><table><caption>Ce qui sera transféré</caption><thead><tr><th scope="col">Données</th><th scope="col">Dans ce fichier</th></tr></thead><tbody>
       <tr><th scope="row">Réussites, propositions comptabilisées, objectifs acquis et styles</th><td>Oui · progression personnelle locale</td></tr>
+      <tr><th scope="row">Faits de progression et mots associés</th><td>Oui · ordre, date et référence de partie, sans sauvegarde complète reprenable</td></tr>
       <tr><th scope="row">Préférence de son</th><td>Oui</td></tr>
-      <tr><th scope="row">Parties en cours, historique des mots et épingles</th><td>Non · restent sur cet appareil</td></tr>
+      <tr><th scope="row">Sauvegardes complètes des parties en cours, scores détaillés et épingles</th><td>Non · restent sur cet appareil</td></tr>
       <tr><th scope="row">Pause des animations, rappel calendrier et diagnostic</th><td>Non · restent sur cet appareil</td></tr>
       <tr><th scope="row">Parties partagées, compte et résultats vérifiés par le serveur</th><td>Non · autre espace, aucun classement transféré</td></tr>
     </tbody></table></div>

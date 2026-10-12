@@ -47,10 +47,10 @@ export function foldCalendarLine(line: string): string {
   }
   return result;
 }
-/** Local file only. PUBLISH contains no organizer, attendee or outbound invitation. */
+/** Standalone RFC5545 snapshot: no scheduling METHOD, organizer, attendee or invitation. */
 export function calendarReminderFile(reminder: CalendarReminder, cancel = false, now = new Date()): string {
   const description = `Rappel choisi à ${reminder.time} (${reminder.timeZone}), du ${reminder.startDate} au ${reminder.endDate}. ${reminder.days} jours. En cas d’heure doublée, première occurrence. Pour arrêter, supprimez la série dans votre calendrier. Le fichier d’arrêt ne garantit pas sa suppression.`;
-  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//BRAIZ//Rappel personnel 1//FR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT", `UID:${reminder.uid}`, `DTSTAMP:${now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z")}`, `SEQUENCE:${cancel ? 1 : 0}`, `DTSTART:${reminder.instants[0]}`, "DURATION:PT5M", ...(reminder.instants.length > 1 ? [`RDATE:${reminder.instants.slice(1).join(",")}`] : []), "SUMMARY:Votre mot du jour — BRAIZ", `DESCRIPTION:${escapeCalendarText(description)}`, "URL:https://braiz.io/", "TRANSP:TRANSPARENT", `STATUS:${cancel ? "CANCELLED" : "CONFIRMED"}`, ...(!cancel ? ["BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:PT0S", "DESCRIPTION:Votre mot du jour — BRAIZ", "END:VALARM"] : []), "END:VEVENT", "END:VCALENDAR"];
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//BRAIZ//Rappel personnel 1//FR", "CALSCALE:GREGORIAN", "BEGIN:VEVENT", `UID:${reminder.uid}`, `DTSTAMP:${now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z")}`, `SEQUENCE:${cancel ? 1 : 0}`, `DTSTART:${reminder.instants[0]}`, "DURATION:PT5M", ...(reminder.instants.length > 1 ? [`RDATE:${reminder.instants.slice(1).join(",")}`] : []), "SUMMARY:Votre mot du jour — BRAIZ", `DESCRIPTION:${escapeCalendarText(description)}`, "URL:https://braiz.io/", "TRANSP:TRANSPARENT", `STATUS:${cancel ? "CANCELLED" : "CONFIRMED"}`, ...(!cancel ? ["BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:PT0S", "DESCRIPTION:Votre mot du jour — BRAIZ", "END:VALARM"] : []), "END:VEVENT", "END:VCALENDAR"];
   return lines.map(foldCalendarLine).join("\r\n") + "\r\n";
 }
 export function reminderEligible(events: readonly ProductEvent[], now = new Date()): boolean {

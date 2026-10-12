@@ -12,7 +12,7 @@ test("bounded RDATE recurrence keeps local time through Paris autumn DST", () =>
   const content = calendarReminderFile(reminder, false, now);
   assert.match(content, /DTSTART:20261024T170000Z\r\n/);
   assert.match(content, /RDATE:20261025T180000Z,20261026T180000Z/);
-  assert.doesNotMatch(content, /RRULE|TZID|ORGANIZER|ATTENDEE|METHOD:CANCEL/);
+  assert.doesNotMatch(content, /RRULE|TZID|ORGANIZER|ATTENDEE|METHOD:/);
   assert.match(content, /BEGIN:VALARM/); assert.match(content, /TRIGGER:PT0S/);
 });
 test("spring DST, fractional timezone and ambiguous wall time have deterministic exact instants", () => {
@@ -35,6 +35,7 @@ test("cancellation retains UID and recurrence, increments sequence and removes a
   assert.match(active, /SEQUENCE:0/); assert.match(cancelled, /SEQUENCE:1/);
   assert.match(cancelled, /STATUS:CANCELLED/); assert.doesNotMatch(cancelled, /VALARM/);
   assert.equal(active.match(/RDATE:(.+)\r\n/)?.[1], cancelled.match(/RDATE:(.+)\r\n/)?.[1]);
+  for (const content of [active, cancelled]) assert.doesNotMatch(content, /(?:^|\r\n)(?:METHOD|ORGANIZER|ATTENDEE):/);
 });
 test("RFC content uses CRLF, escaped TEXT and UTF8 folding at 75 octets without broken code points", () => {
   const line = "DESCRIPTION:" + "Été 🔥, ligne;\\\n".repeat(30);
