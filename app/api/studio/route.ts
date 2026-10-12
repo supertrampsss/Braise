@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     if (edition) { const data = await store.progress(session.guest_id, edition); return data ? reply(data) : reply({ error: "Édition retirée ou introuvable." }, 404); }
     const id = query.get("id");
     if (id) { const draft = await store.draft(session.guest_id, id); return draft ? reply({ ...draft, entries: JSON.parse(draft.entries), editions: await store.editions(session.guest_id, id) }) : reply({ error: "Brouillon inaccessible." }, 404); }
-    return reply({ drafts: await store.list(session.guest_id), titles: STUDIO_TITLES, catalogue: STUDIO_ENTRIES.map(({ seed: _seed, ...item }) => item) });
+    return reply({ drafts: await store.list(session.guest_id), titles: STUDIO_TITLES, catalogue: STUDIO_ENTRIES.map(({ id, label }) => ({ id, label })) });
   } catch { return unavailable(); }
 }
 export async function POST(request: Request) {
@@ -22,10 +22,14 @@ export async function POST(request: Request) {
     const body = JSON.parse(raw); if (!uuid(body.id)) return reply({ error: "Identifiant invalide." }, 400);
     const store = new StudioStore(env.DB);
     if (body.action === "withdraw") { await store.withdraw(session, body.id); return reply({ withdrawn: true }); }
-    if ((body.action === "publish" || (body.action === "save" && body.revision === -1)) && creationLimited(request)) return reply({ error: "Trop de créations. Réessayez plus tard." }, 429);
+    if ((body.action === "publish" || body.action === "duplicate" || (body.action === "save" && body.revision === -1)) && creationLimited(request)) return reply({ error: "Trop de créations. Réessayez plus tard." }, 429);
     if (body.action === "save" && Number.isInteger(body.revision) && body.revision >= -1 && typeof body.title === "string" && Array.isArray(body.entries)) {
-      const draft = await store.save(session, body.id, body.revision, body.title, body.entries);
+      const draft = await store.save(session, body.id, body.revision, body.title, body.entries, Date.now(), body.description, body.visual);
       return draft ? reply({ ...draft, entries: JSON.parse(draft.entries) }) : reply({ error: "Brouillon modifié ailleurs ou contenu invalide. Vos choix restent à l’écran ; rechargez explicitement avant de les remplacer." }, 409);
+    }
+    if (body.action === "duplicate" && uuid(body.source)) {
+      const draft = await store.duplicate(session, body.source, body.id);
+      return draft ? reply({ ...draft, entries: JSON.parse(draft.entries) }) : reply({ error: "Brouillon inaccessible ou limite atteinte." }, 409);
     }
     if (body.action === "publish" && Number.isInteger(body.revision)) { const edition = await store.publish(session, body.id, body.revision); return edition ? reply(edition) : reply({ error: "Enregistrez une version valide avant de publier." }, 409); }
     if (body.action === "enter") { const game = await store.enter(session, body.id); return game ? reply({ game }) : reply({ error: "Édition terminée, retirée ou limite de parties atteinte." }, 409); }

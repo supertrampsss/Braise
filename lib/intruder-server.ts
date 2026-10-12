@@ -32,3 +32,9 @@ export function answerIntruder(index: number, choice: number) {
   if (!Number.isInteger(choice) || choice < 0 || choice >= question.words.length) throw new Error("invalid-choice");
   return { ...question, choice, correct: choice === QUESTIONS[index].answer, answer: QUESTIONS[index].answer, explanation: QUESTIONS[index].explanation };
 }
+
+export function summarizeIntruder(attempts: unknown) {
+  if (!Array.isArray(attempts) || attempts.length !== QUESTIONS.length || new Set(attempts.map(item => item?.index)).size !== QUESTIONS.length) throw new Error("incomplete-session");
+  const results = attempts.map(item => { if (item?.edition !== INTRUDER_EDITION) throw new Error("invalid-edition"); return answerIntruder(item.index, item.choice); });
+  return { total: QUESTIONS.length, completed: results.length, correct: results.filter(item => item.correct).length, results };
+}

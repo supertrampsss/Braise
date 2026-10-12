@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { ServerStore } from "../lib/server-store";
 import { CircleStore } from "../lib/circle-store";
 import { DuelStore } from "../lib/duel-store";
@@ -16,6 +16,7 @@ function database() {
   for (const statement of readFileSync("drizzle/0002_colossal_spirit.sql", "utf8").split("--> statement-breakpoint")) sqlite.exec(statement);
   for (const statement of readFileSync("drizzle/0003_same_morlun.sql", "utf8").split("--> statement-breakpoint")) sqlite.exec(statement);
   for (const statement of readFileSync("drizzle/0004_minor_ravenous.sql", "utf8").split("--> statement-breakpoint")) sqlite.exec(statement);
+  for (const file of readdirSync("drizzle").filter(name => /^000[5-9].*\.sql$/.test(name)).sort()) for (const statement of readFileSync("drizzle/" + file, "utf8").split("--> statement-breakpoint")) sqlite.exec(statement);
   assert.ok(sqlite.prepare("SELECT name FROM sqlite_master WHERE type='trigger' AND name='braise_guess_applies_revision'").get());
   function prepare(sql: string) {
     let values: Array<string | number | null> = [];
@@ -62,7 +63,7 @@ test("studio preserves draft concurrency, immutable editions and withdrawal acro
   await store.createGuest("Author", ta, "csrf", 100); await store.createGuest("Reader", tb, "csrf", 100);
   const a = (await store.session(ta, 101))!, b = (await store.session(tb, 101))!;
   const title = "Trois étincelles", entries = ["nature-v1:0", "nature-v1:1"];
-  assert.equal(await studio.save(a, "bad", -1, "Unreviewed title", entries, 102), null);
+  assert.equal(await studio.save(a, "bad", -1, "<unsafe title>", entries, 102), null);
   assert.equal((await studio.save(a, "draft", -1, title, entries, 102))?.revision, 0);
   assert.equal(await studio.draft(b.guest_id, "draft"), null);
   assert.equal(await studio.save(b, "draft", 0, title, entries, 103), null);

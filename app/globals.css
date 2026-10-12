@@ -520,3 +520,23 @@ h1 > span { color: #ff754d; }
 .laboratory-card details { border-top: 1px solid #ffffff12; margin-top: 16px; padding-top: 4px; }
 .laboratory-card li { margin-block: 12px; overflow-wrap: anywhere; }
 .laboratory-card button:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Studio and projection: bounded presets, no user supplied CSS or assets. */
+.studio-preview { border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin: 16px 0; overflow-wrap: anywhere; }
+.studio-preview-ember { background: #39241b; color: #fff1dc; }
+.studio-preview-paper { background: #fff0d6; color: #38261c; }
+.studio-preview-night { background: #231e1b; color: #fff1dc; }
+.studio-preview .eyebrow { color: inherit; }
+.studio-preview progress { width: 100%; accent-color: #d75e20; }
+.projection-option { display: flex; align-items: center; gap: 10px; margin: 18px 0; }
+.projection-option input { width: auto; }
+.projection-temperatures { display: flex; flex-wrap: wrap; gap: 12px 28px; padding-left: 24px; }
+.two-braises-history { overflow-x: auto; }
+.two-braises-history table { width: 100%; table-layout: fixed; }
+.two-braises-history th, .two-braises-history td { overflow-wrap: anywhere; padding: 10px 6px; }
+.two-braises-history small { display: block; }
+@media (max-width: 480px) { .laboratory-shell .laboratory-card { padding: 16px; } .two-braises-history { font-size: 14px; } .studio-preview { padding: 14px; } }
+
+.two-braises-targets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+.two-braises-target { border: 1px solid var(--border); border-radius: 14px; padding: 12px; overflow-wrap: anywhere; }
+.two-braises-target h2 { font-size: 16px; }

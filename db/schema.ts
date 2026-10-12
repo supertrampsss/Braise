@@ -21,13 +21,13 @@ export const circles = sqliteTable("braise_circles", {
 });
 export const studioDrafts = sqliteTable("braise_studio_drafts", {
   id: text("id").primaryKey(), guestId: text("guest_id").notNull().references(() => guests.id),
-  title: text("title").notNull(), entries: text("entries").notNull(), revision: integer("revision").notNull().default(0),
+  title: text("title").notNull(), description: text("description").notNull().default(""), visual: text("visual").notNull().default("ember"), entries: text("entries").notNull(), revision: integer("revision").notNull().default(0),
   createdAt: integer("created_at").notNull(),
 });
 export const studioEditions = sqliteTable("braise_studio_editions", {
   id: text("id").primaryKey(), draftId: text("draft_id").notNull().references(() => studioDrafts.id),
   guestId: text("guest_id").notNull().references(() => guests.id), revision: integer("revision").notNull(),
-  title: text("title").notNull(), entries: text("entries").notNull(), state: text("state").notNull().default("active"), createdAt: integer("created_at").notNull(),
+  title: text("title").notNull(), description: text("description").notNull().default(""), visual: text("visual").notNull().default("ember"), entries: text("entries").notNull(), state: text("state").notNull().default("active"), createdAt: integer("created_at").notNull(),
 }, table => [uniqueIndex("braise_studio_edition_revision").on(table.draftId, table.revision), check("braise_studio_edition_state", sql`${table.state} IN ('active','withdrawn')`)]);
 export const studioGames = sqliteTable("braise_studio_games", {
   gameId: text("game_id").primaryKey().references(() => serverGames.id),
