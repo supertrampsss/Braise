@@ -1,0 +1,2 @@
+# Content-addressed payloads must retain their exact bytes on every platform.
+* -text
