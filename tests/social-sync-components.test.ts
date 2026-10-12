@@ -94,3 +94,37 @@ test('actual upload preparation refuses missing/stale saved games known from pen
   try{await click(tree,'Configurer la synchronisation facultative');await click(tree,'Préparer l’envoi de cet appareil');assert.equal(buttons(tree,'Confirmer l’envoi').length,0);assert.match(text(tree.root.findByProps({role:'alert'})),/partie en mémoire.*incomplète/);assert.deepEqual([...storage.values],before);}finally{await act(async()=>tree.unmount());}
  }
 });
+
+
+test('a new upload preparation retires the old confirmation before refusal or network failure',async()=>{
+ for(const failure of ['missing','stale','network']){
+  const storage=new Memory();browser(storage,'');const snapshot=loadLocalProfile(storage);
+  let game={guesses:[] as Array<{word:string;rank:number;temperature:number;found:boolean;order:number}>,pins:[] as string[],hints:0,startedAt:1};
+  storage.setItem('braise.v1.game.free-001',JSON.stringify(game));let puts=0,rejectRead:((e:Error)=>void)|undefined;let failRead=false;
+  globalThis.fetch=async(url,options)=>{if(url==='/api/session')return reply({guest:{name:'A'},csrf:'csrf'});if(options?.method==='PUT'){puts++;return reply({revision:0,payload:null});}if(failRead)return new Promise((_resolve,reject)=>{rejectRead=reject;});return reply({revision:-1,payload:null});};
+  const guard={revision:()=> 'board',admit:()=>true,currentGame:()=>({id:'free-001',game})};let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(DeviceSync,{snapshot,mergeGuard:guard,onSnapshot:()=>assert.fail('no projection')}));});
+  try{await click(tree,'Configurer la synchronisation facultative');await click(tree,'Préparer l’envoi de cet appareil');const staleConfirm=buttons(tree,'Confirmer l’envoi')[0].props.onClick;
+   if(failure==='network')failRead=true;else {game={...game,guesses:[{word:'arbre',rank:200,temperature:12,found:false,order:1}]};if(failure==='missing')storage.removeItem('braise.v1.game.free-001');}
+   await click(tree,'Préparer l’envoi de cet appareil');assert.equal(buttons(tree,'Confirmer l’envoi').length,0);
+   if(rejectRead)await act(async()=>rejectRead!(new Error('Network failed')));
+   assert.equal(buttons(tree,'Confirmer l’envoi').length,0);assert.equal(tree.root.findAllByProps({role:'alert'}).length,1);
+   await act(async()=>staleConfirm());assert.equal(puts,0);assert.equal(buttons(tree,'Confirmer l’envoi').length,0);
+  }finally{await act(async()=>tree.unmount());}
+ }
+});
+
+test('confirmation rechecks the prepared local revision, current board and live save admission before PUT',async()=>{
+ for(const change of ['disk','memory','profile','busy','navigation']){
+  const storage=new Memory();browser(storage,'');let snapshot=loadLocalProfile(storage),revision:string|null='board';
+  let game={guesses:[] as Array<{word:string;rank:number;temperature:number;found:boolean;order:number}>,pins:[] as string[],hints:0,startedAt:1};storage.setItem('braise.v1.game.free-001',JSON.stringify(game));let puts=0;
+  globalThis.fetch=async(url,options)=>{if(url==='/api/session')return reply({guest:{name:'A'},csrf:'csrf'});if(options?.method==='PUT')puts++;return reply({revision:-1,payload:null});};
+  const guard={revision:()=>revision,admit:()=>true,currentGame:()=>({id:'free-001',game})};let tree!:ReactTestRenderer;const render=()=>createElement(DeviceSync,{snapshot,mergeGuard:guard,onSnapshot:()=>assert.fail('no projection')});await act(async()=>{tree=create(render());});
+  try{await click(tree,'Configurer la synchronisation facultative');await click(tree,'Préparer l’envoi de cet appareil');
+   if(change==='disk')storage.setItem('braise.v1.game.free-001',JSON.stringify({...game,pins:['arbre']}));
+   if(change==='memory')game={...game,guesses:[{word:'arbre',rank:200,temperature:12,found:false,order:1}]};
+   if(change==='profile'){storage.refuse=true;snapshot=setLocalSound(true,'2026-10-01T12:00:00.000Z','new-after-preview',storage,snapshot);await act(async()=>tree.update(render()));}
+   if(change==='busy')revision=null;if(change==='navigation')revision='another-board';
+   await click(tree,'Confirmer l’envoi');assert.equal(puts,0);assert.equal(buttons(tree,'Confirmer l’envoi').length,0);assert.equal(tree.root.findAllByProps({role:'alert'}).length,1);
+  }finally{await act(async()=>tree.unmount());}
+ }
+});

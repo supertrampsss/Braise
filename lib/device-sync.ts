@@ -79,6 +79,10 @@ export function assertGameFactsPreserved(existing:SavedGame,incoming:SavedGame){
   }
 }
 function relevantRevision(storage:ProfileStorage,snapshot:ProfileSnapshot){const records=[];for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&(k.startsWith('braise.v1.')||k.startsWith('braise.v2.profile.')||k.startsWith('braise.v2.backup.')||k===PLAY_CONTEXT_KEY))records.push([k,storage.getItem(k)]);}return JSON.stringify([records.sort((a,b)=>String(a[0]).localeCompare(String(b[0]))),snapshot.pendingActivities,snapshot.activities,snapshot.transferLegacyRaw]);}
+/** Bind a prepared upload to its disk facts, complete memory profile and live board. */
+export function deviceUploadRevision(storage:ProfileStorage,snapshot:ProfileSnapshot,live?:LiveDeviceGame|null){
+  return JSON.stringify([relevantRevision(storage,snapshot),snapshot.transferBase,snapshot.transferEvidence,live??null]);
+}
 function unionGame(local:SavedGame,incoming:SavedGame,now:Date):SavedGame{
   validateGame(local,now);const guesses=[...local.guesses];for(const g of incoming.guesses){const existing=guesses.find(x=>x.word===g.word);if(existing){guesses[guesses.indexOf(existing)]=mergeGuessFacts(existing,g);}else guesses.push({...g,order:Math.max(0,...guesses.map(x=>x.order))+1});}
   const pins=[...new Set([...local.pins,...incoming.pins])];const hints=Math.max(local.hints,incoming.hints,guesses.filter(g=>g.hint).length);if(pins.length>3||guesses.length>3000||hints>3)fail('La fusion dépasserait la limite des épingles ou essais. Aucun élément supprimé.');
