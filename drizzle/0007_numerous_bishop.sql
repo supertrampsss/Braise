@@ -1,0 +1,1 @@
+ALTER TABLE `braise_studio_drafts` ADD `duplicated_from` text;

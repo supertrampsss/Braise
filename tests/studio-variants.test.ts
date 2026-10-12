@@ -39,3 +39,20 @@ test("Intrus summary counts real choices, refuses incomplete/duplicate indices a
   for (const bad of [attempts.slice(1), [...attempts.slice(1), attempts[1]], attempts.map((a, i) => i === 1 ? { ...a, index: 20 } : a)]) assert.throws(() => summarizeIntruder(bad));
   const response = await summary(new Request("https://braiz.io/api/intruder/summary", { method: "POST", body: JSON.stringify({ attempts }) })); assert.equal(response.status, 200); assert.deepEqual(await response.json(), result);
 });
+
+test("duplicate receipt recovers exactly one copy after source changes, rejects identity reuse and survives quota", async () => {
+  const { sqlite, store, studio } = database();
+  try {
+    const ta = randomToken(), tb = randomToken(); await store.createGuest("A", ta, "csrf"); await store.createGuest("B", tb, "csrf"); const a = (await store.session(ta))!, b = (await store.session(tb))!;
+    await studio.save(a, "source", -1, "Original", ["nature-v1:0"]); await studio.save(a, "other-source", -1, "Other", ["nature-v1:1"]);
+    const first = (await studio.duplicate(a, "source", "copy"))!; assert.equal((await studio.duplicate(a, "source", "copy"))?.id, first.id);
+    await studio.save(a, "source", 0, "Updated", ["nature-v1:1"], Date.now(), "Updated description", "night");
+    assert.equal((await studio.duplicate(a, "source", "copy"))?.title, "Original");
+    assert.equal(await studio.duplicate(a, "other-source", "copy"), null); assert.equal(await studio.duplicate(b, "source", "copy"), null); assert.equal(await studio.duplicate(a, "source", "other-source"), null);
+    assert.equal((await studio.list(a.guest_id)).length, 3);
+    const fresh = (await studio.duplicate(a, "source", "intentional-new-copy"))!; assert.equal(fresh.title, "Updated"); assert.notEqual(fresh.id, first.id);
+    for (let i = 4; i < 50; i++) assert.ok(await studio.save(a, "filler-" + i, -1, "Filler", ["nature-v1:0"]));
+    assert.equal((await studio.list(a.guest_id)).length, 50); assert.equal(await studio.duplicate(a, "source", "over-quota"), null); assert.equal((await studio.duplicate(a, "source", "copy"))?.id, "copy");
+    await store.revokeSession(a); assert.equal(await studio.duplicate(a, "source", "copy"), null);
+  } finally { sqlite.close(); }
+});

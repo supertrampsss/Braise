@@ -20,6 +20,7 @@ export const circles = sqliteTable("braise_circles", {
   name: text("name").notNull(), createdAt: integer("created_at").notNull(),
 });
 export const studioDrafts = sqliteTable("braise_studio_drafts", {
+  duplicatedFrom: text("duplicated_from"),
   id: text("id").primaryKey(), guestId: text("guest_id").notNull().references(() => guests.id),
   title: text("title").notNull(), description: text("description").notNull().default(""), visual: text("visual").notNull().default("ember"), entries: text("entries").notNull(), revision: integer("revision").notNull().default(0),
   createdAt: integer("created_at").notNull(),

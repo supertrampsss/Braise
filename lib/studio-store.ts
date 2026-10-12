@@ -17,8 +17,17 @@ export class StudioStore {
   }
   async duplicate(session: GuestSession, source: string, id: string, now = Date.now()) {
     if (id === source) return null;
+    // The destination ID is the operation ID. Provenance is written atomically with
+    // its snapshot and never changed by save(), so retries do not reread mutable content.
+    const receipt = () => this.db.prepare(`SELECT * FROM braise_studio_drafts WHERE id=? AND guest_id=? AND duplicated_from=? AND ${ACTIVE}`).bind(id, session.guest_id, source, session.token_hash, session.guest_id, now).first<Draft>();
+    const previous = await receipt(); if (previous) return previous;
     const draft = await this.draft(session.guest_id, source);
-    return draft ? this.save(session, id, -1, draft.title, JSON.parse(draft.entries), now, draft.description, draft.visual) : null;
+    if (!draft || !validateStudio(draft.title, JSON.parse(draft.entries), draft.description, draft.visual)) return null;
+    await this.db.prepare(`INSERT OR IGNORE INTO braise_studio_drafts (id,guest_id,title,description,visual,entries,revision,created_at,duplicated_from)
+      SELECT ?,guest_id,title,description,visual,entries,0,?,id FROM braise_studio_drafts
+      WHERE id=? AND guest_id=? AND revision=? AND ${ACTIVE}
+      AND (SELECT count(*) FROM braise_studio_drafts WHERE guest_id=?)<50`).bind(id, now, source, session.guest_id, draft.revision, session.token_hash, session.guest_id, now, session.guest_id).run();
+    return receipt();
   }
   async publish(session: GuestSession, id: string, revision: number, now = Date.now()) {
     const draft = await this.draft(session.guest_id, id); if (!draft || draft.revision !== revision || !validateStudio(draft.title, JSON.parse(draft.entries), draft.description, draft.visual)) return null;

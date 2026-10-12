@@ -17,11 +17,11 @@ export default function IntruderGame() {
   useEffect(() => { if (focusQuestion.current && question) { questionHeading.current?.focus(); focusQuestion.current = false; } }, [question]);
   const generation = useRef(0);
   const submitting = useRef(false); const loading = useRef(false);
-  const retryIndex = useRef(0);
+  const retryOperation = useRef<{ kind: "question"; index: number } | { kind: "summary" }>({ kind: "question", index: 0 });
   function invalidate() { generation.current++; loading.current = false; }
   async function load(index: number, known: IntruderAttempt[] = attempts) {
     if (loading.current || submitting.current) return; loading.current = true;
-    const request = ++generation.current; retryIndex.current = index;
+    const request = ++generation.current; retryOperation.current = { kind: "question", index };
     setBusy(true); setError(""); setQuestion(null); setAnswer(null); setSummary(null);
     try {
       const existing = known.find(item => item.index === index);
@@ -34,7 +34,7 @@ export default function IntruderGame() {
     finally { if (request === generation.current) { loading.current = false; setBusy(false); } }
   }
   async function loadSummary(known = attempts) {
-    if (loading.current || submitting.current) return; loading.current = true;
+    if (loading.current || submitting.current) return; loading.current = true; retryOperation.current = { kind: "summary" };
     const request = ++generation.current; setBusy(true); setError(""); setQuestion(null); setAnswer(null);
     try { const response = await fetch("/api/intruder/summary", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ attempts: known }) }); const data = await response.json() as { total: number; completed: number; correct: number; results: IntruderAnswer[]; error?: string }; if (request !== generation.current) return; if (!response.ok) throw new Error(data.error); setSummary(data); }
     catch (cause) { if (request === generation.current) setError(cause instanceof Error ? cause.message : "Connexion impossible."); }
@@ -77,7 +77,7 @@ export default function IntruderGame() {
       {answer && <div className="laboratory-explanation" aria-live="polite"><h2 ref={resultHeading} tabIndex={-1}>{answer.correct ? "Bien vu !" : "Une autre piste à retenir"}</h2><p>{answer.explanation}</p>{attempts.length < 20 && <button className="primary-button" disabled={busy} onClick={() => { focusQuestion.current = true; void load(Array.from({ length: 20 }, (_, index) => index).find(index => !attempts.some(item => item.index === index))!); }}>Énigme suivante</button>}</div>}
       {attempts.length === 20 && !summary && <button className="primary-button" disabled={busy} onClick={() => { focusResult.current = true; void loadSummary(); }}>Voir le bilan des 20 énigmes</button>}
       {summary && <section aria-label="Bilan de la session"><h2 ref={resultHeading} tabIndex={-1}>Session terminée</h2><p>{summary.completed} / {summary.total} énigmes terminées · {summary.correct} réponses justes · {summary.completed - summary.correct} réponses à revoir.</p><p>Ce bilan repose sur vos premières réponses conservées sur cet appareil ou dans cette session.</p><details><summary>Revoir les explications</summary>{summary.results.map(item => <div key={item.index}><h3>Énigme {item.index + 1} · {item.correct ? "Réponse juste" : "À revoir"}</h3><p>Votre réponse : {item.words[item.choice]} · Intrus : {item.words[item.answer]}</p><p>{item.explanation}</p></div>)}</details><a className="text-action" href="/laboratoire/deux-braises">Continuer avec Deux braises</a></section>}
-      {error && <p role="alert" ref={errorNotice} tabIndex={-1}>{error} {!question && <button onClick={() => void load(retryIndex.current)}>Réessayer</button>}</p>}
+      {error && <p role="alert" ref={errorNotice} tabIndex={-1}>{error} {!question && <button onClick={() => { if (retryOperation.current.kind === "summary") { focusResult.current = true; void loadSummary(); } else { focusQuestion.current = true; void load(retryOperation.current.index); } }}>Réessayer</button>}</p>}
       {warning && <p role="status">La sauvegarde est indisponible. Cette réponse reste visible pendant la session.</p>}
       <details><summary>Choisir une énigme</summary><div className="collection-grid">{Array.from({ length: 20 }, (_, i) => <button type="button" key={i} disabled={busy} onClick={() => { focusQuestion.current = true; void load(i); }}>{i + 1}{attempts.some(item => item.index === i) ? " ✓" : ""}</button>)}</div></details>
       <p>Les réponses sont expliquées par catégories, pas déduites d’une distance vectorielle. L’export du profil classique n’inclut pas cet historique.</p>

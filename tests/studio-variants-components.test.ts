@@ -6,6 +6,11 @@ import Studio from "../components/studio";
 import Streamer from "../components/streamer";
 import Intruder from "../components/intruder-game";
 import TwoBraises from "../components/two-braises-game";
+import { database } from "./support/social-database";
+import { randomToken } from "../lib/server-security";
+import { env } from "./support/cloudflare-workers";
+import { GET as studioGET, POST as studioPOST } from "../app/api/studio/route";
+import { saveIntruderAttempt } from "../lib/profile-storage";
 import { SyncMemory } from "../lib/device-sync";
 import { answerIntruder, intruderQuestion, summarizeIntruder } from "../lib/intruder-server";
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
@@ -101,4 +106,33 @@ test("Two braises refuses old pair submission after synchronous navigation", asy
   try { await input(tree, "two-guess", "arbre"); const submit = tree.root.findByType("form").props.onSubmit; const change = tree.root.findByProps({ id: "pair-select" }).props.onChange;
     await act(async () => { change({ target: { value: "1" } }); submit({ preventDefault() {} }); }); assert.equal(calls, 0); assert.equal(tree.root.findByProps({ id: "pair-select" }).props.value, 1);
   } finally { await act(async () => tree.unmount()); }
+});
+
+test("Studio real API and store recover lost duplication after source edit without an extra copy", async () => {
+  browser(); const { sqlite, d1, store, studio } = database(); env.DB = d1; const token = randomToken(), csrf = "csrf"; await store.createGuest("A", token, csrf); const session = (await store.session(token))!;
+  const source = crypto.randomUUID(); await studio.save(session, source, -1, "Original", ["nature-v1:0"]); const duplicates: string[] = []; let loseResponse = true;
+  globalThis.fetch = async (url, opts) => {
+    if (url === "/api/session") return Response.json({ guest: { id: session.guest_id, name: "A" }, csrf });
+    const request = new Request("https://braiz.io" + String(url), { method: opts?.method ?? "GET", headers: { "Content-Type": "application/json", origin: "https://braiz.io", cookie: "__Host-braise_session=" + token, "X-Braise-CSRF": csrf }, ...(opts?.body ? { body: opts.body } : {}) });
+    if (opts?.method !== "POST") return studioGET(request);
+    const body = JSON.parse(opts.body as string), response = await studioPOST(request);
+    if (body.action === "duplicate") { duplicates.push(body.id); if (loseResponse) { loseResponse = false; assert.equal(response.status, 200); throw new Error("Response lost after durable write"); } }
+    return response;
+  };
+  let tree!: ReactTestRenderer; await act(async () => { tree = create(createElement(Studio)); });
+  async function settle() { for (let i = 0; i < 200; i++) { if (!tree.root.findAll(n => n.props.role === "status" && text(n) === "Chargement…").length) return; await act(async () => new Promise(resolve => setTimeout(resolve, 1))); } assert.fail("Studio request did not settle"); }
+  async function action(label: string) { await click(tree, label); await settle(); }
+  try { await settle();
+    await action("Original · révision 0"); await action("Dupliquer ce brouillon"); assert.match(text(tree.root), /Response lost/);
+    await input(tree, "studio-title", "Updated"); await action("Enregistrer le brouillon"); await action("Dupliquer ce brouillon");
+    assert.equal(duplicates.length, 2); assert.equal(duplicates[0], duplicates[1]); assert.equal(tree.root.findByProps({ id: "studio-title" }).props.value, "Original"); assert.equal((await studio.list(session.guest_id)).length, 2);
+    await action("Updated · révision 1"); await action("Dupliquer ce brouillon"); assert.notEqual(duplicates[2], duplicates[0]); assert.equal((await studio.list(session.guest_id)).length, 3);
+  } finally { await act(async () => tree.unmount()); delete env.DB; sqlite.close(); }
+});
+test("Intrus Retry after summary failure retries summary rather than loading a question", async () => {
+  browser(); for (let index = 0; index < 20; index++) saveIntruderAttempt({ edition: "intrus-v1", index, choice: 0, occurredAt: "2026-10-12T12:00:00.000Z" }); const requests: string[] = [];
+  globalThis.fetch = async (url, opts) => { requests.push(String(url)); if (requests.length === 1) throw new Error("Summary offline"); if (url === "/api/intruder/summary") return Response.json(summarizeIntruder(JSON.parse(opts!.body as string).attempts)); return Response.json(answerIntruder(0, 0)); };
+  let tree!: ReactTestRenderer; await act(async () => { tree = create(createElement(Intruder)); });
+  try { assert.match(text(tree.root), /Summary offline/); await click(tree, "Réessayer"); assert.deepEqual(requests, ["/api/intruder/summary", "/api/intruder/summary"]); assert.ok(tree.root.findByProps({ "aria-label": "Bilan de la session" })); }
+  finally { await act(async () => tree.unmount()); }
 });

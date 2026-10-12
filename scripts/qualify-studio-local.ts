@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { GET, POST } from "../app/api/studio/route";
 import { GET as projection } from "../app/api/projection/route";
 import { env } from "../tests/support/cloudflare-workers";
+import { StudioStore } from "../lib/studio-store";
 import { ServerStore } from "../lib/server-store";
 import { randomToken } from "../lib/server-security";
 const runtime = new Miniflare({ modules: true, script: 'export default {fetch(){return new Response("D1 local test only")}}', d1Databases: ["DB"], d1Persist: mkdtempSync("work/d5-") });
@@ -24,6 +25,16 @@ try {
   const published = await POST(request("POST", { action: "publish", id, revision: 0 })); assert.equal(published.status, 200); const edition = await published.json() as { id: string };
   assert.equal((await POST(request("POST", { ...draft, revision: 0, title: "Changed title", description: "Changed description", visual: "night", entries: ["nature-v1:2"] }))).status, 200);
   assert.equal((await POST(request("POST", { ...draft, revision: 0 }))).status, 409);
+  const replay = await POST(request("POST", { action: "duplicate", source: id, id: copy })); assert.equal(replay.status, 200); assert.equal((await replay.json() as { title: string }).title, draft.title);
+  const author = (await store.session(token))!, studio = new StudioStore(env.DB), alternate = crypto.randomUUID();
+  await studio.save(author, alternate, -1, "Alternate", ["nature-v1:0"]);
+  assert.equal((await POST(request("POST", { action: "duplicate", source: alternate, id: copy }))).status, 409);
+  assert.equal((await POST(request("POST", { action: "duplicate", source: id, id: alternate }))).status, 409);
+  for (let i = 3; i < 50; i++) assert.ok(await studio.save(author, crypto.randomUUID(), -1, "Quota fixture", ["nature-v1:0"]));
+  assert.equal((await studio.list(author.guest_id)).length, 50);
+  assert.equal((await POST(request("POST", { action: "duplicate", source: id, id: crypto.randomUUID() }))).status, 409);
+  const quotaReplay = await POST(request("POST", { action: "duplicate", source: id, id: copy })); assert.equal(quotaReplay.status, 200); assert.equal((await quotaReplay.json() as { id: string }).id, copy);
+
   const progress = await (await GET(request("GET", undefined, "/api/studio?edition=" + edition.id, other))).json() as Record<string, unknown>;
   assert.equal(progress.title, draft.title); assert.equal(progress.description, draft.description); assert.equal(progress.visual, draft.visual); assert.equal(JSON.stringify(progress).includes("nature-v1"), false);
   const entered = await POST(request("POST", { action: "enter", id: edition.id }, undefined, other)); const game = (await entered.json() as { game: string }).game;
@@ -35,5 +46,5 @@ try {
   assert.equal((await projection(request("GET", undefined, "/api/projection?id=" + game, other))).status, 404);
   assert.equal((await POST(request("POST", { action: "enter", id: edition.id }, undefined, other))).status, 409);
   await store.revokeSession((await store.session(token))!); assert.equal((await POST(request("POST", { ...draft, revision: 1 }))).status, 403);
-  console.log("PASS real local D1 migrations0000-0006: CSRF/origin, own duplicate, immutable metadata and edition entries, revision409, numeric projection only, owner-only projection, withdrawn edition blocks games, revoked403. Local fixtures only.");
+  console.log("PASS real local D1 migrations0000-0007: durable duplicate receipt after source edit, source-ID reuse409, replay at quota50, CSRF/origin, own duplicate, immutable metadata and edition entries, revision409, numeric projection only, owner-only projection, withdrawn edition blocks games, revoked403. Local fixtures only.");
 } finally { delete env.DB; await runtime.dispose(); }
