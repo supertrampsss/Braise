@@ -1,0 +1,18 @@
+.personal-profile { max-width: 680px; margin-inline: auto; }
+.personal-profile .profile-scope { font-size: 14px; line-height: 1.6; margin: 0 0 22px; color: #b7bbb3; }
+.profile-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 22px; padding: 18px; border: 1px solid #ffffff25; border-radius: 16px; }
+.profile-summary>div { display: grid; gap: 6px; }
+.profile-summary strong { font-size: 26px; color: #f0f1e9; }
+.profile-summary span,.profile-summary p,.profile-details p,.calendar-reminder p { color: #b7bbb3; font-size: 14px; line-height: 1.6; }
+.profile-summary p { grid-column: 1/-1; margin: 4px 0 0; }
+.personal-profile h2 { font-size: 21px; }.personal-profile h3 { font-size: 18px; margin-block: 22px 10px; }
+.profile-details>summary { margin-bottom: 12px; }.profile-details:not([open])>summary { margin-bottom: 0; }
+.profile-milestones,.profile-history { display: grid; gap: 12px; padding: 0; list-style: none; }
+.profile-milestones li,.profile-history li { display: grid; gap: 5px; padding: 12px; border: 1px solid #ffffff20; border-radius: 10px; }
+.profile-milestones span,.profile-history span,.profile-history small,.profile-measurements small { color: #b7bbb3; font-size: 14px; }
+.profile-measurements { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 18px 0; }.profile-measurements dt { font-size: 14px; }.profile-measurements dd { margin: 8px 0; }.profile-measurements small { display: block; margin-top: 6px; }
+.profile-table-scroll { overflow-x: auto; margin-block: 18px; }.personal-profile table { border-collapse: collapse; width: 100%; font-size: 14px; }.personal-profile caption { text-align: left; font-weight: 600; margin-bottom: 12px; }.personal-profile :is(th,td) { padding: 10px 8px; text-align: left; border-bottom: 1px solid #ffffff25; font-variant-numeric: tabular-nums; }.personal-profile td small { display: block; color: #b7bbb3; margin-top: 4px; }
+.personal-profile :is(button,summary,input) { min-height: 44px; }.personal-profile :is(button,summary,input,a):focus-visible,.profile-table-scroll:focus-visible { outline: 2px solid #ffad7c; outline-offset: 4px; }
+.calendar-reminder { margin: 18px 0; border: 1px solid #ffffff25; padding: 14px; border-radius: 12px; }.calendar-removal-note { padding: 10px; border-left: 3px solid #ffad7c; }.calendar-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.calendar-form label { display: grid; gap: 6px; font-size: 14px; }.calendar-form input { width: 100%; min-width: 0; border: 1px solid #ffffff40; border-radius: 7px; background: #212520; color: #f0f1e9; padding: 10px; color-scheme: dark; }.calendar-form>p,.calendar-form>button { grid-column: 1/-1; }
+.personal-profile .braiz-diagnostics { padding-top: 12px; margin-top: 20px; border-top: 1px solid #ffffff25; }.personal-profile .braiz-diagnostics button { display: inline-block; padding: 10px; border: 1px solid #ffffff40; border-radius: 8px; margin: 4px; }
+@media(max-width: 520px) { .profile-summary { gap: 8px; padding: 12px; }.profile-summary strong { font-size: 22px; }.profile-summary span { font-size: 12px; }.profile-measurements,.calendar-form { grid-template-columns: 1fr; }.personal-profile :is(th,td) { padding: 8px 5px; }.personal-profile h1 { font-size: 29px; } }

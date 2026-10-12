@@ -21,14 +21,14 @@ function objectiveIcon(kind: WeeklyProjection["objectives"][number]["kind"]) {
 
 export function WeeklyRitualCard({ projection }: { projection: WeeklyProjection }) {
   return <section className="weekly-card" aria-labelledby="weekly-title">
-    <div className="section-topline"><div><span className="card-eyebrow">CETTE SEMAINE</span><h2 id="weekly-title">Trois étincelles</h2></div><span className="small-icon"><CalendarDays size={17} aria-hidden="true" /></span></div>
+    <div className="section-topline"><div><span className="card-eyebrow">Cette semaine</span><h2 id="weekly-title">Trois étincelles</h2></div><span className="small-icon"><CalendarDays size={17} aria-hidden="true" /></span></div>
     <p className="weekly-dates">Du {dateLabel(projection.weekId)} au {dateLabel(projection.weekEnd, projection.weekId.slice(0, 4) !== projection.weekEnd.slice(0, 4))} · heure de Paris</p>
     <ul className="objective-list">
       {projection.objectives.map(objective => {
         const Icon = objectiveIcon(objective.kind);
         return <li className={objective.complete ? "is-complete" : ""} key={objective.id}>
           <span className="objective-icon"><Icon size={16} aria-hidden="true" /></span>
-          <div className="objective-copy"><div><strong>{objective.name}</strong><span>{objective.complete ? "Terminé" : `${objective.value} / ${objective.target}`}</span></div><p>{objective.description}</p><Progress value={objective.value / objective.target * 100} aria-label={`Progression de l’objectif ${objective.name}`} aria-valuetext={`${objective.value} sur ${objective.target}`} /></div>
+          <div className="objective-copy"><div><strong>{objective.name}</strong><span>{objective.complete ? `Terminé · ${objective.value} / ${objective.target}` : `${objective.value} / ${objective.target}`}</span></div><p>{objective.description} · Récompense : {COSMETICS.find(cosmetic => cosmetic.id === objective.reward)?.name}</p><Progress value={objective.value / objective.target * 100} aria-label={`Progression de l’objectif ${objective.name}`} aria-valuetext={`${objective.value} sur ${objective.target}`} /></div>
           {objective.complete && <Check className="objective-check" size={17} aria-hidden="true" />}
         </li>;
       })}
