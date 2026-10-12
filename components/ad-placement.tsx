@@ -3,6 +3,7 @@ import { decideAd } from "@/lib/advertising";
 
 export default function AdPlacement() {
   const decision = decideAd("game-display");
+  if (decision.result === "skip") return null;
   return (
     <section
       className="ad-zone"

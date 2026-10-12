@@ -133,6 +133,8 @@ export async function verifySemanticCorpus({ sourcePath, outputDir, manifestName
   try {
     database = new DatabaseSync(databasePath);
     database.exec("CREATE TABLE words(word TEXT PRIMARY KEY) WITHOUT ROWID;"); const insert = database.prepare("INSERT OR IGNORE INTO words(word) VALUES (?)");
+    // Independent reconstruction index only; keep SQLite durability and bound writes per commit.
+    let indexWrites = 0; database.exec("BEGIN");
     lines = verifyLines(sourcePath, manifest.config.maxLineBytes)[Symbol.asyncIterator]();
     const headerLine = await lines.next(); if (headerLine.done || headerLine.value.tooLong || !headerLine.value.bytes) throw new Error("Missing source header");
     const header = sourceHeader(headerLine.value.bytes);
@@ -141,7 +143,10 @@ export async function verifySemanticCorpus({ sourcePath, outputDir, manifestName
       const line = await lines.next(); if (line.done) break; rowsRead++;
       if (rowsRead > header.rows) throw new Error("Source contains rows beyond its header");
       let parsed = line.value.tooLong ? { excluded: "line_too_long" } : sourceEntry(line.value.bytes, header.dimensions);
-      if (!parsed.excluded && insert.run(parsed.word).changes === 0) parsed = { excluded: "duplicate" };
+      if (!parsed.excluded) {
+        if (insert.run(parsed.word).changes === 0) parsed = { excluded: "duplicate" };
+        if (++indexWrites >= 4096) { database.exec("COMMIT; BEGIN"); indexWrites = 0; }
+      }
       if (parsed.excluded) {
         if (!(parsed.excluded in excluded)) throw new Error(`Unknown exclusion ${parsed.excluded}`);
         excluded[parsed.excluded]++;
@@ -158,6 +163,7 @@ export async function verifySemanticCorpus({ sourcePath, outputDir, manifestName
     return { corpusId: manifest.corpusId, rowsRead, accepted, excluded, segments: manifest.segments.length, semanticSha256 };
   } finally {
     await lines?.return?.().catch(() => {}); await entries.return?.().catch(() => {});
+    try { database?.exec("ROLLBACK"); } catch {}
     try { database?.close(); } catch {}
     await rm(databasePath, { force: true });
   }

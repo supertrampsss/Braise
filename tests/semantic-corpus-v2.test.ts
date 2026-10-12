@@ -35,10 +35,33 @@ test("the ingestion reaches EOF beyond 50,000 rows and the independent verifier 
     assert.equal(result.accepted, rows);
     assert.equal(result.rowsRead, rows);
     assert.equal(result.semanticSha256, manifest.semanticSha256);
+    // Scalar test oracle: each unique source word has the exact normalized float32 [1, 0].
+    // This does not reuse either builder or verifier and protects batching across 4096 writes.
+    const oracle = createHash("sha256"); const vector = Buffer.alloc(8); vector.writeFloatLE(1, 0);
+    for (let index = 0; index < rows; index++) {
+      const word = Buffer.from(`mot${letters(index)}`); const length = Buffer.alloc(4); length.writeUInt32LE(word.length);
+      oracle.update(length).update(word).update(vector);
+    }
+    assert.equal(manifest.semanticSha256, oracle.digest("hex"));
     const lastSegment = manifest.segments.at(-1)!;
     const compressed = await readFile(join(paths.output, "segments", lastSegment.file));
     assert.ok(compressed.length > 0, "the final line without a newline must be persisted");
   } finally { await remove(paths.root); }
+});
+
+test("transaction boundaries retain duplicate order and checkpoint rollback reconstructs exact segments", async () => {
+  const resumed = await workspace(); const clean = await workspace();
+  try {
+    const unique = Array.from({ length: 4100 }, (_, index) => `mot${letters(index)} 1 0`);
+    // Duplicate the first word after the index transaction has committed.
+    const contents = `4101 2\n${unique.join("\n")}\n${unique[0]}`;
+    await writeFile(resumed.source, contents); await writeFile(clean.source, contents);
+    await assert.rejects(buildSemanticCorpus({ sourcePath: resumed.source, outputDir: resumed.output, segmentEntries: 4096, testStopAfterSegments: 1 }), CorpusBuildInterrupted);
+    const actual = await buildSemanticCorpus({ sourcePath: resumed.source, outputDir: resumed.output, segmentEntries: 4096 });
+    const expected = await buildSemanticCorpus({ sourcePath: clean.source, outputDir: clean.output, segmentEntries: 4096 });
+    assert.deepEqual(actual, expected); assert.equal(actual.stats.excluded.duplicate, 1);
+    await verifySemanticCorpus({ sourcePath: resumed.source, outputDir: resumed.output });
+  } finally { await remove(resumed.root); await remove(clean.root); }
 });
 
 test("every source row is admitted or receives one exact exclusion reason", async () => {

@@ -4,7 +4,8 @@ import { mkdir, open, readFile, rename, rm, stat, unlink } from "node:fs/promise
 import { basename, join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { pathToFileURL } from "node:url";
-import { gunzipSync, gzipSync } from "node:zlib";
+import { gunzipSync } from "node:zlib";
+import { canonicalGzip } from "./canonical-gzip.mjs";
 
 export const CORPUS_FORMAT = "BRV2";
 export const CORPUS_FORMAT_VERSION = 2;
@@ -315,7 +316,7 @@ export async function buildSemanticCorpus({
   const lockOwner = randomUUID();
   let lock = await acquireBuildLock(outputDir, lockPath, { schemaVersion: 1, owner: lockOwner, pid: process.pid, createdAt: new Date().toISOString(), sourcePath, outputDir }, recoverLockOwner);
   const databasePath = join(outputDir, ".dedupe.sqlite");
-  let database; let iterator;
+  let database; let iterator; let indexTransaction = false;
   try {
     if (testHoldAfterLockMs > 0) await new Promise(resolveDelay => setTimeout(resolveDelay, testHoldAfterLockMs));
     const sourceInfoBefore = await stat(sourcePath);
@@ -347,6 +348,8 @@ export async function buildSemanticCorpus({
       return manifest;
     }
     await rm(databasePath, { force: true });
+    // This deduplication index is rebuilt from verified checkpoints under the build guard.
+    await rm(`${databasePath}-journal`, { force: true });
     database = new DatabaseSync(databasePath);
     database.exec("PRAGMA journal_mode=DELETE; PRAGMA synchronous=FULL; CREATE TABLE words(word TEXT PRIMARY KEY, id INTEGER NOT NULL UNIQUE) WITHOUT ROWID;");
     if (checkpoint) await verifyCheckpoint(outputDir, checkpoint, config, configHash, sourceSha256, sourceInfoBefore.size, header, database);
@@ -361,6 +364,14 @@ export async function buildSemanticCorpus({
       });
     }
     const insert = database.prepare("INSERT OR IGNORE INTO words(word, id) VALUES (?, ?)");
+    // Bound each disposable-index transaction; immutable segments/checkpoints remain authority.
+    let indexWrites = 0;
+    database.exec("BEGIN"); indexTransaction = true;
+    const insertWord = (word, id) => {
+      const result = insert.run(word, id);
+      if (++indexWrites >= 4096) { database.exec("COMMIT; BEGIN"); indexWrites = 0; }
+      return result;
+    };
     iterator = boundedLines(sourcePath, maxLineBytes)[Symbol.asyncIterator]();
     const repeatedHeader = await iterator.next();
     if (repeatedHeader.done || repeatedHeader.value.tooLong || repeatedHeader.value.endOffset !== first.value.endOffset) throw new Error("Source header changed before ingestion");
@@ -369,7 +380,7 @@ export async function buildSemanticCorpus({
       if (!pending.length) return;
       const raw = buildSegment(pending, header.dimensions, configHash);
       if (raw.length > maxSegmentRawBytes) throw new Error("Segment exceeds configured raw byte budget");
-      const compressed = gzipSync(raw, { level: 9 });
+      const compressed = canonicalGzip(raw, { level: 9 });
       const rawSha256 = sha256(raw); const objectSha256 = sha256(compressed);
       const file = `${String(checkpoint.segments.length).padStart(6, "0")}-${objectSha256.slice(0, 16)}.brv.gz`;
       await installImmutable(join(outputDir, "segments", file), compressed);
@@ -394,7 +405,7 @@ export async function buildSemanticCorpus({
       else parsed = parseVectorLine(next.value.bytes, header.dimensions);
       if (parsed.excluded) checkpoint.excluded[parsed.excluded]++;
       else {
-        const result = insert.run(parsed.word, checkpoint.accepted);
+        const result = insertWord(parsed.word, checkpoint.accepted);
         if (result.changes === 0) checkpoint.excluded.duplicate++;
         else {
           const entry = { id: checkpoint.accepted, sourceRow, word: parsed.word, vector: parsed.vector };
@@ -431,6 +442,7 @@ export async function buildSemanticCorpus({
     return manifest;
   } finally {
     await iterator?.return?.().catch(() => {});
+    if (indexTransaction) { try { database?.exec("ROLLBACK"); } catch {} }
     try { database?.close(); } catch {}
     await releaseBuildLock(lockPath, lock);
   }

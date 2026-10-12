@@ -1,8 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { EMBED_ORIGIN, EMBED_PROTOCOL, validEmbedMessage } from "@/lib/embed-contract";
+import { EMBED_ALLOWED_ORIGINS, EMBED_ORIGIN, EMBED_PROTOCOL, validEmbedEvent } from "@/lib/embed-contract";
+import { AppNavigation } from "@/components/app-navigation";
+import { DISTRIBUTION } from "@/lib/distribution";
 export default function EmbedDemo() {
-  const frame = useRef<HTMLIFrameElement>(null); const [height, setHeight] = useState(800);
-  useEffect(() => { const receive = (event: MessageEvent) => { if (event.source !== frame.current?.contentWindow || !validEmbedMessage(event.origin, event.data, "resize")) return; setHeight(event.data.height); }; window.addEventListener("message", receive); return () => window.removeEventListener("message", receive); }, []);
-  return <main className="main-shell laboratory-shell"><h1>Intégration BRAIZ</h1><p>Démonstrateur sur la même origine privée. Les origines partenaires sont refusées tant qu’une configuration et une qualification réelles ne sont pas effectuées. L’accès privé du Site continue de s’appliquer ; les cookies tiers ne sont pas supposés disponibles.</p><iframe ref={frame} title="Jeu BRAIZ intégré" src="/embed" style={{ width: "100%", height, border: 0 }} onLoad={() => frame.current?.contentWindow?.postMessage({ protocol: EMBED_PROTOCOL, type: "hello" }, EMBED_ORIGIN)} /></main>;
+  const frame = useRef<HTMLIFrameElement>(null); const [height, setHeight] = useState(800); const [status, setStatus] = useState<"loading" | "ready" | "unavailable">("loading");
+  useEffect(() => {
+    const timer = setTimeout(() => setStatus(previous => previous === "ready" ? previous : "unavailable"), 5000);
+    const receive = (event: MessageEvent) => { if (event.origin !== EMBED_ORIGIN || !validEmbedEvent(event, frame.current?.contentWindow ?? null, "resize")) return; setHeight(event.data.height); setStatus("ready"); clearTimeout(timer); };
+    window.addEventListener("message", receive); return () => { clearTimeout(timer); window.removeEventListener("message", receive); };
+  }, []);
+  return <><AppNavigation active="explore" modeName="Intégration" /><main className="main-shell laboratory-shell"><h1>Intégration BRAIZ</h1><p>Cette intégration accepte uniquement les deux adresses contrôlées de BRAIZ : {EMBED_ALLOWED_ORIGINS.join(" et ")}. Les autres origines sont refusées. L’accès du Site continue de s’appliquer ; les cookies tiers ne sont pas supposés disponibles.</p><p>Adresse du jeu : <a href={DISTRIBUTION.gameUrl}>{DISTRIBUTION.gameUrl}</a>. Les modes avancés et cette intégration restent fermés au public pendant leur qualification.</p><p role="status">{status === "loading" ? "Chargement de l’aperçu…" : status === "ready" ? "Aperçu connecté." : <>L’aperçu n’a pas répondu. <a href={DISTRIBUTION.gameUrl}>Ouvrir BRAIZ</a> pour jouer.</>}</p><iframe ref={frame} title="Jeu BRAIZ intégré" src={DISTRIBUTION.embedUrl} style={{ width: "100%", height, border: 0 }} onError={() => setStatus("unavailable")} onLoad={() => frame.current?.contentWindow?.postMessage({ protocol: EMBED_PROTOCOL, type: "hello" }, EMBED_ORIGIN)} /></main></>;
 }

@@ -1,6 +1,12 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import { gzipSync } from "node:zlib";
+import { gunzipSync } from "node:zlib";
+import { canonicalGzip } from "./canonical-gzip.mjs";
+
+const verifyOnly = process.argv.slice(2).includes("--verify");
+if (process.argv.slice(2).some(argument => argument !== "--verify")) throw new Error("Usage: build-semantic-shards.mjs [--verify]");
+// Frozen canonical index from the approved V1 source; verification never adopts a new hash.
+const FROZEN_INDEX_SHA256 = "6f7135f02473c70f0b13fbd62709fc23a1b2ca45294b7c2cdaef29a2c691f137";
 
 const sourcePath = "data/semantic-fr.json";
 const baseline = JSON.parse(await readFile("docs/program/BASELINE.json", "utf8"));
@@ -14,8 +20,17 @@ if (source.words.length > 65535) throw new Error("Storage format v1 supports at 
 const version = "fr-fasttext-30000-v1";
 const publicRoot = `public/semantic/${version}`;
 const targetRoot = `${publicRoot}/targets`;
-await rm(publicRoot, { recursive: true, force: true });
-await mkdir(targetRoot, { recursive: true });
+let frozenIndex;
+if (verifyOnly) {
+  const bytes = await readFile("data/semantic-v1-index.json");
+  if (createHash("sha256").update(bytes).digest("hex") !== FROZEN_INDEX_SHA256) throw new Error("Frozen V1 index hash mismatch");
+  if (!(await readFile(`${publicRoot}/manifest.json`)).equals(bytes)) throw new Error("Public V1 manifest differs from frozen index");
+  if (!(await readFile(`${publicRoot}/source.json`)).equals(sourceBytes)) throw new Error("Public V1 source differs from frozen corpus");
+  frozenIndex = JSON.parse(bytes.toString("utf8"));
+} else {
+  await rm(publicRoot, { recursive: true, force: true });
+  await mkdir(targetRoot, { recursive: true });
+}
 const wordIndex = new Map(source.words.map((word, index) => [word, index]));
 const sha256 = bytes => createHash("sha256").update(bytes).digest("hex");
 const segments = [];
@@ -46,9 +61,18 @@ for (let targetIndex = 0; targetIndex < source.puzzles.length; targetIndex++) {
   for (let index = 0; index < scores.length; index++) raw.writeInt16LE(scores[index], headerBytes + index * 2);
   for (let index = 0; index < ranks.length; index++) raw.writeUInt16LE(ranks[index], headerBytes + scores.length * 2 + index * 2);
   for (let index = 0; index < order.length; index++) raw.writeUInt16LE(order[index], headerBytes + scores.length * 4 + index * 2);
-  const compressed = gzipSync(raw, { level: 9 });
   const filename = `${String(targetIndex).padStart(3, "0")}-${sha256(Buffer.from(puzzle.word)).slice(0, 12)}.brz`;
   const key = `semantic/${version}/targets/${filename}`;
+  if (verifyOnly) {
+    const expected = frozenIndex.segments[targetIndex];
+    if (expected.key !== key || expected.rawBytes !== raw.length || expected.rawSha256 !== sha256(raw)) throw new Error(`Frozen V1 payload mismatch for ${key}`);
+    const stored = await readFile(`public/${key}`);
+    if (stored.length !== expected.compressedBytes || sha256(stored) !== expected.objectSha256) throw new Error(`Frozen V1 object mismatch for ${key}`);
+    if (!gunzipSync(stored, { maxOutputLength: expected.rawBytes }).equals(raw)) throw new Error(`Frozen V1 decoded payload mismatch for ${key}`);
+    segments.push(expected);
+    continue;
+  }
+  const compressed = canonicalGzip(raw, { level: 9 });
   await writeFile(`public/${key}`, compressed);
   segments.push({ targetIndex, word: puzzle.word, wordIndex: wordIndex.get(puzzle.word), key, formatVersion: 1, rawBytes: raw.length, compressedBytes: compressed.length, rawSha256: sha256(raw), objectSha256: sha256(compressed) });
 }
@@ -61,8 +85,10 @@ const index = {
   puzzles: source.puzzles.map(({ scores, ...puzzle }) => puzzle),
   segments,
 };
-await writeFile("data/semantic-v1-index.json", JSON.stringify(index));
-await writeFile(`${publicRoot}/manifest.json`, JSON.stringify(index));
-await writeFile(`${publicRoot}/source.json`, sourceBytes);
+if (!verifyOnly) {
+  await writeFile("data/semantic-v1-index.json", JSON.stringify(index));
+  await writeFile(`${publicRoot}/manifest.json`, JSON.stringify(index));
+  await writeFile(`${publicRoot}/source.json`, sourceBytes);
+}
 const manifestBytes = await readFile(`${publicRoot}/manifest.json`);
-console.log(JSON.stringify({ sourceSha256, targetCount: segments.length, rawTargetBytes: segments.reduce((n, x) => n + x.rawBytes, 0), compressedTargetBytes: segments.reduce((n, x) => n + x.compressedBytes, 0), manifestBytes: manifestBytes.length }));
+console.log(JSON.stringify({ mode: verifyOnly ? "verified-frozen" : "generated", sourceSha256, targetCount: segments.length, rawTargetBytes: segments.reduce((n, x) => n + x.rawBytes, 0), compressedTargetBytes: segments.reduce((n, x) => n + x.compressedBytes, 0), manifestBytes: manifestBytes.length }));

@@ -3,7 +3,7 @@ import { mkdir, open, readFile, readdir, rm, stat } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { pathToFileURL } from "node:url";
-import { gzipSync } from "node:zlib";
+import { canonicalGzip } from "./canonical-gzip.mjs";
 import {
   SCORE_BUCKETS, SCORE_CONTRACT, SCORE_MAX, SCORE_MIN,
   acquireTargetCacheGuard, corpusEntries, durableWrite, installImmutable, loadActiveCorpus,
@@ -120,7 +120,7 @@ function pageHeader(magic, targetId, first, count, dictionarySize, payloadOffset
 }
 
 async function persistPage(pageDir, prefix, raw, metadata) {
-  const compressed = gzipSync(raw, { level: 9 }); const rawSha256 = sha256(raw); const objectSha256 = sha256(compressed);
+  const compressed = canonicalGzip(raw, { level: 9 }); const rawSha256 = sha256(raw); const objectSha256 = sha256(compressed);
   const file = `${prefix}-${objectSha256.slice(0, 16)}.brt.gz`;
   await installImmutable(join(pageDir, file), compressed);
   return { ...metadata, file, rawBytes: raw.length, compressedBytes: compressed.length, rawSha256, objectSha256 };

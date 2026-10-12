@@ -3,7 +3,7 @@ import { mkdir, rm } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { pathToFileURL } from "node:url";
-import { gzipSync } from "node:zlib";
+import { canonicalGzip } from "./canonical-gzip.mjs";
 import { corpusEntries, durableWrite, installImmutable, loadActiveCorpus, sha256, stableJson } from "./semantic-target-v2-common.mjs";
 import { DEFAULT_MAX_LEAF_RAW_BYTES, INDEX_HEADER_BYTES, INDEX_MAGIC, INDEX_VERSION, MAX_PREFIX_MANIFEST_BYTES, wordHash } from "./semantic-index-v2-common.mjs";
 
@@ -31,7 +31,7 @@ export async function buildSemanticIndex({ corpusDir, outputDir, maxLeafRawBytes
       for (let secondByte = 0; secondByte < 256; secondByte++) {
         const prefix = firstByte * 256 + secondByte; const measured = measureLeaf.get(prefix); if (measured.count === 0) continue; if (!Number.isSafeInteger(measured.rawBytes) || measured.rawBytes > maxLeafRawBytes) throw new Error(`Index leaf ${prefix.toString(16).padStart(4, "0")} exceeds maxLeafRawBytes before allocation`); const rows = [...selectLeaf.all(prefix)];
         const raw = leafBytes(rows, firstByte, secondByte, corpus); if (raw.length > maxLeafRawBytes) throw new Error(`Index leaf ${prefix.toString(16).padStart(4, "0")} exceeds maxLeafRawBytes`);
-        const compressed = gzipSync(raw, { level: 9 }); const objectSha256 = sha256(compressed); const rawSha256 = sha256(raw); const file = `leaf-${prefix.toString(16).padStart(4, "0")}-${objectSha256.slice(0, 16)}.bpi.gz`; await installImmutable(join(leavesDir, file), compressed);
+        const compressed = canonicalGzip(raw, { level: 9 }); const objectSha256 = sha256(compressed); const rawSha256 = sha256(raw); const file = `leaf-${prefix.toString(16).padStart(4, "0")}-${objectSha256.slice(0, 16)}.bpi.gz`; await installImmutable(join(leavesDir, file), compressed);
         leaves.push({ secondByte, count: rows.length, file, rawBytes: raw.length, compressedBytes: compressed.length, rawSha256, objectSha256 }); leafCount++;
       }
       if (!leaves.length) continue;

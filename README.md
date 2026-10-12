@@ -10,6 +10,8 @@ Jeu web français de proximité sémantique. Version de test BRAIZ : mot quotidi
 - Vérification TypeScript : `npm run typecheck`.
 - Construction : `npm run build`.
 
+Les commandes de développement, construction, démarrage et vérification sont portables Windows/Linux via Node. Le socle de la revue complète (matrice de disponibilité, bindings réels, intégration, diagnostic local et limites de qualification) est documenté dans `docs/FULL-REVIEW-FOUNDATIONS.md`.
+
 Le déploiement Sites utilise l'identité existante de `.openai/hosting.json`. Le dépôt source lié à cette identité doit recevoir le commit exact avant de sauvegarder et déployer une version. Ne pas recréer le Site pour une mise à jour.
 
 ## Moteur
@@ -44,7 +46,7 @@ Le chantier B2 conserve 400 cibles courantes relues lexicalement par des agents 
 
 Les parties, les pistes, le son et les victoires sont locaux au navigateur. Le profil V2 reprend la progression V1 après une copie de secours vérifiée et ses événements convergent entre les onglets du même navigateur. Un export JSON lisible permet de copier manuellement le profil, ses récompenses et ses préférences vers un autre appareil ; l’import prévisualise la fusion, exige une confirmation et ne déplace pas les parties en cours ni les épingles. Les archives ouvrent les mots passés depuis le lancement, avec la même partie sauvegardée que le quotidien correspondant. Une réussite tardive reste une archive et ne réécrit pas la série historique. Trois objectifs repartent chaque lundi à l’heure de Paris et débloquent des styles permanents, sans visionnage publicitaire ni avantage de jeu. Aucun compte ni synchronisation automatique multi-appareil. Cet historique reste personnel et non compétitif. Les défis partagent une seed et se comparent par leurs résultats, sans classement en direct.
 
-Le site inclut un emplacement publicitaire réservé. Aucune régie, aucune annonce réelle, aucun consentement publicitaire simulé et aucun outil d'analyse tiers ne sont activés. Un lancement commercial nécessite les valeurs du compte éditeur approuvé, le dispositif de consentement et les informations d'éditeur réelles.
+Sans configuration commerciale, la décision publicitaire reste `skip/not-configured` : aucun emplacement vide ni annonce n’est affiché. Le script réel de vérification du domaine AdSense est conservé et charge un service tiers ; aucun consentement n’est simulé. Le diagnostic de support reste local, anonyme, limité aux 100 dernières actions raccordées, sans mots ni scores, exporté seulement sur demande. Un lancement commercial nécessite une configuration et une politique de consentement réelles.
 
 La version initiale est publiée en accès privé. Les liens de défis deviendront librement accessibles après ouverture de l'audience du Site ou déploiement public approprié.
 

@@ -19,11 +19,9 @@ test("every advertising placement stays explicitly inactive without configuratio
   }
 });
 
-test("the reserved placement is static, honest and non-interactive", () => {
+test("a skipped placement leaves no empty advertising footprint", () => {
   const html = renderToStaticMarkup(createElement(AdPlacement));
-  assert.match(html, /Emplacement publicitaire réservé/i);
-  assert.match(html, /Aucune publicité activée/);
-  assert.match(html, /data-ad-result="skip"/);
+  assert.equal(html, "");
   assert.doesNotMatch(html, /<(script|iframe|img|a|button)\b/i);
   assert.doesNotMatch(html, /(doubleclick|googlesyndication|analytics|pixel)/i);
 });

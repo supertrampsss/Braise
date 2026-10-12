@@ -42,7 +42,7 @@ const worker = {
     }
 
     const response = await handler.fetch(request, env, ctx);
-    return url.pathname === "/embed" ? distributionHeaders(response) : response;
+    return url.pathname === "/embed" || url.pathname === "/embed/" ? distributionHeaders(response) : response;
   },
 };
 

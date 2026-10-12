@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 @import "./focused-interface.css";
+@import "./shared-shell.css";
 
 @utility scrollbar-thin {
   scrollbar-width: thin;
@@ -21,6 +22,12 @@
 
 
 :root {
+  --braiz-background: #251f20;
+  --braiz-panel: #302728;
+  --braiz-text: #f5f0e9;
+  --braiz-muted: #e0c9ae;
+  --braiz-accent: #fb792a;
+  --braiz-border: #796b64;
   color-scheme: dark;
   --coal-1000: #0d0e10;
   --coal-950: #111214;

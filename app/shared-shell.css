@@ -1,0 +1,22 @@
+.braiz-navigation { display:flex; align-items:center; flex-wrap:wrap; gap:16px; padding:20px 24px; max-width:940px; margin:0 auto; background:var(--braiz-background); color:var(--braiz-text); }
+.braiz-navigation-brand { font-size:26px; font-weight:750; letter-spacing:-1px; text-decoration:none; }
+.braiz-navigation-brand span { color:var(--braiz-accent); }
+.braiz-navigation nav { margin-left:auto; }
+.braiz-navigation ul { display:flex; gap:6px; list-style:none; margin:0; padding:0; }
+.braiz-navigation nav a,.braiz-mode-context a { display:inline-flex; align-items:center; min-height:44px; padding:10px 12px; border:1px solid transparent; border-radius:10px; color:var(--braiz-text); text-decoration:none; }
+.braiz-navigation nav a[aria-current="page"] { border-color:var(--braiz-border); background:var(--braiz-panel); text-decoration:underline; text-underline-offset:5px; font-weight:700; }
+.braiz-navigation a:hover { text-decoration:underline; }
+.braiz-navigation a:focus-visible,.braiz-diagnostics button:focus-visible,.braiz-embed-caption a:focus-visible { outline:3px solid var(--braiz-accent); outline-offset:4px; }
+.braiz-mode-context { display:flex; align-items:center; gap:12px; width:100%; color:var(--braiz-muted); }
+.braiz-mode-context a { margin-left:auto; text-decoration:underline; }
+.braiz-diagnostics { border:1px solid var(--braiz-border); background:var(--braiz-panel); color:var(--braiz-text); border-radius:14px; padding:18px; margin-top:20px; }
+.braiz-diagnostics h2 { margin-top:0; }
+.braiz-diagnostics p { line-height:1.6; }
+.braiz-diagnostics button { min-height:44px; border:1px solid var(--braiz-border); border-radius:10px; padding:10px 12px; color:var(--braiz-text); background:var(--braiz-background); cursor:pointer; }
+.braiz-embed { max-width:640px; margin:auto; background:var(--braiz-background); }
+.braiz-embed-caption { padding:12px 16px; margin:0; color:var(--braiz-text); font-size:14px; line-height:1.6; }
+.braiz-embed-caption a { color:var(--braiz-muted); text-decoration:underline; }
+.braiz-embed .app-shell { min-height:0; }
+.braiz-embed .site-header { padding:12px 20px; }
+.braiz-embed .approved-play-surface,.braiz-embed .history-panel,.braiz-embed .notebook-card { padding-left:24px; padding-right:24px; }
+@media (max-width:420px) { .braiz-navigation { padding:12px; gap:8px; } .braiz-navigation-brand { font-size:22px; } .braiz-navigation nav a { padding:10px 8px; } .braiz-mode-context { flex-wrap:wrap; } .braiz-embed .approved-play-surface,.braiz-embed .history-panel,.braiz-embed .notebook-card { padding-left:16px; padding-right:16px; } }
