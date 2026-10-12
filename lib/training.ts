@@ -73,6 +73,15 @@ export async function trainingWorkerRequest(action: "status" | "download" | "rem
   const prepare = async () => {
     const registration = await navigator.serviceWorker.register("/sw.js").catch(() => { throw new Error("Le service hors ligne est indisponible. Reconnectez-vous puis rechargez pour réessayer."); });
     if (preparation.signal.aborted) throw new Error("Préparation du service hors ligne interrompue.");
+    // Register can resolve an existing registration before any update is found.
+    // Update resolves after the script check (with installing already assigned
+    // when changed); it does not wait for installation or activate the worker.
+    if (!registration.waiting && !registration.installing && navigator.onLine !== false) {
+      await registration.update().catch(() => {
+        // A failed network check must not hide an already installed offline pack.
+      });
+      if (preparation.signal.aborted) throw new Error("Préparation du service hors ligne interrompue.");
+    }
     // A previously installed neutral worker does not speak the training protocol.
     // Talk to the new waiting worker without activating it or disturbing clients.
     const installing = registration.installing;

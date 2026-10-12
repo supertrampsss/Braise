@@ -7,7 +7,7 @@ const FALLBACK_TRANSPORT = "/offline";
 const TRAINING_PREFIX = "braiz-training-";
 const INSTALLED = "/training/installed.json";
 // BEGIN TRAINING PIN
-const TRAINING_PIN = {"path":"/training/manifest-37a070fc4e42b8974ebada99612e99e76a5e4478381a9408989e4ae51c8e466b.json","sha256":"37a070fc4e42b8974ebada99612e99e76a5e4478381a9408989e4ae51c8e466b","bytes":999,"packSha256":"ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061","totalBytes":255902,"wordCount":208,"puzzleCount":3};
+const TRAINING_PIN = {"path":"/training/manifest-b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be.json","sha256":"b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be","bytes":999,"packSha256":"ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061","totalBytes":256074,"wordCount":208,"puzzleCount":3};
 // END TRAINING PIN
 
 self.addEventListener("install", event => {

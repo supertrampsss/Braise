@@ -8,7 +8,7 @@ Entrée : **Explorer → Entraînement guidé**, URL `/entrainement`. Trois parc
 - Les températures et rangs sont les valeurs V1 exactes ; les rangs portent sur **30 000 mots**, jamais sur les seuls 208 mots du pack.
 - La liste consultable contient aussi les trois réponses. Les majuscules/espaces sont normalisés ; les accents doivent correspondre à la graphie indiquée. Un sous-ensemble ne peut garantir la désambiguïsation des alias du lexique complet.
 - Un mot hors pack n’ajoute **ni score ni essai**, conserve la saisie et n’est pas déclaré absent de V1.
-- JSON : **42 695 octets**. Installation complète : **255 902 octets non compressés**, manifeste compris, affichés avant l’action explicite de téléchargement. Le transport HTTP peut compresser ces fichiers ; le chiffre n’inclut pas ses en-têtes.
+- JSON : **42 695 octets**. Installation complète : **256 074 octets non compressés**, manifeste compris, affichés avant l’action explicite de téléchargement. Le transport HTTP peut compresser ces fichiers ; le chiffre n’inclut pas ses en-têtes.
 
 ## Relecture éditoriale du 12 octobre 2026
 
@@ -32,7 +32,7 @@ Corpus brut SHA-256 : `7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db1242
 
 Pack SHA-256 : `ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061`.
 
-Manifeste final : `/training/manifest-37a070fc4e42b8974ebada99612e99e76a5e4478381a9408989e4ae51c8e466b.json`.
+Manifeste final : `/training/manifest-b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be.json`.
 
 Le manifeste contient les tailles et empreintes exactes du pack et de l’écran autonome HTML/JS/CSS. Le service worker épingle son empreinte. Le navigateur vérifie à nouveau le JSON avant de rendre les scores utilisables. Les fichiers sont adressés par leur contenu ; `.gitattributes` sous `public/training` interdit les conversions de fins de ligne qui changeraient leurs octets. Le générateur vérifie qu’aucun corpus ou lecteur sémantique serveur n’entre dans le JavaScript client.
 
@@ -44,7 +44,7 @@ La consultation ou l’enregistrement du service worker ne télécharge pas de p
 
 L’hébergement ASSETS sert le HTML sous une adresse sans extension : le worker télécharge directement `/offline` et `/training/screen-<empreinte>`, tout en conservant les clés logiques `.html` du cache et du manifeste. Cet alias est limité à la page neutre et au seul écran approuvé par le manifeste ; les redirections restent refusées et les empreintes contrôlées.
 
-Si un ancien service neutre est actif, la page dialogue avec le nouveau worker en attente ; une installation en cours est attendue avec un délai borné. Seul un téléchargement explicitement demandé et intégralement vérifié autorise son activation. Aucune activation lors du simple affichage, d’une suppression ou d’un échec ; aucune prise de contrôle ni aucun rechargement forcé des pages déjà ouvertes.
+Quand aucune installation ou version en attente n’est encore visible, une vérification explicite de mise à jour est attendue dans la limite de 15 secondes avant de choisir le worker. Hors connexion déclarée, cette vérification est évitée ; son échec réseau conserve l’accès au worker actif et à ses caches. Si un ancien service neutre est actif, la page dialogue avec le nouveau worker en attente ; une installation en cours est attendue avec un délai borné. Seul un téléchargement explicitement demandé et intégralement vérifié autorise son activation. Aucune activation lors du simple affichage, d’une suppression ou d’un échec ; aucune prise de contrôle ni aucun rechargement forcé des pages déjà ouvertes.
 
 La progression utilise exclusivement `braiz.training.progress.v1.<sha256-du-pack>`. Les sauvegardes futures/corrompues et les modifications concurrentes sont préservées et bloquent l’écriture. La reprise ne joue aucun son, ne déplace aucun focus, n’annonce aucune récompense et n’écrit rien à elle seule.
 

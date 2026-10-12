@@ -20,10 +20,60 @@ class Worker {
     }
   }
 }
-function browser(registration: { active: Worker | null; waiting: Worker | null; installing: Worker | null }) {
+function browser(registration: { active: Worker | null; waiting: Worker | null; installing: Worker | null; update?: () => Promise<unknown> }, online = true) {
   Object.assign(globalThis, { window: { isSecureContext: true } });
-  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { serviceWorker: { register: async (path: string) => { assert.equal(path, "/sw.js"); return registration; }, ready: Promise.resolve(registration) } } });
+  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { onLine: online, serviceWorker: { register: async (path: string) => { assert.equal(path, "/sw.js"); return registration; }, ready: Promise.resolve(registration) } } });
 }
+
+test("first visit waits for the update check when register resolves before updatefound", async () => {
+  const neutral = new Worker(true), installing = new Worker(); installing.state = "installing";
+  let finishCheck!: () => void, checks = 0;
+  const registration = Object.assign(new EventTarget(), {
+    active: neutral, waiting: null as Worker | null, installing: null as Worker | null,
+    update: () => { checks++; return new Promise<void>(resolve => { finishCheck = resolve; }); },
+  });
+  browser(registration);
+  const response = trainingWorkerRequest("status");
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(checks, 1); assert.deepEqual(neutral.messages, []);
+  registration.installing = installing; registration.dispatchEvent(new Event("updatefound")); finishCheck();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(installing.listeners.size, 1); assert.deepEqual(neutral.messages, []);
+  registration.waiting = installing; registration.installing = null; installing.change("installed");
+  assert.equal((await response).bytes, manifest.totalBytes);
+  assert.deepEqual(installing.messages, ["status"]); assert.deepEqual(neutral.messages, []);
+  assert.equal(installing.listeners.size, 0);
+});
+
+test("unchanged update and rejected offline check retain active training cache management", async () => {
+  for (const failed of [false, true]) {
+    const active = new Worker(); active.state = "activated"; let checks = 0;
+    browser({ active, waiting: null, installing: null, update: async () => { checks++; if (failed) throw new TypeError("offline"); } });
+    assert.equal((await trainingWorkerRequest("status")).bytes, manifest.totalBytes);
+    await trainingWorkerRequest("remove");
+    assert.equal(checks, 2); assert.deepEqual(active.messages, ["status", "remove"]);
+  }
+});
+
+test("known offline access uses the existing training worker without a network update check", async () => {
+  const active = new Worker(); active.state = "activated";
+  browser({ active, waiting: null, installing: null, update: async () => { assert.fail("offline update check"); } }, false);
+  assert.equal((await trainingWorkerRequest("status")).bytes, manifest.totalBytes);
+  await trainingWorkerRequest("remove"); assert.deepEqual(active.messages, ["status", "remove"]);
+});
+
+test("hung update check is bounded and late completion cannot post a request", async () => {
+  const original = globalThis.setTimeout;
+  globalThis.setTimeout = ((callback: () => void, delay?: number) => original(callback, delay === 15000 ? 5 : delay)) as typeof setTimeout;
+  const neutral = new Worker(true), waiting = new Worker(); let finishCheck!: () => void;
+  const registration = { active: neutral, waiting: null as Worker | null, installing: null, update: () => new Promise<void>(resolve => { finishCheck = resolve; }) };
+  browser(registration);
+  try {
+    await assert.rejects(trainingWorkerRequest("status"), /interrompue|pas prêt/);
+    registration.waiting = waiting; finishCheck(); await new Promise(resolve => setImmediate(resolve));
+    assert.deepEqual(neutral.messages, []); assert.deepEqual(waiting.messages, []);
+  } finally { globalThis.setTimeout = original; }
+});
 
 test("active neutral worker is bypassed: status and explicit download address the new waiting worker", async () => {
   const neutral = new Worker(true), waiting = new Worker(); neutral.state = "activated";
