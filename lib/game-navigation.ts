@@ -11,7 +11,7 @@ export function surfaceUrl(current: URL, destination: GameSurface) {
   else url.searchParams.set('surface',destination==='profile'?'profile':destination==='voyage'?'voyage':'explore');
   return url;
 }
-export function admittedPuzzleUrl(current: URL, load: PuzzleLoad, puzzle: Puzzle) {
+export function admittedPuzzleUrl(current: URL, load: PuzzleLoad, puzzle: Pick<Puzzle,'seed'|'date'>) {
   const url=load.destination ? surfaceUrl(current,load.destination) : new URL(current);
   const values:Record<string,string|undefined>={voyage:load.expedition?.id,libre:load.mode==='free'?puzzle.seed:undefined,collection:load.collection,defi:load.mode==='challenge'?puzzle.seed:undefined,archive:load.mode==='archive'?puzzle.date:undefined};
   for(const [key,value] of Object.entries(values)) {if(value!==undefined) url.searchParams.set(key,value);else url.searchParams.delete(key);}
@@ -21,9 +21,26 @@ export function admittedPuzzleUrl(current: URL, load: PuzzleLoad, puzzle: Puzzle
 export function retryPuzzleLoad<T>(load: PuzzleLoad, loader: (mode:Mode,locator:string,save?:SavedGame,expedition?:ExpeditionStatus,collection?:string,destination?:GameSurface)=>Promise<T>, destination = load.destination) {
   return loader(load.mode,load.locator,load.sessionSave,load.expedition,load.collection,destination);
 }
-/** Check after every async boundary, before both game state and route are committed. */
-export async function admitPuzzleLoad<T>(load: PuzzleLoad, read: ()=>Promise<T>, isCurrent: ()=>boolean, commit: (value:T,descriptor:PuzzleLoad)=>void):Promise<T|null> {
-  const value=await read();
-  if(!isCurrent()) return null;
-  commit(value,load);return value;
+export type PuzzleLoadGeneration = { request: number; navigation: number };
+export type PuzzleLoadGuard = { started: PuzzleLoadGeneration; current: () => PuzzleLoadGeneration };
+/** The same admission rule governs success and failure for every mode and destination. */
+export function isPuzzleLoadCurrent(guard: PuzzleLoadGuard) {
+  const current=guard.current();
+  return guard.started.request===current.request && guard.started.navigation===current.navigation;
+}
+/** Failure routes use the requested locator, without inventing a puzzle or losing its context. */
+export function failedPuzzleUrl(current: URL, load: PuzzleLoad) {
+  return admittedPuzzleUrl(current,load,{seed:load.locator,date:load.locator});
+}
+/** null = obsolete, false = admitted failure; neither is an accepted puzzle. */
+export async function admitPuzzleLoad<T>(load: PuzzleLoad, read: ()=>Promise<T>, guard: PuzzleLoadGuard, commit: (value:T,descriptor:PuzzleLoad)=>void, reject?: (cause:unknown,descriptor:PuzzleLoad)=>void):Promise<T|null|false> {
+  try {
+    const value=await read();
+    if(!isPuzzleLoadCurrent(guard)) return null;
+    commit(value,load);return value;
+  } catch(cause) {
+    if(!isPuzzleLoadCurrent(guard)) return null;
+    if(!reject) throw cause;
+    reject(cause,load);return false;
+  }
 }

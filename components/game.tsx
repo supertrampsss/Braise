@@ -30,7 +30,7 @@ import { COSMETICS, projectWeeklyRitual, type CosmeticId } from "@/lib/weekly-ri
 
 import { admitTutorialReturnFocus, type TutorialReturnIntent } from "@/lib/tutorial-field";
 import { canWriteGameDocument, writeAdmittedGame, recordAdmittedGameProgress } from "@/lib/game-write-admission";
-import { admittedPuzzleUrl, requestedGameSurface, surfaceUrl, retryPuzzleLoad, admitPuzzleLoad, type PuzzleLoad, type GameSurface } from "@/lib/game-navigation";
+import { failedPuzzleUrl, admittedPuzzleUrl, requestedGameSurface, surfaceUrl, retryPuzzleLoad, admitPuzzleLoad, type PuzzleLoad, type GameSurface } from "@/lib/game-navigation";
 import { AppNavigation } from "@/components/app-navigation";
 import { ArchiveCalendar } from "@/components/game-parts/archive-calendar";
 import { PlayTutorial } from "@/components/game-parts/play-tutorial";
@@ -297,7 +297,7 @@ export default function Game() {
         const response=await fetch(`/api/game?${query}`,{cache:"no-store"});
         const data=await response.json() as Puzzle & {error?:string;targetIdentity?:string};
         return {response,data};
-      },()=>request===requestRef.current && (!expedition || loadEpoch===navigationEpoch.current),({response,data},admittedDescriptor)=>{
+      },{started:{request,navigation:loadEpoch},current:()=>({request:requestRef.current,navigation:navigationEpoch.current})},({response,data},admittedDescriptor)=>{
       if (!response.ok) { setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
       gameWriteAllowed.current=false;
       try { gameWriteAllowed.current=canWriteGameDocument(undefined,data.id); } catch {}
@@ -323,11 +323,18 @@ export default function Game() {
       window.history.replaceState(null,"",url);
       if(admittedDescriptor.destination) {setSurface(admittedDescriptor.destination);setView(admittedDescriptor.destination === "game" ? "play" : "explore");}
       if (nextMode === "free") writeLocal("freeSeed", data.seed);
+      },(cause,failedDescriptor)=>{
+        setLoadError(cause instanceof Error ? cause.message : "Connexion impossible.");setArchiveStatus("");
+        // A current failure owns the same destination as a success, so its retry is visible.
+        if(failedDescriptor.destination) {
+          window.history.replaceState(null,"",failedPuzzleUrl(new URL(window.location.href),failedDescriptor));
+          setSurface(failedDescriptor.destination);setView(failedDescriptor.destination === "game" ? "play" : "explore");
+        }
       });
-      if(!admitted && request===requestRef.current) setLoadError("Le chargement a été interrompu. Réessayez pour reprendre cette partie.");
-      return admitted!==null;
+      if(admitted===null && request===requestRef.current) setLoadError("Le chargement a été interrompu. Réessayez pour reprendre cette partie.");
+      return admitted!==null && admitted!==false;
     } catch (err) {
-      if (request === requestRef.current) { setLoadError(err instanceof Error ? err.message : "Connexion impossible."); setArchiveStatus(""); }
+      if (request === requestRef.current && loadEpoch===navigationEpoch.current) { setLoadError(err instanceof Error ? err.message : "Connexion impossible."); setArchiveStatus(""); }
       return false;
     } finally { if (request === requestRef.current) setLoading(false); }
   }

@@ -95,3 +95,39 @@ npm run build *> work/task2-fix-build.log
 - Aucun nouveau passage de `npm test` : les **11 échecs Windows préexistants**, documentés ci-dessus et suivis au lot 7, restent explicitement non résolus dans ce tour.
 
 Auto-revue : points I1–I4/M1 relus contre la revue ; lecteur historique, moteur, calendrier canonique, seeds, flamme et frontière `EXTRA_MODES_ENABLED=false` conservés. Les tests isolent les mécanismes effectivement utilisés par Game ; ils ne prétendent pas reproduire le cycle DOM complet de React/Radix, les boutons du navigateur ou le clavier mobile. Nouvelle revue indépendante et recette navigateur ciblée attendues avant approbation du lot 2.
+
+## Correctifs après re-revue — tour 2 (12 octobre 2026)
+
+Base `14c9898`. Rapport traité : `task-2-fix-review.md`, uniquement **F1 et F2**. Les corrections I1/I2/I3/M1 et la fermeture du tutoriel restent inchangées ; le contrôleur a confirmé le focus sur `INPUT#guess` après animation complète de la fermeture. Aucun nouveau traitement V2, sous-agent, serveur, push ou déploiement. Construction autorisée après arrêt du Worker 5198 par le contrôleur.
+
+### F1 — admission identique pour tous les chargements
+
+Le prédicat configurable avec exception `!expedition` a été supprimé. `admitPuzzleLoad` reçoit maintenant `PuzzleLoadGuard` : génération de requête et époque de navigation capturées, plus lecture des compteurs courants. **Le helper impose lui-même l’égalité des deux compteurs**, sans distinction quotidien/archive/libre/collection/Voyage, destination explicite ou non. Le vrai appel de `loadPuzzle` lui passe les compteurs `requestRef` et `navigationEpoch`. Le succès et l’échec utilisent exactement cette admission avant leurs callbacks de transition.
+
+Les anciens tests ont été raccordés à cette nouvelle interface, qui ne permet plus de fournir artificiellement un prédicat plus fort que celui de production. Deux nouvelles transitions utilisent `retryPuzzleLoad` comme le bouton, un descripteur quotidien puis collection, `destination=game`, les compteurs de génération, un GET différé, et une navigation vers Profil avant sa résolution. Résultat : admission obsolète, zéro commit de succès, surface et URL Profil inchangées. La sauvegarde et le descripteur complet restent transportés.
+
+### F2 — panne d’étape visible et contextualisée
+
+Un échec admis passe par le callback d’échec de `admitPuzzleLoad`. `loadPuzzle` conserve son message et applique la destination demandée ainsi que `failedPuzzleUrl` : depuis Voyage, le plateau Jouer affiche donc le composant d’erreur et son bouton Réessayer déjà présents, avec URL contenant le Voyage et la seed exacts. Aucune identité de puzzle ni date n’est inventée : la route d’échec se fonde uniquement sur le locator demandé. `lastLoad` conserve expédition, sauvegarde et destination pour le réessai. Le helper distingue désormais résultat accepté, échec admis (`false`) et réponse obsolète (`null`) ; l’erreur réelle n’est pas remplacée par le texte générique d’interruption.
+
+La transition testée traverse réellement `resumeExpedition` (statut réussi, sauvegarde non terminée), puis le chargement d’étape renvoie 503 : message présent, surface Jouer correspondant au rendu de l’erreur, URL Voyage/seed intacte. Le réessai réutilise statut et sauvegarde, sans nouveau POST de statut, puis admet le puzzle. Deux tests supplémentaires différencient réponse 503 et rejet réseau après navigation vers Profil : aucun callback de succès/échec admis, aucune route d’erreur tardive, Profil conservé.
+
+Les cinq nouveaux tests exercent les compteurs, promesses différées, transport des descripteurs et callbacks de transition des helpers effectivement appelés par Game ; ils ne font pas de recherches dans les sources. Ils ne montent pas le cycle DOM complet de Game : la présence visuelle dans le navigateur reste une recette distincte, sans assimiler ces tests à une mesure d’accessibilité ou de performance.
+
+### Commandes finales, fichiers et résultat
+
+```powershell
+node scripts/test-core-review.mjs *> work/task2-fix2-targeted-tests.log
+npm run typecheck *> work/task2-fix2-typecheck.log
+npm run build *> work/task2-fix2-build.log
+git diff --check
+```
+
+- Tests ciblés : **69 tests, 69 pass, 0 fail, 0 skipped**, `5136.5984 ms`, code **0**.
+- TypeScript : **code 0**, aucune erreur.
+- Construction finale : **code 0**, `Build complete`, V1 `verified-frozen` (120 cibles, SHA source inchangé `7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16`), aucun asset régénéré.
+- Diff-check : **code 0**, seuls avertissements Git LF/CRLF. Vérification d’absence de diff pour `data`, `public`, moteur/oracle/stockage sémantique, release, flamme, lecteur V1, profil, tutoriel, calendrier et gardes d’écriture : **code 0**.
+- Fichiers de production modifiés : `components/game.tsx`, `lib/game-navigation.ts`. Tests : `tests/game-review-fixes.test.ts`. Ce rapport est le quatrième fichier du commit.
+- Pas de répétition de la suite lourde inchangée ; les 11 échecs Windows du lot 7 demeurent la réserve historique déjà documentée.
+
+Auto-revue : branches HTTP et exception réseau, générations remplacées, navigation Profil, réessai après échec, contexte éditorial et destination explicite contrôlés. `EXTRA_MODES_ENABLED=false` reste inchangé. Le tour attend la re-revue indépendante ciblée F1/F2 ; aucun autre sujet précédemment acquitté n’a été rouvert.

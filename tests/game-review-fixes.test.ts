@@ -5,16 +5,19 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { canWriteGameDocument, writeAdmittedGame, recordAdmittedGameProgress } from '../lib/game-write-admission';
 import { restoreLegacyGame, validLegacyGame, EMPTY_GAME } from '../lib/legacy-storage';
 import { tutorialFieldReducer, EMPTY_TUTORIAL_FIELD, admitTutorialReturnFocus, type TutorialFieldAction } from '../lib/tutorial-field';
-import { admittedPuzzleUrl, admitPuzzleLoad, requestedGameSurface, retryPuzzleLoad, surfaceUrl, type PuzzleLoad, type GameSurface } from '../lib/game-navigation';
+import { failedPuzzleUrl, admittedPuzzleUrl, admitPuzzleLoad, requestedGameSurface, retryPuzzleLoad, surfaceUrl, type PuzzleLoad, type GameSurface } from '../lib/game-navigation';
 import { ArchiveDateLayout } from '../components/game-parts/archive-calendar';
 import { getLegacyPuzzle } from '../lib/legacy-puzzles';
 import { readContexts, rememberPlayContext } from '../lib/play-hub';
+import { resumeExpedition } from '../lib/expedition-resume';
+import { EXPEDITIONS } from '../lib/expeditions';
 import { COLLECTIONS, collectionProgress } from '../lib/collections';
 import type { SavedGame } from '../lib/game-types';
 class Store {
   data = new Map<string,string>();get length(){return this.data.size;}key(i:number){return [...this.data.keys()][i]??null;}getItem(key:string){return this.data.get(key)??null;}setItem(key:string,value:string){this.data.set(key,value);}
 }
 const deferred = <T,>()=>{let resolve!:(value:T)=>void;const promise=new Promise<T>(r=>{resolve=r;});return {promise,resolve};};
+const fixedGuard={started:{request:1,navigation:0},current:()=>({request:1,navigation:0})};
 const puzzle=getLegacyPuzzle('free','042').publicPuzzle;
 const accepted:SavedGame={...EMPTY_GAME,startedAt:1,profileV2StartIndex:0,guesses:[{word:'maison',temperature:20,rank:800,found:false,order:1,acceptedAt:'2026-10-12T12:00:00.000Z'}]};
 test('I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation',()=>{
@@ -54,7 +57,7 @@ test('I3 failed collection GET then retry keeps descriptor, banner identity, URL
   let last=load,url=new URL('https://braiz.test/?surface=explore'),banner:string|undefined,attempts=0;
   async function loader(mode:PuzzleLoad['mode'],locator:string,save?:SavedGame,expedition?:PuzzleLoad['expedition'],collectionId?:string,destination?:GameSurface) {
     const descriptor={mode,locator,sessionSave:save,expedition,collection:collectionId,destination};last=descriptor;
-    return admitPuzzleLoad(descriptor,async()=>{attempts++;if(attempts===1) throw new Error('503');return getLegacyPuzzle('challenge',locator).publicPuzzle;},()=>true,(puzzle,admitted)=>{
+    return admitPuzzleLoad(descriptor,async()=>{attempts++;if(attempts===1) throw new Error('503');return getLegacyPuzzle('challenge',locator).publicPuzzle;},fixedGuard,(puzzle,admitted)=>{
       url=admittedPuzzleUrl(url,admitted,puzzle);banner=admitted.collection;rememberPlayContext(storage,puzzle.id,{mode:admitted.mode,collection:admitted.collection});
     });
   }
@@ -71,7 +74,7 @@ test('I4 admitted journey stage agrees with Back/Forward and a reload',async()=>
   let url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),screen:GameSurface='voyage';
   const stage=getLegacyPuzzle('challenge','042').publicPuzzle;
   const descriptor:PuzzleLoad={mode:'challenge',locator:'042',expedition:{id:'sous-bois-v1',completed:0,length:3,seed:'042'},destination:'game'};
-  await admitPuzzleLoad(descriptor,async()=>stage,()=>true,(puzzle,load)=>{url=admittedPuzzleUrl(url,load,puzzle);screen=load.destination!;});
+  await admitPuzzleLoad(descriptor,async()=>stage,fixedGuard,(puzzle,load)=>{url=admittedPuzzleUrl(url,load,puzzle);screen=load.destination!;});
   assert.equal(screen,'game');assert.equal(url.searchParams.get('surface'),null);assert.equal(url.searchParams.get('voyage'),'sous-bois-v1');
   const history=[new URL(url),surfaceUrl(url,'profile')];screen=requestedGameSurface(history[1]);assert.equal(screen,'profile');screen=requestedGameSurface(history[0]);assert.equal(screen,'game');screen=requestedGameSurface(history[1]);assert.equal(screen,'profile');
   const reloadDescriptor={...descriptor,destination:requestedGameSurface(history[0])};const reloaded=admittedPuzzleUrl(new URL(history[0]),reloadDescriptor,stage);assert.equal(reloaded.href,history[0].href);
@@ -80,7 +83,7 @@ test('I4 slow deep-link journey preserves explicit Profile/Explorer destination'
   for(const destination of ['profile','modes','voyage'] as const) {
     let url=surfaceUrl(new URL('https://braiz.test/?voyage=sous-bois-v1&defi=042'),destination),screen=requestedGameSurface(url);
     const pending=deferred<typeof puzzle>();const load:PuzzleLoad={mode:'challenge',locator:'042',expedition:{id:'sous-bois-v1',completed:0,length:3,seed:'042'},destination:screen};
-    const job=admitPuzzleLoad(load,()=>pending.promise,()=>true,(puzzle,admitted)=>{url=admittedPuzzleUrl(url,admitted,puzzle);screen=admitted.destination!;});
+    const job=admitPuzzleLoad(load,()=>pending.promise,fixedGuard,(puzzle,admitted)=>{url=admittedPuzzleUrl(url,admitted,puzzle);screen=admitted.destination!;});
     assert.equal(screen,destination);pending.resolve({...puzzle,mode:'challenge'});await job;assert.equal(screen,destination);assert.equal(requestedGameSurface(url),destination);
   }
 });
@@ -88,7 +91,7 @@ test('I4 navigation during pending journey GET rejects every old game and route 
   let epoch=0,url=new URL('https://braiz.test/?surface=voyage'),screen:GameSurface='voyage',commits=0;
   const pending=deferred<typeof puzzle>(),captured=epoch;
   const load:PuzzleLoad={mode:'challenge',locator:'042',expedition:{id:'sous-bois-v1',completed:0,length:3,seed:'042'},destination:'game'};
-  const job=admitPuzzleLoad(load,()=>pending.promise,()=>epoch===captured,(puzzle,admitted)=>{commits++;url=admittedPuzzleUrl(url,admitted,puzzle);screen=admitted.destination!;});
+  const job=admitPuzzleLoad(load,()=>pending.promise,{started:{request:1,navigation:captured},current:()=>({request:1,navigation:epoch})},(puzzle,admitted)=>{commits++;url=admittedPuzzleUrl(url,admitted,puzzle);screen=admitted.destination!;});
   epoch++;screen='profile';url=surfaceUrl(url,screen);const expected=url.href;pending.resolve(puzzle);assert.equal(await job,null);assert.equal(commits,0);assert.equal(screen,'profile');assert.equal(url.href,expected);
 });
 test('M1 filtered archive layout is explicitly a list, without misleading weekday columns',()=>{
@@ -107,4 +110,49 @@ test('explicit tutorial return owns close focus only while route, puzzle and foc
 test('explicit Retry on the board supersedes a previous background surface without losing collection context',async()=>{
   const descriptor:PuzzleLoad={mode:'challenge',locator:'1000000046',collection:'nature-v1',sessionSave:accepted,destination:'profile'};
   const result=await retryPuzzleLoad(descriptor,async(...args)=>args,'game');assert.equal(result[4],'nature-v1');assert.equal(result[2],accepted);assert.equal(result[5],'game');assert.equal(descriptor.destination,'profile');
+});
+
+for(const context of [{mode:'daily' as const,locator:''},{mode:'challenge' as const,locator:COLLECTIONS[0].seeds[0],collection:COLLECTIONS[0].id}]) test(`F1 real retry admission preserves later Profile for ${context.mode}`,async()=>{
+  let request=0,navigation=0,screen:GameSurface='game',url=new URL('https://braiz.test/'),commits=0;
+  const pending=deferred<typeof puzzle>();
+  const descriptor:PuzzleLoad={...context,sessionSave:accepted};
+  const job=retryPuzzleLoad(descriptor,async(mode,locator,sessionSave,expedition,collection,destination)=>{
+    const load={mode,locator,sessionSave,expedition,collection,destination};
+    const started={request:++request,navigation};
+    return admitPuzzleLoad(load,()=>pending.promise,{started,current:()=>({request,navigation})},(puzzle,admitted)=>{
+      commits++;url=admittedPuzzleUrl(url,admitted,puzzle);screen=admitted.destination!;
+    },()=>{throw new Error('A stale load must not own an error transition either.');});
+  },'game');
+  navigation++;screen='profile';url=surfaceUrl(url,screen);const expected=url.href;
+  pending.resolve(puzzle);assert.equal(await job,null);assert.equal(commits,0);assert.equal(screen,'profile');assert.equal(url.href,expected);
+});
+
+test('F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition',async()=>{
+  let request=0,navigation=1,screen:GameSurface='voyage',url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),error='',statusCalls=0,getCalls=0;
+  const edition=EXPEDITIONS[0];
+  const status={id:edition.id,completed:0,length:edition.length,seed:'042'};
+  const resumed=await resumeExpedition(edition.id,{status:async()=>{statusCalls++;return status;},readGame:()=>accepted,isCurrent:()=>true});
+  assert.ok(resumed);assert.equal(statusCalls,1);
+  let last:PuzzleLoad={mode:'challenge',locator:resumed.status.seed!,sessionSave:resumed.saved,expedition:resumed.status,destination:'game'};
+  async function load(mode:PuzzleLoad['mode'],locator:string,sessionSave?:SavedGame,expedition?:PuzzleLoad['expedition'],collection?:string,destination?:GameSurface) {
+    last={mode,locator,sessionSave,expedition,collection,destination};error='';
+    const started={request:++request,navigation};
+    return admitPuzzleLoad(last,async()=>{getCalls++;return {ok:getCalls>1,status:getCalls>1?200:503,data:puzzle};},{started,current:()=>({request,navigation})},(response,descriptor)=>{
+      if(!response.ok) throw new Error('Étape indisponible. Réessayez.');
+      url=admittedPuzzleUrl(url,descriptor,response.data);screen=descriptor.destination!;
+    },(cause,descriptor)=>{error=(cause as Error).message;url=failedPuzzleUrl(url,descriptor);screen=descriptor.destination!;});
+  }
+  assert.equal(await retryPuzzleLoad(last,load),false);
+  assert.equal(screen,'game','the existing load-error and Retry are rendered on this surface');assert.match(error,/Étape indisponible/);
+  assert.equal(requestedGameSurface(url),'game');assert.equal(url.searchParams.get('voyage'),edition.id);assert.equal(url.searchParams.get('defi'),'042');
+  assert.equal(last.sessionSave,accepted);assert.equal(last.expedition,resumed.status);assert.equal(last.destination,'game');
+  assert.ok(await retryPuzzleLoad(last,load,'game'));assert.equal(error,'');assert.equal(getCalls,2);assert.equal(statusCalls,1,'retry reuses the admitted status and save');assert.equal(screen,'game');assert.equal(last.sessionSave,accepted);assert.equal(url.searchParams.get('voyage'),edition.id);
+});
+
+for(const failure of ['503','network']) test(`F2 obsolete Voyage ${failure} cannot replace later Profile with its error surface`,async()=>{
+  let request=1,navigation=1,screen:GameSurface='voyage',url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),error='',commits=0;
+  const pending=deferred<void>();const started={request,navigation};
+  const descriptor:PuzzleLoad={mode:'challenge',locator:'042',sessionSave:accepted,expedition:{id:EXPEDITIONS[0].id,completed:0,length:3,seed:'042'},destination:'game'};
+  const job=admitPuzzleLoad(descriptor,async()=>{await pending.promise;if(failure==='network') throw new TypeError('network');return {status:503};},{started,current:()=>({request,navigation})},()=>{commits++;throw new Error('503');},(cause,load)=>{error=String(cause);url=failedPuzzleUrl(url,load);screen=load.destination!;});
+  navigation++;screen='profile';url=surfaceUrl(url,screen);const expected=url.href;pending.resolve();assert.equal(await job,null);assert.equal(error,'');assert.equal(commits,0);assert.equal(screen,'profile');assert.equal(url.href,expected);
 });
