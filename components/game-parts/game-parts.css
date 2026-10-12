@@ -5,3 +5,5 @@
 .calendar-weekdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;text-align:center;font-size:.75rem;margin-top:14px}@media(max-width:480px){.calendar-days{grid-template-columns:repeat(7,minmax(0,1fr))}.calendar-days small{font-size:.52rem}.archive-calendar{padding:10px}}
 
 .approved-interface .victory-box p,.approved-interface .game-bottom b{color:#51453a}.approved-interface .reference-header{min-height:52px;border-bottom:0}.play-tutorial p,.play-tutorial li,.play-tutorial label{color:#251f20}@media(max-width:480px){.calendar-days small{font-size:.6rem;line-height:1.2}}
+
+.calendar-filtered-list{display:flex;flex-direction:column;gap:8px}.calendar-filtered-list button{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:12px;border:1px solid #ad9d8c;border-radius:8px;background:#fffaf3}.calendar-filtered-list button[aria-pressed=true]{outline:2px solid #8b3d0e}

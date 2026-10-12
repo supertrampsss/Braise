@@ -21,13 +21,16 @@ import { resumeExpedition } from "@/lib/expedition-resume";
 import { ExpeditionPicker } from "@/components/expedition-picker";
 import { getStreak, warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
-import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame, validLegacyGame } from "@/lib/legacy-storage";
+import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
 import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
-import { isProfileStorageKey, recordLocalGameProgress, refreshLocalProfile, setLocalCosmetic, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
+import { isProfileStorageKey, refreshLocalProfile, setLocalCosmetic, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
 import { archiveDateStatus, LEGACY_ARCHIVE_START_DATE, latestArchiveDate, parisDate } from "@/lib/calendar";
 import { COSMETICS, projectWeeklyRitual, type CosmeticId } from "@/lib/weekly-ritual";
 
+import { admitTutorialReturnFocus, type TutorialReturnIntent } from "@/lib/tutorial-field";
+import { canWriteGameDocument, writeAdmittedGame, recordAdmittedGameProgress } from "@/lib/game-write-admission";
+import { admittedPuzzleUrl, requestedGameSurface, surfaceUrl, retryPuzzleLoad, admitPuzzleLoad, type PuzzleLoad, type GameSurface } from "@/lib/game-navigation";
 import { AppNavigation } from "@/components/app-navigation";
 import { ArchiveCalendar } from "@/components/game-parts/archive-calendar";
 import { PlayTutorial } from "@/components/game-parts/play-tutorial";
@@ -64,7 +67,7 @@ function playTone(won: boolean) {
 }
 
 export default function Game() {
-  const [surface, setSurface] = useState<"home" | "game" | "modes" | "voyage" | "profile">("game");
+  const [surface, setSurface] = useState<GameSurface>("game");
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [surface]);
   const [journey, setJourney] = useState<ExpeditionStatus | null>(null);
@@ -73,19 +76,18 @@ export default function Game() {
   const journeyMemory = useRef(new Map<string, SavedGame>());
   const journeyController = useRef<AbortController | null>(null);
   const navigationEpoch = useRef(0);
-  function navigate(destination: typeof surface) {
+  function navigate(destination: typeof surface, focus = true) {
     navigationEpoch.current++;
     journeyController.current?.abort();
     setJourneyBusy(false);
     if (surface === "game" && destination !== "game") diagnostic("gameLeft");
     setSurface(destination);
     setView(destination === "game" ? "play" : "explore");
-    const url = new URL(window.location.href);
-    if (destination === "game") url.searchParams.delete("surface");
-    else url.searchParams.set("surface", destination === "profile" ? "profile" : "explore");
+    const url = surfaceUrl(new URL(window.location.href),destination);
     window.history.pushState(null, "", url);
     if (destination !== "game") refreshPlays();
-    requestAnimationFrame(() => document.getElementById(destination === "game" ? "game-board" : "braise-main")?.focus({ preventScroll: true }));
+    const focusEpoch=navigationEpoch.current;
+    if(focus) requestAnimationFrame(() => {if(focusEpoch===navigationEpoch.current && modalRef.current===null) document.getElementById(destination === "game" ? "game-board" : "braise-main")?.focus({ preventScroll: true });});
   }
   const [localPlays, setLocalPlays] = useState<LocalPlay[]>([]);
   const [discoveryNote, setDiscoveryNote] = useState("");
@@ -161,6 +163,7 @@ export default function Game() {
   const [archiveStatus, setArchiveStatus] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const modalReturnFocus = useRef<HTMLElement | null>(null);
+  const tutorialReturnFocus = useRef<(TutorialReturnIntent & {owner:Element|null}) | null>(null);
   const requestRef = useRef(0);
   const submitting = useRef(false);
   const gameWriteAllowed = useRef(true);
@@ -169,14 +172,14 @@ export default function Game() {
   const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const focusFrameRef = useRef<number | null>(null);
   const modalRef = useRef<Modal>(null);
-  const lastLoad = useRef<{ mode: Mode; locator: string; sessionSave?: SavedGame }>({ mode: "daily", locator: "" });
+  const lastLoad = useRef<PuzzleLoad>({ mode: "daily", locator: "" });
   const routeRestorerRef=useRef<()=>void>(()=>{});
   routeRestorerRef.current=()=>{
-    const params=new URLSearchParams(location.search), destination=params.get("surface");
-    navigationEpoch.current++;journeyController.current?.abort();
-    setSurface(destination === "profile" ? "profile" : destination === "explore" ? "modes" : "game");setView(destination === "profile" || destination === "explore" ? "explore" : "play");refreshPlays();
+    const params=new URLSearchParams(location.search), destination=requestedGameSurface(new URL(location.href));
+    navigationEpoch.current++;journeyController.current?.abort();setJourneyBusy(false);
+    setSurface(destination === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : destination);setView(destination === "game" ? "play" : "explore");refreshPlays();
     const archive=params.get("archive"), challenge=params.get("defi"), free=params.get("libre"), voyage=params.get("voyage");
-    if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage) void openJourney(voyage); }
+    if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage || !puzzle || puzzle.seed!==journey.seed) void openJourney(voyage,undefined,destination); }
     else if(archive!==null) { if(puzzle?.id!==`daily-${archive}` || mode!=="archive") void loadPuzzle("archive",archive); }
     else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==`free-${challenge}` || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined); }
     else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==`free-${free}` || mode!=="free") void loadPuzzle("free",free); }
@@ -189,7 +192,7 @@ export default function Game() {
     const changed = viewRef.current !== view;
     viewRef.current = view;
     if (view === "explore") exploreHeadingRef.current?.focus({ preventScroll: true });
-    else if (changed && modalRef.current === null) gameBoardRef.current?.focus({ preventScroll: true });
+    else if (changed && modalRef.current === null && !tutorialReturnFocus.current) gameBoardRef.current?.focus({ preventScroll: true });
   }, [view]);
 
   const profile = profileSnapshot?.profile ?? EMPTY_PROFILE;
@@ -269,7 +272,7 @@ export default function Game() {
     });
   }
 
-  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string) {
+  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string, destination?: GameSurface) {
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
     const request = ++requestRef.current;
     setJourney(expedition ?? null);
@@ -277,7 +280,9 @@ export default function Game() {
     setCollectionContext(collection);
     setRefusedWord("");
     setDiscoveryNote("");setDiscoveryExhausted(false);
-    lastLoad.current = { mode: nextMode, locator, sessionSave };
+    const descriptor: PuzzleLoad={mode:nextMode,locator,sessionSave,expedition,collection,destination};
+    lastLoad.current = descriptor;
+    const loadEpoch=navigationEpoch.current;
     clearDeferredUi();
     consumedFeedbackRef.current.clear();
     inputRevisionRef.current += 1;
@@ -288,12 +293,14 @@ export default function Game() {
     setBusy(false); submitting.current = false;
     try {
       const query = nextMode === "archive" ? `mode=archive&date=${encodeURIComponent(locator)}` : `mode=${nextMode}&seed=${encodeURIComponent(locator)}`;
-      const response = await fetch(`/api/game?${query}`, { cache: "no-store" });
-      const data = await response.json() as Puzzle & { error?: string; targetIdentity?: string };
-      if (request !== requestRef.current) return false;
-      if (!response.ok) { if (request === requestRef.current) setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
-      gameWriteAllowed.current=true;
-      try { const raw=localStorage.getItem(`braise.v1.game.${data.id}`); if(raw && !validLegacyGame(JSON.parse(raw))) gameWriteAllowed.current=false; } catch {gameWriteAllowed.current=false;}
+      const admitted=await admitPuzzleLoad(descriptor, async()=>{
+        const response=await fetch(`/api/game?${query}`,{cache:"no-store"});
+        const data=await response.json() as Puzzle & {error?:string;targetIdentity?:string};
+        return {response,data};
+      },()=>request===requestRef.current && (!expedition || loadEpoch===navigationEpoch.current),({response,data},admittedDescriptor)=>{
+      if (!response.ok) { setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
+      gameWriteAllowed.current=false;
+      try { gameWriteAllowed.current=canWriteGameDocument(undefined,data.id); } catch {}
       if(!gameWriteAllowed.current) setStorageWarning(true);
       const restored = sessionSave ?? restoreLegacyGame(data.id);
       setGame(restored);
@@ -307,30 +314,25 @@ export default function Game() {
       setArchiveOpen(nextMode === "archive");
       setArchiveError("");
       setArchiveStatus(nextMode === "archive" ? `Archive du ${new Date(`${data.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })} chargée.` : "");
-      if (restored.profileV2StartIndex !== undefined) {
-        const reconciled = recordLocalGameProgress(data, restored, undefined, profileSnapshot ?? undefined);
-        setProfileSnapshot(reconciled);
-        if (!reconciled.persisted) setStorageWarning(true);
+      if (gameWriteAllowed.current && restored.profileV2StartIndex !== undefined) {
+        const reconciled = recordAdmittedGameProgress(data, restored, undefined, profileSnapshot ?? undefined);
+        if(reconciled) setProfileSnapshot(reconciled);
+        if (!reconciled?.persisted) setStorageWarning(true);
       }
-      const url = new URL(window.location.href);
-      if (expedition) url.searchParams.set("voyage", expedition.id);
-      else url.searchParams.delete("voyage");
-      if (nextMode === "free") url.searchParams.set("libre", data.seed); else url.searchParams.delete("libre");
-      if (collection) url.searchParams.set("collection",collection); else url.searchParams.delete("collection");
-      if (nextMode === "challenge") url.searchParams.set("defi", data.seed);
-      else url.searchParams.delete("defi");
-      if (nextMode === "archive") url.searchParams.set("archive", data.date);
-      else url.searchParams.delete("archive");
-      window.history.replaceState(null, "", url);
+      const url=admittedPuzzleUrl(new URL(window.location.href),admittedDescriptor,data);
+      window.history.replaceState(null,"",url);
+      if(admittedDescriptor.destination) {setSurface(admittedDescriptor.destination);setView(admittedDescriptor.destination === "game" ? "play" : "explore");}
       if (nextMode === "free") writeLocal("freeSeed", data.seed);
-      return true;
+      });
+      if(!admitted && request===requestRef.current) setLoadError("Le chargement a été interrompu. Réessayez pour reprendre cette partie.");
+      return admitted!==null;
     } catch (err) {
       if (request === requestRef.current) { setLoadError(err instanceof Error ? err.message : "Connexion impossible."); setArchiveStatus(""); }
       return false;
     } finally { if (request === requestRef.current) setLoading(false); }
   }
 
-  async function openJourney(id: string, action?: "gameResumed" | "nextActivityOpened") {
+  async function openJourney(id: string, action?: "gameResumed" | "nextActivityOpened", destination: GameSurface="game") {
     journeyController.current?.abort();
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
     const controller = new AbortController();
@@ -353,16 +355,16 @@ export default function Game() {
       if (!result || !current()) return;
       setJourney(result.status);
       if (result.status.seed) {
-        setSurface("game"); setView("play");
-        if(await loadPuzzle("challenge", result.status.seed, result.saved, result.status) && action) diagnostic(action,"expedition");
+        if(await loadPuzzle("challenge", result.status.seed, result.saved, result.status,undefined,destination) && action) diagnostic(action,"expedition");
       } else {
-        const url = new URL(window.location.href);
-        url.searchParams.set("voyage", id); url.searchParams.delete("defi"); url.searchParams.delete("archive");
+        const completedDestination=destination === "game" ? "voyage" : destination;
+        const url = surfaceUrl(new URL(window.location.href),completedDestination);
+        url.searchParams.set("voyage", id); url.searchParams.delete("defi"); url.searchParams.delete("archive"); url.searchParams.delete("libre"); url.searchParams.delete("collection");
         window.history.replaceState(null, "", url);
-        setSurface("voyage"); setView("explore");
+        setSurface(completedDestination); setView("explore");
       }
     } catch (cause) {
-      if (current()) { setJourneyError(cause instanceof Error ? cause.message : "Connexion impossible."); setSurface("voyage"); setView("explore"); }
+      if (current()) { setJourneyError(cause instanceof Error ? cause.message : "Connexion impossible."); const failedDestination=destination === "game" ? "voyage" : destination;setSurface(failedDestination);setView("explore");window.history.replaceState(null,"",surfaceUrl(new URL(location.href),failedDestination)); }
     } finally { if (epoch === navigationEpoch.current) setJourneyBusy(false); }
   }
 
@@ -379,13 +381,13 @@ export default function Game() {
     const free = params.get("libre");
     setArchiveDraft(latestArchiveDate());
     const voyage = params.get("voyage");
-    if (EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface("voyage"); setView("explore"); void openJourney(voyage); }
+    const requestedSurface=requestedGameSurface(new URL(window.location.href));
+    if (EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface(requestedSurface); setView(requestedSurface === "game" ? "play" : "explore"); void openJourney(voyage,undefined,requestedSurface); }
     else if (archive !== null) void loadPuzzle("archive", archive);
     else if (!voyage && challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge, undefined, undefined, EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined);
     else if(free && /^\d{1,10}$/.test(free)) void loadPuzzle("free",free);
     else void loadPuzzle("daily");
-    const requestedSurface=params.get("surface");
-    if(requestedSurface === "explore" || requestedSurface === "profile") { setSurface(requestedSurface === "explore" ? "modes" : "profile"); setView("explore"); }
+    if(requestedSurface !== "game") { setSurface(requestedSurface === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : requestedSurface); setView("explore"); }
     refreshPlays();
     const onPopState=() => routeRestorerRef.current();
     window.addEventListener("popstate",onPopState);
@@ -413,7 +415,7 @@ export default function Game() {
 
   function saveGame(next: SavedGame) {
     setGame(next);
-    if (puzzle && (!gameWriteAllowed.current || !writeLocal(`game.${puzzle.id}`, next))) setStorageWarning(true);
+    if (puzzle && (!gameWriteAllowed.current || !writeAdmittedGame(undefined,puzzle.id,next))) setStorageWarning(true);
     refreshPlays();
   }
   function saveSound(value: boolean) {
@@ -481,9 +483,12 @@ export default function Game() {
       setInput(current => inputAfterAcceptedGuess(current, isHint, inputRevisionRef.current, submittedRevision));
       const nextFeedback = createGameFeedback(best?.temperature ?? null, guess, puzzle.ref);
       showFeedback(nextFeedback);
-      const progressed = recordLocalGameProgress(puzzle, next, undefined, profileSnapshot ?? undefined);
-      setProfileSnapshot(progressed);
-      if (!progressed.persisted) setStorageWarning(true);
+      // Future game documents must not project their unknown facts into profile/rewards either.
+      if(gameWriteAllowed.current && canWriteGameDocument(undefined,puzzle.id)) {
+        const progressed = recordAdmittedGameProgress(puzzle, next, undefined, profileSnapshot ?? undefined);
+        if(progressed) setProfileSnapshot(progressed);
+        if (!progressed?.persisted) setStorageWarning(true);
+      }
       saveGame(next);
       diagnostic(isHint ? "hintUsed" : "guessAccepted");
       if(!isHint && game.guesses.length === 0) diagnostic("firstGuessAccepted");
@@ -590,7 +595,7 @@ export default function Game() {
 {surface === "game" && <FlameScene temperature={temperature} celebrating={isCelebratingWin} paused={flamePaused} solved={solved} revealMotion={isAccepted || isRecord || isCelebratingWin} />}
             <div className={`foyer-reading ${best ? "" : "no-guess"}`} aria-live="polite">{best && <><strong>{formatScoreFr(temperature)}°</strong><span>Meilleure piste : {best.word} · {heat.label}</span></>}</div>
             <button className="foyer-motion" type="button" aria-pressed={flamePaused} onClick={toggleAnimations}>{flamePaused ? "Animer la flamme" : "Mettre la flamme en pause"}</button>
-<div className="approved-play-surface">{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => loadPuzzle(lastLoad.current.mode, lastLoad.current.locator, lastLoad.current.sessionSave, journey ?? undefined)}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
+<div className="approved-play-surface">{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => retryPuzzleLoad(lastLoad.current,loadPuzzle,"game")}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
               {mode === "free" && <p className="free-discovery-note">Libre · 120 cibles V1. Vos parties commencées restent dans Explorer. Les anciens liens conservent leur mot.</p>}
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
@@ -638,8 +643,22 @@ export default function Game() {
       <footer className="site-footer"><a className="footer-brand" href="/">braiz.</a><div><button onClick={() => setModal("privacy")}>Confidentialité</button><button onClick={() => setModal("help")}>Les règles</button></div></footer>
     </main>
 
-    <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog" onCloseAutoFocus={event => { const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "stats" ? <Trophy /> : modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Un mot. Et le déclic." : modal === "stats" ? "Votre progression" : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "La règle tient en trois petites étapes." : modal === "stats" ? "Votre progression personnelle, enregistrée dans ce navigateur." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
-      {modal === "tutorial" && <PlayTutorial onClose={()=>setModal(null)}/>}
+    <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog" onCloseAutoFocus={event => {
+      const intent=tutorialReturnFocus.current;tutorialReturnFocus.current=null;
+      if(intent) {
+        event.preventDefault();modalReturnFocus.current=null;
+        if(admitTutorialReturnFocus(intent,{request:requestRef.current,navigation:navigationEpoch.current,playing:surface==="game",modalClosed:modalRef.current===null,focusUnmoved:document.activeElement===intent.owner || document.activeElement===document.body})) {
+          (inputRef.current && !inputRef.current.disabled ? inputRef.current : gameBoardRef.current)?.focus({preventScroll:true});
+        }
+        return;
+      }
+      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "stats" ? <Trophy /> : modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Un mot. Et le déclic." : modal === "stats" ? "Votre progression" : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "La règle tient en trois petites étapes." : modal === "stats" ? "Votre progression personnelle, enregistrée dans ce navigateur." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
+      {modal === "tutorial" && <PlayTutorial onClose={()=>{
+        const owner=document.activeElement;
+        if(surface!=="game") navigate("game",false);
+        tutorialReturnFocus.current={request:requestRef.current,navigation:navigationEpoch.current,owner};
+        modalRef.current=null;setModal(null);
+      }}/>}
       {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations. Après 5 essais, vous disposez de 3 indices gratuits. Ils sont signalés dans le résultat partagé.</p></div></li></ol><div className="modal-note">La température traduit une proximité calculée, pas une probabilité. Un contraire peut être proche. Les accents manquants sont acceptés si le mot est identifiable.</div><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer</button></>}
       {modal === "stats" && <><section className="progress-card"><div className="section-topline"><span className="card-eyebrow">VOTRE ÉTINCELLE</span><span className="small-icon"><Zap size={17} /></span></div><div className="player-level"><span className="level-emblem"><Flame size={27} /></span><div><h2>{level < 3 ? "L’étincelle" : level < 7 ? "La flamme" : "Le brasier"}</h2><span>Niveau {level} · {xp.toLocaleString("fr-FR")} XP</span></div></div><Progress className="xp-track" value={(xp % 500) / 5} aria-label="Progression vers le prochain niveau" aria-valuetext={`${xp % 500} sur 500 XP`} /><div className="xp-caption"><span>{500 - xp % 500} XP avant le niveau {level + 1}</span><Sparkles size={12} /></div></section>
 

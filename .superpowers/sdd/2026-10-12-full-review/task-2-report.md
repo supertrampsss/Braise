@@ -59,3 +59,39 @@ Les 11 échecs de la suite complète restent ceux suivis au lot 7 : quatre tests
 - Les sauvegardes de jeu illisibles ne sont plus écrasées lors d’une nouvelle proposition : partie possible en mémoire, avertissement conservé. Le contexte de parcours reste une métadonnée locale, pas une preuve de réussite.
 - Le retour lexical est un téléchargement volontaire, pas une transmission à une équipe ou une correction automatique du dictionnaire. Aucune suggestion orthographique n’est fabriquée.
 - Aucun test utilisateur de compréhension, mesure d’audience ni gain de performance n’est revendiqué. La recette visuelle/mobile/clavier réelle et l’activation des modes restent au contrôleur ; les tests SSR ne remplacent pas cette recette.
+
+## Correctifs après revue indépendante — tour 1 (12 octobre 2026)
+
+La revue de `a88feae` relevait I1–I4 et M1. Ce tour corrige les cinq points ainsi que le retour explicite au champ signalé par la recette du contrôleur. Aucun sous-agent, serveur, push, publication ou accès au staging/locks V2 ; construction autorisée après arrêt du Worker 5198 par le contrôleur.
+
+### Réponses et preuves comportementales
+
+- **I1 — conservation des formats futurs.** `lib/game-write-admission.ts` sépare l’admission d’écriture du lecteur V1 permissif, laissé intact. Les déclarations explicites `version`, `schemaVersion` ou `formatVersion` autres que 1 refusent la mutation. Le contrôle est refait au moment d’écrire, y compris si un autre onglet remplace le document après son chargement. `saveGame` conserve la partie en mémoire et avertit, mais n’altère pas les octets incompatibles. Les tests conservent un JSON volontairement indenté avec espaces initiaux/finaux après proposition acceptée et épingle, pour chacun des trois marqueurs futurs, et vérifient la lecture/écriture V1 non versionnée.
+- **Risque indirect nommé : projection profil/récompenses.** Inspection de `recordLocalGameProgress` : cette fonction appelle `persistGameActivities` puis `checkpointWeeklyRewards`, donc elle peut écrire les activités/récompenses du profil ; elle ne réécrit pas elle-même le marqueur `profileV2StartIndex` du jeu. Le marqueur est composé par Game avant `saveGame`. Les deux appels de projection (relecture et réponse acceptée) utilisent désormais `recordAdmittedGameProgress` avec la même admission ciblée. Le test d’un document futur contenant déjà le marqueur vérifie qu’aucune clé de profil/événement/récompense supplémentaire n’apparaît. Ni `legacy-storage.ts` ni `profile-storage.ts` ne sont réécrits.
+- **I2 — erreurs tardives du tutoriel.** `lib/tutorial-field.ts` centralise la révision de saisie ; erreurs 422, doublons et réseau passent par la même garde que l’effacement après succès. Toute édition retire l’erreur. Le diagnostic conserve le fait réel de la requête sans attribuer son message au nouveau texte. Trois tests asynchrones avec réponse différée contrôlent la nouvelle saisie intacte ; un autre couvre édition puis retour au texte initial (révision toujours nouvelle) et réponse acceptée ancienne.
+- **I3 — descripteur complet de réessai.** `lastLoad` garde mode, locator exact, sauvegarde de session, expédition, collection et destination. Le bouton rejoue ce descripteur via `retryPuzzleLoad` ; son clic explicite sur le plateau fixe seulement la destination à Jouer. Test comportemental GET 503 → réessai → collection identique pour le bandeau, URL, contexte local et prochaine seed éditoriale. Deux autres tests préservent l’expédition et la sauvegarde, puis contrôlent le retour explicite au plateau depuis une ancienne destination de chargement en arrière-plan, sans muter le descripteur original.
+- **I4 — Voyage, URL et navigation asynchrone.** `lib/game-navigation.ts` distingue la surface Voyage (`surface=voyage`) d’Explorer ; `admittedPuzzleUrl` applique ensemble le puzzle et sa destination, après admission. Une étape ouverte volontairement enlève l’ancienne surface Explorer. Une reprise par lien profond transmet sa surface explicite (Profil, Explorer, Voyage) au chargement. La génération de requête et l’époque de navigation rejettent les anciens GET Voyage avant toute mutation de jeu ou d’URL. Popstate reprend aussi une étape dont le puzzle ne correspond pas encore à la seed du statut. Tests comportementaux étape → Profil → Retour/Avancer → rechargement, trois destinations explicites avec GET différé, et changement de navigation pendant le GET (zéro commit tardif).
+- **M1 — filtre du calendrier.** Les résultats filtrés deviennent une liste verticale nommée avec dates complètes et sans colonnes Lun–Dim. Le calendrier non filtré garde ses positions hebdomadaires. Le rendu SSR du même composant `ArchiveDateLayout` utilisé par l’interface vérifie une archive du jeudi 1er octobre 2026, sans en-tête trompeur dans la liste, et les en-têtes présents hors filtre.
+- **Retour explicite du tutoriel.** L’intention est consommée par `onCloseAutoFocus`, après fermeture Radix, au lieu d’un focus anticipé écrasé par la restauration du déclencheur. Elle vise le champ actif (ou le plateau si le champ est indisponible), uniquement si génération, navigation et propriété du focus sont encore courantes. L’effet de changement de vue ne concurrence plus ce retour explicite. Escape garde la restauration du déclencheur ; chargement/import n’arment aucune intention. Le test couvre les cinq causes de refus et l’absence d’intention. La validation DOM réelle reste à refaire par le contrôleur après cette construction ; le test de garde ne la remplace pas.
+
+### Fichiers et interfaces du correctif
+
+`components/game.tsx`, `components/game-parts/play-tutorial.tsx`, `components/game-parts/archive-calendar.tsx`, `components/game-parts/game-parts.css` ; nouveaux helpers `lib/game-write-admission.ts`, `lib/game-navigation.ts`, `lib/tutorial-field.ts` ; suite comportementale `tests/game-review-fixes.test.ts` ajoutée à `scripts/test-core-review.mjs` (neuf suites ciblées). `PuzzleLoad` et `GameSurface` sont les descripteurs de navigation réutilisables par les lots suivants ; le lecteur historique reste la référence pour lire V1, le nouveau module sert uniquement aux mutations et à leur projection indirecte.
+
+### Commandes finales et résultats exacts
+
+Exécutées séquentiellement sur les sources finales, avec arrêt immédiat au premier code non nul :
+
+```powershell
+node scripts/test-core-review.mjs *> work/task2-fix-targeted-tests.log
+npm run typecheck *> work/task2-fix-typecheck.log
+npm run build *> work/task2-fix-build.log
+```
+
+- Tests : **64 tests, 64 pass, 0 fail, 0 skipped**, durée `4210.4154 ms`, code **0**. Quatorze nouveaux cas de régression (dont les trois erreurs différées) s’ajoutent aux 50 précédents. Les nouveaux cas testent transitions, stockage, promesses différées et rendu ; aucune assertion de recherche dans les sources.
+- TypeScript : **code 0**, aucune erreur.
+- Construction : **code 0**, `Build complete`. Vérification figée : `mode=verified-frozen`, `targetCount=120`, SHA source `7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16`, `compressedTargetBytes=20039248`. Aucune régénération d’assets.
+- `git diff --check` : code **0** (seuls avertissements de conversion LF/CRLF par Git, aucune erreur de contenu).
+- Aucun nouveau passage de `npm test` : les **11 échecs Windows préexistants**, documentés ci-dessus et suivis au lot 7, restent explicitement non résolus dans ce tour.
+
+Auto-revue : points I1–I4/M1 relus contre la revue ; lecteur historique, moteur, calendrier canonique, seeds, flamme et frontière `EXTRA_MODES_ENABLED=false` conservés. Les tests isolent les mécanismes effectivement utilisés par Game ; ils ne prétendent pas reproduire le cycle DOM complet de React/Radix, les boutons du navigateur ou le clavier mobile. Nouvelle revue indépendante et recette navigateur ciblée attendues avant approbation du lot 2.
