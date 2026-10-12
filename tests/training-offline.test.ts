@@ -12,22 +12,34 @@ function harness() {
   const handlers: Record<string, (event: Event) => void> = {};
   const storage = new Map<string, Map<string, Response>>();
   const requests: string[] = [];
-  let disconnected = false, corrupt = "";
+  const transport: { path: string; redirect: string | undefined }[] = [];
+  let activations = 0;
+  let disconnected = false, corrupt = "", redirectPath = "", failedPut = "";
   const open = async (name: string) => {
     if (!storage.has(name)) storage.set(name, new Map());
     const values = storage.get(name)!;
-    return { put: async (path: string, value: Response) => { values.set(path, value.clone()); }, match: async (path: string) => values.get(path)?.clone() };
+    // CacheStorage materializes independent response bodies, not live tee chains.
+    const copy = async (value: Response) => new Response(await value.clone().arrayBuffer(), { status: value.status, headers: value.headers });
+    return { put: async (path: string, value: Response) => { if (path === failedPut) throw new Error("quota-test"); values.set(path, await copy(value)); }, match: async (path: string) => { const value = values.get(path); return value ? copy(value) : undefined; } };
   };
   runInNewContext(readFileSync("public/sw.js", "utf8"), {
-    URL, Response, TextEncoder, crypto: { subtle: webcrypto.subtle, randomUUID },
-    self: { location: { origin: "https://braiz.test" }, addEventListener: (name: string, handler: (event: Event) => void) => { handlers[name] = handler; } },
-    fetch: async (input: string | { url: string }) => {
+    URL, Response, TextEncoder, TypeError, crypto: { subtle: webcrypto.subtle, randomUUID },
+    self: { location: { origin: "https://braiz.test" }, addEventListener: (name: string, handler: (event: Event) => void) => { handlers[name] = handler; }, skipWaiting: async () => { activations++; } },
+    fetch: async (input: string | { url: string }, options?: RequestInit) => {
       if (disconnected) throw new Error("network disconnected");
       const path = typeof input === "string" ? input : new URL(input.url).pathname;
       requests.push(path);
+      transport.push({ path, redirect: options?.redirect });
+      // Model the deployed ASSETS clean-HTML redirect, not a plain file server.
+      // An arbitrary redirect can even carry valid bytes: policy must reject it.
+      if (path.endsWith(".html") || path === redirectPath) {
+        if (options?.redirect === "error") throw new TypeError("redirect-refused");
+        requests.push(path === redirectPath ? "/api/session" : path.slice(0, -5));
+      }
       if (path === corrupt) return new Response("corrupt");
       if (path === "/entrainement" || path.startsWith("/api/")) throw new Error("simulated navigation failure");
-      return new Response(readFileSync(`public${path}`), { headers: { "content-type": path.endsWith(".html") ? "text/html" : path.endsWith(".css") ? "text/css" : path.endsWith(".js") ? "text/javascript" : "application/json" } });
+      const logical = path === "/offline" || /^\/training\/screen-[a-f0-9]{64}$/.test(path) ? `${path}.html` : path;
+      return new Response(readFileSync(`public${logical}`), { headers: { "content-type": logical.endsWith(".html") ? "text/html" : path.endsWith(".css") ? "text/css" : path.endsWith(".js") ? "text/javascript" : "application/json" } });
     },
     caches: { open, keys: async () => [...storage.keys()], delete: async (key: string) => storage.delete(key) },
   });
@@ -42,21 +54,30 @@ function harness() {
     handlers.fetch({ request: { url: `https://braiz.test${path}`, mode, method }, respondWith: p => { promise = p; } });
     return promise;
   }
-  return { storage, requests, open, lifecycle, message, request, offline: () => { disconnected = true; }, corrupt: (path: string) => { corrupt = path; } };
+  return { storage, requests, transport, open, lifecycle, message, request, get activations() { return activations; }, offline: () => { disconnected = true; }, corrupt: (path: string) => { corrupt = path; }, redirect: (path: string) => { redirectPath = path; }, failPut: (path: string) => { failedPut = path; } };
 }
 
 test("installation and status never download a pack; exact total includes all shell files and metadata", async () => {
   const h = harness(); await h.lifecycle("install");
   const status = await h.message("status");
   assert.equal(status.ready, false); assert.equal(status.bytes, manifest.totalBytes);
-  assert.deepEqual(h.requests, ["/offline.html"]);
+  assert.deepEqual(h.requests, ["/offline"]);
+  assert.deepEqual([...h.storage.get("braise-offline-v2")!.keys()], ["/offline.html"]);
   assert.equal(manifest.totalBytes, manifest.assets.reduce((n, a) => n + a.bytes, 0) + readFileSync("public/training/manifest.json").byteLength);
   assert.deepEqual([...h.storage.keys()], ["braise-offline-v2"]);
+  assert.equal(h.activations, 0);
 });
 
 test("explicit download persists complete immutable standalone shell, CSS, JS and pack, supports cold navigation/reload in worker harness", async () => {
   const h = harness(); await h.lifecycle("install");
   const status = await h.message("download"); assert.equal(status.ready, true);
+  assert.equal(h.activations, 1);
+  assert.ok(h.requests.includes(manifest.shellPath.slice(0, -5)));
+  assert.ok(!h.requests.includes(manifest.shellPath));
+  assert.ok(h.transport.every(request => request.redirect === "error"));
+  const saved = [...h.storage.entries()].find(([name]) => name.startsWith("braiz-training-"))![1];
+  assert.ok(saved.has(manifest.shellPath));
+  assert.ok(!saved.has(manifest.shellPath.slice(0, -5)));
   const count = h.requests.length;
   assert.equal((await h.message("download")).ready, true); assert.equal(h.requests.length, count);
   h.offline();
@@ -69,6 +90,68 @@ test("explicit download persists complete immutable standalone shell, CSS, JS an
     }
   }
   assert.equal((await h.message("status")).ready, true);
+  const beforeRemoval = h.activations;
+  await h.message("remove");
+  assert.equal(h.activations, beforeRemoval);
+});
+
+test("canonical HTML transport refuses arbitrary redirects for fallback, screen and JSON without following them", async () => {
+  const fallback = harness(); fallback.redirect("/offline");
+  await assert.rejects(fallback.lifecycle("install"), /redirect-refused/);
+  assert.deepEqual(fallback.requests, ["/offline"]);
+  assert.equal(fallback.storage.size, 0);
+  for (const path of [manifest.shellPath.slice(0, -5), info.path]) {
+    const h = harness(); await h.lifecycle("install"); h.redirect(path);
+    assert.ok((await h.message("download")).error);
+    assert.ok(!h.requests.includes("/api/session"));
+    assert.equal(h.storage.size, 1);
+    assert.equal(h.activations, 0);
+    assert.ok(h.transport.every(request => request.redirect === "error"));
+  }
+});
+
+test("canonical screen bytes still require the pinned hash before becoming an installed pack", async () => {
+  const h = harness(); await h.lifecycle("install"); h.corrupt(manifest.shellPath.slice(0, -5));
+  assert.match(String((await h.message("download")).error), /altéré/);
+  assert.equal(h.storage.size, 1);
+  assert.equal((await h.message("status")).ready, false);
+  assert.equal(h.activations, 0);
+});
+
+test("a rejected canonical-screen redirect preserves earlier installation, logical keys and offline recovery across activation", async () => {
+  const h = harness(); await h.lifecycle("install");
+  const old = { ...manifest, totalBytes: manifest.totalBytes + 1 };
+  const name = `braiz-training-${digest(JSON.stringify(old))}-previous`;
+  const cache = await h.open(name);
+  for (const asset of old.assets) await cache.put(asset.path, new Response(readFileSync(`public${asset.path}`)));
+  await cache.put("/training/installed.json", Response.json(old));
+  h.redirect(manifest.shellPath.slice(0, -5));
+  assert.equal((await h.message("status")).olderVersions, 1);
+  assert.ok((await h.message("download")).error);
+  assert.equal(h.activations, 0);
+  assert.ok(!h.requests.includes("/api/session"));
+  await h.lifecycle("activate");
+  assert.equal((await h.message("status")).olderVersions, 1);
+  assert.ok(h.storage.has(name));
+  assert.deepEqual(await h.storage.get(name)!.get("/training/installed.json")!.clone().json(), old);
+  assert.deepEqual([...h.storage.get(name)!.keys()], [...old.assets.map(asset => asset.path), "/training/installed.json"]);
+  h.offline();
+  assert.match(await (await h.request("/entrainement"))!.text(), /training-root/);
+  assert.equal((await h.message("status")).olderVersions, 1);
+});
+
+test("partial cache-write failure cannot activate the waiting worker or replace an older offline installation", async () => {
+  const h = harness(); await h.lifecycle("install");
+  const old = { ...manifest, totalBytes: manifest.totalBytes + 1 };
+  const name = `braiz-training-${digest(JSON.stringify(old))}-previous`;
+  const cache = await h.open(name);
+  for (const asset of old.assets) await cache.put(asset.path, new Response(readFileSync(`public${asset.path}`)));
+  await cache.put("/training/installed.json", Response.json(old));
+  h.failPut(manifest.assets[1].path);
+  assert.match(String((await h.message("download")).error), /quota-test/);
+  assert.equal(h.activations, 0);
+  assert.deepEqual([...h.storage.keys()], ["braise-offline-v2", name]);
+  h.offline(); assert.match(await (await h.request("/entrainement"))!.text(), /training-root/);
 });
 
 test("worker never caches or intercepts daily/auth APIs, mutations, arbitrary scripts or personal pages", async () => {

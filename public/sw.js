@@ -1,15 +1,18 @@
 /* Neutral fallback is automatic; training files are cached only by explicit download. */
 const CACHE = "braise-offline-v2";
 const FALLBACK = "/offline.html";
+// ASSETS serves clean HTML URLs. Keep the historical logical cache key, but
+// request its one known canonical transport directly; never follow redirects.
+const FALLBACK_TRANSPORT = "/offline";
 const TRAINING_PREFIX = "braiz-training-";
 const INSTALLED = "/training/installed.json";
 // BEGIN TRAINING PIN
-const TRAINING_PIN = {"path":"/training/manifest-c8ac667a9e336d0c28ae02d22f94b97ec0b967b99aa999997e9ce65774cb27c9.json","sha256":"c8ac667a9e336d0c28ae02d22f94b97ec0b967b99aa999997e9ce65774cb27c9","bytes":999,"packSha256":"ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061","totalBytes":255268,"wordCount":208,"puzzleCount":3};
+const TRAINING_PIN = {"path":"/training/manifest-37a070fc4e42b8974ebada99612e99e76a5e4478381a9408989e4ae51c8e466b.json","sha256":"37a070fc4e42b8974ebada99612e99e76a5e4478381a9408989e4ae51c8e466b","bytes":999,"packSha256":"ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061","totalBytes":255902,"wordCount":208,"puzzleCount":3};
 // END TRAINING PIN
 
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
-    const response = await fetch(FALLBACK, { cache: "reload", redirect: "error" });
+    const response = await fetch(FALLBACK_TRANSPORT, { cache: "reload", redirect: "error" });
     if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) throw new Error("offline-fallback-unavailable");
     const cache = await caches.open(CACHE);
     await cache.put(FALLBACK, response);
@@ -92,7 +95,13 @@ self.addEventListener("message", event => {
       // Download and validate all bytes first. Publish the completion marker LAST.
       // A failed/partial attempt never replaces an earlier usable installation.
       const responses = [];
-      for (const asset of manifest.assets) responses.push(await verifiedResponse(await fetch(asset.path, { cache: "no-store", redirect: "error" }), asset));
+      for (const asset of manifest.assets) {
+        // Only the manifest-approved content-addressed HTML screen gets this
+        // explicit clean-URL alias. Hash/size verification and logical storage
+        // identities stay unchanged, including for earlier installed versions.
+        const transport = asset.path === manifest.shellPath && asset.path === `/training/screen-${asset.sha256}.html` ? asset.path.slice(0, -5) : asset.path;
+        responses.push(await verifiedResponse(await fetch(transport, { cache: "no-store", redirect: "error" }), asset));
+      }
       const name = `${TRAINING_PREFIX}${TRAINING_PIN.sha256}-${crypto.randomUUID()}`;
       try {
         const cache = await caches.open(name);
@@ -100,7 +109,12 @@ self.addEventListener("message", event => {
         await cache.put(INSTALLED, new Response(JSON.stringify(manifest), { headers: { "content-type": "application/json" } }));
       } catch (error) { await caches.delete(name); throw error; }
     }
-    return trainingStatus(manifest);
+    const status = await trainingStatus(manifest);
+    // Consent upgrades an older neutral worker only AFTER a complete, verified
+    // download. Never force activation during install/status/removal/failure,
+    // and never claim or reload already-open daily-game clients.
+    if (event.data.action === "download" && status.ready) await self.skipWaiting();
+    return status;
   };
   const pending = trainingMutation.then(operation);
   trainingMutation = pending.catch(() => undefined);

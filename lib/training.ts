@@ -69,13 +69,29 @@ export type OfflineTrainingStatus = { ready: boolean; bytes: number; wordCount: 
 export async function trainingWorkerRequest(action: "status" | "download" | "remove"): Promise<OfflineTrainingStatus> {
   if (!("serviceWorker" in navigator) || !window.isSecureContext) throw new Error("Le stockage hors ligne nécessite un navigateur compatible et une connexion sécurisée.");
   let preparationTimer: ReturnType<typeof setTimeout> | undefined;
+  const preparation = new AbortController();
   const prepare = async () => {
     const registration = await navigator.serviceWorker.register("/sw.js").catch(() => { throw new Error("Le service hors ligne est indisponible. Reconnectez-vous puis rechargez pour réessayer."); });
-    return registration.active ?? (await navigator.serviceWorker.ready).active;
+    if (preparation.signal.aborted) throw new Error("Préparation du service hors ligne interrompue.");
+    // A previously installed neutral worker does not speak the training protocol.
+    // Talk to the new waiting worker without activating it or disturbing clients.
+    const installing = registration.installing;
+    if (installing) await new Promise<void>((resolve, reject) => {
+      const cleanup = () => { installing.removeEventListener("statechange", changed); preparation.signal.removeEventListener("abort", aborted); };
+      const aborted = () => { cleanup(); reject(new Error("Préparation du service hors ligne interrompue.")); };
+      const changed = () => {
+        if (installing.state === "redundant") { cleanup(); reject(new Error("L’installation du service hors ligne a échoué. Réessayez en ligne.")); }
+        else if (installing.state === "installed" || installing.state === "activated") { cleanup(); resolve(); }
+      };
+      installing.addEventListener("statechange", changed);
+      preparation.signal.addEventListener("abort", aborted, { once: true });
+      changed();
+    });
+    return registration.waiting ?? installing ?? registration.active ?? (await navigator.serviceWorker.ready).active;
   };
   let active: ServiceWorker | null;
   try {
-    active = await Promise.race([prepare(), new Promise<never>((_, reject) => { preparationTimer = setTimeout(() => reject(new Error("Le service hors ligne n’est pas prêt. Rechargez en ligne pour réessayer.")), 15000); })]);
+    active = await Promise.race([prepare(), new Promise<never>((_, reject) => { preparationTimer = setTimeout(() => { preparation.abort(); reject(new Error("Le service hors ligne n’est pas prêt. Réessayez en ligne.")); }, 15000); })]);
   } finally { clearTimeout(preparationTimer); }
   if (!active) throw new Error("Le service hors ligne se prépare. Réessayez dans un instant.");
   return new Promise((resolve, reject) => {

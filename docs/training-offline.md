@@ -8,7 +8,7 @@ Entrée : **Explorer → Entraînement guidé**, URL `/entrainement`. Trois parc
 - Les températures et rangs sont les valeurs V1 exactes ; les rangs portent sur **30 000 mots**, jamais sur les seuls 208 mots du pack.
 - La liste consultable contient aussi les trois réponses. Les majuscules/espaces sont normalisés ; les accents doivent correspondre à la graphie indiquée. Un sous-ensemble ne peut garantir la désambiguïsation des alias du lexique complet.
 - Un mot hors pack n’ajoute **ni score ni essai**, conserve la saisie et n’est pas déclaré absent de V1.
-- JSON : **42 695 octets**. Installation complète : **255 268 octets non compressés**, manifeste compris, affichés avant l’action explicite de téléchargement. Le transport HTTP peut compresser ces fichiers ; le chiffre n’inclut pas ses en-têtes.
+- JSON : **42 695 octets**. Installation complète : **255 902 octets non compressés**, manifeste compris, affichés avant l’action explicite de téléchargement. Le transport HTTP peut compresser ces fichiers ; le chiffre n’inclut pas ses en-têtes.
 
 ## Relecture éditoriale du 12 octobre 2026
 
@@ -32,7 +32,7 @@ Corpus brut SHA-256 : `7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db1242
 
 Pack SHA-256 : `ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061`.
 
-Manifeste final : `/training/manifest-c8ac667a9e336d0c28ae02d22f94b97ec0b967b99aa999997e9ce65774cb27c9.json`.
+Manifeste final : `/training/manifest-37a070fc4e42b8974ebada99612e99e76a5e4478381a9408989e4ae51c8e466b.json`.
 
 Le manifeste contient les tailles et empreintes exactes du pack et de l’écran autonome HTML/JS/CSS. Le service worker épingle son empreinte. Le navigateur vérifie à nouveau le JSON avant de rendre les scores utilisables. Les fichiers sont adressés par leur contenu ; `.gitattributes` sous `public/training` interdit les conversions de fins de ligne qui changeraient leurs octets. Le générateur vérifie qu’aucun corpus ou lecteur sémantique serveur n’entre dans le JavaScript client.
 
@@ -41,6 +41,10 @@ Le manifeste contient les tailles et empreintes exactes du pack et de l’écran
 La page en ligne utilise `components/training.tsx`. Un écran HTML autonome, construit à partir du **même composant React**, possède son JavaScript et ses styles intégralement inclus dans l’installation. Il ne dépend pas des chargements différés Next/RSC. La navigation froide et le rechargement de `/entrainement` utilisent cet écran en cas de coupure.
 
 La consultation ou l’enregistrement du service worker ne télécharge pas de pack hors ligne. Seul **Télécharger pour jouer hors ligne** met les fichiers en cache : toutes les empreintes sont vérifiées, puis le marqueur d’installation est écrit en dernier. Une erreur conserve les versions précédentes. Une ancienne version complète demeure utilisable après mise à jour ; sa progression reste liée à son propre hash de pack. **Supprimer les fichiers hors ligne** retire les caches dédiés, même si leur manifeste est altéré, et conserve la progression personnelle ainsi que les caches étrangers. La page neutre `/offline.html` est conservée indépendamment.
+
+L’hébergement ASSETS sert le HTML sous une adresse sans extension : le worker télécharge directement `/offline` et `/training/screen-<empreinte>`, tout en conservant les clés logiques `.html` du cache et du manifeste. Cet alias est limité à la page neutre et au seul écran approuvé par le manifeste ; les redirections restent refusées et les empreintes contrôlées.
+
+Si un ancien service neutre est actif, la page dialogue avec le nouveau worker en attente ; une installation en cours est attendue avec un délai borné. Seul un téléchargement explicitement demandé et intégralement vérifié autorise son activation. Aucune activation lors du simple affichage, d’une suppression ou d’un échec ; aucune prise de contrôle ni aucun rechargement forcé des pages déjà ouvertes.
 
 La progression utilise exclusivement `braiz.training.progress.v1.<sha256-du-pack>`. Les sauvegardes futures/corrompues et les modifications concurrentes sont préservées et bloquent l’écriture. La reprise ne joue aucun son, ne déplace aucun focus, n’annonce aucune récompense et n’écrit rien à elle seule.
 
