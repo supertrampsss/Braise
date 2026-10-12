@@ -3,13 +3,23 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdtemp, mkdir, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { downloadPinnedSource, parseRestoreArgs, restoreSemanticV2, verifyPinnedFile } from "../scripts/restore-semantic-v2.mjs";
+
+async function fileSymlink(t: import("node:test").TestContext, target: string, path: string) {
+  try { await symlink(target, path, "file"); return true; }
+  catch (error) {
+    if (process.platform === "win32" && (error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("Windows file-symlink privilege unavailable (EPERM); security case not executed"); return false;
+    }
+    throw error;
+  }
+}
 
 const sha256 = (value: Buffer) => createHash("sha256").update(value).digest("hex");
 
 test("the restore plan uses isolated ignored staging paths and never enables a download implicitly", () => {
-  const root = "/tmp/braise-restore-plan";
+  const root = resolve(tmpdir(), "braise-restore-plan");
   assert.deepEqual(parseRestoreArgs([], root), {
     sourcePath: join(root, "work/source/wiki.fr.vec"),
     corpusDir: join(root, "work/semantic-v2-real"),
@@ -24,7 +34,7 @@ test("the restore plan uses isolated ignored staging paths and never enables a d
   assert.throws(() => parseRestoreArgs(["--url", "https://example.test/source"], root), /Unsupported restore argument/);
 });
 
-test("a source is accepted only with exact size, hash and a regular non-symlink file", async () => {
+test("a source is accepted only with exact size, hash and a regular non-symlink file", async t => {
   const root = await mkdtemp(join(tmpdir(), "braise-restore-source-"));
   try {
     const bytes = Buffer.from("source exacte"); const path = join(root, "source.vec"); const link = join(root, "source-link.vec");
@@ -33,8 +43,10 @@ test("a source is accepted only with exact size, hash and a regular non-symlink 
     assert.equal((await verifyPinnedFile(path, pin)).sha256, pin.sha256);
     await assert.rejects(verifyPinnedFile(path, { ...pin, bytes: bytes.length + 1 }), /size mismatch/);
     await assert.rejects(verifyPinnedFile(path, { ...pin, sha256: "0".repeat(64) }), /SHA-256 mismatch/);
-    await symlink(path, link);
-    await assert.rejects(verifyPinnedFile(link, pin), /non-symlink/);
+    await t.test("symbolic source is refused", async subtest => {
+      if (!await fileSymlink(subtest, path, link)) return;
+      await assert.rejects(verifyPinnedFile(link, pin), /non-symlink/);
+    });
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
@@ -71,11 +83,11 @@ test("the downloader preserves an incomplete partial file and releases its lock 
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
-test("the downloader refuses a symbolic partial without touching its target", async () => {
+test("the downloader refuses a symbolic partial without touching its target", async t => {
   const root = await mkdtemp(join(tmpdir(), "braise-restore-symlink-"));
   try {
     const victim = join(root, "victim"); const destination = join(root, "source.vec");
-    await writeFile(victim, "à conserver"); await symlink(victim, `${destination}.part`);
+    await writeFile(victim, "à conserver"); if (!await fileSymlink(t, victim, `${destination}.part`)) return;
     const source = Buffer.from("source"); const pin = { url: "https://pinned.test/source.vec", bytes: source.length, sha256: sha256(source) };
     await assert.rejects(downloadPinnedSource(destination, { pin, fetchImpl: (async () => new Response(source)) as typeof fetch }), /non-symlink/);
     assert.equal(await readFile(victim, "utf8"), "à conserver");
@@ -128,14 +140,17 @@ test("an inconsistent resume response preserves the partial and releases the loc
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
-test("the downloader cannot be redirected through a partial-path swap during fetch", async () => {
+test("the downloader cannot be redirected through a partial-path swap during fetch", async t => {
   const root = await mkdtemp(join(tmpdir(), "braise-restore-path-swap-"));
   try {
     const source = Buffer.from("abcdefghij"); const destination = join(root, "source.vec"); const partialPath = `${destination}.part`; const victim = join(root, "victim");
     const pin = { url: "https://pinned.test/source.vec", bytes: source.length, sha256: sha256(source) };
     await writeFile(partialPath, source.subarray(0, 3)); await writeFile(victim, "à conserver");
+    const probe = join(root, "symlink-probe");
+    if (!await fileSymlink(t, victim, probe)) return;
+    await rm(probe);
     const fetchImpl = async () => {
-      await rm(partialPath); await symlink(victim, partialPath);
+      await rm(partialPath); await symlink(victim, partialPath, "file");
       return new Response(source.subarray(3), { status: 206, headers: { "content-range": `bytes 3-${source.length - 1}/${source.length}` } });
     };
     await assert.rejects(downloadPinnedSource(destination, { pin, fetchImpl: fetchImpl as typeof fetch }), /changed before atomic installation/);

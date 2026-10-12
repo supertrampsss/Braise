@@ -1,5 +1,7 @@
 # Stockage durable, 24 septembre 2026
 
+**Actualisation du 12 octobre 2026 :** le constat403 ci-dessous est historique et spécifique au client Python. Les quatre transferts Node natifs ont désormais réussi avec relecture GET/SHA de 509 fragments. Voir [qualification actuelle](../review/corpus-qualification.md) et [inventaires durables](qualification-2026-10-12/r2-native-qualification.json). Le stockage runtime V2 et son calendrier restent à qualifier. Aucun filtre de sécurité n’a été modifié.
+
 Binding natif Sites SEMANTIC_DATA dÃ©clarÃ©, publication publique v32 rÃ©ussie. Source applicative : 3bfd5a722186304c587100bebed5837022c33eaa.
 
 V1 reste explicitement sur les assets tant que BRAIZ_V1_STORAGE ne vaut pas r2. Provisionner un bucket vide ne coupe plus le jeu. Aucun repli aprÃ¨s Ã©chec R2 n'est ajoutÃ©.

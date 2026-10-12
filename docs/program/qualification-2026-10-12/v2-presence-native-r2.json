@@ -1,0 +1,55 @@
+{
+  "format": "braiz-r2-archive-v1",
+  "filename": "v2-presence-canonical.tar",
+  "bytes": 89526784,
+  "chunks": [
+    {
+      "sha256": "289d4d5220db380d32ac0a69a1866ffd5df733663eddb826d56733e6962fde74",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "95a1f0cb443209538c4206a498027b93533b24073e56effaf9570ab49da35e32",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "049d41eb8182e9091f59b877af9178fad3f97e3808cf20f1015bc87625de29ab",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "95e9a79b064ef91ead0b3decb3a19e5c42389a19094495333fe13adcc5228ce6",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "0bb63b3d1eae6982b87b1ddb5db7ea9409f926cd6f2111a7278801717b938f0f",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "02dc9d4ad967679bfc9b841d3204b7c842ad3d2d4aa0a472febf283992d79db7",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "64839de76e43a5ea0b54279be40953a9270159d52a011b17db92be5c17003205",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "9b5d58d29e39884595093e20d838f7e5f403ce05a9d506be96b365b34db78b0d",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "9b4cafdb339e3aaba7ce5898c3ac28ec10fd89514bcd687355caa9d368edf168",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "a9a232e4526cb423c901218df696adada76cc681bfefe9340044535bf3d2ee29",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "7df1080163901f446ceb418bb04d05ce30968b6421d126fe85897d435b27b643",
+      "bytes": 5640704
+    }
+  ],
+  "complete": true,
+  "client": "Node22-native-fetch-default",
+  "verifiedAt": "2026-10-12T11:32:00.608Z",
+  "sha256": "a0f7a7df48208e01312df115e45d9f4ccea8481851a0311e40ef42374aa2fb10"
+}

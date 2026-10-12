@@ -1,0 +1,19 @@
+{
+  "format": "braiz-r2-archive-v1",
+  "filename": "semantic-fr.json",
+  "bytes": 9940146,
+  "chunks": [
+    {
+      "sha256": "a9fd7da424c5bf97fab347b6adf971571f65395abc5d8a197eef4424d0ff6b10",
+      "bytes": 8388608
+    },
+    {
+      "sha256": "d10967b81ec8237046f2193879a1dc0cde923c487e3d4c6f4a1af3ee771877ee",
+      "bytes": 1551538
+    }
+  ],
+  "complete": true,
+  "client": "Node22-native-fetch-default",
+  "verifiedAt": "2026-10-12T11:20:54.880Z",
+  "sha256": "7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16"
+}

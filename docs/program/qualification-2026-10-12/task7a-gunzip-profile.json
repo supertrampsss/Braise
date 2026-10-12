@@ -1,0 +1,29 @@
+[
+  {
+    "file": "000000-f81e96a923117eb2.brv.gz",
+    "rawBytes": 4960536,
+    "oldMs": 18.407600000000002,
+    "boundedChunkMs": 13.506900000000002,
+    "identical": true,
+    "sha256": "e0621728a7a51a535357ad4d854f4270f714360781727ee78ece7a118447ba21",
+    "expected": "e0621728a7a51a535357ad4d854f4270f714360781727ee78ece7a118447ba21"
+  },
+  {
+    "file": "000120-6cd5c3c6dfada385.brv.gz",
+    "rawBytes": 4965332,
+    "oldMs": 17.1079,
+    "boundedChunkMs": 13.735399999999998,
+    "identical": true,
+    "sha256": "7baad1aa0fcc6ffe12eeb6706698a04abd83afc573dbd39203757aa7f31115ae",
+    "expected": "7baad1aa0fcc6ffe12eeb6706698a04abd83afc573dbd39203757aa7f31115ae"
+  },
+  {
+    "file": "000247-fe46734765bc96f4.brv.gz",
+    "rawBytes": 2629924,
+    "oldMs": 8.824800000000025,
+    "boundedChunkMs": 7.166000000000011,
+    "identical": true,
+    "sha256": "75aa1d6e5118f1c71d48514080e9a87845ac27134d4ba2ce5e43e13f2b2c33b6",
+    "expected": "75aa1d6e5118f1c71d48514080e9a87845ac27134d4ba2ce5e43e13f2b2c33b6"
+  }
+]

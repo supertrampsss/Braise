@@ -1,11 +1,12 @@
 import { randomUUID } from "node:crypto";
-import { lstat, mkdir, readFile, readdir, realpath, rename, rm } from "node:fs/promises";
+import { lstat, mkdir, readFile, readdir, rename, rm } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import {
-  acquireTargetCacheGuard, durableWrite, loadActiveCorpus, releaseTargetCacheGuard,
+  acquireTargetCacheGuard, durableWrite, loadActiveCorpus, releaseTargetCacheGuard, sha256,
 } from "./semantic-target-v2-common.mjs";
 import { verifySemanticTargetUnderGuard } from "./verify-semantic-target-v2.mjs";
+import { canonicalDirectoryWithoutLinks } from "./semantic-paths.mjs";
 
 async function existingKind(path) {
   try { const info = await lstat(path); return info.isSymbolicLink() ? "symlink" : info.isDirectory() ? "directory" : "other"; }
@@ -42,13 +43,13 @@ async function finishInterruptedEvictions(targetsRoot, journalRoot) {
   }
 }
 
-/** @param {{corpusDir:string, outputDir:string, targetId:number, recoverLockOwner?:string|null, testStopAfterRename?:boolean}} options */
-export async function evictSemanticTarget({ corpusDir, outputDir, targetId, recoverLockOwner = null, testStopAfterRename = false }) {
+/** @param {{corpusDir:string, outputDir:string, targetId:number, recoverLockOwner?:string|null, testStopAfterRename?:boolean, beforeEviction?:(verified:any)=>Promise<any>}} options */
+export async function evictSemanticTarget({ corpusDir, outputDir, targetId, recoverLockOwner = null, testStopAfterRename = false, beforeEviction = null }) {
   corpusDir = resolve(corpusDir); outputDir = resolve(outputDir);
   if (!Number.isInteger(targetId) || targetId < 0 || targetId > 0xffff_ffff) throw new Error("targetId must be an unsigned 32-bit integer");
   const corpus = await loadActiveCorpus(corpusDir); const targetsRoot = join(outputDir, corpus.manifest.corpusId, "targets");
   await mkdir(targetsRoot, { recursive: true });
-  if (await realpath(targetsRoot) !== targetsRoot) throw new Error("Target cache root cannot contain symbolic links");
+  await canonicalDirectoryWithoutLinks(targetsRoot);
   const journalRoot = join(targetsRoot, ".evictions"); await mkdir(journalRoot, { recursive: true });
   if (await existingKind(journalRoot) !== "directory") throw new Error("Eviction journal root is unsafe");
   const guard = acquireTargetCacheGuard(targetsRoot, "exclusive");
@@ -59,7 +60,26 @@ export async function evictSemanticTarget({ corpusDir, outputDir, targetId, reco
     if (kind === "missing") return { corpusId: corpus.manifest.corpusId, targetId, evicted: false };
     if (kind !== "directory") throw new Error("Target cache entry is not a safe directory");
     await assertRecoverableTargetLock(targetDir, recoverLockOwner);
-    const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId }, guard);
+    const verificationStarted = performance.now();
+    const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId, neighborCount: beforeEviction ? 64 : 12 }, guard);
+    const verificationMs = Math.round(performance.now() - verificationStarted);
+    const originalActive = await readFile(join(targetDir, "active.json"));
+    const originalPointer = JSON.parse(originalActive);
+    if (originalPointer.manifestSha256 !== verified.manifestSha256 || originalPointer.targetId !== targetId || originalPointer.corpusId !== corpus.manifest.corpusId) throw new Error("Active target changed after verification");
+    const originalManifest = JSON.parse(verified.manifestUtf8);
+    const prepared = beforeEviction ? await beforeEviction(structuredClone(verified)) : null;
+    const evictionStarted = performance.now();
+    // Retain only the verifier result created above in this guarded call. A callback
+    // cannot supply an attestation. Rehash every canonical object after preparation,
+    // so corruption during archival aborts deletion without repeating the cosine scan.
+    await canonicalDirectoryWithoutLinks(join(targetDir, "pages"));
+    const activeInfo = await lstat(join(targetDir, "active.json"));
+    if (!activeInfo.isFile() || activeInfo.isSymbolicLink() || !(await readFile(join(targetDir, "active.json"))).equals(originalActive)) throw new Error("Active target changed before eviction");
+    const active = JSON.parse(originalActive);
+    for (const object of [{ file: active.manifest, hash: verified.manifestSha256 }, ...[...originalManifest.valuePages, ...originalManifest.orderPages].map(page => ({ file: join("pages", page.file), hash: page.objectSha256 }))]) {
+      const path = join(targetDir, object.file); const info = await lstat(path);
+      if (!info.isFile() || info.isSymbolicLink() || sha256(await readFile(path)) !== object.hash) throw new Error("Verified target object changed before eviction");
+    }
     const operationId = randomUUID(); const tombstoneName = `.evicted-${targetName}-${operationId}`; const tombstonePath = join(targetsRoot, tombstoneName);
     if (basename(tombstonePath) !== tombstoneName || await existingKind(tombstonePath) !== "missing") throw new Error("Eviction tombstone path is unsafe");
     const journalPath = join(journalRoot, `eviction-${operationId}.json`);
@@ -70,7 +90,7 @@ export async function evictSemanticTarget({ corpusDir, outputDir, targetId, reco
     await durableWrite(journalPath, `${JSON.stringify({ ...journal, phase: "renamed" }, null, 2)}\n`);
     await rm(tombstonePath, { recursive: true });
     await durableWrite(journalPath, `${JSON.stringify({ ...journal, phase: "purged", complete: true, completedAt: new Date().toISOString() }, null, 2)}\n`);
-    return { corpusId: corpus.manifest.corpusId, targetId, evicted: true, manifestSha256: verified.manifestSha256 };
+    return { corpusId: corpus.manifest.corpusId, targetId, evicted: true, manifestSha256: verified.manifestSha256, ...(beforeEviction ? { prepared, verificationMs, evictionMs: Math.round(performance.now() - evictionStarted) } : {}) };
   } finally { releaseTargetCacheGuard(guard); }
 }
 

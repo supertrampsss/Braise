@@ -189,7 +189,7 @@ test("evidence capture refuses direct and symbolic destinations inside target st
     await buildSemanticTarget({ corpusDir: corpus, outputDir: targets, targetId: 0, maxCachedTargets: 1 });
     const targetRoot = join(targets, manifest.corpusId, "targets");
     await assert.rejects(captureEditorialEvidence({ corpusDir: corpus, targetsDir: targets, evidenceDir: join(targetRoot, "proofs"), targetId: 0 }), /outside target staging/);
-    const alias = join(root, "target-alias"); await symlink(targetRoot, alias, "dir");
+    const alias = join(root, "target-alias"); await symlink(targetRoot, alias, process.platform === "win32" ? "junction" : "dir");
     await assert.rejects(captureEditorialEvidence({ corpusDir: corpus, targetsDir: targets, evidenceDir: join(alias, "proofs"), targetId: 0 }), /outside target staging/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

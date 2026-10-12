@@ -146,7 +146,7 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
   const target = await findTarget(corpusDir, corpus.manifest, targetId);
   if (sha256(Buffer.from(target.word)) !== manifest.target.wordSha256) throw new Error("Target word identity mismatch");
   const targetNorm = vectorNorm(target.vector, corpus.manifest.config.dimensions);
-  const databasePath = join(targetDir, `.verify-target-${randomUUID()}.sqlite`); let database;
+  const databasePath = join(targetDir, `.v${randomUUID().replaceAll("-", "")}.db`); let database;
   const histogram = new Array(SCORE_BUCKETS).fill(0); const records = valueRecords(targetDir, manifest, corpus.manifestSha256, contractHash)[Symbol.asyncIterator]();
   try {
     database = new DatabaseSync(databasePath); database.exec("PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; CREATE TABLE scored(id INTEGER PRIMARY KEY, score INTEGER NOT NULL, rank INTEGER NOT NULL); CREATE INDEX score_order ON scored(score DESC, id ASC);");
@@ -187,12 +187,13 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
   }
 }
 
-/** @param {{corpusDir:string, outputDir:string, targetId:number, manifestName?:string|null, expectedManifestSha256?:string|null, testHoldAfterCacheLockMs?:number}} options */
+/** @param {{corpusDir:string, outputDir:string, targetId:number, manifestName?:string|null, expectedManifestSha256?:string|null, testHoldAfterCacheLockMs?:number, testOnCacheLock?:()=>Promise<void>}} options */
 export async function verifySemanticTarget(options) {
   const corpusDir = resolve(options.corpusDir); const outputDir = resolve(options.outputDir);
   const corpus = await loadActiveCorpus(corpusDir); const targetsRoot = join(outputDir, corpus.manifest.corpusId, "targets");
   const cacheGuard = acquireTargetCacheGuard(targetsRoot, "shared");
   try {
+    await options.testOnCacheLock?.();
     if (options.testHoldAfterCacheLockMs > 0) await new Promise(resolveDelay => setTimeout(resolveDelay, options.testHoldAfterCacheLockMs));
     return await verifySemanticTargetUnderGuard({ ...options, corpusDir, outputDir }, cacheGuard);
   } finally { releaseTargetCacheGuard(cacheGuard); }

@@ -159,9 +159,14 @@ test("eviction never removes a target while a verified reader owns the shared gu
   try {
     await writeFile(paths.source, fixture); await buildSemanticCorpus({ sourcePath: paths.source, outputDir: paths.corpus, segmentEntries: 2 });
     await buildSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 });
-    const reader = verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, testHoldAfterCacheLockMs: 100 });
-    await new Promise(resolveDelay => setTimeout(resolveDelay, 20));
-    await assert.rejects(evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 }), /cache operation owns/);
+    let releaseReader!: () => void; let acquired!: () => void;
+    const locked = new Promise<void>(resolve => { acquired = resolve; });
+    const hold = new Promise<void>(resolve => { releaseReader = resolve; });
+    const reader = verifySemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0, testOnCacheLock: async () => { acquired(); await hold; } });
+    try {
+      await Promise.race([locked, reader]);
+      await assert.rejects(evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 }), /cache operation owns/);
+    } finally { releaseReader(); await reader; }
     assert.equal((await reader).targetId, 0);
     assert.equal((await evictSemanticTarget({ corpusDir: paths.corpus, outputDir: paths.targets, targetId: 0 })).evicted, true);
   } finally { await remove(paths.root); }

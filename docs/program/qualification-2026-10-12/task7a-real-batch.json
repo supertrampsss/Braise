@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scope": "real-canonical-corpus-inactive-runtime-archives",
+  "corpusManifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+  "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+  "indexManifestSha256": "77178f6fc85de9d5523db3f13141b751abdeb1c6b2d3ad6a4d020346a795c426",
+  "dictionarySize": 1013881,
+  "events": [
+    {
+      "targetId": 91,
+      "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+      "corpusManifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+      "evidenceSha256": "0288d29ce92900f8fce1de464162c6b82e4e3e74b335a3e6571554086350492e",
+      "targetManifestSha256": "ee333e66d388b407487e931a1ac38555ced5e2e183b4e0c882a036f1f7a3b155",
+      "inventorySha256": "f70669925a98c8b0f3fc1d3de269b536fb2bcd5bccb70439a8e086bdbcb552c1",
+      "phase": "archived-and-evicted",
+      "buildMs": 0,
+      "verificationMs": 29803,
+      "captureMs": 17845,
+      "archiveMs": 143,
+      "evictionMs": 29,
+      "elapsedMs": 47846
+    },
+    {
+      "targetId": 240,
+      "phase": "built-independently-verified",
+      "buildMs": 60141
+    },
+    {
+      "targetId": 240,
+      "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+      "corpusManifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+      "evidenceSha256": "71455dad10d7f6f654a3bfda3d5d8d3265152d6103e9fbc5dc4bec2069fe397a",
+      "targetManifestSha256": "40266092dbeabcaab6dcd7d99be9971e36e1ed480ea74f67ff60dfd684d21a28",
+      "inventorySha256": "e103a2f03f0a3e98693eecec42f334237ffe188aff5fbb697cde9107b7ad3508",
+      "phase": "archived-and-evicted",
+      "buildMs": 60141,
+      "verificationMs": 31757,
+      "captureMs": 18353,
+      "archiveMs": 130,
+      "evictionMs": 34,
+      "elapsedMs": 110427
+    },
+    {
+      "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+      "completed": 2,
+      "identitiesSha256": "06eabcc72dc1952ed5b46fa9a73c2355814d3d85e9a2b8ff28917e074c5ff3c6"
+    }
+  ],
+  "limitations": [
+    "Local timings are observed runs, not Worker benchmarks.",
+    "No editorial approvals or V2 activation made in phase A.",
+    "The initial CPU profile includes a 562.676 second sampling gap and is not an end-to-end speed benchmark."
+  ]
+}

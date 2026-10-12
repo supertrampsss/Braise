@@ -8,6 +8,9 @@ import {
 } from "./semantic-target-v2-common.mjs";
 import { validateSemanticTargetManifestContract, verifySemanticTargetUnderGuard } from "./verify-semantic-target-v2.mjs";
 
+import { archiveVerifiedRuntime } from "./semantic-runtime-archive.mjs";
+import { evictSemanticTarget } from "./evict-semantic-target-v2.mjs";
+
 const HASH = /^[0-9a-f]{64}$/;
 const EVIDENCE_FORMAT = "BEE2-editorial-neighborhood";
 const INDEX_FORMAT = "BEI2-editorial-evidence-index";
@@ -312,10 +315,11 @@ async function verifyEvidencePayloadAgainstCorpus(corpusDir, corpus, payload) {
   return { corpusId: actual.corpusId, targetId: actual.targetId, dictionarySize: actual.dictionarySize, neighbors: actual.neighbors };
 }
 
-/** @param {{corpusDir:string,targetsDir:string,evidenceDir:string,targetId:number,capturedAt?:string}} options */
-export async function captureEditorialEvidence({ corpusDir, targetsDir, evidenceDir, targetId, capturedAt = new Date().toISOString() }) {
+/** @param {{corpusDir:string,targetsDir:string,evidenceDir:string,targetId:number,capturedAt?:string,archiveDir?:string|null,evictAfterArchive?:boolean}} options */
+export async function captureEditorialEvidence({ corpusDir, targetsDir, evidenceDir, targetId, capturedAt = new Date().toISOString(), archiveDir = null, evictAfterArchive = false }) {
   corpusDir = resolve(corpusDir); targetsDir = resolve(targetsDir); evidenceDir = resolve(evidenceDir);
   if (!Number.isInteger(targetId) || targetId < 0 || targetId > 0xffff_ffff || !Number.isFinite(Date.parse(capturedAt))) throw new Error("Editorial evidence capture arguments are invalid");
+  if (evictAfterArchive && !archiveDir) throw new Error("Eviction after capture requires a complete runtime archive");
   const corpus = await loadActiveCorpus(corpusDir); const targetsRoot = join(targetsDir, corpus.manifest.corpusId, "targets");
   const canonicalTargetsRoot = await realpath(targetsRoot); const canonicalEvidenceDir = await canonicalDestination(evidenceDir);
   if (canonicalEvidenceDir === canonicalTargetsRoot || canonicalEvidenceDir.startsWith(`${canonicalTargetsRoot}${sep}`)) throw new Error("Editorial evidence must be stored outside target staging");
@@ -324,12 +328,18 @@ export async function captureEditorialEvidence({ corpusDir, targetsDir, evidence
   const evidenceIndex = await loadEditorialEvidenceIndex(evidenceDir, corpus);
   const currentReference = evidenceIndex.entries.find(entry => entry.targetId === targetId) ?? null;
   const currentEvidence = currentReference ? await loadEditorialEvidence({ corpus, evidenceDir, targetId, expectedSha256: currentReference.sha256 }) : null;
-  const guard = acquireTargetCacheGuard(targetsRoot, "exclusive");
-  try {
-    const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir: targetsDir, targetId, neighborCount: EXTENDED_NEIGHBOR_COUNT }, guard);
+  async function captureVerified(verified) {
+    const captureStarted = performance.now();
+    async function archive(payload, result) {
+      const captureMs = Math.round(performance.now() - captureStarted);
+      if (!archiveDir) return result;
+      const archiveStarted = performance.now();
+      const runtimeArchive = await archiveVerifiedRuntime({ targetsDir, archiveDir, corpus, verified, evidenceBytes: Buffer.from(`${JSON.stringify(payload, null, 2)}\n`), evidenceSha256: result.evidenceSha256 });
+      return { ...result, runtimeArchive, captureMs, archiveMs: Math.round(performance.now() - archiveStarted) };
+    }
     if (currentEvidence?.payload.schemaVersion === 2 && currentEvidence.payload.targetManifest.sha256 === verified.manifestSha256) {
       await verifyEvidencePayloadAgainstCorpus(corpusDir, corpus, currentEvidence.payload);
-      return { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: currentEvidence.sha256, file: currentEvidence.reference.file, neighbors: currentEvidence.payload.neighborhood.entries.length, idempotent: true };
+      return archive(currentEvidence.payload, { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: currentEvidence.sha256, file: currentEvidence.reference.file, neighbors: currentEvidence.payload.neighborhood.entries.length, idempotent: true });
     }
     const payload = validateEvidencePayload({
       schemaVersion: 2,
@@ -363,7 +373,19 @@ export async function captureEditorialEvidence({ corpusDir, targetsDir, evidence
     await installImmutable(join(evidenceDir, file), bytes);
     await verifyEvidencePayloadAgainstCorpus(corpusDir, corpus, payload);
     await installIndex({ evidenceDir, corpus, targetId, file, digest, capturedAt, payload });
-    return { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: digest, file, neighbors: verified.topNeighbors.length };
+    return archive(payload, { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: digest, file, neighbors: verified.topNeighbors.length });
+  }
+  if (evictAfterArchive) {
+    const result = await evictSemanticTarget({ corpusDir, outputDir: targetsDir, targetId, beforeEviction: captureVerified });
+    if (!result.evicted) throw new Error("Target disappeared before archival capture");
+    return { ...result.prepared, evicted: true, verificationMs: result.verificationMs, evictionMs: result.evictionMs };
+  }
+  const guard = acquireTargetCacheGuard(targetsRoot, "exclusive");
+  try {
+    const started = performance.now();
+    const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir: targetsDir, targetId, neighborCount: EXTENDED_NEIGHBOR_COUNT }, guard);
+    const verificationMs = Math.round(performance.now() - started);
+    return { ...await captureVerified(verified), verificationMs };
   } finally { releaseTargetCacheGuard(guard); }
 }
 
@@ -439,10 +461,10 @@ function parseArgs(argv) {
     if (!key?.startsWith("--") || value === undefined || Object.hasOwn(values, key)) throw new Error("Editorial evidence arguments are invalid");
     values[key] = value;
   }
-  const allowed = operation === "capture" ? new Set(["--corpus", "--targets", "--evidence", "--target-id"]) : operation === "expand" ? new Set(["--corpus", "--evidence", "--target-id", "--parent-sha256"]) : new Set(["--corpus", "--evidence", "--target-id", "--expected-sha256"]);
+  const allowed = operation === "capture" ? new Set(["--corpus", "--targets", "--evidence", "--target-id", "--archive"]) : operation === "expand" ? new Set(["--corpus", "--evidence", "--target-id", "--parent-sha256"]) : new Set(["--corpus", "--evidence", "--target-id", "--expected-sha256"]);
   if (Object.keys(values).some(key => !allowed.has(key)) || !values["--corpus"] || !values["--evidence"] || values["--target-id"] === undefined || operation === "capture" && !values["--targets"]) throw new Error("Editorial evidence arguments are incomplete");
   const common = { corpusDir: values["--corpus"], evidenceDir: values["--evidence"], targetId: Number(values["--target-id"]) };
-  if (operation === "capture") return { operation, options: { ...common, targetsDir: values["--targets"] } };
+  if (operation === "capture") return { operation, options: { ...common, targetsDir: values["--targets"], archiveDir: values["--archive"] ?? null } };
   if (operation === "expand") return { operation, options: { ...common, parentSha256: values["--parent-sha256"] ?? null } };
   return { operation, options: { ...common, expectedSha256: values["--expected-sha256"] ?? null } };
 }

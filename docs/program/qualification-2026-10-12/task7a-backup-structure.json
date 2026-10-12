@@ -1,0 +1,40 @@
+{
+  "v2-corpus-canonical.tar": {
+    "files": 250,
+    "directories": 1,
+    "safeRegularFilesAndDirectoriesOnly": true,
+    "uncompressedFileBytes": 1131801372,
+    "active": [
+      {
+        "schemaVersion": 1,
+        "manifest": "manifest-0f34b24492781eec-bc68b0703375da9e.json",
+        "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+        "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278"
+      }
+    ],
+    "firstEntries": [
+      "active.json",
+      "manifest-0f34b24492781eec-bc68b0703375da9e.json",
+      "segments/000000-f81e96a923117eb2.brv.gz"
+    ]
+  },
+  "v2-presence-canonical.tar": {
+    "files": 65794,
+    "directories": 2,
+    "safeRegularFilesAndDirectoriesOnly": true,
+    "uncompressedFileBytes": 43947650,
+    "active": [
+      {
+        "schemaVersion": 1,
+        "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+        "manifest": "manifest-e89d3e3c6a84a7ee-77178f6fc85de9d5.json",
+        "manifestSha256": "77178f6fc85de9d5523db3f13141b751abdeb1c6b2d3ad6a4d020346a795c426"
+      }
+    ],
+    "firstEntries": [
+      "active.json",
+      "manifest-e89d3e3c6a84a7ee-77178f6fc85de9d5.json",
+      "leaves/leaf-0000-660cf20a906aac1a.bpi.gz"
+    ]
+  }
+}

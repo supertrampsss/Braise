@@ -19,7 +19,7 @@ export async function buildSemanticIndex({ corpusDir, outputDir, maxLeafRawBytes
   const corpus = await loadActiveCorpus(corpusDir); const indexDir = join(outputDir, corpus.manifest.corpusId, "presence"); const leavesDir = join(indexDir, "leaves"); const prefixesDir = join(indexDir, "prefixes"); await mkdir(leavesDir, { recursive: true }); await mkdir(prefixesDir, { recursive: true });
   const guard = new DatabaseSync(join(indexDir, ".index-guard.sqlite"));
   try { guard.exec("PRAGMA busy_timeout=0; CREATE TABLE IF NOT EXISTS index_guard(id INTEGER PRIMARY KEY); BEGIN EXCLUSIVE;"); } catch { guard.close(); throw new Error("Another semantic index build owns this corpus"); }
-  const databasePath = join(indexDir, `.index-${randomUUID()}.sqlite`); let database;
+  const databasePath = join(indexDir, `.i${randomUUID().replaceAll("-", "")}.db`); let database;
   try {
     database = new DatabaseSync(databasePath); database.exec("PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; CREATE TABLE entries(prefix INTEGER NOT NULL, word BLOB PRIMARY KEY, id INTEGER UNIQUE NOT NULL); CREATE INDEX entries_prefix_word ON entries(prefix, word);"); const insert = database.prepare("INSERT INTO entries(prefix, word, id) VALUES (?, ?, ?)");
     let count = 0;

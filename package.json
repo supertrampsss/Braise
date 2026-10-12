@@ -17,6 +17,7 @@
     "semantic:v2:target:build": "node scripts/build-semantic-target-v2.mjs",
     "semantic:v2:target:verify": "node scripts/verify-semantic-target-v2.mjs",
     "semantic:v2:target:evict": "node scripts/evict-semantic-target-v2.mjs",
+    "semantic:v2:batch": "node scripts/qualify-semantic-batch-v2.mjs",
     "semantic:v2:evidence:capture": "node scripts/editorial-evidence-v2.mjs capture",
     "semantic:v2:evidence:expand": "node scripts/editorial-evidence-v2.mjs expand",
     "semantic:v2:evidence:verify": "node scripts/editorial-evidence-v2.mjs verify",

@@ -1,0 +1,13 @@
+{
+  "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+  "targetId": 91,
+  "targetWord": "pays",
+  "targetWordSha256": "125058724ada049e53bdf2e09c98e06bb247c1ae9c958de18b01aeda74fd02c0",
+  "dictionarySize": 1013881,
+  "valuePages": 16,
+  "orderPages": 16,
+  "manifestSha256": "ee333e66d388b407487e931a1ac38555ced5e2e183b4e0c882a036f1f7a3b155",
+  "contractHash": "6a2a97d8aca683c77b9c91dc9f1b818e75c11dfd182b4cd3f14ed48e06bab5aa",
+  "histogramSha256": "38aa3af9af0f35a00ccc6b2bdb7b4a3e954155f7e4ae5969950bdd0aa8c1b47c",
+  "elapsedMs": 645619
+}
