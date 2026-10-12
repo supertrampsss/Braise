@@ -42,7 +42,19 @@ export function createDeviceEnvelope(storage:ProfileStorage,snapshot:ProfileSnap
   const value:DeviceEnvelope={format:'braiz-personal-device-sync',version:1,corpus:'fr-fasttext-30000-v1',rules:'classic-v1',provenance:'personal-unverified',createdAt:now.toISOString(),profile:profile.text,games};const text=JSON.stringify(value);parseDeviceEnvelope(text,now);return text;
 }
 /** Reconcile the current memory facts and latest disk facts in a private staging copy only. */
-export function prepareDeviceUpload(storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date()){
+export type LiveDeviceGame={id:string;game:SavedGame};
+export function prepareDeviceUpload(storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date(),live?:LiveDeviceGame|null){
+  const incomplete='La partie en mémoire n’est pas entièrement enregistrée. Envoi refusé pour éviter une copie incomplète. Réessayez après une sauvegarde réussie.';
+  if(live&&(live.game.guesses.length||live.game.pins.length||live.game.hints)){
+    const raw=storage.getItem(PREFIX+live.id);if(!raw)fail(incomplete);
+    const saved=parseSavedGame(raw);try{assertGameFactsPreserved(live.game,saved);}catch{fail(incomplete);}
+  }
+  // Pending profile facts cannot stand in for a missing playable save, even without a mounted board.
+  for(const fact of snapshot.pendingActivities){
+    if(fact.type!=='guessAccepted'||fact.puzzleRef.variant!=='classic'||!validId(fact.puzzleRef.id,now)||snapshot.profile.wins.some(win=>win.id===fact.puzzleRef.id))continue;
+    const raw=storage.getItem(PREFIX+fact.puzzleRef.id);
+    if(!raw||!parseSavedGame(raw).guesses.some(guess=>guess.word===fact.word&&!guess.hint))fail(incomplete);
+  }
   const exported=createLocalProfileExport(snapshot,now);if(!exported.ok)fail(exported.reason);
   const staged=new SyncMemory(storage);
   const preview=inspectLocalProfileImport(exported.text,staged,now,snapshot);

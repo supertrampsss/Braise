@@ -240,8 +240,10 @@ export default function Game() {
   }
 
   const deviceSyncRevisionRef=useRef<()=>string|null>(()=>null);
+  const deviceSyncGameRef=useRef<()=>{id:string;game:SavedGame}|null>(()=>null);
+  useLayoutEffect(()=>{deviceSyncGameRef.current=()=>puzzle?{id:puzzle.id,game}:null;});
   useLayoutEffect(()=>{deviceSyncRevisionRef.current=()=>deviceBoardRevision({busy:loading||busy||submitting.current||journeyBusy,request:requestRef.current,navigation:navigationEpoch.current,puzzle:puzzle?.id??null});});
-  const deviceSyncGuard={revision:()=>deviceSyncRevisionRef.current(),admit:(expected:string|null)=>{
+  const deviceSyncGuard={currentGame:()=>deviceSyncGameRef.current(),revision:()=>deviceSyncRevisionRef.current(),admit:(expected:string|null)=>{
     return admitDeviceBoardMerge(expected,()=>deviceSyncRevisionRef.current(),()=>{requestRef.current++;clearDeferredUi();setFeedback(null);});
   }};
   const boardStorageRef=useRef<(key:string|null)=>void>(()=>{});
