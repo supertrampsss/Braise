@@ -3,14 +3,15 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 
+type WorkerEvent = { waitUntil?: (promise: Promise<unknown>) => void; request?: {url: string; method: string; mode: string}; respondWith?: (promise: Promise<Response>) => void };
 function harness() {
-  const handlers: Record<string, (event: any) => void> = {};
+  const handlers: Record<string, (event: WorkerEvent) => void> = {};
   const stored = new Map<string, Response>();
   const removed: string[] = [];
   let offline = false;
   runInNewContext(readFileSync("public/sw.js", "utf8"), {
     URL, Response,
-    self: { location: { origin: "https://braise.test" }, addEventListener: (name: string, handler: any) => handlers[name] = handler },
+    self: { location: { origin: "https://braise.test" }, addEventListener: (name: string, handler: (event: WorkerEvent) => void) => handlers[name] = handler },
     fetch: async () => { if (offline) throw new Error("network"); return new Response("public fallback", { headers: { "content-type": "text/html" } }); },
     caches: { open: async () => ({ put: async (key: string, value: Response) => stored.set(key, value), match: async (key: string) => stored.get(key) }), keys: async () => ["braise-offline-v0", "braise-offline-v1", "unrelated"], delete: async (key: string) => removed.push(key) },
   });

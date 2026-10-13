@@ -231,7 +231,7 @@ test("an explicit owner check recovers a lock left by a killed build process", a
     ]);
     assert.equal(recoveries.filter(result => result.status === "fulfilled").length, 1);
     assert.equal(recoveries.filter(result => result.status === "rejected" && /build or recovery/.test(String(result.reason))).length, 1);
-    const completed = recoveries.find((result): result is PromiseFulfilledResult<any> => result.status === "fulfilled")!;
+    const completed = recoveries.find((result): result is PromiseFulfilledResult<Awaited<ReturnType<typeof buildSemanticCorpus>>> => result.status === "fulfilled")!;
     assert.equal(completed.value.stats.accepted, 2);
     await verifySemanticCorpus({ sourcePath: paths.source, outputDir: paths.output });
   } finally { await remove(paths.root); }

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, type KeyboardEvent, type ReactNode } from 'react';
+import { useState, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { LEGACY_ARCHIVE_START_DATE, shiftCalendarDate, isCalendarDate } from '@/lib/calendar';
 import { formatDateFr } from '@/lib/format-fr';
 import type { LocalPlay } from '@/lib/play-hub';
@@ -10,7 +10,10 @@ export function ArchiveDateLayout({filtered,children}:{filtered:boolean;children
 export function ArchiveCalendar({max,selected,plays,disabled,onOpen}:{max:string;selected:string;plays:LocalPlay[];disabled:boolean;onOpen:(date:string)=>void}) {
   const safeSelection=isCalendarDate(selected) && selected >= LEGACY_ARCHIVE_START_DATE && selected <= max ? selected : max;
   const [month,setMonth] = useState(safeSelection.slice(0,7)), [filter,setFilter] = useState('all'), [focus,setFocus] = useState(safeSelection);
-  useEffect(()=>{setMonth(safeSelection.slice(0,7));setFocus(safeSelection);},[safeSelection]);
+  const [previousSelection,setPreviousSelection] = useState(safeSelection);
+  if (safeSelection !== previousSelection) {
+    setPreviousSelection(safeSelection);setMonth(safeSelection.slice(0,7));setFocus(safeSelection);
+  }
   const root = useRef<HTMLDivElement>(null);
   const first = `${month}-01`, date = new Date(`${first}T12:00:00Z`), count = new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth()+1,0)).getUTCDate();
   const state = (day:string) => { const play = plays.find(p => p.id === `daily-${day}`); return play?.game.guesses.some(g=>g.found) ? 'Terminé' : play ? 'Commencé' : 'Non joué'; };

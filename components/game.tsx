@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from "react";
-import { Menu, CalendarDays, Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, Loader2, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
+import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
+import { Menu, CalendarDays, Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -97,44 +97,13 @@ export default function Game() {
   const [collectionContext, setCollectionContext] = useState<string | undefined>();
   function refreshPlays() { try { setLocalPlays(readLocalPlays(localStorage)); } catch {} }
   function diagnostic(type: ProductEventType, context?: ProductEventContext) { try { recordProductEvent(localStorage, type, context ?? (journey ? "expedition" : collectionContext ? "collection" : mode)); } catch {} }
-  async function discover(replay = false) {
-    if (busy || discoveryPending.current) return;
-    discoveryPending.current=true;
-    const generation = requestRef.current, epoch = navigationEpoch.current;
-    setDiscoveryBusy(true); setDiscoveryNote("");
-    try {
-      const excluded = readEncountered(localStorage);
-      if (!excluded) throw new Error("L’historique de découverte est illisible et a été conservé. Vous pouvez reprendre une partie existante.");
-      const encountered: string[] = [];
-      for(let i=0;i<localStorage.length;i++) { const key=localStorage.key(i); if(key?.startsWith("braise.v1.game.")) encountered.push(key.slice("braise.v1.game.".length)); }
-      if(encountered.length > 3000) throw new Error("L’historique dépasse la limite de découverte. Reprenez une partie existante.");
-      const response = await fetch("/api/game", { method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"discover",excluded,encountered,replay}) });
-      const data = await response.json() as {error?:string;encountered:string[];exhausted:boolean;puzzle:(Puzzle & {targetIdentity:string}) | null};
-      if(generation !== requestRef.current || epoch !== navigationEpoch.current) return;
-      if(!response.ok) throw new Error(data.error || "Découverte indisponible.");
-      if(!rememberEncountered(localStorage,data.encountered)) setStorageWarning(true);
-      setDiscoveryExhausted(data.exhausted);
-      if(!data.puzzle) { setDiscoveryNote("Vous avez rencontré les 120 cibles V1 sur cet appareil. Vous pouvez les rejouer ; aucune nouvelle cible n’est annoncée."); return; }
-      navigate("game");
-      const loaded=await loadPuzzle("free",data.puzzle.seed);
-      if(loaded) { setDiscoveryExhausted(data.exhausted);setDiscoveryNote(replay ? "Rejeu choisi dans les 120 cibles V1. Les anciennes parties restent accessibles dans Explorer." : "Cible non rencontrée selon l’historique disponible sur cet appareil. Les parties commencées restent dans Explorer."); diagnostic("nextActivityOpened","free"); }
-    } catch(cause) { if(generation === requestRef.current && epoch === navigationEpoch.current) setDiscoveryNote(cause instanceof Error ? cause.message : "Connexion impossible."); }
-    finally { discoveryPending.current=false;setDiscoveryBusy(false); }
-  }
-  async function resumePlay(play: LocalPlay) {
-    navigate("game");
-    if(puzzle?.id===play.id && mode===play.mode && !play.context?.expedition) {diagnostic("gameResumed",play.context?.collection ? "collection" : play.mode);return;}
-    if(play.context?.expedition && EXTRA_MODES_ENABLED) { await openJourney(play.context.expedition,"gameResumed"); return; }
-    const loaded=await loadPuzzle(play.mode,play.mode === "daily" ? "" : play.locator,undefined,undefined,play.context?.collection);
-    if(loaded) diagnostic("gameResumed",play.context?.collection ? "collection" : play.mode);
-  }
   function downloadRefusedWord() {
     if(!refusedWord) return;
     const blob = new Blob([JSON.stringify({format:"braiz-lexicon-feedback",version:1,word:refusedWord,reason:"absent-v1",createdAt:new Date().toISOString()},null,2)],{type:"application/json"});
     const url=URL.createObjectURL(blob), link=document.createElement("a");link.href=url;link.download="braiz-mot-refuse.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);diagnostic("refusedWordReported");
   }
   const [flamePaused, setFlamePaused] = useState(false);
-  useEffect(() => { setFlamePaused(readLocal<boolean>("animationsPaused", false)); }, []);
+
   function toggleAnimations() { setFlamePaused(value => { writeLocal("animationsPaused", !value); return !value; }); }
   const [view, setView] = useState<"play" | "explore">("play");
   const viewRef = useRef<"play" | "explore">("play");
@@ -143,7 +112,13 @@ export default function Game() {
   const [mode, setMode] = useState<Mode>("daily");
   const [puzzle, setPuzzle] = useState<Puzzle | null>(null);
   const [game, setGame] = useState<SavedGame>(EMPTY_GAME);
-  const [profileSnapshot, setProfileSnapshot] = useState<ProfileSnapshot | null>(null);
+  const [profileState, setProfileState] = useState<{snapshot: ProfileSnapshot | null; checkedAt: number}>({snapshot:null,checkedAt:0});
+  const profileSnapshot = profileState.snapshot;
+  function setProfileSnapshot(update: SetStateAction<ProfileSnapshot | null>) {
+    // Snapshot actions can occur between clock ticks; admit their actual fresh instant.
+    const checkedAt = new Date().getTime();
+    setProfileState(current => ({snapshot:typeof update === "function" ? update(current.snapshot) : update,checkedAt}));
+  }
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -173,19 +148,8 @@ export default function Game() {
   const modalRef = useRef<Modal>(null);
   const lastLoad = useRef<PuzzleLoad>({ mode: "daily", locator: "" });
   const routeRestorerRef=useRef<()=>void>(()=>{});
-  routeRestorerRef.current=()=>{
-    const params=new URLSearchParams(location.search), destination=requestedGameSurface(new URL(location.href));
-    navigationEpoch.current++;journeyController.current?.abort();setJourneyBusy(false);
-    setSurface(destination === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : destination);setView(destination === "game" ? "play" : "explore");refreshPlays();
-    const archive=params.get("archive"), challenge=params.get("defi"), free=params.get("libre"), voyage=params.get("voyage");
-    if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage || !puzzle || puzzle.seed!==journey.seed) void openJourney(voyage,undefined,destination); }
-    else if(archive!==null) { if(puzzle?.id!==`daily-${archive}` || mode!=="archive") void loadPuzzle("archive",archive); }
-    else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==`free-${challenge}` || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined); }
-    else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==`free-${free}` || mode!=="free") void loadPuzzle("free",free); }
-    else if(mode!=="daily") void loadPuzzle("daily");
-  };
   const victoryRef = useRef<HTMLHeadingElement>(null);
-  modalRef.current = modal;
+  useLayoutEffect(() => { modalRef.current = modal; }, [modal]);
 
   useEffect(() => {
     const changed = viewRef.current !== view;
@@ -202,22 +166,19 @@ export default function Game() {
   const latest = game.guesses[game.guesses.length - 1];
   const ordered = [...game.guesses].sort((a, b) => sort === "heat" ? b.temperature - a.temperature || b.order - a.order : b.order - a.order);
   const today = now ? parisDate(new Date(now)) : "";
+  // Freeze only the validation instant, not the facts: refresh for each profile/day change.
+  // Reusing noon would incorrectly reject real facts recorded later that same day.
+  const [ritualInput, setRitualInput] = useState({ snapshot: profileSnapshot, day: today, instant: now });
+  if (ritualInput.snapshot !== profileSnapshot || ritualInput.day !== today) {
+    setRitualInput({ snapshot: profileSnapshot, day: today, instant: Math.max(now, profileState.checkedAt) });
+  }
   const ritual = useMemo(
-    () => now ? projectWeeklyRitual(profileSnapshot?.activities ?? [], profile.wins, new Date()) : null,
-    [profileSnapshot, today],
+    () => ritualInput.instant ? projectWeeklyRitual(ritualInput.snapshot?.activities ?? [], ritualInput.snapshot?.profile.wins ?? EMPTY_PROFILE.wins, new Date(ritualInput.instant)) : null,
+    [ritualInput],
   );
   const currentCollection=COLLECTIONS.find(item=>item.id===collectionContext);
   const suggestedPlay=resumeSuggestion(localPlays.filter(play=>EXTRA_MODES_ENABLED || !play.context?.collection && !play.context?.expedition),puzzle?.id);
   const nextCollectionIndex=currentCollection ? collectionProgress(profile.wins,currentCollection).next : -1;
-  async function nextActivity() {
-    if(journey) { await openJourney(journey.id,"nextActivityOpened"); return; }
-    if(currentCollection) {
-      if(nextCollectionIndex >= 0) { if(await loadPuzzle("challenge",currentCollection.seeds[nextCollectionIndex],undefined,undefined,currentCollection.id)) diagnostic("nextActivityOpened","collection"); }
-      else navigate("modes");
-      return;
-    }
-    if(suggestedPlay) await resumePlay(suggestedPlay); else await discover();
-  }
   const selectedCosmetic = ritual?.selectedCosmetic ?? "classic";
   const archiveMax = now ? latestArchiveDate(new Date(now)) : LEGACY_ARCHIVE_START_DATE;
   const tabMode = mode === "archive" ? "daily" : mode;
@@ -266,27 +227,8 @@ export default function Game() {
     }, duration);
   }
 
-  function enterGame() {
-    navigate("game"); setView("play");
-    if (!loading && (!puzzle || journey?.reward)) void loadPuzzle("daily");
-  }
-  function closeHelpAndFocusGame() {
-    modalReturnFocus.current = null;
-    enterGame();
-    modalRef.current = null;
-    setModal(null);
-    if (focusFrameRef.current !== null) cancelAnimationFrame(focusFrameRef.current);
-    const request = requestRef.current;
-    focusFrameRef.current = requestAnimationFrame(() => {
-      focusFrameRef.current = null;
-      if (request === requestRef.current && modalRef.current === null && viewRef.current === "play") inputRef.current?.focus({ preventScroll: true });
-    });
-  }
-
   async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string, destination?: GameSurface) {
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
-    // This ref is the mutable cancellation epoch shared with the sync commit gate.
-    // eslint-disable-next-line react-hooks/immutability
     const request = ++requestRef.current;
     setJourney(expedition ?? null);
     collection=COLLECTIONS.find(item=>item.id===collection && item.seeds.includes(locator))?.id;
@@ -388,35 +330,116 @@ export default function Game() {
     } finally { if (epoch === navigationEpoch.current) setJourneyBusy(false); }
   }
 
-  useEffect(() => {
-    const refreshProfile = (preservePending = true) => setProfileSnapshot(current => refreshLocalProfile(preservePending ? current ?? undefined : undefined));
-    refreshProfile();
-    const onStorage = (event: StorageEvent) => { if (isProfileStorageKey(event.key)) refreshProfile(event.key !== null); boardStorageRef.current(event.key); };
-    const onVisibility = () => { if (document.visibilityState === "visible") refreshProfile(); };
-    window.addEventListener("storage", onStorage);
-    document.addEventListener("visibilitychange", onVisibility);
-    const params = new URLSearchParams(window.location.search);
-    const archive = params.get("archive");
-    const challenge = params.get("defi");
-    const free = params.get("libre");
+  async function discover(replay = false) {
+    if (busy || discoveryPending.current) return;
+    discoveryPending.current=true;
+    const generation = requestRef.current, epoch = navigationEpoch.current;
+    setDiscoveryBusy(true); setDiscoveryNote("");
+    try {
+      const excluded = readEncountered(localStorage);
+      if (!excluded) throw new Error("L’historique de découverte est illisible et a été conservé. Vous pouvez reprendre une partie existante.");
+      const encountered: string[] = [];
+      for(let i=0;i<localStorage.length;i++) { const key=localStorage.key(i); if(key?.startsWith("braise.v1.game.")) encountered.push(key.slice("braise.v1.game.".length)); }
+      if(encountered.length > 3000) throw new Error("L’historique dépasse la limite de découverte. Reprenez une partie existante.");
+      const response = await fetch("/api/game", { method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"discover",excluded,encountered,replay}) });
+      const data = await response.json() as {error?:string;encountered:string[];exhausted:boolean;puzzle:(Puzzle & {targetIdentity:string}) | null};
+      if(generation !== requestRef.current || epoch !== navigationEpoch.current) return;
+      if(!response.ok) throw new Error(data.error || "Découverte indisponible.");
+      if(!rememberEncountered(localStorage,data.encountered)) setStorageWarning(true);
+      setDiscoveryExhausted(data.exhausted);
+      if(!data.puzzle) { setDiscoveryNote("Vous avez rencontré les 120 cibles V1 sur cet appareil. Vous pouvez les rejouer ; aucune nouvelle cible n’est annoncée."); return; }
+      navigate("game");
+      const loaded=await loadPuzzle("free",data.puzzle.seed);
+      if(loaded) { setDiscoveryExhausted(data.exhausted);setDiscoveryNote(replay ? "Rejeu choisi dans les 120 cibles V1. Les anciennes parties restent accessibles dans Explorer." : "Cible non rencontrée selon l’historique disponible sur cet appareil. Les parties commencées restent dans Explorer."); diagnostic("nextActivityOpened","free"); }
+    } catch(cause) { if(generation === requestRef.current && epoch === navigationEpoch.current) setDiscoveryNote(cause instanceof Error ? cause.message : "Connexion impossible."); }
+    finally { discoveryPending.current=false;setDiscoveryBusy(false); }
+  }
+  async function resumePlay(play: LocalPlay) {
+    navigate("game");
+    if(puzzle?.id===play.id && mode===play.mode && !play.context?.expedition) {diagnostic("gameResumed",play.context?.collection ? "collection" : play.mode);return;}
+    if(play.context?.expedition && EXTRA_MODES_ENABLED) { await openJourney(play.context.expedition,"gameResumed"); return; }
+    const loaded=await loadPuzzle(play.mode,play.mode === "daily" ? "" : play.locator,undefined,undefined,play.context?.collection);
+    if(loaded) diagnostic("gameResumed",play.context?.collection ? "collection" : play.mode);
+  }
+  async function nextActivity() {
+    if(journey) { await openJourney(journey.id,"nextActivityOpened"); return; }
+    if(currentCollection) {
+      if(nextCollectionIndex >= 0) { if(await loadPuzzle("challenge",currentCollection.seeds[nextCollectionIndex],undefined,undefined,currentCollection.id)) diagnostic("nextActivityOpened","collection"); }
+      else navigate("modes");
+      return;
+    }
+    if(suggestedPlay) await resumePlay(suggestedPlay); else await discover();
+  }
+  function enterGame() {
+    navigate("game"); setView("play");
+    if (!loading && (!puzzle || journey?.reward)) void loadPuzzle("daily");
+  }
+  function closeHelpAndFocusGame() {
+    modalReturnFocus.current = null;
+    enterGame();
+    setModal(null);
+    if (focusFrameRef.current !== null) cancelAnimationFrame(focusFrameRef.current);
+    const request = requestRef.current;
+    focusFrameRef.current = requestAnimationFrame(() => {
+      focusFrameRef.current = null;
+      if (request === requestRef.current && modalRef.current === null && viewRef.current === "play") inputRef.current?.focus({ preventScroll: true });
+    });
+  }
+
+  useLayoutEffect(() => { routeRestorerRef.current=()=>{
+    const params=new URLSearchParams(location.search), destination=requestedGameSurface(new URL(location.href));
+    navigationEpoch.current++;journeyController.current?.abort();setJourneyBusy(false);
+    setSurface(destination === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : destination);setView(destination === "game" ? "play" : "explore");refreshPlays();
+    const archive=params.get("archive"), challenge=params.get("defi"), free=params.get("libre"), voyage=params.get("voyage");
+    if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage || !puzzle || puzzle.seed!==journey.seed) void openJourney(voyage,undefined,destination); }
+    else if(archive!==null) { if(puzzle?.id!==`daily-${archive}` || mode!=="archive") void loadPuzzle("archive",archive); }
+    else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==`free-${challenge}` || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined); }
+    else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==`free-${free}` || mode!=="free") void loadPuzzle("free",free); }
+    else if(mode!=="daily") void loadPuzzle("daily");
+  }; });
+
+  // Effect events read the latest board/profile without restarting mount subscriptions.
+  const initializeBrowser = useEffectEvent(() => {
+    setProfileSnapshot(current => refreshLocalProfile(current ?? undefined));
+    setFlamePaused(readLocal<boolean>("animationsPaused", false));
     setArchiveDraft(latestArchiveDate());
-    const voyage = params.get("voyage");
-    const requestedSurface=requestedGameSurface(new URL(window.location.href));
-    if (EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface(requestedSurface); setView(requestedSurface === "game" ? "play" : "explore"); void openJourney(voyage,undefined,requestedSurface); }
+    const params = new URLSearchParams(window.location.search);
+    const archive = params.get("archive"), challenge = params.get("defi"), free = params.get("libre"), voyage = params.get("voyage");
+    const requestedSurface = requestedGameSurface(new URL(window.location.href));
+    if (EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface(requestedSurface); setView(requestedSurface === "game" ? "play" : "explore"); void openJourney(voyage, undefined, requestedSurface); }
     else if (archive !== null) void loadPuzzle("archive", archive);
     else if (!voyage && challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge, undefined, undefined, EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined);
-    else if(free && /^\d{1,10}$/.test(free)) void loadPuzzle("free",free);
+    else if (free && /^\d{1,10}$/.test(free)) void loadPuzzle("free", free);
     else void loadPuzzle("daily");
-    if(requestedSurface !== "game") { setSurface(requestedSurface === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : requestedSurface); setView("explore"); }
+    if (requestedSurface !== "game") { setSurface(requestedSurface === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : requestedSurface); setView("explore"); }
     refreshPlays();
-    const onPopState=() => routeRestorerRef.current();
-    window.addEventListener("popstate",onPopState);
     setNow(Date.now());
+  });
+  const checkDailyReset = useEffectEvent(() => {
+    if (mode === "daily" && puzzle && now >= Date.parse(puzzle.resetAt) && !loading && !busy && !loadError) {
+      toast("Le nouveau mot du jour est arrivé !");
+      void loadPuzzle("daily");
+    }
+  });
+  useEffect(() => {
+    // Defer the external browser snapshot so Strict Mode can cancel its abandoned mount.
+    let active = true;
+    queueMicrotask(() => { if (active) initializeBrowser(); });
+    const refreshProfile = (preservePending = true) => setProfileSnapshot(current => refreshLocalProfile(preservePending ? current ?? undefined : undefined));
+    const onStorage = (event: StorageEvent) => { if (isProfileStorageKey(event.key)) refreshProfile(event.key !== null); boardStorageRef.current(event.key); };
+    const onVisibility = () => { if (document.visibilityState === "visible") refreshProfile(); };
+    const onPopState = () => routeRestorerRef.current();
+    window.addEventListener("storage", onStorage);
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("popstate", onPopState);
     const tick = setInterval(() => setNow(Date.now()), 1000);
+    // Capture ref containers, not their changing epoch values; cleanup invalidates live work.
+    const journeyAbort = journeyController, navigation = navigationEpoch, request = requestRef;
     return () => {
-      journeyController.current?.abort();
-      navigationEpoch.current++;
-      requestRef.current += 1;
+      active = false;
+      journeyAbort.current?.abort();
+      navigation.current++;
+      request.current++;
       submitting.current = false;
       clearInterval(tick);
       clearDeferredUi();
@@ -425,12 +448,10 @@ export default function Game() {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
-
   useEffect(() => {
-    if (mode === "daily" && puzzle && now >= Date.parse(puzzle.resetAt) && !loading && !busy && !loadError) {
-      toast("Le nouveau mot du jour est arrivé !");
-      void loadPuzzle("daily");
-    }
+    let active = true;
+    queueMicrotask(() => { if (active) checkDailyReset(); });
+    return () => { active = false; };
   }, [now, puzzle, mode, loading, busy, loadError]);
 
   // Device imports change durable saves; refresh the already selected board silently.
@@ -468,13 +489,14 @@ export default function Game() {
     } else if(await loadPuzzle(value as Mode)) diagnostic("gameOpened",value as Mode);
   }
   function revealArchives() {
-    setArchiveDraft(current => current || latestArchiveDate(new Date(now || Date.now())));
+    const latest = latestArchiveDate(now ? new Date(now) : new Date());
+    setArchiveDraft(current => current || latest);
     setArchiveError("");
     setArchiveOpen(true);
   }
   async function openArchive(event: FormEvent) {
     event.preventDefault();
-    const message = archiveDateError(archiveDraft, new Date(now || Date.now()));
+    const message = archiveDateError(archiveDraft, now ? new Date(now) : new Date());
     setArchiveError(message);
     if (message || busy) return;
     if(await loadPuzzle("archive", archiveDraft)) diagnostic("gameOpened","archive");
@@ -551,7 +573,7 @@ export default function Game() {
     url.searchParams.delete("defi"); url.searchParams.delete("archive");
     if (mode === "archive" && puzzle) url.searchParams.set("archive", puzzle.date);
     else if (mode !== "daily") url.searchParams.set("defi", puzzle?.seed || "0");
-    return `🔥 BRAIZ ${mode === "daily" ? `du ${puzzle?.date}` : mode === "archive" ? `· Archive du ${puzzle?.date}` : "· Défi"}\n${solved ? "Trouvé" : "En piste"} en ${game.guesses.length} essais · ${game.hints ? `${game.hints} indice(s)` : "sans indice"}\n${journey}${solved && !journey.endsWith("🟩") ? "🟩" : ""}\nVotre tour ! ${url.toString()}`;
+    return `🔥 BRAIZ ${mode === "daily" ? `du ${puzzle?.date}` : mode === "archive" ? `· Archive du ${puzzle?.date}` : "· Défi"}\n${solved ? "Trouvé" : "En piste"} en ${game.guesses.length} essai${game.guesses.length === 1 ? "" : "s"} · ${game.hints ? `${game.hints} indice${game.hints === 1 ? "" : "s"}` : "sans indice"}\n${journey}${solved && !journey.endsWith("🟩") ? "🟩" : ""}\nVotre tour ! ${url.toString()}`;
   }
   async function shareResult() {
     const text = resultText();
@@ -593,6 +615,7 @@ export default function Game() {
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
       {surface === "modes" && <section aria-label="Explorer"><ResumeHub plays={localPlays} currentId={puzzle?.id} onResume={play=>void resumePlay(play)} onDiscover={()=>void discover()} /><div className="play-hub"><a className="secondary-button" href="/entrainement">Entraînement guidé · 3 parcours et pack hors ligne</a><button className="secondary-button" onClick={()=>{ navigate("game");revealArchives(); }}>Explorer les archives</button><button className="secondary-button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer le tutoriel</button>{discoveryNote && <p role="status">{discoveryNote}</p>}{discoveryExhausted && <button className="secondary-button" onClick={()=>void discover(true)}>Rejouer une cible</button>}</div></section>}
       {EXTRA_MODES_ENABLED && surface === "modes" && <section className="reference-modes" aria-label="Autres modes"><button className="reference-mode selected" onClick={() => {setView("play");navigate("game");void changeMode("daily");}}><span><strong>Le mot du jour</strong><small>Un mot à découvrir chaque jour</small></span></button><button className="reference-mode" onClick={() => {setView("explore");navigate("voyage");}}><span><strong>Voyage</strong><small>Des chapitres à votre rythme</small></span></button><a className="reference-mode" href="/duels"><span><strong>Entre amis</strong><small>Un défi, chacun son tour</small></span></a></section>}
+      {EXTRA_MODES_ENABLED && surface === "modes" && <nav className="play-hub" aria-label="Parcours avancés"><a className="secondary-button" href="/espace">Mes parties en ligne</a><a className="secondary-button" href="/cercles">Mes cercles</a><a className="secondary-button" href="/studio">Studio · créer et partager</a><a className="secondary-button" href="/laboratoire">Laboratoire · L’intrus et Deux braises</a><a className="secondary-button" href="/integration">Intégration du jeu</a></nav>}
       {surface === "profile" && (profileSnapshot && now ? <ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onDeviceSync={receiveDeviceSync} deviceSyncGuard={deviceSyncGuard} onBack={() => navigate("game")} /> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
 
       <div hidden={surface !== "game"} className={`play-view ${journey ? "voyage-play" : ""}`}>
@@ -626,7 +649,7 @@ export default function Game() {
               {mode === "free" && <p className="free-discovery-note">Libre · 120 cibles V1. Vos parties commencées restent dans Explorer. Les anciens liens conservent leur mot.</p>}
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essais, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Cette partie commencée attend votre prochain mot.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><p className="game-guidance">Le sens compte, pas les lettres. Plus la température monte, plus le sens est proche. <button className="text-action" type="button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer en 3 étapes</button></p><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); setRefusedWord(""); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback proximity-rule" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <span><span style={{ color: warmth(latest.temperature).color }}>Dernier essai : {latest.word} : {formatScoreFr(latest.temperature)}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></span> : null)}</div></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essai{game.guesses.length === 1 ? "" : "s"}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Cette partie commencée attend votre prochain mot.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><p className="game-guidance">Le sens compte, pas les lettres. Plus la température monte, plus le sens est proche. <button className="text-action" type="button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer en 3 étapes</button></p><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); setRefusedWord(""); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback proximity-rule" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Proposer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <span><span style={{ color: warmth(latest.temperature).color }}>Dernier essai : {latest.word} : {formatScoreFr(latest.temperature)}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></span> : null)}</div></div>}
               {refusedWord && <div className="refused-word-report"><p>Ce refus concerne le lexique V1. Votre mot reste dans le champ. Vous pouvez télécharger volontairement une fiche contenant « {refusedWord} » pour une revue ultérieure ; aucun envoi automatique.</p><button className="secondary-button" onClick={downloadRefusedWord}>Télécharger le signalement</button></div>}
               <p id="proximity-rule" className="game-guidance">La température mesure une proximité, pas une probabilité. Le rang 1 est le meilleur sur {puzzle?.vocabularySize.toLocaleString("fr-FR") ?? "le dictionnaire"} mots.</p>
               {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
@@ -635,8 +658,8 @@ export default function Game() {
                 <div className="heat-meter" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, temperature))}%` }} /></div>
                 {isRecord && <span className="compact-record">Nouvelle meilleure piste</span>}
               </div>}
-              <div className="game-bottom"><span><Target size={16} /><b>{game.guesses.length}</b> essai{game.guesses.length > 1 ? "s" : ""}</span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `#${best.rank}` : "Hors top 1 000"}</b><span className="rank-suffix">{best.rank <= 1000 ? "en proximité" : ""}</span></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span><button className="hint-button" onClick={() => submit(undefined, true)} disabled={loading || busy || solved || game.hints >= 3 || game.guesses.length < 5} title={game.guesses.length < 5 ? "Votre premier indice se débloque après 5 essais" : "Ajouter une piste proche du mot secret"}><Lightbulb size={16} /><span>Indice</span><span className="hint-count">{3 - game.hints}</span></button></div>
-              <p className="hint-progress" role="status">{game.guesses.length < 5 ? `Indice après 5 essais · ${game.guesses.length}/5 · encore ${5-game.guesses.length} essai(s).` : `${3-game.hints} indice(s) restant(s) sur 3. Les indices ajoutent une piste identifiée dans l’historique.`}</p>
+              <div className="game-bottom"><span><Target size={16} /><b>{game.guesses.length}</b> essai{game.guesses.length > 1 ? "s" : ""}</span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `#${best.rank}` : "Hors top 1 000"}</b><span className="rank-suffix">{best.rank <= 1000 ? "en proximité" : ""}</span></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span><button className="hint-button" onClick={() => submit(undefined, true)} disabled={loading || busy || solved || game.hints >= 3 || game.guesses.length < 5} title={solved ? "Cette partie est terminée" : game.guesses.length < 5 ? "Votre premier indice se débloque après 5 essais" : "Ajouter une piste proche du mot secret"}><Lightbulb size={16} /><span>Indice</span><span className="hint-count">{3 - game.hints}</span></button></div>
+              {!solved && <p className="hint-progress" role="status">{game.guesses.length < 5 ? `Indice après 5 essais · ${game.guesses.length}/5 · encore ${5-game.guesses.length} essai${5-game.guesses.length === 1 ? "" : "s"}.` : `${3-game.hints} indice${3-game.hints === 1 ? "" : "s"} restant${3-game.hints === 1 ? "" : "s"} sur 3. Les indices ajoutent une piste identifiée dans l’historique.`}</p>}
             </>}
           </div></section>
 
@@ -667,7 +690,7 @@ export default function Game() {
       </section>}
       {(storageWarning || profileSnapshot && ["partial", "corrupt", "unsupported", "conflict", "memory-only"].includes(profileSnapshot.status)) && <p className="storage-warning" role="status" aria-live="polite" aria-atomic="true">{profileSnapshot?.status === "unsupported" ? "Cette sauvegarde provient d’une version plus récente de BRAIZ. Elle n’a pas été modifiée." : profileSnapshot?.status === "corrupt" ? "La sauvegarde locale est illisible. Les données existantes ont été conservées sans être remplacées." : profileSnapshot?.status === "conflict" ? "Deux anciennes sauvegardes différentes ont été détectées. Elles ont été conservées sans fusion automatique." : profileSnapshot?.status === "partial" ? "Une partie de votre ancienne sauvegarde n’a pas pu être reprise. Les éléments valides restent disponibles." : "La sauvegarde est indisponible dans ce navigateur. Vous pouvez continuer à jouer, mais votre progression risque d’être perdue en quittant ou en rechargeant cette page."}</p>}
       <AdPlacement />
-      <footer className="site-footer"><a className="footer-brand" href="/">braiz.</a><div><button onClick={() => setModal("privacy")}>Confidentialité</button><button onClick={() => setModal("help")}>Les règles</button></div></footer>
+      <footer className="site-footer"><button className="footer-brand" type="button" onClick={() => navigate("game")}>braiz.</button><div><button onClick={() => setModal("privacy")}>Confidentialité</button><button onClick={() => setModal("help")}>Les règles</button></div></footer>
     </main>
 
     <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog" onCloseAutoFocus={event => {
@@ -684,12 +707,12 @@ export default function Game() {
         const owner=document.activeElement;
         if(surface!=="game") navigate("game",false);
         tutorialReturnFocus.current={request:requestRef.current,navigation:navigationEpoch.current,owner};
-        modalRef.current=null;setModal(null);
+        setModal(null);
       }}/>}
       {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations. Après 5 essais, vous disposez de 3 indices gratuits. Ils sont signalés dans le résultat partagé.</p></div></li></ol><div className="modal-note">La température traduit une proximité calculée, pas une probabilité. Un contraire peut être proche. Les accents manquants sont acceptés si le mot est identifiable.</div><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer</button></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
-      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Le calcul des mots</h3><p>Vos propositions sont envoyées au serveur pour calculer leur proximité. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Seul un écran de secours neutre est mis en cache, sans proposition, résultat ni page privée.</p></div>}
-      {modal === "share" && <><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}
+      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
+      {modal === "share" && <><p role="status">La copie automatique n’a pas abouti. Sélectionnez le texte ci-dessous et copiez-le manuellement.</p><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}
     </DialogContent></Dialog>
   </div>;
 }

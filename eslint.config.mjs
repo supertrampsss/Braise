@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated QA bundles and local runtime state are not application source.
+    "work/**",
+    ".sites-runtime/**",
+    ".wrangler/**",
+    "public/training/*.js",
+    "worker-configuration.d.ts",
   ]),
   {
     files: ["components/ui/**/*.{ts,tsx}", "hooks/use-mobile.ts"],

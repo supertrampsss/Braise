@@ -14,7 +14,7 @@ export function warmth(temperature: number) {
 }
 export function getStreak(wins: Win[], today: string) {
   const days = new Set(wins.filter(w => w.mode === "daily").map(w => w.date));
-  let cursor = new Date(`${today}T12:00:00Z`);
+  const cursor = new Date(`${today}T12:00:00Z`);
   if (!days.has(today)) cursor.setUTCDate(cursor.getUTCDate() - 1);
   let streak = 0;
   while (days.has(cursor.toISOString().slice(0, 10))) { streak++; cursor.setUTCDate(cursor.getUTCDate() - 1); }

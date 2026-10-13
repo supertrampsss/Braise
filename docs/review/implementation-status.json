@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "phase": "task-8a-unpublished-candidate",
+  "updatedOnParis": "2026-10-13",
+  "baseCommit": "7b089800d29dfec9ff217a7edfdea204dcdc91a6",
+  "publication": "none",
+  "advancedEntry": "enabled-on-unpublished-candidate",
+  "final44AcceptanceGate": "pending-task-8b",
+  "phaseA": {
+    "focusedTests": {
+      "passed": 141,
+      "failed": 0,
+      "skipped": 0,
+      "log": "work/task8a-tests-final.log"
+    },
+    "typecheck": {
+      "exit": 0,
+      "log": "work/task8a-typecheck-final.log"
+    },
+    "lint": {
+      "exit": 0,
+      "errors": 0,
+      "warnings": 4,
+      "log": "work/task8a-lint-final.log"
+    },
+    "verifiedBuild": {
+      "exit": 0,
+      "log": "work/task8a-build-final.log"
+    },
+    "gameLint": {
+      "errors": 0,
+      "warnings": 0,
+      "log": "work/task8a-game-lint-final.log"
+    },
+    "frozenProducerDependenciesUnchanged": 9,
+    "trainingJsCssByteIdentical": true
+  },
+  "reusedProofs": [
+    {
+      "scope": "authenticated sync, invitations, circle ownership/CAS",
+      "source": ".superpowers/sdd/2026-10-12-full-review/task-4-report.md",
+      "detail": "task4 fix1 real isolated D1; fix2 only component changes"
+    },
+    {
+      "scope": "Studio duplication, immutable publication, participation/projection, withdrawal/auth",
+      "source": ".superpowers/sdd/2026-10-12-full-review/task-5-report.md",
+      "detail": "fix1 real isolated D1 migrations0000-0007"
+    },
+    {
+      "scope": "actual Worker training download/offline and neutral upgrade",
+      "source": "work/qa-training-worker-final-controller.json",
+      "secondarySource": "work/qa-neutral-upgrade-final-controller.json",
+      "detail": "controller proof retained with its original date; UI/native/browser tests not rerun here"
+    }
+  ],
+  "pending": [
+    {
+      "scope": "task7-b2-D30",
+      "detail": "400 editorial approvals, 365-day calendar, runtime/R2/Worker activation; numerical jobs ongoing, no completion claimed"
+    },
+    {
+      "scope": "controller actual browser UI QA",
+      "detail": "newly enabled routes, keyboard/focus/responsive/private sync/native clipboard/manual fallback/embed; no screenreader or native calendar certification claimed"
+    },
+    {
+      "scope": "task8-b",
+      "detail": "fresh independent review, all44 traced matrix, ONE final full suite after7B2, wholebranch gate and authorized controller publication"
+    }
+  ],
+  "warnings": [
+    {
+      "file": "components/flame-scene.tsx",
+      "count": 2,
+      "reason": "original native flame image artwork preserved"
+    },
+    {
+      "file": "scripts/build-semantic-shards.mjs",
+      "count": 1,
+      "reason": "existing unused scores destructuring; V1 producer unchanged"
+    },
+    {
+      "file": "scripts/verify-semantic-target-v2.mjs",
+      "count": 1,
+      "reason": "existing corpusDir unused; immutable numerical job dependency, deliberately unchanged"
+    }
+  ]
+}

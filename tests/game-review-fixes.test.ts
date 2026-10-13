@@ -96,8 +96,8 @@ test('I4 navigation during pending journey GET rejects every old game and route 
 });
 test('M1 filtered archive layout is explicitly a list, without misleading weekday columns',()=>{
   const child=createElement('button',{'aria-label':'1 octobre 2026, Commencé'},'1 octobre 2026 · En cours');
-  const filtered=renderToStaticMarkup(createElement(ArchiveDateLayout,{filtered:true,children:child}));assert.match(filtered,/Liste des dates filtrées/);assert.match(filtered,/1 octobre 2026/);assert.ok(!filtered.includes('calendar-weekdays'));assert.ok(!filtered.includes('>Lun<'));
-  const calendar=renderToStaticMarkup(createElement(ArchiveDateLayout,{filtered:false,children:child}));assert.match(calendar,/calendar-weekdays/);assert.match(calendar,/>Jeu</);
+  const filtered=renderToStaticMarkup(createElement(ArchiveDateLayout,{filtered:true} as Parameters<typeof ArchiveDateLayout>[0],child));assert.match(filtered,/Liste des dates filtrées/);assert.match(filtered,/1 octobre 2026/);assert.ok(!filtered.includes('calendar-weekdays'));assert.ok(!filtered.includes('>Lun<'));
+  const calendar=renderToStaticMarkup(createElement(ArchiveDateLayout,{filtered:false} as Parameters<typeof ArchiveDateLayout>[0],child));assert.match(calendar,/calendar-weekdays/);assert.match(calendar,/>Jeu</);
 });
 
 test('explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current',()=>{
@@ -128,7 +128,8 @@ for(const context of [{mode:'daily' as const,locator:''},{mode:'challenge' as co
 });
 
 test('F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition',async()=>{
-  let request=0,navigation=1,screen:GameSurface='voyage',url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),error='',statusCalls=0,getCalls=0;
+  const navigation=1;
+  let request=0,screen:GameSurface='voyage',url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),error='',statusCalls=0,getCalls=0;
   const edition=EXPEDITIONS[0];
   const status={id:edition.id,completed:0,length:edition.length,seed:'042'};
   const resumed=await resumeExpedition(edition.id,{status:async()=>{statusCalls++;return status;},readGame:()=>accepted,isCurrent:()=>true});
@@ -150,7 +151,8 @@ test('F2 status 200 then stage 503 exposes the contextual error on Game and retr
 });
 
 for(const failure of ['503','network']) test(`F2 obsolete Voyage ${failure} cannot replace later Profile with its error surface`,async()=>{
-  let request=1,navigation=1,screen:GameSurface='voyage',url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),error='',commits=0;
+  const request=1;
+  let navigation=1,screen:GameSurface='voyage',url=surfaceUrl(new URL('https://braiz.test/'),'voyage'),error='',commits=0;
   const pending=deferred<void>();const started={request,navigation};
   const descriptor:PuzzleLoad={mode:'challenge',locator:'042',sessionSave:accepted,expedition:{id:EXPEDITIONS[0].id,completed:0,length:3,seed:'042'},destination:'game'};
   const job=admitPuzzleLoad(descriptor,async()=>{await pending.promise;if(failure==='network') throw new TypeError('network');return {status:503};},{started,current:()=>({request,navigation})},()=>{commits++;throw new Error('503');},(cause,load)=>{error=String(cause);url=failedPuzzleUrl(url,load);screen=load.destination!;});

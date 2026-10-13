@@ -24,5 +24,8 @@ test("the cosmetic picker names equipped and locked states", async () => {
 test("the game memoizes weekly history independently from the one-second clock", async () => {
   const source = await readFile(new URL("../../components/game.tsx", import.meta.url), "utf8");
   assert.match(source, /const ritual = useMemo/);
-  assert.match(source, /\[profileSnapshot, today\]/);
+  assert.match(source, /\[ritualInput\]/);
+  assert.match(source, /snapshot: profileSnapshot, day: today, instant: now/);
+  assert.match(source, /new Date\(ritualInput.instant\)/);
+  assert.match(source, /Math.max\(now, profileState.checkedAt\)/);
 });
