@@ -1,0 +1,25 @@
+{
+  "note": "Captured while initial real8 benchmark ran; scripts unchanged throughout that run",
+  "files": [
+    {
+      "file": "scripts/build-semantic-target-v2.mjs",
+      "sha256": "fc1d0b53acfbb8cdcd7623ba2e704201b32b66116ea322d7a98c539b0493584c"
+    },
+    {
+      "file": "scripts/verify-semantic-target-v2.mjs",
+      "sha256": "7effd47cfbef16465f7a7e4fd5868b555fd33bbe9d0e96f855ae47ad2af2a3c7"
+    },
+    {
+      "file": "scripts/qualify-semantic-batch-v2.mjs",
+      "sha256": "63efc889fb5c33dc2158c9eb351a37d022ef1b3bd21e45cc9d7ec41fb73e794c"
+    },
+    {
+      "file": "scripts/editorial-evidence-v2.mjs",
+      "sha256": "081128bbf7a548add19e9a09507bf1044cdaf73d63c9444ef3a0ad6f1b8b2228"
+    },
+    {
+      "file": "scripts/evict-semantic-target-v2.mjs",
+      "sha256": "1baf5acebc578252dfe6952ecb3f48479ba405268f5dd8c6a62be0175977d134"
+    }
+  ]
+}

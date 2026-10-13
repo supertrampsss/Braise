@@ -14,6 +14,21 @@ const PAGE_HEADER_BYTES = 64;
 const MAX_PAGE_RAW_BYTES = PAGE_HEADER_BYTES + 262_144 * 6;
 const HASH = /^[0-9a-f]{64}$/;
 
+// Local disposable verifier state only: 2-byte score + 4-byte rank + 4-byte
+// stable-order id, capped at 10 MiB. Larger corpora keep the disk-backed oracle.
+export const MAX_MEMORY_VERIFICATION_RECORDS = 1_048_576;
+export function targetVerificationStorage(dictionarySize, preference = "auto") {
+  if (!["auto", "sqlite"].includes(preference) || !Number.isSafeInteger(dictionarySize) || dictionarySize < 1 || dictionarySize > 0xffff_ffff) throw new Error("Invalid target verification storage request");
+  return preference === "auto" && dictionarySize <= MAX_MEMORY_VERIFICATION_RECORDS ? "bounded-memory" : "sqlite";
+}
+
+function* memoryRows(scores, ranks, ids = null) {
+  for (let position = 0; position < scores.length; position++) {
+    const id = ids ? ids[position] : position;
+    yield { id, score: scores[id], rank: ranks[id] };
+  }
+}
+
 function validatePageInventory(pages, kind, manifest) {
   const firstKey = kind === "values" ? "firstId" : "firstPosition";
   const bytesPerEntry = kind === "values" ? 6 : 4;
@@ -124,18 +139,9 @@ async function* orderRecords(targetDir, manifest, corpusManifestSha256, contract
   if (nextPosition !== manifest.stats.dictionarySize) throw new Error("Order pages do not cover every admitted word");
 }
 
-async function findTarget(corpusDir, corpusManifest, targetId) {
-  for await (const { entries } of corpusEntries(corpusDir, corpusManifest)) {
-    if (targetId >= entries[0].id && targetId <= entries.at(-1).id) return entries[targetId - entries[0].id];
-  }
-  throw new Error("Target id is absent from corpus segments");
-}
-
-/** Internal entry point for a caller that already owns the cache guard. */
-export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null, neighborCount = 12 }, cacheGuard) {
-  corpusDir = resolve(corpusDir); outputDir = resolve(outputDir);
+async function prepareVerification({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null, neighborCount = 12, verificationStorage = "auto" }, cacheGuard, corpus) {
   if (!Number.isInteger(neighborCount) || neighborCount < 1 || neighborCount > 256) throw new Error("Target neighbor count is invalid");
-  const corpus = await loadActiveCorpus(corpusDir); const targetDir = join(outputDir, corpus.manifest.corpusId, "targets", String(targetId).padStart(10, "0"));
+  const targetDir = join(outputDir, corpus.manifest.corpusId, "targets", String(targetId).padStart(10, "0"));
   assertTargetCacheGuard(cacheGuard, join(outputDir, corpus.manifest.corpusId, "targets"));
   let active = null;
   if (!manifestName) { active = JSON.parse(await readFile(join(targetDir, "active.json"), "utf8")); manifestName = active.manifest; expectedManifestSha256 = active.manifestSha256; }
@@ -143,38 +149,56 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
   const manifestBytes = await readFile(join(targetDir, manifestName)); if (sha256(manifestBytes) !== expectedManifestSha256) throw new Error("Target manifest hash mismatch");
   const manifest = JSON.parse(manifestBytes.toString("utf8"));
   const { contractHash } = validateSemanticTargetManifestContract({ manifest, corpus, targetId, active });
-  const target = await findTarget(corpusDir, corpus.manifest, targetId);
-  if (sha256(Buffer.from(target.word)) !== manifest.target.wordSha256) throw new Error("Target word identity mismatch");
-  const targetNorm = vectorNorm(target.vector, corpus.manifest.config.dimensions);
-  const databasePath = join(targetDir, `.v${randomUUID().replaceAll("-", "")}.db`); let database;
-  const histogram = new Array(SCORE_BUCKETS).fill(0); const records = valueRecords(targetDir, manifest, corpus.manifestSha256, contractHash)[Symbol.asyncIterator]();
-  try {
-    database = new DatabaseSync(databasePath); database.exec("PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; CREATE TABLE scored(id INTEGER PRIMARY KEY, score INTEGER NOT NULL, rank INTEGER NOT NULL); CREATE INDEX score_order ON scored(score DESC, id ASC);");
-    const insert = database.prepare("INSERT INTO scored(id, score, rank) VALUES (?, ?, ?)"); let seen = 0;
-    for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) {
-      database.exec("BEGIN");
-      try {
-        for (const entry of entries) {
-          const stored = await records.next(); if (stored.done || stored.value.id !== entry.id) throw new Error(`Missing target value for word id ${entry.id}`);
-          const expected = independentScore(entry.vector, target.vector, corpus.manifest.config.dimensions, targetNorm, entry.id === targetId);
-          if (stored.value.score !== expected) throw new Error(`Target score mismatch for word id ${entry.id}`);
-          scoreIndex(stored.value.score); histogram[scoreIndex(stored.value.score)]++; insert.run(entry.id, stored.value.score, stored.value.rank); seen++;
-        }
-        database.exec("COMMIT");
-      } catch (error) { database.exec("ROLLBACK"); throw error; }
-    }
+  const storage = targetVerificationStorage(manifest.stats.dictionarySize, verificationStorage);
+  const memory = storage === "bounded-memory" ? { scores: new Int16Array(manifest.stats.dictionarySize), ranks: new Uint32Array(manifest.stats.dictionarySize) } : null;
+  return { corpus, targetDir, targetId, manifest, manifestBytes, expectedManifestSha256, contractHash, neighborCount, memory,
+    databasePath: join(targetDir, `.v${randomUUID().replaceAll("-", "")}.db`), database: null, insert: null,
+    histogram: new Array(SCORE_BUCKETS).fill(0), records: valueRecords(targetDir, manifest, corpus.manifestSha256, contractHash)[Symbol.asyncIterator](),
+    target: null, targetNorm: null, targetNumbers: null, topWordCandidates: [], seen: 0 };
+}
+
+async function checkStoredValue(entry, expected, state) {
+  const stored = await state.records.next();
+  if (stored.done || stored.value.id !== entry.id) throw new Error(`Missing target value for word id ${entry.id}`);
+  if (stored.value.score !== expected) throw new Error(`Target score mismatch for word id ${entry.id}`);
+  const { topWordCandidates, neighborCount } = state; const lastWord = topWordCandidates.at(-1);
+  if (topWordCandidates.length < neighborCount + 1 || expected > lastWord.score || expected === lastWord.score && entry.id < lastWord.id) {
+    let position = 0;
+    while (position < topWordCandidates.length && (topWordCandidates[position].score > expected || topWordCandidates[position].score === expected && topWordCandidates[position].id < entry.id)) position++;
+    topWordCandidates.splice(position, 0, { id: entry.id, score: expected, word: entry.word });
+    if (topWordCandidates.length > neighborCount + 1) topWordCandidates.pop();
+  }
+  state.histogram[scoreIndex(stored.value.score)]++;
+  if (state.memory) { state.memory.scores[entry.id] = stored.value.score; state.memory.ranks[entry.id] = stored.value.rank; }
+  else state.insert.run(entry.id, stored.value.score, stored.value.rank);
+  state.seen++;
+}
+
+async function finishVerification(state) {
+  const { corpus, targetDir, targetId, manifest, manifestBytes, expectedManifestSha256, contractHash, neighborCount,
+    memory, database, histogram, records, target, topWordCandidates, seen } = state;
     if (!(await records.next()).done || seen !== manifest.stats.dictionarySize) throw new Error("Target value inventory has extra or missing records");
     if (JSON.stringify(histogram) !== JSON.stringify(manifest.histogram)) throw new Error("Target histogram mismatch");
     const higher = new Uint32Array(SCORE_BUCKETS); let above = 0;
     for (let index = SCORE_BUCKETS - 1; index >= 0; index--) { higher[index] = above; above += histogram[index]; }
-    for (const row of database.prepare("SELECT id, score, rank FROM scored ORDER BY id ASC").iterate()) if (row.rank !== higher[scoreIndex(row.score)] + 1) throw new Error(`Competition rank mismatch for word id ${row.id}`);
+    for (const row of memory ? memoryRows(memory.scores, memory.ranks) : database.prepare("SELECT id, score, rank FROM scored ORDER BY id ASC").iterate()) if (row.rank !== higher[scoreIndex(row.score)] + 1) throw new Error(`Competition rank mismatch for word id ${row.id}`);
+    let sortedIds = null;
+    if (memory) {
+      sortedIds = new Uint32Array(seen);
+      const nextPosition = Uint32Array.from(higher);
+      // Visit ids in increasing order, placing each in its score bucket. Thus
+      // ties are stable by id, independently of the builder's comparator sort / SQLite ordering.
+      for (let id = 0; id < seen; id++) sortedIds[nextPosition[scoreIndex(memory.scores[id])]++] = id;
+    }
     const order = orderRecords(targetDir, manifest, corpus.manifestSha256, contractHash)[Symbol.asyncIterator](); let position = 0;
-    for (const row of database.prepare("SELECT id FROM scored ORDER BY score DESC, id ASC").iterate()) { const stored = await order.next(); if (stored.done || stored.value !== row.id) throw new Error(`Stable order mismatch at position ${position}`); position++; }
+    for (const row of memory ? memoryRows(memory.scores, memory.ranks, sortedIds) : database.prepare("SELECT id FROM scored ORDER BY score DESC, id ASC").iterate()) { const stored = await order.next(); if (stored.done || stored.value !== row.id) throw new Error(`Stable order mismatch at position ${position}`); position++; }
     if (!(await order.next()).done || position !== seen) throw new Error("Stable order contains extra or missing ids");
-    const topRows = [...database.prepare("SELECT id, score, rank FROM scored ORDER BY score DESC, id ASC LIMIT ?").iterate(neighborCount + 1)].filter(row => row.id !== targetId).slice(0, neighborCount);
-    const topWords = new Map(); const neededTopIds = new Set(topRows.map(row => row.id));
-    for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) for (const entry of entries) if (neededTopIds.has(entry.id)) topWords.set(entry.id, entry.word);
-    if (topWords.size !== topRows.length) throw new Error("Top-neighbor identities are absent from the corpus");
+    const firstRows = memory
+      ? Array.from(sortedIds.subarray(0, neighborCount + 1), id => ({ id, score: memory.scores[id], rank: memory.ranks[id] }))
+      : [...database.prepare("SELECT id, score, rank FROM scored ORDER BY score DESC, id ASC LIMIT ?").iterate(neighborCount + 1)];
+    const topRows = firstRows.filter(row => row.id !== targetId).slice(0, neighborCount);
+    const topWords = new Map(topWordCandidates.map(row => [row.id, row.word]));
+    if (topRows.some(row => !topWords.has(row.id))) throw new Error("Top-neighbor identities are absent from the corpus");
     return {
       corpusId: corpus.manifest.corpusId, targetId, targetWord: target.word, targetWordSha256: manifest.target.wordSha256,
       dictionarySize: seen, valuePages: manifest.valuePages.length, orderPages: manifest.orderPages.length,
@@ -182,12 +206,96 @@ export async function verifySemanticTargetUnderGuard({ corpusDir, outputDir, tar
       histogramSha256: sha256(Buffer.from(stableJson(histogram))),
       topNeighbors: topRows.map(row => ({ id: row.id, word: topWords.get(row.id), score: row.score, rank: row.rank })),
     };
+}
+
+/** Exhaustive independent oracle, bounded to eight columns / 80 MiB of records.
+ * This has no producer score input and accepts no numerical attestation. The
+ * scalar SQLite path remains available as a separate reference implementation.
+ */
+export async function verifySemanticTargetsUnderGuard({ corpusDir, outputDir, requests }, cacheGuard) {
+  if (!Array.isArray(requests) || requests.length < 1 || requests.length > 8) throw new Error("Target verification requires one to eight requests");
+  requests = requests.map(request => ({ ...request }));
+  if (new Set(requests.map(request => request.targetId)).size !== requests.length || requests.some(request => !Number.isInteger(request.targetId) || request.targetId < 0 || request.targetId > 0xffff_ffff)) throw new Error("Invalid target verification IDs");
+  corpusDir = resolve(corpusDir); outputDir = resolve(outputDir);
+  const corpus = await loadActiveCorpus(corpusDir); const states = [];
+  assertTargetCacheGuard(cacheGuard, join(outputDir, corpus.manifest.corpusId, "targets"));
+  try {
+    for (const request of requests) {
+      const state = await prepareVerification({ ...request, corpusDir, outputDir }, cacheGuard, corpus); states.push(state);
+      if (!state.memory) {
+        state.database = new DatabaseSync(state.databasePath);
+        state.database.exec("PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; CREATE TABLE scored(id INTEGER PRIMARY KEY, score INTEGER NOT NULL, rank INTEGER NOT NULL); CREATE INDEX score_order ON scored(score DESC, id ASC);");
+        state.insert = state.database.prepare("INSERT INTO scored(id, score, rank) VALUES (?, ?, ?)");
+      }
+    }
+    const dimensions = corpus.manifest.config.dimensions;
+    const missing = new Map(states.map(state => [state.targetId, state]));
+    for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) {
+      for (const entry of entries) {
+        const state = missing.get(entry.id); if (!state) continue;
+        if (sha256(Buffer.from(entry.word)) !== state.manifest.target.wordSha256) throw new Error("Target word identity mismatch");
+        state.target = { id: entry.id, word: entry.word, vector: Buffer.from(entry.vector) };
+        state.targetNorm = vectorNorm(state.target.vector, dimensions);
+        state.targetNumbers = Float64Array.from({ length: dimensions }, (_, index) => state.target.vector.readFloatLE(index * 4));
+        missing.delete(entry.id);
+      }
+      if (!missing.size) break;
+    }
+    if (missing.size) throw new Error("Target id is absent from corpus segments");
+    const grouped = states.length > 1 && states.every(state => state.memory);
+    const products = new Float64Array(states.length);
+    for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) {
+      for (const state of states) state.database?.exec("BEGIN");
+      try {
+        for (const entry of entries) {
+          let length = 0;
+          if (grouped) {
+            products.fill(0);
+            // Independent implementation: float32 inputs, float64 accumulators,
+            // original dimension order for every dot and norm. No producer helper.
+            for (let dimension = 0; dimension < dimensions; dimension++) {
+              const component = entry.vector.readFloatLE(dimension * 4);
+              if (!Number.isFinite(component)) throw new Error("Non-finite vector during independent target verification");
+              length += component * component;
+              for (let column = 0; column < states.length; column++) products[column] += component * states[column].targetNumbers[dimension];
+            }
+            length = Math.sqrt(length);
+          }
+          for (let column = 0; column < states.length; column++) {
+            const state = states[column]; let expected;
+            if (!grouped) expected = independentScore(entry.vector, state.target.vector, dimensions, state.targetNorm, entry.id === state.targetId);
+            else {
+              const divisor = length * state.targetNorm;
+              if (!(divisor > 0) || !Number.isFinite(divisor)) throw new Error("Invalid cosine denominator during independent verification");
+              const scaled = Math.max(-1, Math.min(1, products[column] / divisor)) * 10_000;
+              const rounded = scaled < 0 ? Math.ceil(scaled - 0.5) : Math.floor(scaled + 0.5);
+              expected = entry.id === state.targetId ? 10_000 : Math.max(-10_000, Math.min(10_000, rounded));
+            }
+            await checkStoredValue(entry, expected, state);
+          }
+        }
+        for (const state of states) state.database?.exec("COMMIT");
+      } catch (error) { for (const state of states) { try { state.database?.exec("ROLLBACK"); } catch {} } throw error; }
+    }
+    const results = [];
+    for (const state of states) results.push(await finishVerification(state));
+    return results;
   } finally {
-    await records.return?.().catch(() => {}); try { database?.close(); } catch {} await rm(databasePath, { force: true });
+    const cleanups = await Promise.allSettled(states.map(async state => {
+      await state.records.return?.().catch(() => {});
+      try { state.database?.close(); } catch {}
+      await rm(state.databasePath, { force: true });
+    }));
+    const failed = cleanups.find(result => result.status === "rejected"); if (failed) throw failed.reason;
   }
 }
 
-/** @param {{corpusDir:string, outputDir:string, targetId:number, manifestName?:string|null, expectedManifestSha256?:string|null, testHoldAfterCacheLockMs?:number, testOnCacheLock?:()=>Promise<void>}} options */
+/** Internal scalar entry point; all outputs are freshly computed under the guard. */
+export async function verifySemanticTargetUnderGuard(options, cacheGuard) {
+  return (await verifySemanticTargetsUnderGuard({ corpusDir: options.corpusDir, outputDir: options.outputDir, requests: [options] }, cacheGuard))[0];
+}
+
+/** @param {{corpusDir:string, outputDir:string, targetId:number, manifestName?:string|null, expectedManifestSha256?:string|null, testHoldAfterCacheLockMs?:number, testOnCacheLock?:()=>Promise<void>, verificationStorage?:"auto"|"sqlite"}} options */
 export async function verifySemanticTarget(options) {
   const corpusDir = resolve(options.corpusDir); const outputDir = resolve(options.outputDir);
   const corpus = await loadActiveCorpus(corpusDir); const targetsRoot = join(outputDir, corpus.manifest.corpusId, "targets");

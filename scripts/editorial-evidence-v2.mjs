@@ -9,7 +9,7 @@ import {
 import { validateSemanticTargetManifestContract, verifySemanticTargetUnderGuard } from "./verify-semantic-target-v2.mjs";
 
 import { archiveVerifiedRuntime } from "./semantic-runtime-archive.mjs";
-import { evictSemanticTarget } from "./evict-semantic-target-v2.mjs";
+import { evictSemanticTarget, evictSemanticTargets } from "./evict-semantic-target-v2.mjs";
 
 const HASH = /^[0-9a-f]{64}$/;
 const EVIDENCE_FORMAT = "BEE2-editorial-neighborhood";
@@ -211,7 +211,9 @@ export async function verifyEditorialEvidence({ corpusDir, evidenceDir, targetId
 // Local verification only. No score pages, persistent cache or product activation.
 export const EDITORIAL_VERIFICATION_BATCH_LIMIT = 8;
 
-/** @param {{corpusDir:string,evidenceDir:string,requests:Array<{targetId:number,expectedSha256?:string|null}>}} options */
+/** @param {{corpusDir:string,evidenceDir:string,requests:Array<{targetId:number,expectedSha256?:string|null}>}} options
+ * @returns {Promise<Array<{corpusId:string,targetId:number,dictionarySize:number,neighbors:number,evidenceSha256:string}>>}
+ */
 export async function verifyEditorialEvidenceBatch({ corpusDir, evidenceDir, requests }) {
   if (!Array.isArray(requests) || requests.length > EDITORIAL_VERIFICATION_BATCH_LIMIT) throw new Error("Invalid editorial verification batch");
   // Snapshot the bounded input before the first await: callers retain their arrays.
@@ -221,12 +223,17 @@ export async function verifyEditorialEvidenceBatch({ corpusDir, evidenceDir, req
   if (!requests.length) return [];
   corpusDir = resolve(corpusDir); evidenceDir = resolve(evidenceDir);
   const corpus = await loadActiveCorpus(corpusDir);
+  const loaded = [];
+  for (const request of requests) loaded.push(await loadEditorialEvidence({ corpus, evidenceDir, targetId: request.targetId, expectedSha256: request.expectedSha256 }));
+  return verifyLoadedEvidenceBatch(corpusDir, corpus, loaded);
+}
+
+// Private: these payloads come from hash-validated references or freshly prepared
+// captures under the runtime eviction guard; no caller supplies a numerical proof.
+async function verifyLoadedEvidenceBatch(corpusDir, corpus, loaded) {
+  if (loaded.length < 1 || loaded.length > EDITORIAL_VERIFICATION_BATCH_LIMIT) throw new Error("Invalid editorial verification batch");
   const dimensions = corpus.manifest.config.dimensions;
-  const states = [];
-  for (const request of requests) {
-    const loaded = await loadEditorialEvidence({ corpus, evidenceDir, targetId: request.targetId, expectedSha256: request.expectedSha256 });
-    states.push({ loaded, target: null, histogram: new Uint32Array(SCORE_BUCKETS), top: [], limit: neighborCountForSchema(loaded.payload.schemaVersion, corpus.manifest.stats.accepted) });
-  }
+  const states = loaded.map(item => ({ loaded: item, target: null, histogram: new Uint32Array(SCORE_BUCKETS), top: [], limit: neighborCountForSchema(item.payload.schemaVersion, corpus.manifest.stats.accepted) }));
   const byId = new Map(states.map(state => [state.loaded.payload.target.id, state]));
   // Copy only the requested vectors. The scoring pass below still checks every segment.
   for await (const { entries } of corpusEntries(corpusDir, corpus.manifest)) {
@@ -241,7 +248,9 @@ export async function verifyEditorialEvidenceBatch({ corpusDir, evidenceDir, req
         if (!Number.isFinite(vector[dimension])) throw new Error("Non-finite vector in editorial evidence verification");
       }
       state.target = { vector, norm: vectorNorm(entry.vector, dimensions) };
+      byId.delete(entry.id);
     }
+    if (!byId.size) break;
   }
   if (states.some(state => !state.target)) throw new Error("Editorial evidence target identity differs from the corpus");
   const dots = new Float64Array(states.length);
@@ -291,6 +300,7 @@ async function scoreEvidencePayloadAgainstCorpus(corpusDir, corpus, payload) {
     if (targetId >= entries[0].id && targetId <= entries.at(-1).id) {
       const entry = entries[targetId - entries[0].id];
       target = { id: entry.id, word: entry.word, vector: Buffer.from(entry.vector) };
+      break; // The independent scoring pass below still validates every segment.
     }
   }
   if (!target || target.word !== payload.target.word || sha256(Buffer.from(target.word)) !== payload.target.wordSha256) throw new Error("Editorial evidence target identity differs from the corpus");
@@ -315,8 +325,7 @@ async function verifyEvidencePayloadAgainstCorpus(corpusDir, corpus, payload) {
   return { corpusId: actual.corpusId, targetId: actual.targetId, dictionarySize: actual.dictionarySize, neighbors: actual.neighbors };
 }
 
-/** @param {{corpusDir:string,targetsDir:string,evidenceDir:string,targetId:number,capturedAt?:string,archiveDir?:string|null,evictAfterArchive?:boolean}} options */
-export async function captureEditorialEvidence({ corpusDir, targetsDir, evidenceDir, targetId, capturedAt = new Date().toISOString(), archiveDir = null, evictAfterArchive = false }) {
+async function prepareEditorialCapture({ corpusDir, targetsDir, evidenceDir, targetId, capturedAt = new Date().toISOString(), archiveDir = null, evictAfterArchive = false }) {
   corpusDir = resolve(corpusDir); targetsDir = resolve(targetsDir); evidenceDir = resolve(evidenceDir);
   if (!Number.isInteger(targetId) || targetId < 0 || targetId > 0xffff_ffff || !Number.isFinite(Date.parse(capturedAt))) throw new Error("Editorial evidence capture arguments are invalid");
   if (evictAfterArchive && !archiveDir) throw new Error("Eviction after capture requires a complete runtime archive");
@@ -328,18 +337,21 @@ export async function captureEditorialEvidence({ corpusDir, targetsDir, evidence
   const evidenceIndex = await loadEditorialEvidenceIndex(evidenceDir, corpus);
   const currentReference = evidenceIndex.entries.find(entry => entry.targetId === targetId) ?? null;
   const currentEvidence = currentReference ? await loadEditorialEvidence({ corpus, evidenceDir, targetId, expectedSha256: currentReference.sha256 }) : null;
-  async function captureVerified(verified) {
+  return { corpus, targetsRoot, prepare: async function prepare(verified) {
+    if (verified.targetId !== targetId || verified.corpusId !== corpus.manifest.corpusId) throw new Error("Editorial capture verification identity mismatch");
     const captureStarted = performance.now();
-    async function archive(payload, result) {
-      const captureMs = Math.round(performance.now() - captureStarted);
-      if (!archiveDir) return result;
-      const archiveStarted = performance.now();
-      const runtimeArchive = await archiveVerifiedRuntime({ targetsDir, archiveDir, corpus, verified, evidenceBytes: Buffer.from(`${JSON.stringify(payload, null, 2)}\n`), evidenceSha256: result.evidenceSha256 });
-      return { ...result, runtimeArchive, captureMs, archiveMs: Math.round(performance.now() - archiveStarted) };
+    function prepared(payload, result) {
+      return { payload, sha256: result.evidenceSha256, finalize: async () => {
+        if (!result.idempotent) await installIndex({ evidenceDir, corpus, targetId, file: result.file, digest: result.evidenceSha256, capturedAt, payload });
+        const captureMs = Math.round(performance.now() - captureStarted);
+        if (!archiveDir) return result;
+        const archiveStarted = performance.now();
+        const runtimeArchive = await archiveVerifiedRuntime({ targetsDir, archiveDir, corpus, verified, evidenceBytes: Buffer.from(`${JSON.stringify(payload, null, 2)}\n`), evidenceSha256: result.evidenceSha256 });
+        return { ...result, runtimeArchive, captureMs, archiveMs: Math.round(performance.now() - archiveStarted) };
+      } };
     }
     if (currentEvidence?.payload.schemaVersion === 2 && currentEvidence.payload.targetManifest.sha256 === verified.manifestSha256) {
-      await verifyEvidencePayloadAgainstCorpus(corpusDir, corpus, currentEvidence.payload);
-      return archive(currentEvidence.payload, { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: currentEvidence.sha256, file: currentEvidence.reference.file, neighbors: currentEvidence.payload.neighborhood.entries.length, idempotent: true });
+      return prepared(currentEvidence.payload, { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: currentEvidence.sha256, file: currentEvidence.reference.file, neighbors: currentEvidence.payload.neighborhood.entries.length, idempotent: true });
     }
     const payload = validateEvidencePayload({
       schemaVersion: 2,
@@ -371,22 +383,54 @@ export async function captureEditorialEvidence({ corpusDir, targetsDir, evidence
     const bytes = Buffer.from(`${JSON.stringify(payload, null, 2)}\n`);
     if (bytes.length > MAX_EVIDENCE_BYTES) throw new Error("Editorial evidence exceeds its size limit");
     await installImmutable(join(evidenceDir, file), bytes);
-    await verifyEvidencePayloadAgainstCorpus(corpusDir, corpus, payload);
-    await installIndex({ evidenceDir, corpus, targetId, file, digest, capturedAt, payload });
-    return archive(payload, { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: digest, file, neighbors: verified.topNeighbors.length });
+    return prepared(payload, { corpusId: corpus.manifest.corpusId, targetId, evidenceSha256: digest, file, neighbors: verified.topNeighbors.length });
+  } };
+}
+
+/** @param {{corpusDir:string,targetsDir:string,evidenceDir:string,targetId:number,capturedAt?:string,archiveDir?:string|null,evictAfterArchive?:boolean}} options */
+export async function captureEditorialEvidence(options) {
+  const { corpusDir, targetsDir, targetId, evictAfterArchive = false } = options;
+  const preparation = await prepareEditorialCapture(options);
+  async function captureVerified(verified) {
+    const prepared = await preparation.prepare(verified);
+    await verifyEvidencePayloadAgainstCorpus(resolve(corpusDir), preparation.corpus, prepared.payload);
+    return prepared.finalize();
   }
   if (evictAfterArchive) {
     const result = await evictSemanticTarget({ corpusDir, outputDir: targetsDir, targetId, beforeEviction: captureVerified });
     if (!result.evicted) throw new Error("Target disappeared before archival capture");
     return { ...result.prepared, evicted: true, verificationMs: result.verificationMs, evictionMs: result.evictionMs };
   }
-  const guard = acquireTargetCacheGuard(targetsRoot, "exclusive");
+  const guard = acquireTargetCacheGuard(preparation.targetsRoot, "exclusive");
   try {
     const started = performance.now();
     const verified = await verifySemanticTargetUnderGuard({ corpusDir, outputDir: targetsDir, targetId, neighborCount: EXTENDED_NEIGHBOR_COUNT }, guard);
     const verificationMs = Math.round(performance.now() - started);
     return { ...await captureVerified(verified), verificationMs };
   } finally { releaseTargetCacheGuard(guard); }
+}
+
+/** Three separate boundaries remain: builder verification, fresh runtime
+ * verification here, then the independent editorial oracle before any eviction.
+ */
+export async function captureEditorialEvidenceBatch({ corpusDir, targetsDir, evidenceDir, archiveDir, targetIds, capturedAt = new Date().toISOString() }) {
+  if (!archiveDir || !Array.isArray(targetIds) || targetIds.length < 1 || targetIds.length > 8 || new Set(targetIds).size !== targetIds.length || targetIds.some(id => !Number.isInteger(id) || id < 0 || id > 0xffff_ffff)) throw new Error("Archival capture requires one to eight distinct unsigned target IDs and an archive");
+  targetIds = [...targetIds]; corpusDir = resolve(corpusDir);
+  const preparations = [];
+  for (const targetId of targetIds) preparations.push(await prepareEditorialCapture({ corpusDir, targetsDir, evidenceDir, archiveDir, targetId, capturedAt, evictAfterArchive: true }));
+  let evidenceVerificationMs = 0; let archiveMs = 0;
+  const group = await evictSemanticTargets({ corpusDir, outputDir: targetsDir, targetIds, beforeEviction: async verified => {
+    const prepared = [];
+    for (let index = 0; index < verified.length; index++) prepared.push(await preparations[index].prepare(verified[index]));
+    const started = performance.now();
+    await verifyLoadedEvidenceBatch(corpusDir, preparations[0].corpus, prepared);
+    evidenceVerificationMs = Math.round(performance.now() - started);
+    const results = [];
+    for (const item of prepared) { const result = await item.finalize(); archiveMs += result.archiveMs; results.push(result); }
+    return results;
+  } });
+  if (group.results.some(result => !result.evicted)) throw new Error("Target disappeared before archival capture");
+  return { results: group.results.map(result => ({ ...result.prepared, evicted: true })), verificationMs: group.verificationMs, evidenceVerificationMs, archiveMs, evictionMs: group.evictionMs };
 }
 
 /** @param {{corpusDir:string,evidenceDir:string,targetId:number,parentSha256?:string|null,capturedAt?:string}} options */
