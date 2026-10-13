@@ -87,7 +87,7 @@ def main():
     for number, entry in enumerate(manifest["targets"], 1):
         target_id = groups[entry["word"]][0]
         require(entry["wordId"] == target_id, "Target source identity differs")
-        key = f"semantic/word2vec/{target_id:06d}.bws.gz"
+        key = f"semantic/word2vec/{target_id:06d}.bws"
         require(entry["key"] == key, "Unexpected asset path")
         expected_files.add(Path(key).name)
         compressed = (args.root / "public" / key).read_bytes()

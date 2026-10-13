@@ -45,7 +45,7 @@ test("expedition rejects skipped steps, fabricated wins and malformed proofs", a
 test("resume preserves current-stage data and uses live evidence without storage writes", async () => {
   const won = { ...EMPTY_GAME, guesses: [{ word: "arbre", found: true, temperature: 100, rank: 1, order: 1 }], hints: 1 };
   const ongoing = { ...EMPTY_GAME, startedAt: 123, pins: ["jardin"], guesses: [{ word: "jardin", found: false, temperature: 20, rank: 2000, order: 1 }] };
-  const result = await resumeExpedition("sous-bois-v1", { status: expeditionStatus, readGame: id => id === "free-1700000049" ? won : ongoing, isCurrent: () => true });
+  const result = await resumeExpedition("sous-bois-v1", { status: expeditionStatus, readGame: id => id === "free-1700000049" ? won : id==='free-1700000121'?ongoing:EMPTY_GAME, isCurrent: () => true });
   assert.equal(result?.status.completed, 1); assert.equal(result?.saved, ongoing);
   assert.equal(result?.tries, 1); assert.equal(result?.hints, 1);
 });

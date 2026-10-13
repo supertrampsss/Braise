@@ -20,7 +20,7 @@ import { resumeExpedition } from "@/lib/expedition-resume";
 import { ExpeditionPicker } from "@/components/expedition-picker";
 import { warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
-import { dailyIdentity } from "@/lib/daily-v2-contract";
+import { classicDailyIdentity, classicFreeIdentity, classicEdition, type ClassicEdition } from "@/lib/word2vec-contract";
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
 import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
@@ -30,7 +30,7 @@ import { COSMETICS, projectWeeklyRitual, type CosmeticId } from "@/lib/weekly-ri
 
 import { admitTutorialReturnFocus, type TutorialReturnIntent } from "@/lib/tutorial-field";
 import { canWriteGameDocument, writeAdmittedGame, recordAdmittedGameProgress } from "@/lib/game-write-admission";
-import { failedPuzzleUrl, admittedPuzzleUrl, requestedGameSurface, surfaceUrl, retryPuzzleLoad, admitPuzzleLoad, type PuzzleLoad, type GameSurface } from "@/lib/game-navigation";
+import { classicPuzzleMatchesLoad, failedPuzzleUrl, admittedPuzzleUrl, requestedGameSurface, surfaceUrl, retryPuzzleLoad, admitPuzzleLoad, type PuzzleLoad, type GameSurface } from "@/lib/game-navigation";
 import { AppNavigation } from "@/components/app-navigation";
 import { ArchiveCalendar } from "@/components/game-parts/archive-calendar";
 import { PlayTutorial } from "@/components/game-parts/play-tutorial";
@@ -39,7 +39,7 @@ import { readLocalPlays, rememberPlayContext, resumeSuggestion, type LocalPlay, 
 import { readEncountered, rememberEncountered, collectDiscoveryHistory } from "@/lib/free-discovery";
 import { recordProductEvent, type ProductEventType, type ProductEventContext } from "@/lib/product-events";
 import { formatScoreFr } from "@/lib/format-fr";
-import { proximityProgress } from "@/lib/game-copy";
+import { proximityProgress, countLabel } from "@/lib/game-copy";
 import "@/components/game-parts/game-parts.css";
 
 type Modal = "tutorial" | "help" | "challenge" | "privacy" | "share" | null;
@@ -223,15 +223,16 @@ export default function Game() {
     }, duration);
   }
 
-  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string, destination?: GameSurface) {
+  async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string, destination?: GameSurface, edition?:ClassicEdition) {
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
     const request = ++requestRef.current;
     setJourney(expedition ?? null);
     collection=COLLECTIONS.find(item=>item.id===collection && item.seeds.includes(locator))?.id;
+    if(collection&&!edition)try{edition=readLocalPlays(localStorage).find(play=>play.locator===locator&&!play.game.guesses.some(g=>g.found))?.edition;}catch{}
     setCollectionContext(collection);
 
     setDiscoveryNote("");setDiscoveryExhausted(false);
-    const descriptor: PuzzleLoad={mode:nextMode,locator,sessionSave,expedition,collection,destination};
+    const descriptor: PuzzleLoad={mode:nextMode,locator,sessionSave,expedition,collection,destination,edition};
     lastLoad.current = descriptor;
     const loadEpoch=navigationEpoch.current;
     clearDeferredUi();
@@ -243,13 +244,14 @@ export default function Game() {
     setLoading(true); setLoadError(""); setError(""); setInput(""); setFeedback(null);
     setBusy(false); submitting.current = false;
     try {
-      const query = nextMode === "archive" ? `mode=archive&date=${encodeURIComponent(locator)}` : `mode=${nextMode}&seed=${encodeURIComponent(locator)}`;
+      const query = (nextMode === "archive" ? `mode=archive&date=${encodeURIComponent(locator)}` : `mode=${nextMode}&seed=${encodeURIComponent(locator)}`)+(edition?`&edition=${encodeURIComponent(edition)}`:'');
       const admitted=await admitPuzzleLoad(descriptor, async()=>{
         const response=await fetch(`/api/game?${query}`,{cache:"no-store"});
         const data=await response.json() as Puzzle & {error?:string;targetIdentity?:string};
         return {response,data};
       },{started:{request,navigation:loadEpoch},current:()=>({request:requestRef.current,navigation:navigationEpoch.current})},({response,data},admittedDescriptor)=>{
       if (!response.ok) { setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
+      if(!classicPuzzleMatchesLoad(data,admittedDescriptor))throw new Error('La version de cette partie ne correspond plus. Rechargez le jeu pour reprendre.');
       gameWriteAllowed.current=false;
       try { gameWriteAllowed.current=canWriteGameDocument(undefined,data.id); } catch {}
       if(!gameWriteAllowed.current) setStorageWarning(true);
@@ -290,7 +292,7 @@ export default function Game() {
     } finally { if (request === requestRef.current) setLoading(false); }
   }
 
-  async function openJourney(id: string, action?: "gameResumed" | "nextActivityOpened", destination: GameSurface="game") {
+  async function openJourney(id: string, action?: "gameResumed" | "nextActivityOpened", destination: GameSurface="game", edition?:ClassicEdition) {
     journeyController.current?.abort();
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
     const controller = new AbortController();
@@ -301,6 +303,7 @@ export default function Game() {
     setJourneyBusy(true); setJourneyError(""); setLoading(false);
     try {
       const result = await resumeExpedition(id, {
+        edition,
         status: async (id, proofs) => {
           const response = await fetch("/api/expeditions", { method: "POST", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, proofs }) });
           const data = await response.json() as ExpeditionStatus & { error?: string };
@@ -313,11 +316,11 @@ export default function Game() {
       if (!result || !current()) return;
       setJourney(result.status);
       if (result.status.seed) {
-        if(await loadPuzzle("challenge", result.status.seed, result.saved, result.status,undefined,destination) && action) diagnostic(action,"expedition");
+        if(await loadPuzzle("challenge", result.status.seed, result.saved, result.status,undefined,destination,result.edition) && action) diagnostic(action,"expedition");
       } else {
         const completedDestination=destination === "game" ? "voyage" : destination;
         const url = surfaceUrl(new URL(window.location.href),completedDestination);
-        url.searchParams.set("voyage", id); url.searchParams.delete("defi"); url.searchParams.delete("archive"); url.searchParams.delete("libre"); url.searchParams.delete("collection");
+        url.searchParams.set("voyage", id); url.searchParams.delete("defi"); url.searchParams.delete("archive"); if(puzzle) url.searchParams.set("edition",puzzle.ref.rulesVersion); url.searchParams.delete("libre"); url.searchParams.delete("collection");
         window.history.replaceState(null, "", url);
         setSurface(completedDestination); setView("explore");
       }
@@ -341,22 +344,22 @@ export default function Game() {
       if(!response.ok) throw new Error(data.error || "Découverte indisponible.");
       if(!rememberEncountered(localStorage,data.encountered)) setStorageWarning(true);
       setDiscoveryExhausted(data.exhausted);
-      if(!data.puzzle) { setDiscoveryNote("Vous avez rencontré les 120 cibles V1 sur cet appareil. Vous pouvez les rejouer ; aucune nouvelle cible n’est annoncée."); return; }
+      if(!data.puzzle) { setDiscoveryNote("Vous avez rencontré tous les mots disponibles en libre sur cet appareil. Vous pouvez les rejouer."); return; }
       navigate("game");
       const loaded=await loadPuzzle("free",data.puzzle.seed);
-      if(loaded) { setDiscoveryExhausted(data.exhausted);setDiscoveryNote(replay ? "Rejeu choisi dans les 120 cibles V1. Les anciennes parties restent accessibles dans Explorer." : "Cible non rencontrée selon l’historique disponible sur cet appareil. Les parties commencées restent dans Explorer."); diagnostic("nextActivityOpened","free"); }
+      if(loaded) { setDiscoveryExhausted(data.exhausted);setDiscoveryNote(replay ? "Vos parties commencées restent dans Explorer." : "Un nouveau mot à découvrir. Vos parties commencées restent dans Explorer."); diagnostic("nextActivityOpened","free"); }
     } catch(cause) { if(generation === requestRef.current && epoch === navigationEpoch.current) setDiscoveryNote(cause instanceof Error ? cause.message : "Connexion impossible."); }
     finally { discoveryPending.current=false;setDiscoveryBusy(false); }
   }
   async function resumePlay(play: LocalPlay) {
     navigate("game");
     if(puzzle?.id===play.id && mode===play.mode && !play.context?.expedition) {diagnostic("gameResumed",play.context?.collection ? "collection" : play.mode);return;}
-    if(play.context?.expedition && EXTRA_MODES_ENABLED) { await openJourney(play.context.expedition,"gameResumed"); return; }
-    const loaded=await loadPuzzle(play.mode,play.mode === "daily" ? "" : play.locator,undefined,undefined,play.context?.collection);
+    if(play.context?.expedition && EXTRA_MODES_ENABLED) { await openJourney(play.context.expedition,"gameResumed","game",play.edition); return; }
+    const loaded=await loadPuzzle(play.mode,play.mode === "daily" ? "" : play.locator,undefined,undefined,play.context?.collection,undefined,play.edition);
     if(loaded) diagnostic("gameResumed",play.context?.collection ? "collection" : play.mode);
   }
   async function nextActivity() {
-    if(journey) { await openJourney(journey.id,"nextActivityOpened"); return; }
+    if(journey) { await openJourney(journey.id,"nextActivityOpened","game",classicEdition(puzzle?.ref.rulesVersion)); return; }
     if(currentCollection) {
       if(nextCollectionIndex >= 0) { if(await loadPuzzle("challenge",currentCollection.seeds[nextCollectionIndex],undefined,undefined,currentCollection.id)) diagnostic("nextActivityOpened","collection"); }
       else navigate("modes");
@@ -385,11 +388,12 @@ export default function Game() {
     navigationEpoch.current++;journeyController.current?.abort();setJourneyBusy(false);
     setSurface(destination === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : destination);setView(destination === "game" ? "play" : "explore");refreshPlays();
     const archive=params.get("archive"), challenge=params.get("defi"), free=params.get("libre"), voyage=params.get("voyage");
-    if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage || !puzzle || puzzle.seed!==journey.seed) void openJourney(voyage,undefined,destination); }
-    else if(archive!==null) { if(puzzle?.id!==dailyIdentity(archive) || mode!=="archive") void loadPuzzle("archive",archive); }
-    else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==`free-${challenge}` || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined); }
-    else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==`free-${free}` || mode!=="free") void loadPuzzle("free",free); }
-    else if(mode!=="daily") void loadPuzzle("daily");
+    const edition=classicEdition(params.get('edition'));
+    if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage || !puzzle || puzzle.seed!==journey.seed||edition&&puzzle.ref.rulesVersion!==edition) void openJourney(voyage,undefined,destination,edition); }
+    else if(archive!==null) { if(puzzle?.id!==classicDailyIdentity(archive,edition) || mode!=="archive") void loadPuzzle("archive",archive,undefined,undefined,undefined,undefined,edition); }
+    else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==classicFreeIdentity(challenge,edition) || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined,undefined,edition); }
+    else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==classicFreeIdentity(free,edition) || mode!=="free") void loadPuzzle("free",free,undefined,undefined,undefined,undefined,edition); }
+    else if(mode!=="daily"||puzzle?.ref.rulesVersion!==edition&&edition!==undefined) void loadPuzzle("daily",'',undefined,undefined,undefined,undefined,edition);
   }; });
 
   // Effect events read the latest board/profile without restarting mount subscriptions.
@@ -399,12 +403,13 @@ export default function Game() {
     setArchiveDraft(latestArchiveDate());
     const params = new URLSearchParams(window.location.search);
     const archive = params.get("archive"), challenge = params.get("defi"), free = params.get("libre"), voyage = params.get("voyage");
+    const edition=classicEdition(params.get('edition'));
     const requestedSurface = requestedGameSurface(new URL(window.location.href));
-    if (EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface(requestedSurface); setView(requestedSurface === "game" ? "play" : "explore"); void openJourney(voyage, undefined, requestedSurface); }
-    else if (archive !== null) void loadPuzzle("archive", archive);
-    else if (!voyage && challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge, undefined, undefined, EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined);
-    else if (free && /^\d{1,10}$/.test(free)) void loadPuzzle("free", free);
-    else void loadPuzzle("daily");
+    if (EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item => item.id === voyage)) { setSurface(requestedSurface); setView(requestedSurface === "game" ? "play" : "explore"); void openJourney(voyage, undefined, requestedSurface,edition); }
+    else if (archive !== null) void loadPuzzle("archive", archive,undefined,undefined,undefined,undefined,edition);
+    else if (!voyage && challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge, undefined, undefined, EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined,undefined,edition);
+    else if (free && /^\d{1,10}$/.test(free)) void loadPuzzle("free", free,undefined,undefined,undefined,undefined,edition);
+    else void loadPuzzle("daily",'',undefined,undefined,undefined,undefined,edition);
     if (requestedSurface !== "game") { setSurface(requestedSurface === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : requestedSurface); setView("explore"); }
     refreshPlays();
     setNow(Date.now());
@@ -562,7 +567,7 @@ export default function Game() {
   function resultText() {
     const journey = game.guesses.filter(g => !g.hint).filter((_, i, all) => i % Math.max(1, Math.ceil(all.length / 8)) === 0).slice(0, 8).map(g => g.found ? "🟩" : g.temperature >= 55 ? "🟥" : g.temperature >= 35 ? "🟧" : g.temperature >= 18 ? "🟨" : "🟦").join("");
     const url = new URL(window.location.origin);
-    url.searchParams.delete("defi"); url.searchParams.delete("archive");
+    url.searchParams.delete("defi"); url.searchParams.delete("archive"); if(puzzle) url.searchParams.set("edition",puzzle.ref.rulesVersion);
     if (mode === "archive" && puzzle) url.searchParams.set("archive", puzzle.date);
     else if (mode !== "daily") url.searchParams.set("defi", puzzle?.seed || "0");
     return `🔥 BRAIZ ${mode === "daily" ? `du ${puzzle?.date}` : mode === "archive" ? `· Archive du ${puzzle?.date}` : "· Défi"}\n${solved ? "Trouvé" : "En piste"} en ${game.guesses.length} essai${game.guesses.length === 1 ? "" : "s"} · ${game.hints ? `${game.hints} indice${game.hints === 1 ? "" : "s"}` : "sans indice"}\n${journey}${solved && !journey.endsWith("🟩") ? "🟩" : ""}\nVotre tour ! ${url.toString()}`;
@@ -638,17 +643,16 @@ export default function Game() {
             <div className={`foyer-reading ${best ? "" : "no-guess"}`} aria-live="polite">{best && <><strong>{formatScoreFr(temperature)}°</strong><span>Meilleure piste : {best.word}</span></>}</div>
             <button className="foyer-motion" type="button" aria-pressed={flamePaused} onClick={toggleAnimations}>{flamePaused ? "Animer la flamme" : "Mettre la flamme en pause"}</button>
 <div className="approved-play-surface">{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => retryPuzzleLoad(lastLoad.current,loadPuzzle,"game")}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
-              {mode === "free" && <p className="free-discovery-note">Libre · 120 cibles V1. Vos parties commencées restent dans Explorer. Les anciens liens conservent leur mot.</p>}
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essai{game.guesses.length === 1 ? "" : "s"}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Proposer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{countLabel(game.guesses.length,"essai")}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Proposer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
               {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
                 <div><span>Meilleure piste</span><strong>{best.word}</strong></div>
                 <div className="heat-reading"><strong>{formatScoreFr(temperature)}°</strong></div>
                 <div className="heat-meter" aria-hidden="true"><span style={{ width: `${(best ? proximityProgress(best.rank) ?? 0 : 0) / 10}%` }} /></div>
                 {isRecord && <span className="compact-record">Nouvelle meilleure piste</span>}
               </div>}
-              <div className="game-bottom"><span><Target size={16} /><b>{game.guesses.length}</b> essai{game.guesses.length > 1 ? "s" : ""}</span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `${proximityProgress(best.rank)}‰` : "Hors top 1 000"}</b></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span></div>
+              <div className="game-bottom"><span><Target size={16} /><b>{countLabel(game.guesses.length,"essai")}</b></span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `${proximityProgress(best.rank)}‰` : "Hors top 1 000"}</b></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span></div>
             </>}
           </div></section>
 
@@ -697,9 +701,9 @@ export default function Game() {
         tutorialReturnFocus.current={request:requestRef.current,navigation:navigationEpoch.current,owner};
         setModal(null);
       }}/>}
-      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations. Après 5 essais, vous disposez de 3 indices gratuits. Ils sont signalés dans le résultat partagé.</p></div></li></ol><div className="modal-note">La température traduit une proximité calculée, pas une probabilité. Un contraire peut être proche. Les accents manquants sont acceptés si le mot est identifiable.</div><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer</button></>}
+      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations et comparez vos pistes.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer</button></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
-      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
+      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Les données linguistiques sont mises à disposition par <a href="https://fauconnier.github.io/#data" target="_blank" rel="noopener noreferrer">Jean-Philippe Fauconnier</a>, sous licence <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</p><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
       {modal === "share" && <><p role="status">La copie automatique n’a pas abouti. Sélectionnez le texte ci-dessous et copiez-le manuellement.</p><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}
     </DialogContent></Dialog>
   </div>;

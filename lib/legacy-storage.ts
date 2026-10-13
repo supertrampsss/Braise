@@ -1,5 +1,6 @@
 import type { Profile, SavedGame } from "./game-types";
 import { parseDailyV2Document } from './daily-v2-storage';
+import { parseWord2vecDocument } from './word2vec-storage';
 
 export const LEGACY_STORAGE_PREFIX = "braise.v1.";
 export const EMPTY_PROFILE: Profile = { wins: [], guesses: 0, sound: false };
@@ -30,6 +31,7 @@ export function writeLocal(key: string, value: unknown, storage?: LocalWriter) {
 
 export function restoreLegacyGame(puzzleId: string, now = Date.now(), storage?: LocalReader): SavedGame {
   const stored = readLocal<unknown>(`game.${puzzleId}`, EMPTY_GAME, storage);
+  if(puzzleId.startsWith('daily-w2v-')||puzzleId.startsWith('free-w2v-'))return parseWord2vecDocument(stored,puzzleId)??{...EMPTY_GAME,startedAt:now};
   if (puzzleId.startsWith('daily-v2-')) return parseDailyV2Document(stored, puzzleId) ?? { ...EMPTY_GAME, startedAt: now };
   if (!validLegacyGame(stored)) return { ...EMPTY_GAME, startedAt: now };
   const marker = Number.isSafeInteger(stored.profileV2StartIndex) && Number(stored.profileV2StartIndex) >= 0 && Number(stored.profileV2StartIndex) <= stored.guesses.length ? stored.profileV2StartIndex : undefined;

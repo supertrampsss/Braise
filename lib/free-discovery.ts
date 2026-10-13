@@ -2,21 +2,24 @@ import { LEGACY_ARCHIVE_START_DATE, isCalendarDate, parisDate } from './calendar
 import { DAILY_V2_START, dailyV2Date, isDailyV2Ref } from './daily-v2-contract';
 import { LEGACY_VERSIONS, type PuzzleRef } from './game-contracts';
 import type { ProfileSnapshot } from './profile-storage';
+import { word2vecDate, word2vecSeed, isWord2vecRef, WORD2VEC_START } from './word2vec-contract';
 
 export const DISCOVERY_KEY = 'braiz.encountered.v1';
 export function readEncountered(storage: Pick<Storage,'getItem'>): string[] | null {
-  try { const raw = storage.getItem(DISCOVERY_KEY); if (!raw) return []; if (raw.length > 10000) return null; const v = JSON.parse(raw); return v.version === 1 && Array.isArray(v.ids) && v.ids.length <= 120 && v.ids.every((id: unknown) => typeof id === 'string' && /^[a-f0-9]{64}$/.test(id)) ? v.ids : null; } catch { return null; }
+  try { const raw = storage.getItem(DISCOVERY_KEY); if (!raw) return []; if (raw.length > 40000) return null; const v = JSON.parse(raw); return v.version === 1 && Array.isArray(v.ids) && v.ids.length <= 475 && v.ids.every((id: unknown) => typeof id === 'string' && /^[a-f0-9]{64}$/.test(id)) ? v.ids : null; } catch { return null; }
 }
 export function rememberEncountered(storage: Pick<Storage,'getItem'|'setItem'>, ids: string[]) {
   const previous = readEncountered(storage); if (!previous) return false;
   const next = [...new Set([...previous, ...ids])];
-  if (next.length > 120 || !next.every(id => /^[a-f0-9]{64}$/.test(id))) return false;
+  if (next.length > 475 || !next.every(id => /^[a-f0-9]{64}$/.test(id))) return false;
   try { storage.setItem(DISCOVERY_KEY, JSON.stringify({ version: 1, ids: next })); return true; } catch { return false; }
 }
 
 
 function classicalDiscoveryId(value: unknown, now: Date): value is string {
   if (typeof value !== 'string') return false;
+  const w2vDate=word2vecDate(value);if(w2vDate)return w2vDate<=parisDate(now);
+  if(word2vecSeed(value)!==null)return parisDate(now)>=WORD2VEC_START;
   if (/^free-\d{1,10}$/.test(value)) return Number(value.slice(5)) <= 2147483647;
   const v2 = dailyV2Date(value);
   if (v2) return v2 <= parisDate(now);
@@ -24,6 +27,7 @@ function classicalDiscoveryId(value: unknown, now: Date): value is string {
   return isCalendarDate(date) && date >= LEGACY_ARCHIVE_START_DATE && date < DAILY_V2_START && date <= parisDate(now);
 }
 function classicalDiscoveryRef(ref: PuzzleRef, now: Date) {
+  if(isWord2vecRef(ref,now))return true;
   if (isDailyV2Ref(ref, now)) return true;
   if (!ref || ref.contractVersion !== 1 || ref.corpusVersion !== LEGACY_VERSIONS.corpus || ref.rulesVersion !== LEGACY_VERSIONS.rules || ref.variant !== 'classic' || !classicalDiscoveryId(ref.id, now)) return false;
   if (ref.id.startsWith('free-')) return ref.calendar === null && ['free','challenge','collection','expedition'].includes(ref.context);
@@ -47,7 +51,7 @@ export function collectDiscoveryHistory(storage: Pick<Storage,'length'|'key'>, s
   for (const win of snapshot.profile.wins) {
     // Bare historical wins are V1. Later wins have a versioned witness; variants
     // cannot enter via an unrelated classic-looking win.id in an imported fact.
-    if (!witnessedWins.has(win.id) && !dailyV2Date(win.id) && (win.id.startsWith('free-') ? ['free','challenge'].includes(win.mode) : ['daily','archive'].includes(win.mode))) add(win.id);
+    if (!witnessedWins.has(win.id) && !dailyV2Date(win.id)&&!word2vecDate(win.id)&&word2vecSeed(win.id)===null && (win.id.startsWith('free-') ? ['free','challenge'].includes(win.mode) : ['daily','archive'].includes(win.mode))) add(win.id);
   }
   for (const fact of facts) {
     if (fact.schemaVersion !== 2 || fact.provenance !== 'personal-local' || fact.type !== 'guessAccepted' && fact.type !== 'puzzleWon') continue;

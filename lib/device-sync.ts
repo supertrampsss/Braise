@@ -5,6 +5,8 @@ import { archiveDateStatus, parisDate } from './calendar';
 import type { SavedGame } from './game-types';
 import { DAILY_V2_START, dailyV2Date, dailyV2Ref, isDailyV2Ref } from './daily-v2-contract';
 import { dailyV2Document, dailyV2GameSchema, parseDailyV2Document } from './daily-v2-storage';
+import { isWord2vecRef, isWord2vecId, word2vecDate, word2vecRef, WORD2VEC_START } from './word2vec-contract';
+import { word2vecDocument, word2vecGameSchema, parseWord2vecDocument } from './word2vec-storage';
 export const SYNC_MAX_BYTES = 1 * 1024 * 1024;
 const PREFIX = 'braise.v1.game.';
 const instant = z.string().datetime();
@@ -13,9 +15,11 @@ const guessSchema = z.object({word:z.string().min(1).max(50),temperature:z.numbe
 const gameSchema = z.object({ guesses:z.array(guessSchema).max(3000),pins:z.array(z.string().min(1).max(50)).max(3),hints:z.number().int().min(0).max(3),startedAt:z.number().int().nonnegative(),solvedAt:z.number().int().nonnegative().optional(),completedMode:z.enum(['daily','archive','free','challenge']).optional(),profileV2StartIndex:z.number().int().nonnegative().optional(),version:z.literal(1).optional(),schemaVersion:z.literal(1).optional(),formatVersion:z.literal(1).optional() }).strict();
 const legacyItem=z.object({id:z.string().max(40),game:gameSchema,context:contextSchema.optional()}).strict();
 const v2Item=z.object({id:z.string().max(40),puzzleRef:z.custom<import('./game-contracts').PuzzleRef>(isDailyV2Ref),game:dailyV2GameSchema,context:contextSchema.optional()}).strict();
+const word2vecItem=z.object({id:z.string().max(40),puzzleRef:z.custom<import('./game-contracts').PuzzleRef>(isWord2vecRef),game:word2vecGameSchema,context:contextSchema.optional()}).strict();
 const legacySchema=z.object({format:z.literal('braiz-personal-device-sync'),version:z.literal(1),corpus:z.literal('fr-fasttext-30000-v1'),rules:z.literal('classic-v1'),provenance:z.literal('personal-unverified'),createdAt:instant,profile:z.string().max(8*1024*1024),games:z.array(legacyItem).max(1000)}).strict();
 const mixedSchema=z.object({format:z.literal('braiz-personal-device-sync'),version:z.literal(2),corpus:z.literal('mixed-v1-v2'),rules:z.literal('identity-bound'),provenance:z.literal('personal-unverified'),createdAt:instant,profile:z.string().max(8*1024*1024),games:z.array(z.union([legacyItem,v2Item])).max(1000)}).strict();
-const schema=z.union([legacySchema,mixedSchema]);
+const word2vecSchema=z.object({format:z.literal('braiz-personal-device-sync'),version:z.literal(3),corpus:z.literal('mixed-v1-v2-word2vec'),rules:z.literal('identity-bound'),provenance:z.literal('personal-unverified'),createdAt:instant,profile:z.string().max(8*1024*1024),games:z.array(z.union([legacyItem,v2Item,word2vecItem])).max(1000)}).strict();
+const schema=z.union([legacySchema,mixedSchema,word2vecSchema]);
 export type DeviceEnvelope=z.infer<typeof schema>;
 export class SyncMemory implements ProfileStorage {
   values=new Map<string,string>();
@@ -24,8 +28,8 @@ export class SyncMemory implements ProfileStorage {
 }
 function fail(message:string):never{throw new Error(message);}
 function parseJson(text:string):unknown{try{return JSON.parse(text);}catch{return fail('Copie JSON illisible. Aucune donnée modifiée.');}}
-function parseSavedGame(text:string,id:string):SavedGame{const value=parseJson(text);if(id.startsWith('daily-v2-')){const game=parseDailyV2Document(value,id);if(!game)fail('Sauvegarde V2 inconnue ou incompatible.');return game;}const parsed=gameSchema.safeParse(value);if(!parsed.success)fail('Sauvegarde de partie illisible, inconnue ou incompatible.');return parsed.data;}
-function validId(id:string,now:Date){const v2=dailyV2Date(id);return v2 ? v2<=parisDate(now) : /^free-\d{1,10}$/.test(id)&&Number(id.slice(5))<=2147483647 || /^daily-\d{4}-\d{2}-\d{2}$/.test(id)&&id.slice(6)<DAILY_V2_START&&(archiveDateStatus(id.slice(6),now)==='available'||id.slice(6)===parisDate(now));}
+function parseSavedGame(text:string,id:string):SavedGame{const value=parseJson(text);if(isWord2vecId(id)){const game=parseWord2vecDocument(value,id);if(!game)fail('Sauvegarde de partie inconnue ou incompatible.');return game;}if(id.startsWith('daily-v2-')){const game=parseDailyV2Document(value,id);if(!game)fail('Sauvegarde V2 inconnue ou incompatible.');return game;}const parsed=gameSchema.safeParse(value);if(!parsed.success)fail('Sauvegarde de partie illisible, inconnue ou incompatible.');return parsed.data;}
+function validId(id:string,now:Date){if(isWord2vecId(id))return (word2vecDate(id)??WORD2VEC_START)<=parisDate(now);const v2=dailyV2Date(id);return v2 ? v2<=parisDate(now) : /^free-\d{1,10}$/.test(id)&&Number(id.slice(5))<=2147483647 || /^daily-\d{4}-\d{2}-\d{2}$/.test(id)&&id.slice(6)<DAILY_V2_START&&(archiveDateStatus(id.slice(6),now)==='available'||id.slice(6)===parisDate(now));}
 function validateGame(game:SavedGame,now:Date){
   if(game.startedAt>now.getTime()||(game.solvedAt??0)>now.getTime()||game.guesses.some(g=>g.acceptedAt&&Date.parse(g.acceptedAt)>now.getTime())||new Set(game.guesses.map(g=>g.word)).size!==game.guesses.length||new Set(game.guesses.map(g=>g.order)).size!==game.guesses.length||(game.profileV2StartIndex??0)>game.guesses.length) fail('Partie incohérente ou datée dans le futur.');
 }
@@ -33,21 +37,23 @@ export function parseDeviceEnvelope(text:string,now=new Date()):DeviceEnvelope{
   if(new TextEncoder().encode(text).length>SYNC_MAX_BYTES)fail('Copie trop grande (1 Mio maximum), aucune donnée tronquée.');
   const result=schema.safeParse(parseJson(text));if(!result.success)fail('Format de synchronisation inconnu, futur ou incohérent.');const value=result.data;
   if(value.version===1 && value.profile.includes('"classic-v2"'))fail('Une copie V1 ne peut déclarer des parties V2.');
+  if(value.version!==3&&value.profile.includes('"word2vec-v1"'))fail('Une copie ancienne ne peut déclarer cette édition.');
   if(Date.parse(value.createdAt)>now.getTime()||new Set(value.games.map(g=>g.id)).size!==value.games.length)fail('Copie incohérente ou datée dans le futur.');
   const rawProfile=parseJson(value.profile) as {legacyRaw?:unknown};
   if(rawProfile&&typeof rawProfile.legacyRaw==='string'){const legacy=z.object({wins:z.array(z.object({id:z.string(),date:z.string(),mode:z.enum(['daily','free','challenge']),tries:z.number(),hints:z.number()}).strict()),guesses:z.number(),sound:z.boolean()}).strict();if(!legacy.safeParse(parseJson(rawProfile.legacyRaw)).success)fail('La copie historique contient des champs inconnus : transfert refusé.');}
   const profile=inspectLocalProfileImport(value.profile,new SyncMemory(),now);if(!['ready','unchanged'].includes(profile.status))fail(profile.reason);
-  for(const item of value.games){if(!validId(item.id,now))fail('Identité de partie incompatible.');const v2=dailyV2Date(item.id);if(v2 ? value.version!==2 || !('puzzleRef' in item) || !isDailyV2Ref(item.puzzleRef,now) || item.puzzleRef.id!==item.id : 'puzzleRef' in item)fail('Référence de partie incompatible.');validateGame(item.game,now);if(v2&&(parisDate(new Date(item.game.startedAt))<v2||item.game.guesses.some(g=>g.acceptedAt&&parisDate(new Date(g.acceptedAt))<v2)))fail('Partie V2 antérieure à sa publication.');if(item.game.guesses.some(g=>g.found)||item.game.solvedAt)fail('Seules les parties en cours appartiennent à cette copie.');
+  for(const item of value.games){if(!validId(item.id,now))fail('Identité de partie incompatible.');const v2=dailyV2Date(item.id),w2v=isWord2vecId(item.id);if(w2v?value.version!==3||!('puzzleRef' in item)||!isWord2vecRef(item.puzzleRef,now)||!parseWord2vecDocument({schemaVersion:3,puzzleRef:item.puzzleRef,game:item.game},item.id):v2 ? value.version===1 || !('puzzleRef' in item) || !isDailyV2Ref(item.puzzleRef,now) || item.puzzleRef.id!==item.id : 'puzzleRef' in item)fail('Référence de partie incompatible.');validateGame(item.game,now);const published=v2??(w2v?(word2vecDate(item.id)??WORD2VEC_START):null);if(published&&(parisDate(new Date(item.game.startedAt))<published||item.game.guesses.some(g=>g.acceptedAt&&parisDate(new Date(g.acceptedAt))<published)))fail('Partie antérieure à sa publication.');if(item.game.guesses.some(g=>g.found)||item.game.solvedAt)fail('Seules les parties en cours appartiennent à cette copie.');
     if(item.context){const memory=new SyncMemory();memory.setItem(PLAY_CONTEXT_KEY,JSON.stringify({version:1,items:{[item.id]:item.context}}));if(!readContexts(memory)||item.id.startsWith('daily-')!==['daily','archive'].includes(item.context.mode))fail('Contexte de partie incohérent.');}
   }return value;
 }
 export function createDeviceEnvelope(storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date()){
   const profile=createLocalProfileExport(snapshot,now);if(!profile.ok)fail(profile.reason);
   const contexts=readContexts(storage);if(!contexts)fail('Contextes locaux illisibles : copie refusée.');
-  const games:z.infer<typeof mixedSchema>['games']=[];
-  for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(PREFIX))continue;const id=key.slice(PREFIX.length);const game=parseSavedGame(storage.getItem(key)!,id);validateGame(game,now);if(!validId(id,now))fail('Une partie locale utilise une identité inconnue.');if(game.guesses.some(g=>g.found)||game.solvedAt)continue;const date=dailyV2Date(id);games.push({id,game,...(date?{puzzleRef:dailyV2Ref(date,'daily')} : {}),...(contexts[id]?{context:contexts[id]}:{})});}
+  const games:z.infer<typeof word2vecSchema>['games']=[];
+  for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(PREFIX))continue;const id=key.slice(PREFIX.length);const game=parseSavedGame(storage.getItem(key)!,id);validateGame(game,now);if(!validId(id,now))fail('Une partie locale utilise une identité inconnue.');if(game.guesses.some(g=>g.found)||game.solvedAt)continue;const date=dailyV2Date(id);games.push({id,game,...(isWord2vecId(id)?{puzzleRef:word2vecRef(id,word2vecDate(id)?'daily':'free')}:date?{puzzleRef:dailyV2Ref(date,'daily')} : {}),...(contexts[id]?{context:contexts[id]}:{})});}
   const mixed=games.some(item=>'puzzleRef' in item)||profile.text.includes('"classic-v2"');
-  const value={format:'braiz-personal-device-sync',...(mixed?{version:2,corpus:'mixed-v1-v2',rules:'identity-bound'}:{version:1,corpus:'fr-fasttext-30000-v1',rules:'classic-v1'}),provenance:'personal-unverified',createdAt:now.toISOString(),profile:profile.text,games};const text=JSON.stringify(value);parseDeviceEnvelope(text,now);return text;
+  const w2v=games.some(item=>isWord2vecId(item.id))||profile.text.includes('"word2vec-v1"');
+  const value={format:'braiz-personal-device-sync',...(w2v?{version:3,corpus:'mixed-v1-v2-word2vec',rules:'identity-bound'}:mixed?{version:2,corpus:'mixed-v1-v2',rules:'identity-bound'}:{version:1,corpus:'fr-fasttext-30000-v1',rules:'classic-v1'}),provenance:'personal-unverified',createdAt:now.toISOString(),profile:profile.text,games};const text=JSON.stringify(value);parseDeviceEnvelope(text,now);return text;
 }
 /** Reconcile the current memory facts and latest disk facts in a private staging copy only. */
 export type LiveDeviceGame={id:string;game:SavedGame};
@@ -101,7 +107,7 @@ export function inspectDeviceMerge(text:string,storage:ProfileStorage,snapshot:P
   const preview=inspectLocalProfileImport(value.profile,staged,now,snapshot);if(!preview.planId||!['ready','unchanged'].includes(preview.status))fail(preview.reason);
   for(const item of value.games){const key=PREFIX+item.id;const raw=staged.getItem(key);const local=raw?parseSavedGame(raw,item.id):null;
     if(contexts[item.id]&&item.context&&JSON.stringify(contexts[item.id])!==JSON.stringify(item.context))fail('Contextes différents pour une même partie : choisissez un appareil source.');
-    const game=local?unionGame(local,item.game,now):{...item.game,profileV2StartIndex:item.game.guesses.length};staged.setItem(key,JSON.stringify(dailyV2Date(item.id)?dailyV2Document(item.id,game):game));if(!contexts[item.id]&&item.context)contexts[item.id]=item.context;
+    const game=local?unionGame(local,item.game,now):{...item.game,profileV2StartIndex:item.game.guesses.length};staged.setItem(key,JSON.stringify(isWord2vecId(item.id)?word2vecDocument(item.id,game):dailyV2Date(item.id)?dailyV2Document(item.id,game):game));if(!contexts[item.id]&&item.context)contexts[item.id]=item.context;
   }
   staged.setItem(PLAY_CONTEXT_KEY,JSON.stringify({version:1,items:contexts}));
   const imported=importLocalProfile(value.profile,preview.planId,staged,snapshot,now);if(!imported.persisted)fail(imported.reason);

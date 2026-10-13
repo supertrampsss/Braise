@@ -1,5 +1,7 @@
 import type { PuzzleRef } from "./game-contracts";
 import { DAILY_V2_START, isDailyV2Ref } from './daily-v2-contract';
+import { isWord2vecRef, isWord2vecId, WORD2VEC_START } from './word2vec-contract';
+import { parseWord2vecDocument } from './word2vec-storage';
 import type { IntruderAttempt } from "./intruder";
 import type { TwoBraisesGuess } from "./two-braises";
 import type { Profile, Puzzle, SavedGame, Win } from "./game-types";
@@ -155,8 +157,8 @@ type ProfileImportBundle = {
 
 type ProfileTransferEnvelope = {
   format: "braise-personal-profile";
-  exportVersion: 1 | 2;
-  semanticScope?: 'v1-and-pinned-daily-v2';
+  exportVersion: 1 | 2 | 3;
+  semanticScope?: 'v1-and-pinned-daily-v2'|'identity-bound-v1-v2-word2vec';
   profileSchemaVersion: typeof PROFILE_SCHEMA_VERSION;
   provenance: "personal-local";
   exportedAt: string;
@@ -340,6 +342,7 @@ function parseActivity(value: unknown): ProfileActivity | null {
       cosmetic !== null && value.value === cosmetic && value.id === `weekly-reward:${value.rewardId}` ? value as WeeklyRewardActivity : null;
   }
   if (!parsePuzzleRef(value.puzzleRef)) return null;
+  if((isWord2vecId(value.puzzleRef.id)||value.puzzleRef.rulesVersion==='word2vec-v1')&&(!isWord2vecRef(value.puzzleRef)||parisDate(new Date(value.occurredAt))<(value.puzzleRef.calendar?.date??WORD2VEC_START)))return null;
   if (value.type === "guessAccepted") {
     return exactKeys(value, ["schemaVersion", "id", "type", "puzzleRef", "word", "order", "occurredAt", "provenance"]) &&
       typeof value.word === "string" && value.word.length > 0 && value.word.length <= 80 && Number.isSafeInteger(value.order) && Number(value.order) >= 1 ? value as GuessActivity : null;
@@ -363,13 +366,14 @@ function validImportedActivity(activity: ProfileActivity, now: Date) {
   if (activity.type === "guessAccepted" || activity.type === "puzzleWon") {
     const ref = activity.puzzleRef;
     const v2 = isDailyV2Ref(ref, now);
-    if (v2 && parisDate(new Date(activity.occurredAt)) < ref.calendar!.date) return false;
-    if (ref.id.length > 160 || !v2 && (ref.corpusVersion !== "fr-fasttext-30000-v1" || ref.rulesVersion !== "classic-v1") ||
+    const w2v = isWord2vecRef(ref, now);
+    if ((v2||w2v) && parisDate(new Date(activity.occurredAt)) < (ref.calendar?.date??WORD2VEC_START)) return false;
+    if (ref.id.length > 160 || !v2 && !w2v && (ref.corpusVersion !== "fr-fasttext-30000-v1" || ref.rulesVersion !== "classic-v1") ||
         ref.variant !== "classic" || !["daily", "archive", "free", "challenge"].includes(ref.context)) return false;
     if (ref.context === "daily" || ref.context === "archive") {
-      if (!v2 && (!ref.id.startsWith("daily-") || !isIsoDate(ref.id.slice(6)) || ref.id.slice(6) >= DAILY_V2_START || !ref.calendar ||
+      if (!v2 && !w2v && (!ref.id.startsWith("daily-") || !isIsoDate(ref.id.slice(6)) || ref.id.slice(6) >= DAILY_V2_START || !ref.calendar ||
           ref.calendar.version !== "paris-daily-v1" || ref.calendar.date !== ref.id.slice(6))) return false;
-    } else if (!/^free-\d+$/.test(ref.id) || ref.calendar !== null) return false;
+    } else if (!w2v&&(!/^free-\d+$/.test(ref.id) || ref.calendar !== null)) return false;
     if (activity.type === "guessAccepted") return activity.id === `guess:${ref.id}:${activity.word}`;
     if (activity.id !== `win:${ref.id}` || activity.win.id !== ref.id || activity.win.completedAt !== activity.occurredAt) return false;
     if (ref.id.startsWith("daily-") && activity.win.date !== ref.calendar?.date) return false;
@@ -855,6 +859,7 @@ export function profileActivitiesForGame(puzzle: Puzzle, game: SavedGame): Profi
 }
 
 export function recordLocalGameProgress(puzzle: Puzzle, game: SavedGame, storage?: ProfileStorage, fallback?: ProfileSnapshot) {
+  if((isWord2vecId(puzzle.id)||puzzle.ref.rulesVersion==='word2vec-v1')&&(!isWord2vecRef(puzzle.ref)||puzzle.ref.id!==puzzle.id||!parseWord2vecDocument({schemaVersion:3,puzzleRef:puzzle.ref,game},puzzle.id)))throw new Error('profile-game-invalid');
   const snapshot = persistGameActivities(storage, profileActivitiesForGame(puzzle, game) as Array<GuessActivity | WinActivity>, fallback);
   return checkpointWeeklyRewards(snapshot, storage);
 }
@@ -914,10 +919,11 @@ export function createLocalProfileExport(snapshot: ProfileSnapshot, exportedAt =
   })).values()].sort((first, second) => first.id.localeCompare(second.id) || first.occurredAt.localeCompare(second.occurredAt));
   if (activities.length + evidence.length > 50000) return { ok: false as const, reason: "La progression dépasse les 50 000 éléments acceptés par le format de transfert." };
   const mixed = [...activities, ...evidence].some(activity => (activity.type === 'guessAccepted' || activity.type === 'puzzleWon') && isDailyV2Ref(activity.puzzleRef));
+  const w2v = [...activities, ...evidence].some(activity => (activity.type === 'guessAccepted' || activity.type === 'puzzleWon') && isWord2vecRef(activity.puzzleRef));
   const envelope: ProfileTransferEnvelope = {
     format: "braise-personal-profile",
-    exportVersion: mixed ? 2 : 1,
-    ...(mixed ? { semanticScope: 'v1-and-pinned-daily-v2' as const } : {}),
+    exportVersion: w2v?3:mixed ? 2 : 1,
+    ...(w2v?{semanticScope:'identity-bound-v1-v2-word2vec' as const}:mixed ? { semanticScope: 'v1-and-pinned-daily-v2' as const } : {}),
     profileSchemaVersion: PROFILE_SCHEMA_VERSION,
     provenance: "personal-local",
     exportedAt: exportedAt.toISOString(),
@@ -938,11 +944,11 @@ function parseTransferEnvelope(text: string, now = new Date()) {
   if (encodedByteLength(text) > PROFILE_TRANSFER_MAX_BYTES) return { ok: false as const, status: "invalid" as const, reason: "Le fichier dépasse la taille maximale de 8 Mio." };
   let value: unknown;
   try { value = JSON.parse(text); } catch { return { ok: false as const, status: "invalid" as const, reason: "Le fichier JSON est illisible." }; }
-  if (isRecord(value) && value.format === "braise-personal-profile" && typeof value.exportVersion === "number" && (value.exportVersion > 2 || value.exportVersion === 2 && value.semanticScope !== 'v1-and-pinned-daily-v2')) {
+  if (isRecord(value) && value.format === "braise-personal-profile" && typeof value.exportVersion === "number" && (value.exportVersion > 3 || value.exportVersion === 2 && value.semanticScope !== 'v1-and-pinned-daily-v2'||value.exportVersion===3&&value.semanticScope!=='identity-bound-v1-v2-word2vec')) {
     return { ok: false as const, status: "unsupported" as const, reason: "Cette sauvegarde utilise un format plus récent." };
   }
-  if (!isRecord(value) || !exactKeys(value, ["format", "exportVersion", "profileSchemaVersion", "provenance", "exportedAt", "sourceStatus", "scope", "summary", "base", "legacyRaw", "activities", "evidence", ...(value.exportVersion === 2 ? ['semanticScope'] : [])]) ||
-      value.format !== "braise-personal-profile" || ![1,2].includes(value.exportVersion as number) || value.profileSchemaVersion !== PROFILE_SCHEMA_VERSION ||
+  if (!isRecord(value) || !exactKeys(value, ["format", "exportVersion", "profileSchemaVersion", "provenance", "exportedAt", "sourceStatus", "scope", "summary", "base", "legacyRaw", "activities", "evidence", ...(value.exportVersion === 2||value.exportVersion===3 ? ['semanticScope'] : [])]) ||
+      value.format !== "braise-personal-profile" || ![1,2,3].includes(value.exportVersion as number) || value.profileSchemaVersion !== PROFILE_SCHEMA_VERSION ||
       value.provenance !== "personal-local" || value.scope !== "profile-only" || !isIsoInstant(value.exportedAt) || Date.parse(value.exportedAt) > now.getTime() ||
       typeof value.sourceStatus !== "string" || !["ready", "migrated", "partial", "memory-only", "corrupt", "unsupported", "conflict"].includes(value.sourceStatus) ||
       !isRecord(value.summary) || !exactKeys(value.summary, ["guesses", "wins", "activities"]) || !Array.isArray(value.activities) || !Array.isArray(value.evidence)) {
@@ -954,7 +960,8 @@ function parseTransferEnvelope(text: string, now = new Date()) {
   const bundle = parseImportBundle({ schemaVersion: PROFILE_SCHEMA_VERSION, transferVersion: PROFILE_TRANSFER_VERSION, type: "profileImport", base: value.base, legacyRaw: value.legacyRaw, activities: value.activities, evidence: value.evidence }, now);
   if (!bundle) return { ok: false as const, status: "invalid" as const, reason: "La sauvegarde contient des données incohérentes ou datées dans le futur." };
   const mixed = [...bundle.activities,...bundle.evidence].some(activity => (activity.type === 'guessAccepted' || activity.type === 'puzzleWon') && isDailyV2Ref(activity.puzzleRef));
-  if (mixed !== (value.exportVersion === 2)) return { ok: false as const, status: 'invalid' as const, reason: 'La version déclarée ne correspond pas aux parties du profil.' };
+  const w2v = [...bundle.activities,...bundle.evidence].some(activity => (activity.type === 'guessAccepted' || activity.type === 'puzzleWon') && isWord2vecRef(activity.puzzleRef));
+  if ((w2v?3:mixed?2:1)!==value.exportVersion) return { ok: false as const, status: 'invalid' as const, reason: 'La version déclarée ne correspond pas aux parties du profil.' };
   const summary = transferSummary(bundle.base, bundle.activities);
   if (!Number.isSafeInteger(value.summary.guesses) || !Number.isSafeInteger(value.summary.wins) || !Number.isSafeInteger(value.summary.activities) ||
       value.summary.guesses !== summary.guesses || value.summary.wins !== summary.wins || value.summary.activities !== summary.activities) {

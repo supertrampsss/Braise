@@ -74,7 +74,7 @@ test("real V1 temperatures and ranks match independently captured samples for al
 });
 
 test("API accepts existing tabs and enforces every supplied puzzle version and context", async () => {
-  const metaResponse = await GET(new Request("https://braise.test/api/game?mode=free&seed=0001"));
+  const metaResponse = await GET(new Request("https://braise.test/api/game?mode=free&seed=0001&edition=classic-v1"));
   assert.equal(metaResponse.status, 200);
   const puzzle = await metaResponse.json() as Puzzle;
   const body = { mode: "free", seed: "0001", puzzleId: puzzle.id, action: "guess", word: "océan" };

@@ -29,8 +29,8 @@ function fixture() {
   return{authority:a,pin:hash(JSON.stringify(a)),bucket,reads:()=>reads,target};
 }
 test('qualified future authority preserves V1 boundary and fails closed outside its immutable calendar',async()=>{
-  const before=await resolveClassicGame('daily','',undefined,new Date('2027-01-04T22:59:59Z'),{});assert.equal(before.publicPuzzle.ref.rulesVersion,'classic-v1');before.close();
-  await assert.rejects(resolveClassicGame('daily','',undefined,new Date('2027-01-04T23:00:00Z'),{}),/unavailable/);
+  const before=await resolveClassicGame('daily','',undefined,new Date('2027-01-04T22:59:59Z'),{},undefined,'classic-v1');assert.equal(before.publicPuzzle.ref.rulesVersion,'classic-v1');before.close();
+  await assert.rejects(resolveClassicGame('daily','',undefined,new Date('2027-01-04T23:00:00Z'),{},undefined,'classic-v2'),/unavailable/);
   for(const date of ['2027-01-05','2028-01-04']) await assert.rejects(openDailyV2(authority,DAILY_V2_QUALIFICATION_PIN,{qualificationPin:DAILY_V2_QUALIFICATION_PIN,bucket:missing},date,'daily',new Date(date+'T12:00:00Z')),/unavailable/);
   for(const [date,context,now] of [['2027-01-05','archive','2027-01-05'],['2028-01-05','daily','2028-01-05'],['2027-01-06','archive','2027-01-05']] as const)await assert.rejects(openDailyV2(authority,DAILY_V2_QUALIFICATION_PIN,{qualificationPin:DAILY_V2_QUALIFICATION_PIN,bucket:missing},date,context,new Date(now+'T12:00:00Z')),/unavailable/);
   const changed=structuredClone(authority);changed.calendar.assignments[0].targetId++;await assert.rejects(openDailyV2(changed,DAILY_V2_QUALIFICATION_PIN,{qualificationPin:DAILY_V2_QUALIFICATION_PIN,bucket:missing},'2027-01-05','daily',new Date('2027-01-05T12:00:00Z')),/unavailable/);
@@ -41,12 +41,12 @@ test('the future runtime verifies its model but exposes no manually selected hin
 });
 test('actual GET/POST route returns bounded JSON refusals for unset gate, future date, missing storage and after end',async t=>{
   t.mock.timers.enable({apis:['Date'],now:new Date('2027-01-05T12:00:00Z')});const values=env as unknown as Record<string,unknown>;
-  try {delete values.BRAIZ_DAILY_V2_QUALIFICATION_PIN;let response=await GET(new Request('https://braiz.io/api/game'));assert.equal(response.status,503);assert.match(response.headers.get('content-type')!,/json/);
+  try {delete values.BRAIZ_DAILY_V2_QUALIFICATION_PIN;let response=await GET(new Request('https://braiz.io/api/game?edition=classic-v2'));assert.equal(response.status,503);assert.match(response.headers.get('content-type')!,/json/);
     values.BRAIZ_DAILY_V2_QUALIFICATION_PIN=DAILY_V2_QUALIFICATION_PIN;values.SEMANTIC_DATA=missing;
-    response=await GET(new Request('https://braiz.io/api/game'));assert.equal(response.status,503);const puzzle={id:'daily-v2-2027-01-05',ref:dailyV2Ref('2027-01-05','daily')};
+    response=await GET(new Request('https://braiz.io/api/game?edition=classic-v2'));assert.equal(response.status,503);const puzzle={id:'daily-v2-2027-01-05',ref:dailyV2Ref('2027-01-05','daily')};
     response=await GET(new Request('https://braiz.io/api/game?mode=archive&date=2027-01-06'));assert.equal(response.status,400);
-    const post=(extra:Record<string,unknown>)=>POST(new Request('https://braiz.io/api/game',{method:'POST',body:JSON.stringify({mode:'daily',puzzleId:puzzle.id,action:'guess',word:'arbre',...extra})}));
+    const post=(extra:Record<string,unknown>)=>POST(new Request('https://braiz.io/api/game?edition=classic-v2',{method:'POST',body:JSON.stringify({mode:'daily',puzzleId:puzzle.id,action:'guess',word:'arbre',...extra})}));
     response=await post({puzzleRef:puzzle.ref});assert.equal(response.status,503);assert.match(response.headers.get('content-type')!,/json/);
-    t.mock.timers.setTime(new Date('2028-01-05T12:00:00Z').getTime());assert.equal((await GET(new Request('https://braiz.io/api/game'))).status,503);
+    t.mock.timers.setTime(new Date('2028-01-05T12:00:00Z').getTime());assert.equal((await GET(new Request('https://braiz.io/api/game?edition=classic-v2'))).status,503);
   }finally{delete values.BRAIZ_DAILY_V2_QUALIFICATION_PIN;delete values.SEMANTIC_DATA;t.mock.timers.reset();}
 });

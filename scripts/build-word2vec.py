@@ -125,7 +125,7 @@ def main():
             compressed = compressed[:9] + b"\xff" + compressed[10:]
             if len(compressed) >= 25 * 1024 * 1024:
                 raise ValueError(f"Asset exceeds the hosting object limit: {word}")
-            key = f"semantic/word2vec/{target_id:06d}.bws.gz"
+            key = f"semantic/word2vec/{target_id:06d}.bws"
             path = args.root / "public" / key
             temporary = path.with_suffix(path.suffix + ".tmp")
             temporary.write_bytes(compressed)

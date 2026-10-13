@@ -16,11 +16,17 @@ import { getLegacyArchivePuzzle } from '../lib/legacy-puzzles';
 import futureRuntime from '../data/editorial-v2-runtime.json';
 import legacyManifest from '../data/legacy-v1.json';
 import type { Puzzle, SavedGame } from '../lib/game-types';
+import { word2vecRef } from '../lib/word2vec-contract';
+import { word2vecDocument } from '../lib/word2vec-storage';
+import { setWord2vecObjectLoaderForTests } from '../lib/word2vec.server';
+import { readFile } from 'node:fs/promises';
+import { rememberPlayContext, type LocalPlay } from '../lib/play-hub';
 
 // Real Game hooks and handlers. Only DOM presentation primitives are replaced;
 // this is component evidence, never a browser/accessibility certification.
 let Game: ComponentType, bundleDirectory: string;
 before(async () => {
+  setWord2vecObjectLoaderForTests(async key=>{const bytes=await readFile('public/'+key);return bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength);});
   const moduleName = 'esbuild';
   const { build } = await import(moduleName);
   bundleDirectory = await mkdtemp('work/t8ui-');
@@ -115,6 +121,40 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
     assert.equal(b.audioCalls(), 0, 'device import callback restores won board without audio');
     assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), diagnosticBeforeImport);
   } finally { await act(async () => tree.unmount()); }
+});
+
+test('Game restores a Word2Vec victory silently and rejects a mismatched edition before save admission',async()=>{
+  const id='free-w2v-042',target:Puzzle={...puzzle,id,vocabularySize:155562,ref:word2vecRef(id,'free')};
+  const storage=new SyncMemory(),won:SavedGame={startedAt:Date.parse('2026-10-13T12:00:00Z'),pins:[],hints:0,guesses:[{word:'maison',temperature:100,rank:1,found:true,order:1}]};
+  const raw=JSON.stringify(word2vecDocument(id,won));storage.setItem('braise.v1.game.'+id,raw);
+  let b=browser(storage,'https://braiz.test/?libre=042&edition=word2vec-v1');globalThis.fetch=async()=>Response.json(target);
+  let tree=await mount();try{assert.match(text(tree.root),/1 essai, aucun indice/);assert.equal(b.audioCalls(),0);assert.equal(storage.getItem(PRODUCT_EVENTS_KEY),null);assert.equal(storage.getItem('braise.v1.game.'+id),raw);}finally{await act(async()=>tree.unmount());}
+  b=browser(storage,'https://braiz.test/?libre=042&edition=classic-v1');globalThis.fetch=async()=>Response.json(target);tree=await mount();
+  try{assert.match(text(tree.root),/version de cette partie/);assert.equal(tree.root.findAllByProps({id:'guess'}).length,0);assert.equal(storage.getItem('braise.v1.game.'+id),raw);}finally{await act(async()=>tree.unmount());}
+});
+
+test('selecting the historical Voyage in Explorer resumes its V1 trials when Word2Vec trials coexist',async()=>{
+  const seed='1700000049',oldTarget={...getLegacyPuzzle('challenge',seed).publicPuzzle,resetAt:'2099-01-01T00:00:00Z'},id=`free-w2v-${seed}`;
+  const modernTarget={...oldTarget,id,vocabularySize:155562,ref:word2vecRef(id,'challenge')};
+  const old:SavedGame={startedAt:1,pins:[],hints:0,guesses:[{word:'jardin',temperature:20,rank:42,found:false,order:1}]};
+  const modern:SavedGame={startedAt:Date.parse('2026-10-13T12:00:00Z'),pins:[],hints:0,guesses:[{word:'maison',temperature:12.34,rank:150000,found:false,order:1}]};
+  const b=browser(undefined,'https://braiz.test/?voyage=sous-bois-v1'),oldRaw=JSON.stringify(old),newRaw=JSON.stringify(word2vecDocument(id,modern));
+  b.storage.setItem('braise.v1.game.'+oldTarget.id,oldRaw);b.storage.setItem('braise.v1.game.'+id,newRaw);
+  for(const key of [oldTarget.id,id])rememberPlayContext(b.storage,key,{mode:'challenge',expedition:'sous-bois-v1',expeditionStep:1});
+  const gets:string[]=[];
+  globalThis.fetch=async(url)=>{
+    if(String(url)==='/api/expeditions')return Response.json({id:'sous-bois-v1',completed:0,length:3,seed});
+    gets.push(String(url));const edition=new URL(String(url),'https://braiz.test').searchParams.get('edition');return Response.json(edition==='classic-v1'?oldTarget:modernTarget);
+  };
+  const tree=await mount();try{
+    assert.match(text(tree.root),/Meilleure piste : maison/);
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));
+    const hub=tree.root.findAll(node=>typeof node.type==='function'&&node.props.onResume&&Array.isArray(node.props.plays))[0];
+    const selected=(hub.props.plays as LocalPlay[]).find(play=>play.id===oldTarget.id)!;assert.equal(selected.edition,'classic-v1');
+    await act(async()=>hub.props.onResume(selected));
+    assert.match(text(tree.root),/Meilleure piste : jardin/);assert.equal(b.win.location.searchParams.get('edition'),'classic-v1');assert.match(gets.at(-1)!,/edition=classic-v1/);
+    assert.equal(b.storage.getItem('braise.v1.game.'+oldTarget.id),oldRaw);assert.equal(b.storage.getItem('braise.v1.game.'+id),newRaw);assert.equal(b.audioCalls(),0);
+  }finally{await act(async()=>tree.unmount());}
 });
 
 test('Game accepts only matching puzzle facts and preserves input edited during POST without extra restoration feedback', async () => {
@@ -253,6 +293,7 @@ for(const kind of ['voyage','collection'] as const) test(`solo ${kind} names its
   const expedition=EXPEDITIONS[0], collection=COLLECTIONS[0],seed=kind==='voyage'?'042':collection.seeds[0];
   browser(undefined,kind==='voyage'?`https://braiz.test/?voyage=${expedition.id}`:`https://braiz.test/?defi=${seed}&collection=${collection.id}`);
   const target={...getLegacyPuzzle('challenge',seed).publicPuzzle,resetAt:'2099-01-01T00:00:00Z'};
+  if(kind==='voyage'){target.id=`free-w2v-${seed}`;target.ref=word2vecRef(target.id,'challenge');target.vocabularySize=155562;}
   const calls:string[]=[];
   globalThis.fetch=async(url)=>{calls.push(String(url));return String(url)==='/api/expeditions'?Response.json({id:expedition.id,completed:0,length:expedition.length,seed}):Response.json(target);};
   const tree=await mount();
@@ -281,7 +322,7 @@ test('a completed chapter keeps its terminal badge after Jouer and Accueil witho
   const b = browser(undefined, `https://braiz.test/?voyage=${expedition.id}`);
   b.storage.setItem('braise.v1.profile', JSON.stringify({wins: [], guesses: 0, sound: true}));
   for (let i = 0; i < 2; i++) b.storage.setItem(`braise.v1.game.free-${seeds[i]}`, JSON.stringify({startedAt: 1, hints: 0, pins: [], guesses: [{word: answers[i], order: 1, rank: 1, temperature: 100, found: true}]}));
-  const target = {...getLegacyPuzzle('challenge', seeds[2]).publicPuzzle, resetAt: '2099-01-01T00:00:00Z'};
+  const target = {...getLegacyPuzzle('challenge', seeds[2]).publicPuzzle,id:`free-w2v-${seeds[2]}`,vocabularySize:155562,ref:word2vecRef(`free-w2v-${seeds[2]}`,'challenge'), resetAt: '2099-01-01T00:00:00Z'};
   const puzzleRequests: string[] = [], submittedRefs: unknown[] = [];
   globalThis.fetch = async (url, options) => {
     if (String(url) === '/api/expeditions') {
@@ -303,7 +344,7 @@ test('a completed chapter keeps its terminal badge after Jouer and Accueil witho
     assert.deepEqual(submittedRefs, [target.ref]);
     await click(tree, 'Terminer le chapitre');
     const saved = b.storage.getItem(`braise.v1.game.${target.id}`), profile = loadLocalProfile(b.storage).profile;
-    assert.deepEqual(JSON.parse(saved!).guesses.map((guess: {word: string; temperature: number; rank: number; found: boolean}) => ({word: guess.word, temperature: guess.temperature, rank: guess.rank, found: guess.found})), [{word: answers[2], temperature: 100, rank: 1, found: true}]);
+    assert.deepEqual(JSON.parse(saved!).game.guesses.map((guess: {word: string; temperature: number; rank: number; found: boolean}) => ({word: guess.word, temperature: guess.temperature, rank: guess.rank, found: guess.found})), [{word: answers[2], temperature: 100, rank: 1, found: true}]);
     const audio = b.audioCalls(), requestCount = puzzleRequests.length;
     assert.equal(audio, 1, 'one newly accepted win, never replayed by terminal navigation');
     const navigation = () => tree.root.findByProps({'aria-label': 'Navigation principale'});
@@ -368,7 +409,7 @@ for (const complete of [true, false]) test(`real profile-only import reaches dis
     await click(tree, 'Découvrir un mot en libre');
     await act(async () => replyReady.promise);
     assert.ok(imported.every(id => bodies[0].encountered.includes(id)), 'Game submits identities from the actual imported snapshot');
-    if (complete) {assert.match(text(tree.root), /Vous avez rencontré les 120 cibles V1/);assert.doesNotMatch(text(tree.root), /Cible non rencontrée/);assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), diagnosticBefore);}
+    if (complete) {assert.match(text(tree.root), /Vous avez rencontré tous les mots disponibles en libre/);assert.doesNotMatch(text(tree.root), /Cible non rencontrée/);assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), diagnosticBefore);}
     else {const selected = b.win.location.searchParams.get('libre');assert.ok(selected);assert.notEqual(getLegacyPuzzle('free', selected, importInstant).legacyIndex, getLegacyPuzzle('free', imported[0].slice(5), importInstant).legacyIndex);}
     assert.deepEqual(loadLocalProfile(b.storage).profile, snapshot.profile, 'discovery gives no extra profile credit');
     assert.equal(b.audioCalls(), 0);

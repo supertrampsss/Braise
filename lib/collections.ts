@@ -21,6 +21,6 @@ export const COLLECTIONS: readonly CollectionEdition[] = [NATURE_COLLECTION,
 
 export function collectionProgress(wins: readonly Win[], collection: CollectionEdition = NATURE_COLLECTION) {
   const won = new Set(wins.filter(win => win.mode === "challenge" || win.mode === "free").map(win => win.id));
-  const completed = collection.seeds.map(seed => won.has(`free-${seed}`));
+  const completed = collection.seeds.map(seed => won.has(`free-${seed}`)||won.has(`free-w2v-${seed}`));
   return { completed, count: completed.filter(Boolean).length, next: completed.findIndex(value => !value) };
 }

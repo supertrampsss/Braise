@@ -5,9 +5,11 @@ import { EXPEDITIONS } from './expeditions';
 import type { SavedGame, Mode } from './game-types';
 import { dailyV2Date, DAILY_V2_START } from './daily-v2-contract';
 import { parseDailyV2Document } from './daily-v2-storage';
+import { parseWord2vecDocument } from './word2vec-storage';
+import { word2vecDate, word2vecSeed, isWord2vecId, type ClassicEdition } from './word2vec-contract';
 export const PLAY_CONTEXT_KEY = 'braiz.play-context.v1';
 export type PlayContext = { mode: Mode; collection?: string; expedition?: string; expeditionStep?: number };
-export type LocalPlay = { id: string; mode: Mode; locator: string; game: SavedGame; context?: PlayContext; href: string; label: string; updatedAt?: number };
+export type LocalPlay = { id: string; mode: Mode; locator: string; game: SavedGame; context?: PlayContext; href: string; label: string; updatedAt?: number; edition:ClassicEdition };
 export type PlayStorage = Pick<Storage, 'length' | 'key' | 'getItem' | 'setItem'>;
 export function readContexts(storage: PlayStorage): Record<string, PlayContext> | null {
   try {
@@ -16,7 +18,8 @@ export function readContexts(storage: PlayStorage): Record<string, PlayContext> 
     const value = JSON.parse(raw);
     if (value.version !== 1 || !value.items || typeof value.items !== 'object' || Array.isArray(value.items)) return null;
     for (const [id, item] of Object.entries(value.items) as [string, PlayContext][]) {
-      if ((!/^(free-\d{1,10}|daily-\d{4}-\d{2}-\d{2})$/.test(id) && !dailyV2Date(id)) || !item || !['daily','archive','free','challenge'].includes(item.mode) || (id.startsWith('daily-v2-') && (!['daily','archive'].includes(item.mode) || item.collection || item.expedition || item.expeditionStep !== undefined)) || (item.collection && !COLLECTIONS.some(c => c.id === item.collection && c.seeds.includes(id.slice(5)))) || (item.expedition && !EXPEDITIONS.some(e => e.id === item.expedition)) || (item.expeditionStep !== undefined && (!item.expedition || !Number.isInteger(item.expeditionStep) || item.expeditionStep < 1 || item.expeditionStep > 3))) return null;
+      const seed=word2vecSeed(id)??id.slice(5);
+      if ((!/^(free-\d{1,10}|daily-\d{4}-\d{2}-\d{2})$/.test(id) && !dailyV2Date(id)&&!isWord2vecId(id)) || !item || !['daily','archive','free','challenge'].includes(item.mode) || ((id.startsWith('daily-v2-')||word2vecDate(id)) && (!['daily','archive'].includes(item.mode) || item.collection || item.expedition || item.expeditionStep !== undefined)) || (item.collection && !COLLECTIONS.some(c => c.id === item.collection && c.seeds.includes(seed))) || (item.expedition && !EXPEDITIONS.some(e => e.id === item.expedition)) || (item.expeditionStep !== undefined && (!item.expedition || !Number.isInteger(item.expeditionStep) || item.expeditionStep < 1 || item.expeditionStep > 3))) return null;
     }
     return value.items;
   } catch { return null; }
@@ -34,19 +37,22 @@ export function readLocalPlays(storage: PlayStorage, now = new Date()): LocalPla
       const raw = storage.getItem(key); if (!raw || raw.length > 2000000) continue;
       let game: unknown; try { game = JSON.parse(raw); } catch { continue; }
       const v2Date = dailyV2Date(id);
+      if(id.startsWith('daily-w2v-')||id.startsWith('free-w2v-'))game=parseWord2vecDocument(game,id);
       if (id.startsWith('daily-v2-')) game = v2Date ? parseDailyV2Document(game,id) : null;
       if (!validLegacyGame(game) || !game.guesses.length) continue;
       const context = contexts[id]; let mode: Mode; let locator: string; let href: string; let label: string;
-      const dailyDate = v2Date ?? (/^daily-\d{4}-\d{2}-\d{2}$/.test(id) && id.slice(6) < DAILY_V2_START ? id.slice(6) : null);
+      const edition:ClassicEdition=isWord2vecId(id)?'word2vec-v1':v2Date?'classic-v2':'classic-v1';
+      const dailyDate = word2vecDate(id)??v2Date ?? (/^daily-\d{4}-\d{2}-\d{2}$/.test(id) && id.slice(6) < DAILY_V2_START ? id.slice(6) : null);
       if (dailyDate && (archiveDateStatus(dailyDate, now) === 'available' || dailyDate === parisDate(now))) {
         locator = dailyDate; mode = locator === parisDate(now) ? 'daily' : 'archive'; href = mode === 'daily' ? '/' : `/?archive=${locator}`; label = mode === 'daily' ? 'Mot du jour' : `Archive du ${locator}`;
-      } else if (/^free-\d{1,10}$/.test(id) && Number(id.slice(5)) <= 2147483647) {
-        locator = id.slice(5); mode = context?.mode === 'challenge' ? 'challenge' : 'free'; href = `/?${mode === 'free' ? 'libre' : 'defi'}=${locator}`; label = mode === 'free' ? 'Partie libre' : 'Défi';
+      } else if (word2vecSeed(id)!==null||/^free-\d{1,10}$/.test(id) && Number(id.slice(5)) <= 2147483647) {
+        locator = word2vecSeed(id)??id.slice(5); mode = context?.mode === 'challenge' ? 'challenge' : 'free'; href = `/?${mode === 'free' ? 'libre' : 'defi'}=${locator}`; label = mode === 'free' ? 'Partie libre' : 'Défi';
       } else continue;
       if (context?.collection) { const c = COLLECTIONS.find(c => c.id === context.collection)!; label = `${c.title} · énigme ${c.seeds.indexOf(locator) + 1}`; href += `&collection=${c.id}`; }
       if (context?.expedition) { label = `Voyage · ${EXPEDITIONS.find(e => e.id === context.expedition)!.title} · ${context.expeditionStep ? `étape ${context.expeditionStep}/3` : 'étape à vérifier'}`; href = `/?voyage=${context.expedition}`; }
+      href+=href.includes('?')?'&edition='+edition:'?edition='+edition;
       const last = game.guesses.at(-1)?.acceptedAt; const updatedAt = last && Number.isFinite(Date.parse(last)) ? Date.parse(last) : Number.isFinite(game.startedAt) && game.startedAt > 0 ? game.startedAt : undefined;
-      result.push({ id, mode, locator, game, context, href, label, updatedAt });
+      result.push({ id, mode, locator, game, context, href, label, updatedAt,edition });
     }
   } catch { /* unavailable storage does not block the board */ }
   return result.sort((a,b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0));

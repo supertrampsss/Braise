@@ -35,7 +35,7 @@ test('same V1 target under distinct seeds and daily archive resolves to the same
 });
 test('seeded GET preserves V1 identity, leading zeros and target mapping',async()=>{
   for(const seed of ['0','00','042','42','2147483647']) {
-    const expected=getLegacyPuzzle('free',seed);const response=await GET(new Request(`https://braiz.test/api/game?mode=free&seed=${seed}`));assert.equal(response.status,200);const value=await response.json() as Record<string,unknown>;
+    const expected=getLegacyPuzzle('free',seed);const response=await GET(new Request(`https://braiz.test/api/game?mode=free&seed=${seed}&edition=classic-v1`));assert.equal(response.status,200);const value=await response.json() as Record<string,unknown>;
     assert.equal(value.id,expected.publicPuzzle.id);assert.equal(value.seed,seed);assert.equal(value.number,expected.publicPuzzle.number);assert.deepEqual(value.ref,expected.publicPuzzle.ref);assert.match(String(value.targetIdentity),/^[a-f0-9]{64}$/);
   }
 });
@@ -48,7 +48,7 @@ test('encounter ledger deduplicates, bounds and preserves corrupt data',()=>{
 });
 test('resume uses civil dates and real valid unfinished saves without manufacturing journey identity',()=>{
   const storage=new Store();storage.setItem('braise.v1.game.daily-2026-09-07',JSON.stringify(game()));storage.setItem('braise.v1.game.daily-2026-10-12',JSON.stringify(game()));storage.setItem('braise.v1.game.daily-2026-10-13',JSON.stringify(game()));storage.setItem('braise.v1.game.daily-2026-02-31',JSON.stringify(game()));storage.setItem('braise.v1.game.free-042',JSON.stringify(game()));storage.setItem('braise.v1.game.free-1','broken');
-  const plays=readLocalPlays(storage,now);assert.equal(plays.length,3);assert.equal(plays.find(p=>p.id==='daily-2026-09-07')?.mode,'archive');assert.equal(plays.find(p=>p.id==='daily-2026-10-12')?.mode,'daily');assert.equal(plays.find(p=>p.id==='free-042')?.href,'/?libre=042');assert.equal(plays.find(p=>p.id==='free-042')?.context,undefined);assert.ok(resumeSuggestion(plays));
+  const plays=readLocalPlays(storage,now);assert.equal(plays.length,3);assert.equal(plays.find(p=>p.id==='daily-2026-09-07')?.mode,'archive');assert.equal(plays.find(p=>p.id==='daily-2026-10-12')?.mode,'daily');assert.equal(plays.find(p=>p.id==='free-042')?.href,'/?libre=042&edition=classic-v1');assert.equal(plays.find(p=>p.id==='free-042')?.context,undefined);assert.ok(resumeSuggestion(plays));
 });
 test('explicit collection and expedition contexts survive reload; corrupt contexts are retained',()=>{
   const storage=new Store();storage.setItem('braise.v1.game.free-1000000046',JSON.stringify(game()));assert.ok(rememberPlayContext(storage,'free-1000000046',{mode:'challenge',collection:'nature-v1'}));assert.equal(readLocalPlays(storage,now)[0].label,'Nature · énigme 1');
@@ -59,12 +59,14 @@ test('win summary derives personal trials, actual hint rows, threshold order and
   const saved=game();saved.guesses.push({word:'arbre',temperature:55,rank:9,found:false,order:2,hint:true},{word:'foret',temperature:100,rank:1,found:true,order:3});saved.hints=1;
   const summary=gameSummary(saved);assert.equal(summary.trials,2);assert.equal(summary.hints,1);assert.deepEqual(summary.milestones.map(m=>m.guess?.order),[1,2,2]);assert.equal(summary.bestPistes[0].word,'arbre');assert.ok(!summary.bestPistes.some(g=>g.found));
 });
-test('tutorial uses distinct daily target and exact real semantic response, not synthetic scoring',async()=>{
+test('historical tutorial uses distinct daily target and exact real semantic response, not synthetic scoring',async t=>{
+  t.mock.timers.enable({apis:['Date'],now});
   setSemanticObjectLoaderForTests(async key=>{try{const b=await readFile(`public/${key}`);return b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength);}catch{return null;}});
   const response=await GET(new Request('https://braiz.test/api/game?tutorial=1'));const puzzle=await response.json() as ReturnType<typeof getLegacyPuzzle>['publicPuzzle'];
   assert.equal(puzzle.mode,'free');assert.notEqual(getLegacyPuzzle('free',puzzle.seed).legacyIndex,getLegacyPuzzle('daily').legacyIndex);
   const evaluated=await POST(new Request('https://braiz.test/api/game',{method:'POST',body:JSON.stringify({mode:'free',seed:puzzle.seed,puzzleId:puzzle.id,puzzleRef:puzzle.ref,action:'guess',word:'maison'})}));assert.equal(evaluated.status,200);const result=await evaluated.json() as {temperature:number;rank:number};assert.ok(Number.isFinite(result.temperature));assert.ok(Number.isInteger(result.rank));
   const component=await readFile('components/game-parts/play-tutorial.tsx','utf8');assert.ok(!component.includes('recordLocalGameProgress'));assert.ok(!component.includes('saveGame'));assert.ok(!component.includes('writeLocal'));assert.ok(component.includes('samePuzzleRef'));
+  t.mock.timers.reset();setSemanticObjectLoaderForTests(null);
 });
 test('input revisions and current-puzzle guard remain enforced; share text excludes words',async()=>{
   assert.equal(inputAfterAcceptedGuess('new word',false,2,1),'new word');assert.equal(inputAfterAcceptedGuess('same word',false,3,1),'same word');assert.equal(inputAfterAcceptedGuess('word',false,1,1),'');
