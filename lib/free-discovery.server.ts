@@ -45,7 +45,7 @@ export async function discoverFree(body: unknown, now = new Date()) {
     let index: number;
     const date=dailyV2Date(id);
     const w2vDate=word2vecDate(id),w2vSeed=word2vecSeed(id);
-    if(w2vDate&&w2vDate<=parisDate(now)) { index=legacy.targets.indexOf(dailyWord2vecTarget(w2vDate));if(index<0)continue; }
+    if(w2vDate&&w2vDate<=parisDate(now)) { excluded.add(await encounterIdentityForWord(dailyWord2vecTarget(w2vDate)));continue; }
     else if(w2vSeed!==null&&parisDate(now)>=WORD2VEC_START)index=getLegacyPuzzle('free',w2vSeed,now).legacyIndex;
     else if(date && date<=parisDate(now)) {
       const targetId=future.calendar.assignments.find(item=>item.date===date)?.targetId;

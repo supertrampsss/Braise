@@ -18,7 +18,9 @@ function letters(value: number) {
   while (current > 0) { current--; result = String.fromCharCode(97 + current % 26) + result; current = Math.floor(current / 26); }
   return result;
 }
-async function remove(root: string) { await rm(root, { recursive: true, force: true }); }
+// Windows may briefly report ENOTEMPTY after its SQLite files have been closed
+// and unlinked. Retry teardown only; corpus assertions and errors stay unchanged.
+async function remove(root: string) { await rm(root, { recursive: true, force: true, maxRetries: process.platform === 'win32' ? 3 : 0, retryDelay: 100 }); }
 const sha256 = (value: Buffer) => createHash("sha256").update(value).digest("hex");
 
 test("the ingestion reaches EOF beyond 50,000 rows and the independent verifier covers every admitted entry", async () => {

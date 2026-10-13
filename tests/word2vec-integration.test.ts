@@ -13,7 +13,7 @@ import { loadLocalProfile, recordLocalGameProgress, createLocalProfileExport, in
 import { readLocalPlays } from '../lib/play-hub';
 import { resumeExpedition } from '../lib/expedition-resume';
 import { retryPuzzleLoad, admittedPuzzleUrl } from '../lib/game-navigation';
-import { collectDiscoveryHistory } from '../lib/free-discovery';
+import { collectDiscoveryHistory, DISCOVERY_KEY } from '../lib/free-discovery';
 import type { PuzzleRef } from '../lib/game-contracts';
 import { discoverFree, legacyEncounterIdentityForWord } from '../lib/free-discovery.server';
 import { collectionProgress, NATURE_COLLECTION } from '../lib/collections';
@@ -109,4 +109,24 @@ test('an explicit historical Voyage resume keeps its edition when both saves coe
   const seed='1700000049',old=game(42),modern=game();
   const dependencies={edition:'classic-v1' as const,status:async()=>({id:'sous-bois-v1',completed:0,length:3,seed}),readGame:(id:string)=>id===`free-${seed}`?old:modern,isCurrent:()=>true};
   const result=await resumeExpedition('sous-bois-v1',dependencies);assert.equal(result?.saved,old);assert.equal(result?.edition,'classic-v1');
+});
+test('profile-only transfer excludes the oeuf daily across historical modes without new credit',async t=>{
+  const instant=new Date('2027-09-30T12:00:00Z');t.mock.timers.enable({apis:['Date'],now:instant});setWord2vecObjectLoaderForTests(asset);
+  const daily=await resolveClassicGame('daily','',undefined,instant,{});
+  try{
+    assert.equal(daily.targetWord,'oeuf');const answer=await daily.evaluate('oeuf');assert(answer?.found);
+    const source=new Memory(),saved={guesses:[{...answer,order:1,acceptedAt:instant.toISOString()}],pins:[],hints:0,startedAt:instant.getTime(),solvedAt:instant.getTime(),profileV2StartIndex:0};
+    const profile=recordLocalGameProgress(daily.publicPuzzle,saved,source),exported=createLocalProfileExport(profile,instant);assert(exported.ok);
+    const dest=new Memory();let snapshot=loadLocalProfile(dest);
+    for(let repeat=0;repeat<2;repeat++){const preview=inspectLocalProfileImport(exported.text,dest,instant);assert(preview.planId);const imported=importLocalProfile(exported.text,preview.planId,dest,snapshot,instant);assert(imported.persisted&&imported.snapshot);snapshot=imported.snapshot;}
+    assert.equal(dest.getItem(DISCOVERY_KEY),null);assert.equal(dest.getItem('braise.v1.game.'+daily.publicPuzzle.id),null);
+    const history=collectDiscoveryHistory(dest,snapshot,instant);assert.deepEqual(history,[daily.publicPuzzle.id]);const before=JSON.stringify([...dest.values]),stats={...snapshot.profile};
+    let seed=0;while(historical.targets[getLegacyPuzzle('free',String(seed),instant).legacyIndex]!=='œuf')seed++;
+    for(const encountered of [history,[...history,`free-${seed}`]]){
+      const discovery=await discoverFree({excluded:[],encountered,replay:false},instant);
+      assert.equal(discovery.remaining,119);assert.notEqual(discovery.puzzle?.targetIdentity,daily.targetIdentity);
+      assert.equal(discovery.encountered.filter(identity=>identity===daily.targetIdentity).length,1);
+    }
+    assert.deepEqual(loadLocalProfile(dest).profile,stats);assert.equal(stats.guesses,1);assert.equal(stats.wins.length,1);assert.equal(JSON.stringify([...dest.values]),before);
+  }finally{daily.close();setWord2vecObjectLoaderForTests(null);t.mock.timers.reset();}
 });
