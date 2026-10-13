@@ -35,9 +35,9 @@ test('qualified future authority preserves V1 boundary and fails closed outside 
   for(const [date,context,now] of [['2027-01-05','archive','2027-01-05'],['2028-01-05','daily','2028-01-05'],['2027-01-06','archive','2027-01-05']] as const)await assert.rejects(openDailyV2(authority,DAILY_V2_QUALIFICATION_PIN,{qualificationPin:DAILY_V2_QUALIFICATION_PIN,bucket:missing},date,context,new Date(now+'T12:00:00Z')),/unavailable/);
   const changed=structuredClone(authority);changed.calendar.assignments[0].targetId++;await assert.rejects(openDailyV2(changed,DAILY_V2_QUALIFICATION_PIN,{qualificationPin:DAILY_V2_QUALIFICATION_PIN,bucket:missing},'2027-01-05','daily',new Date('2027-01-05T12:00:00Z')),/unavailable/);
 });
-test('three literal hints handle 3000 previous words with a fixed four-read page path',async()=>{
+test('the future runtime verifies its model but exposes no manually selected hints',async()=>{
   const f=fixture();const service=await openDailyV2(f.authority,f.pin,{qualificationPin:f.pin,bucket:f.bucket},'2027-01-05','daily',new Date('2027-01-05T12:00:00Z'));
-  try {const history=Array.from({length:3000},(_,i)=>'ancien'+i);history[0]=f.target.hints[0].word;assert.deepEqual(await service.hint(0,history),{word:f.target.hints[1].word,temperature:13,rank:99,found:false});assert.equal(f.reads(),4);assert.equal(await service.hint(0,f.target.hints.map(h=>h.word)),null);assert.equal(f.reads(),4);}finally{service.close();}
+  try {assert.equal(Object.hasOwn(service,'hint'),false);assert.equal(f.reads(),4);}finally{service.close();}
 });
 test('actual GET/POST route returns bounded JSON refusals for unset gate, future date, missing storage and after end',async t=>{
   t.mock.timers.enable({apis:['Date'],now:new Date('2027-01-05T12:00:00Z')});const values=env as unknown as Record<string,unknown>;

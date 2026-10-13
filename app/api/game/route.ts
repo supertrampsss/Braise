@@ -82,13 +82,11 @@ export async function POST(request: Request) {
       return reply({ error: "La version de cette partie ne correspond plus. Rechargez le jeu pour reprendre." }, 409);
     }
     if (body.action === "hint") {
-      if (!Number.isInteger(body.hintLevel) || body.hintLevel < 0 || body.hintLevel > 2 || !Array.isArray(body.guesses) || body.guesses.length < 5 || body.guesses.length > 3000 || !body.guesses.every((word: unknown) => typeof word === "string" && word.length <= 50)) return reply({ error: "Les indices sont disponibles après cinq essais, trois fois par partie." }, 400);
-      const hint = await resolved.hint(body.hintLevel,body.guesses);
-      return hint ? reply({ ...hint, puzzleRef: publicPuzzle.ref }) : reply({ error: "Votre meilleure piste est déjà toute proche. Essayez ses variantes ou ses synonymes." }, 400);
+      return reply({ error: "Les indices automatiques ont été retirés." }, 410);
     }
     if (body.action !== "guess" || typeof body.word !== "string" || body.word.length > 50 || !/^[\p{L}]+(?:['-][\p{L}]+)*$/u.test(normalizeWord(body.word))) return reply({ error: "Proposez un seul mot français, sans chiffre ni espace." }, 400);
     const evaluation = await resolved.evaluate(body.word);
-    if (evaluation === null) return reply({ error: "Ce mot n’est pas dans le dictionnaire de BRAIZ. Essayez le singulier ou l’infinitif, avec les accents." }, 422);
+    if (evaluation === null) return reply({ error: "Mot inconnu." }, 422);
     return reply({ ...evaluation, puzzleRef: publicPuzzle.ref });
   } catch (error) {
     if (error instanceof DailyV2Unavailable) return reply({error:'Cette édition est momentanément indisponible. Votre saisie est conservée.'},503);

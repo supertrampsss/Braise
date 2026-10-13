@@ -375,33 +375,25 @@ for (const complete of [true, false]) test(`real profile-only import reaches dis
   } finally {await act(async () => tree.unmount());}
 });
 
-for (const version of ['V1','V2'] as const) test(`lexical refusal ${version} retains exact corpus/ref in a voluntary local download and distinguishes503`, async () => {
+for (const version of ['V1','V2'] as const) test(`lexical refusal ${version} keeps the input and exposes no reporting or corpus controls`, async () => {
   const target: Puzzle = version === 'V1' ? puzzle : {id: 'daily-v2-2027-01-05', mode: 'archive', seed: '2027-01-05', date: '2027-01-05', number: 121, vocabularySize: 1013881, resetAt: '2099-01-01T00:00:00Z', ref: dailyV2Ref('2027-01-05','archive')};
   const b = browser(undefined, version === 'V1' ? 'https://braiz.test/?libre=042' : 'https://braiz.test/?archive=2027-01-05');
-  let status = 422, posts = 0, captured: Blob | undefined, downloads = 0;
-  globalThis.fetch = async (_url, options) => {if (options?.method === 'POST') {posts++;return Response.json({error: status === 422 ? 'Mot absent du lexique.' : 'Stockage indisponible.'}, {status});} return Response.json(target);};
-  const originalCreate = URL.createObjectURL, originalRevoke = URL.revokeObjectURL;
-  URL.createObjectURL = blob => {assert.ok(blob instanceof Blob);captured = blob;return 'blob:local-feedback';}; URL.revokeObjectURL = () => {};
-  Object.assign(b.doc, {createElement: () => ({click() {downloads++;}})});
+  let status = 422, posts = 0;
+  globalThis.fetch = async (_url, options) => {if (options?.method === 'POST') {posts++;return Response.json({error: status === 422 ? 'Mot inconnu.' : 'Stockage indisponible.'}, {status});} return Response.json(target);};
   const tree = await mount();
   try {
     await act(async () => tree.root.findByProps({id: 'guess'}).props.onChange({target: {value: 'zzabsentqa'}}));
     await act(async () => tree.root.findByProps({className: 'guess-form'}).props.onSubmit({preventDefault() {}, currentTarget: {contains() {return false;}}}));
-    const report = tree.root.findByProps({className: 'refused-word-report'});
-    assert.ok(text(report).includes(target.ref.corpusVersion), 'lexicon copy identifies the actual corpus');
-    assert.equal(tree.root.findByProps({id: 'guess'}).props.value, 'zzabsentqa');assert.equal(downloads, 0);assert.equal(posts, 1);
-    const diagnosticBefore = b.storage.getItem(PRODUCT_EVENTS_KEY);
-    await click(tree, 'Télécharger le signalement'); assert.equal(downloads, 1);assert.equal(posts, 1);assert.ok(captured);
-    const payload = JSON.parse(await captured.text());assert.deepEqual(payload.puzzleRef, target.ref);assert.equal(payload.corpusVersion, target.ref.corpusVersion);assert.equal(payload.word, 'zzabsentqa');assert.equal(payload.reason, 'absent-from-lexicon');
-    assert.deepEqual(JSON.parse(diagnosticBefore!).events.map((event: {type: string}) => event.type), ['guessRejected']);
-    assert.deepEqual(JSON.parse(b.storage.getItem(PRODUCT_EVENTS_KEY)!).events.map((event: {type: string}) => event.type), ['guessRejected','refusedWordReported']);
+    assert.equal(tree.root.findByProps({id: 'guess'}).props.value, 'zzabsentqa');assert.equal(posts, 1);
+    assert.match(text(tree.root), /Mot inconnu/);assert.doesNotMatch(text(tree.root), /Télécharger le signalement|lexique de cette partie|fr-fasttext/);
+    assert.equal(tree.root.findAllByProps({className: 'refused-word-report'}).length, 0);
+    assert.deepEqual(JSON.parse(b.storage.getItem(PRODUCT_EVENTS_KEY)!).events.map((event: {type: string}) => event.type), ['guessRejected']);
     status = 503;await act(async () => tree.root.findByProps({id: 'guess'}).props.onChange({target: {value: 'zzautreaq'}}));
     await act(async () => tree.root.findByProps({className: 'guess-form'}).props.onSubmit({preventDefault() {}, currentTarget: {contains() {return false;}}}));
-    assert.equal(tree.root.findAllByProps({className: 'refused-word-report'}).length, 0);assert.equal(posts, 2);assert.equal(downloads, 1);
-    const ledger = b.storage.getItem(PRODUCT_EVENTS_KEY)!;assert.deepEqual(JSON.parse(ledger).events.map((event: {type: string}) => event.type), ['guessRejected','refusedWordReported','networkFailed']);assert.doesNotMatch(ledger,/zzabsentqa|zzautreaq|puzzleRef|corpusVersion/);for(const event of JSON.parse(ledger).events) assert.deepEqual(Object.keys(event).sort(), ['context','occurredAt','type']);
-  } finally {await act(async () => tree.unmount());URL.createObjectURL = originalCreate;URL.revokeObjectURL = originalRevoke;}
+    assert.equal(tree.root.findByProps({id: 'guess'}).props.value, 'zzautreaq');assert.equal(posts, 2);
+    const ledger = b.storage.getItem(PRODUCT_EVENTS_KEY)!;assert.deepEqual(JSON.parse(ledger).events.map((event: {type: string}) => event.type), ['guessRejected','networkFailed']);assert.doesNotMatch(ledger,/zzabsentqa|zzautreaq|puzzleRef|corpusVersion/);for(const event of JSON.parse(ledger).events) assert.deepEqual(Object.keys(event).sort(), ['context','occurredAt','type']);
+  } finally {await act(async () => tree.unmount());}
 });
-
 
 const nonterminalGame = (instant: string): SavedGame => ({guesses:[{word:'arbre',temperature:12.25,rank:1234,found:false,order:1,acceptedAt:instant}],hints:0,pins:[],startedAt:Date.parse(instant),profileV2StartIndex:0});
 test('real nonterminal profile import and transferred evidence retain leading zeroes and admissible daily V1 identities', async () => {
@@ -452,8 +444,8 @@ for (const common of [true,false]) test(`real mixed profile import leaves ${comm
 });
 
 
-test('hint422 with an empty proposal is an error, not a refused word to download',async()=>{
- const b=browser();b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:Array.from({length:5},(_,i)=>({word:'piste'+i,temperature:12.25,rank:1234,found:false,order:i+1}))}));
- const actions:string[]=[];globalThis.fetch=async(_url,options)=>{if(options?.method==='POST'){actions.push(JSON.parse(String(options.body)).action);return Response.json({error:'Indice indisponible.'},{status:422});}return Response.json(puzzle);};
- const tree=await mount();try{const hint=tree.root.findByProps({className:'hint-button'});assert.equal(hint.props.disabled,false);await act(async()=>hint.props.onClick());assert.equal(tree.root.findByProps({id:'guess'}).props.value,'');assert.equal(tree.root.findAllByProps({className:'refused-word-report'}).length,0);assert.deepEqual(actions,['hint']);assert.match(text(tree.root),/Indice indisponible/);}finally{await act(async()=>tree.unmount());}
+test('the classic board exposes no automatic hint control or request even after five guesses',async()=>{
+ const b=browser();b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:Array.from({length:5},(_,i)=>({word:'piste'+i,order:i+1,temperature:10+i,rank:2000+i,found:false}))}));
+ let posts=0;globalThis.fetch=async(_url,options)=>{if(options?.method==='POST')posts++;return Response.json(puzzle);};
+ const tree=await mount();try{assert.equal(tree.root.findAllByProps({className:'hint-button'}).length,0);assert.equal(posts,0);assert.equal(tree.root.findAllByProps({className:'refused-word-report'}).length,0);}finally{await act(async()=>tree.unmount());}
 });

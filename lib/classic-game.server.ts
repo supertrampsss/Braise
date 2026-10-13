@@ -4,7 +4,7 @@ import { parisDate } from './calendar';
 import { openDailyV2, type DailyV2Authority, type DailyV2Runtime } from './daily-v2.server';
 import authority from '@/data/editorial-v2-runtime.json';
 import { DAILY_V2_QUALIFICATION_PIN } from './daily-v2-pin';
-import { evaluateWord, findWord, getArchivePuzzle, getPuzzle, legacyTargetWord, nextHint } from './semantic';
+import { evaluateWord, findWord, getArchivePuzzle, getPuzzle, legacyTargetWord } from './semantic';
 import { legacyEncounterIdentityForWord, withTargetIdentity } from './free-discovery.server';
 import type { Mode } from './game-types';
 export async function resolveClassicGame(mode: Mode, seed: string, date: string | undefined, now: Date, runtime: DailyV2Runtime, signal?: AbortSignal) {
@@ -17,7 +17,6 @@ export async function resolveClassicGame(mode: Mode, seed: string, date: string 
   const publicPuzzle = await withTargetIdentity(value.publicPuzzle);
   return { publicPuzzle,targetWord:legacyTargetWord(value.targetIndex),targetIdentity:publicPuzzle.targetIdentity,requiresVersion:false,
     async evaluate(word: string) { const id=findWord(word);return id===undefined?null:evaluateWord(value.targetIndex,id); },
-    hint: (level:number,guesses:string[])=>nextHint(value.targetIndex,level,guesses,mode==='daily'?value.publicPuzzle.date:undefined),
     close() {},
   };
 }

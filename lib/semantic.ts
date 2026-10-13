@@ -1,10 +1,8 @@
 // Server-only data path. Never import this module into a client component.
 import dataset from "@/data/semantic-v1-index.json";
-import activeEditorial from "@/data/editorial-v1-active.json";
 import type { Mode } from "./game-types";
 import { getLegacyArchivePuzzle, getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
 import { targetSegment } from "./semantic-storage";
-import { chooseEditorialHint } from "./editorial-hints";
 export { parisDate, nextParisMidnight } from "./calendar";
 
 const words: string[] = dataset.words;
@@ -39,22 +37,16 @@ export async function evaluateWord(targetIndex: number, index: number) {
   const found = words[index] === targets[targetIndex].word;
   return { word: words[index], temperature: found ? 100 : Math.min(99.9, Math.round(scores[index] / 10) / 10), rank: found ? 1 : ranks[index], found };
 }
-export async function nextHint(targetIndex: number, hintLevel: number, guesses: string[], editorialDate?: string) {
+export async function nextHint(targetIndex: number, hintLevel: number, guesses: string[]) {
   const { order, ranks } = await targetSegment(targetIndex);
   const used = new Set(guesses.map(normalizeWord));
   const bestRank = guesses.reduce((best, word) => {
     const index = findWord(word); return index === undefined ? best : Math.min(best, ranks[index]);
   }, words.length);
   const desiredRank = Math.min([350, 80, 12][Math.min(2, Math.max(0, hintLevel))], Math.max(1, Math.floor(bestRank * .55)));
-  // Avoid obvious inflections of the target as hints: keep the discovery moment.
   const target = targets[targetIndex].word;
-  const stem = fold(target).slice(0, Math.max(3, target.length - 2));
-  const candidates = Array.from(order.slice(desiredRank, Math.min(bestRank - 1, desiredRank + 1000)))
-    .filter(i => !used.has(words[i]) && words[i] !== target && !fold(words[i]).startsWith(stem))
-    .map(i => ({ index: i, word: words[i] }));
-  const dailyEditorial = editorialDate ? activeEditorial.days[editorialDate as keyof typeof activeEditorial.days] : undefined;
-  const preferredWords = dailyEditorial?.word === target ? dailyEditorial.preferredWords : [];
-  const candidate = chooseEditorialHint(candidates, target, preferredWords)?.index;
+  const candidate = Array.from(order.slice(desiredRank, Math.min(bestRank - 1, desiredRank + 1000)))
+    .find(i => !used.has(words[i]) && words[i] !== target);
   return candidate === undefined ? null : evaluateWord(targetIndex, candidate);
 }
 export const datasetMetadata = dataset.meta;

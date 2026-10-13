@@ -35,7 +35,6 @@ export async function openDailyV2(authority: DailyV2Authority, pin: string, runt
   return {
     publicPuzzle, targetWord:target.word,
     async evaluate(word: string) { try { const found=await reader.lookup(word); if(!found)return null; const value=await reader.evaluate(target.targetId,found.id);if(controller.signal.aborted)unavailable();return{word:found.word,...value}; } catch { return unavailable(); } },
-    async hint(level: number, guesses: string[]) { const used=new Set(guesses.map(word=>word.trim().toLocaleLowerCase('fr').normalize('NFC')));const hint=target.hints.slice(level).find(h=>!used.has(h.word));if(!hint)return null;try { const value=await reader.evaluate(target.targetId,hint.id);if(controller.signal.aborted)unavailable();return{word:hint.word,...value}; }catch{return unavailable();} },
     close,
   };
 }

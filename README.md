@@ -1,5 +1,7 @@
 # BRAIZ
 
+Correction du 13 octobre 2026 : plateau simplifié, indices automatiques retirés, associations du modèle sans sélection éditoriale de voisins. Voir [le détail et la portée de cette correction](docs/SEMANTIC-SIMPLIFICATION.md).
+
 Jeu web français de proximité sémantique. Version de test BRAIZ : mot quotidien, archives, partie libre, profil local et partage sans spoiler. Domaine : braiz.io. Les modes avancés sont conservés dans le code mais non proposés au public (`lib/release.ts`). Les clés historiques `braise.*` restent compatibles.
 
 ## Développement

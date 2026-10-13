@@ -79,7 +79,7 @@ test("invalid words never receive made-up semantic scores; errors preserve proto
   assert.equal((await POST(requestGuess({ ...base, word: "train", puzzleId: "daily-2000-01-01" }))).status, 409);
   assert.equal((await GET(new Request("https://braise.test/api/game?mode=challenge&seed=nope"))).status, 400);
   assert.equal((await POST(requestGuess({ ...base, word: "train" }))).status, 200);
-  assert.equal((await POST(requestGuess({ ...base, action: "hint", hintLevel: 0, guesses: [] }))).status, 400);
+  assert.equal((await POST(requestGuess({ ...base, action: "hint", hintLevel: 0, guesses: [] }))).status, 410);
 });
 
 test("daily streak includes yesterday, excludes free games, and resets after a miss", () => {

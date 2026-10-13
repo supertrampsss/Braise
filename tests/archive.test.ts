@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { archiveDateStatus, isCalendarDate, latestArchiveDate, parisDate, shiftCalendarDate } from "../lib/calendar";
-import { evaluateWord, findWord, getArchivePuzzle, getPuzzle, nextHint } from "../lib/semantic";
+import { evaluateWord, findWord, getArchivePuzzle, getPuzzle } from "../lib/semantic";
 import { setSemanticObjectLoaderForTests } from "../lib/semantic-storage";
 import { GET, POST } from "../app/api/game/route";
 import { getStreak, type SavedGame } from "../lib/game-types";
@@ -93,9 +93,8 @@ test("archive API validates the date and version before scoring guesses or hints
   assert.deepEqual(await guessResponse.json(), { ...expectedGuess, puzzleRef: puzzle.ref });
   const guesses = ["justice", "musique", "sport", "livre", "enfant"];
   const hintResponse = await post({ ...base, action: "hint", hintLevel: 0, guesses });
-  assert.equal(hintResponse.status, 200);
-  const expectedHint = await nextHint(getArchivePuzzle(puzzle.date).targetIndex, 0, guesses);
-  assert.deepEqual(await hintResponse.json(), { ...expectedHint, puzzleRef: puzzle.ref });
+  assert.equal(hintResponse.status, 410);
+  assert.equal(Object.hasOwn(await hintResponse.json(), "temperature"), false);
   assert.equal((await post({ ...base, puzzleRef: undefined, action: "guess", word: "livre" })).status, 409);
   for (const puzzleRef of [
     { ...puzzle.ref, context: "daily" },

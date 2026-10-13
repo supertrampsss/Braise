@@ -97,7 +97,7 @@ test("API accepts existing tabs and enforces every supplied puzzle version and c
   for (const secret of ["word", "answer", "scores", "targetIndex", "legacyIndex"]) assert.ok(!publicKeys.includes(secret));
 });
 
-test("calendar references and hints are checked against the same canonical puzzle", async () => {
+test("calendar references remain checked and retired hints add no semantic result", async () => {
   const { publicPuzzle: daily } = getPuzzle("daily");
   const body = { mode: "daily", puzzleId: daily.id, action: "guess", word: "livre" };
   const badRef = { ...daily.ref, calendar: { ...daily.ref.calendar, version: "unknown" } };
@@ -105,10 +105,10 @@ test("calendar references and hints are checked against the same canonical puzzl
   assert.equal(samePuzzleRef({ ...daily.ref, calendar: { ...daily.ref.calendar, date: "2000-01-01" } }, daily.ref), false);
   const { publicPuzzle: free } = getPuzzle("free", "1234");
   const response = await post({ mode: "free", seed: "1234", puzzleId: free.id, puzzleRef: free.ref, action: "hint", hintLevel: 0, guesses: ["justice", "musique", "sport", "livre", "enfant"] });
-  assert.equal(response.status, 200);
-  const hint = await response.json() as EvaluationResponse;
-  assert.ok(samePuzzleRef(hint.puzzleRef, free.ref));
-  assert.equal(hint.word, saves.fixtures[2].game.guesses[5].word);
+  assert.equal(response.status, 410);
+  const retired = await response.json() as Record<string, unknown>;
+  assert.equal(Object.hasOwn(retired, "temperature"), false);
+  assert.equal(Object.hasOwn(retired, "word"), false);
   for (const invalidSeed of ["2147483648", "00000000000", "-1", "1.0", ""]) {
     assert.equal((await GET(new Request("https://braise.test/api/game?mode=free&seed=" + invalidSeed))).status, 400);
   }
