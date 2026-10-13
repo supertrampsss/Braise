@@ -117,6 +117,14 @@ async function verifyScoreCheckpoint(path, checkpoint, manifest) {
   if (info.size > checkpoint.scoresBytes) { const writable = await open(path, "r+"); try { await writable.truncate(checkpoint.scoresBytes); await writable.sync(); } finally { await writable.close(); } }
 }
 
+async function prepareIncompleteCheckpoint({ checkpoint, config, configHash, manifest, scorePath }) {
+  if (!checkpoint) checkpoint = { schemaVersion: 1, complete: false, config, configHash, processedCorpusSegments: 0, scoresWritten: 0, scoresBytes: 0, histogram: new Array(SCORE_BUCKETS).fill(0), scoreParts: [] };
+  if (checkpoint.schemaVersion !== 1 || checkpoint.complete !== false || checkpoint.configHash !== configHash || stableJson(checkpoint.config) !== stableJson(config) || !Number.isInteger(checkpoint.processedCorpusSegments) || checkpoint.processedCorpusSegments < 0 || checkpoint.processedCorpusSegments > manifest.segments.length || checkpoint.scoresWritten < 0 || checkpoint.scoresWritten > manifest.stats.accepted || checkpoint.scoresBytes !== checkpoint.scoresWritten * 2 || !Array.isArray(checkpoint.histogram) || checkpoint.histogram.length !== SCORE_BUCKETS || !checkpoint.histogram.every(value => Number.isSafeInteger(value) && value >= 0) || !Array.isArray(checkpoint.scoreParts) || checkpoint.scoreParts.length !== checkpoint.processedCorpusSegments) throw new Error("Target checkpoint does not match corpus or configuration");
+  if (checkpoint.scoresWritten > 0) await verifyScoreCheckpoint(scorePath, checkpoint, manifest);
+  else await rm(scorePath, { force: true });
+  return checkpoint;
+}
+
 function pageHeader(magic, targetId, first, count, dictionarySize, payloadOffset, rawBytes, corpusManifestSha256, contractHash) {
   const header = Buffer.alloc(PAGE_HEADER_BYTES);
   header.write(magic, 0, 4, "ascii"); header.writeUInt16LE(2, 4); header.writeUInt16LE(magic === "BSV2" ? 0b11 : 0b1, 6);
@@ -179,10 +187,7 @@ async function buildSemanticTargetInternal({
       await rm(scorePath, { force: true });
       return JSON.parse(await readFile(join(targetDir, active.manifest), "utf8"));
     }
-    if (!checkpoint) checkpoint = { schemaVersion: 1, complete: false, config, configHash, processedCorpusSegments: 0, scoresWritten: 0, scoresBytes: 0, histogram: new Array(SCORE_BUCKETS).fill(0), scoreParts: [] };
-    if (checkpoint.schemaVersion !== 1 || checkpoint.complete !== false || checkpoint.configHash !== configHash || stableJson(checkpoint.config) !== stableJson(config) || !Number.isInteger(checkpoint.processedCorpusSegments) || checkpoint.processedCorpusSegments < 0 || checkpoint.processedCorpusSegments > manifest.segments.length || checkpoint.scoresWritten < 0 || checkpoint.scoresWritten > manifest.stats.accepted || checkpoint.scoresBytes !== checkpoint.scoresWritten * 2 || !Array.isArray(checkpoint.histogram) || checkpoint.histogram.length !== SCORE_BUCKETS || !checkpoint.histogram.every(value => Number.isSafeInteger(value) && value >= 0) || !Array.isArray(checkpoint.scoreParts) || checkpoint.scoreParts.length !== checkpoint.processedCorpusSegments) throw new Error("Target checkpoint does not match corpus or configuration");
-    if (checkpoint.scoresWritten > 0) await verifyScoreCheckpoint(scorePath, checkpoint, manifest);
-    else await rm(scorePath, { force: true });
+    checkpoint = await prepareIncompleteCheckpoint({ checkpoint, config, configHash, manifest, scorePath });
     const target = await targetVectorFor(corpusDir, manifest, targetId); const targetNorm = vectorNorm(target.vector, manifest.config.dimensions);
     scoreHandle = await open(scorePath, checkpoint.scoresWritten ? "r+" : "w+");
     let expectedId = 0;
@@ -333,10 +338,7 @@ export async function prepareSemanticTargetScoresBatch({ corpusDir, outputDir, t
       let checkpoint;
       try { checkpoint = JSON.parse(await readFile(state.checkpointPath, "utf8")); }
       catch (error) { if (error?.code !== "ENOENT") throw new Error("Cannot read target score checkpoint"); }
-      if (!checkpoint) checkpoint = { schemaVersion: 1, complete: false, config, configHash, processedCorpusSegments: 0, scoresWritten: 0, scoresBytes: 0, histogram: new Array(SCORE_BUCKETS).fill(0), scoreParts: [] };
-      if (checkpoint.schemaVersion !== 1 || checkpoint.complete !== false || checkpoint.configHash !== configHash || stableJson(checkpoint.config) !== stableJson(config) || !Number.isInteger(checkpoint.processedCorpusSegments) || checkpoint.processedCorpusSegments < 0 || checkpoint.processedCorpusSegments > manifest.segments.length || checkpoint.scoresWritten < 0 || checkpoint.scoresWritten > manifest.stats.accepted || checkpoint.scoresBytes !== checkpoint.scoresWritten * 2 || !Array.isArray(checkpoint.histogram) || checkpoint.histogram.length !== SCORE_BUCKETS || !checkpoint.histogram.every(value => Number.isSafeInteger(value) && value >= 0) || !Array.isArray(checkpoint.scoreParts) || checkpoint.scoreParts.length !== checkpoint.processedCorpusSegments) throw new Error("Target checkpoint does not match corpus or configuration");
-      if (checkpoint.scoresWritten > 0) await verifyScoreCheckpoint(state.scorePath, checkpoint, manifest);
-      else await rm(state.scorePath, { force: true });
+      checkpoint = await prepareIncompleteCheckpoint({ checkpoint, config, configHash, manifest, scorePath: state.scorePath });
       state.checkpoint = checkpoint;
       state.handle = await open(state.scorePath, checkpoint.scoresWritten ? "r+" : "w+");
     }
