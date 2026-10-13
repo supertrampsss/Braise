@@ -140,7 +140,7 @@ Journaux exacts archivés : `qualification-2026-10-13/evidence/task8b-full-tests
 
 **Critère littéral :** Chaque mode possède une sortie et une reprise prévisibles ; retour, rechargement et liens directs gardent le contexte.
 
-**État :** source_implemented_local_evidence_hosted_gate_pending. Sorties/reprises et entrées concrètes visibles, URL et epochs protégés. Le plateau solo porte encore un libellé social trompeur. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score.
+**État :** source_implemented_local_evidence_hosted_gate_pending. Sorties/reprises et entrées concrètes visibles, URL et epochs protégés. Observation HISTORIQUE 8A : le plateau solo portait un libellé social trompeur. État corrigé 8B : le parcours solo est nommé dans l’onglet et le plateau sans changer mode/ref/seed/score ; un chapitre récompensé affiche « Chapitre terminé » après Jouer ou Accueil.
 
 **Fichiers :** `components/app-navigation.tsx`, `components/game.tsx`, `components/server-game-links.tsx`, `lib/game-navigation.ts`, `components/expedition-picker.tsx`
 
@@ -488,7 +488,7 @@ Journaux exacts archivés : `qualification-2026-10-13/evidence/task8b-full-tests
 
 **Critère littéral :** La suggestion explique son motif et laisse un choix direct ; aucune difficulté, affinité ou popularité n’est inventée.
 
-**État :** source_implemented_local_evidence_hosted_gate_pending. Une suggestion par vrais faits locaux, priorité parcours/collection/reprise ; notice terminale ambiguë observée. Une suggestion terminale annonce explicitement une autre partie réellement inachevée.
+**État :** source_implemented_local_evidence_hosted_gate_pending. Une suggestion par vrais faits locaux, priorité parcours/collection/reprise ; Observation HISTORIQUE 8A : notice terminale ambiguë. État corrigé 8B : une suggestion terminale annonce explicitement une autre partie réellement inachevée.
 
 **Fichiers :** `lib/play-hub.ts`, `components/game-parts/play-hub.tsx`, `components/game.tsx`
 
@@ -555,3 +555,11 @@ Journaux exacts archivés : `qualification-2026-10-13/evidence/task8b-full-tests
 **Preuves :** `docs/review/qualification-2026-10-13/task-6-report.md`, `docs/review/qualification-2026-10-13/evidence/qa-training-worker-final-controller.json`, `docs/review/qualification-2026-10-13/evidence/qa-neutral-upgrade-final-controller.json`, `docs/review/qualification-2026-10-13/evidence/task8a-training-identity.json`
 
 **Limites/gates :** Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.
+
+## Correctif après revue 8B
+
+BASE98b9426 ; M1 badge « Chapitre terminé » après Jouer/Accueil et reload silencieux, mêmes faits/ref/score/profil. M2 constats D10/A09 explicitement HISTORIQUES8A et état corrigé8B. Deux rapports de travail retirés uniquement de l’index après validation exacte de leurs archives ; fichiers physiques ignorés conservés.
+
+Qualification ciblée44/44, TypeScript/lint/build vérifié exits0,0warning lint,160/160 identités gelées inchangées. Ces44 cas ne gonflent pas les comptes du run complet unique387 ni de sa qualification composée384/3non exécutés, qui restent les preuves historiques. Nouveau build après correction de libellé, sans second fullsuite/numerical replay/régénération training. Notices vendor SQLite/MockTimers/react-test-renderer, Vinext/PLUGIN_TIMINGS conservées.
+
+Preuves fraîches et provenance : `qualification-2026-10-13/task8b-fix-round1/manifest.json` et `qualification-2026-10-13/task8b-fix-round1/source-qualification.md` ; manifeste original84/cutoff inchangés. Publication,416cas hébergés,pin et QA native restent au contrôleur.

@@ -1,0 +1,290 @@
+TAP version 13
+# Subtest: six expeditions reveal only the current stage after exact prior answers
+ok 1 - six expeditions reveal only the current stage after exact prior answers
+  ---
+  duration_ms: 126.7535
+  type: 'test'
+  ...
+# Subtest: expedition rejects skipped steps, fabricated wins and malformed proofs
+ok 2 - expedition rejects skipped steps, fabricated wins and malformed proofs
+  ---
+  duration_ms: 3.9899
+  type: 'test'
+  ...
+# Subtest: resume preserves current-stage data and uses live evidence without storage writes
+ok 3 - resume preserves current-stage data and uses live evidence without storage writes
+  ---
+  duration_ms: 0.4744
+  type: 'test'
+  ...
+# Subtest: late expedition response cannot advance after another navigation
+ok 4 - late expedition response cannot advance after another navigation
+  ---
+  duration_ms: 0.141
+  type: 'test'
+  ...
+# Subtest: accepted guesses produce one identified feedback with visual priority
+ok 5 - accepted guesses produce one identified feedback with visual priority
+  ---
+  duration_ms: 0.6309
+  type: 'test'
+  ...
+# Subtest: an expired timer only consumes its own feedback
+ok 6 - an expired timer only consumes its own feedback
+  ---
+  duration_ms: 0.1198
+  type: 'test'
+  ...
+# Subtest: a consumed feedback id cannot be admitted twice in the same puzzle epoch
+ok 7 - a consumed feedback id cannot be admitted twice in the same puzzle epoch
+  ---
+  duration_ms: 0.0912
+  type: 'test'
+  ...
+# Subtest: a response clears only an input that was not edited during the request
+ok 8 - a response clears only an input that was not edited during the request
+  ---
+  duration_ms: 0.0748
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Game Strict Mode admits one browser restoration and current popstate handlers retain navigation epochs
+ok 9 - Game Strict Mode admits one browser restoration and current popstate handlers retain navigation epochs
+  ---
+  duration_ms: 433.1485
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Game restores wins silently, removes terminal hint lock copy, and exposes honest clipboard/manual sharing without answer or guesses
+ok 10 - Game restores wins silently, removes terminal hint lock copy, and exposes honest clipboard/manual sharing without answer or guesses
+  ---
+  duration_ms: 46.2367
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Game accepts only matching puzzle facts and preserves input edited during POST without extra restoration feedback
+ok 11 - Game accepts only matching puzzle facts and preserves input edited during POST without extra restoration feedback
+  ---
+  duration_ms: 32.987
+  type: 'test'
+  ...
+# Subtest: missing historical counts remain unavailable; singular counters do not fabricate zero
+ok 12 - missing historical counts remain unavailable; singular counters do not fabricate zero
+  ---
+  duration_ms: 0.5233
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: archive and expedition selections track new parent destinations while user navigation remains usable
+ok 13 - archive and expedition selections track new parent destinations while user navigation remains usable
+  ---
+  duration_ms: 6.7894
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: collection and shared links restore browser facts, update on external changes and clean subscriptions
+ok 14 - collection and shared links restore browser facts, update on external changes and clean subscriptions
+  ---
+  duration_ms: 5.8952
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: advanced candidate has concrete reachable entries without creating accounts on Explorer visit
+ok 15 - advanced candidate has concrete reachable entries without creating accounts on Explorer visit
+  ---
+  duration_ms: 9.8925
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: weekly projection admits fresh same-day facts after noon and between clock ticks
+ok 16 - weekly projection admits fresh same-day facts after noon and between clock ticks
+  ---
+  duration_ms: 23.2629
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: expedition first mount starts at an already restored chapter
+ok 17 - expedition first mount starts at an already restored chapter
+  ---
+  duration_ms: 1.9113
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: audio counter is observable on a real accepted action with sound enabled
+ok 18 - audio counter is observable on a real accepted action with sound enabled
+  ---
+  duration_ms: 16.5588
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: solo voyage names its tab and board without social copy or changing its reference
+ok 19 - solo voyage names its tab and board without social copy or changing its reference
+  ---
+  duration_ms: 10.2013
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: solo collection names its tab and board without social copy or changing its reference
+ok 20 - solo collection names its tab and board without social copy or changing its reference
+  ---
+  duration_ms: 7.6357
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: a terminal win suggests another actual unfinished save and clearly identifies it
+ok 21 - a terminal win suggests another actual unfinished save and clearly identifies it
+  ---
+  duration_ms: 7.0858
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: a completed chapter keeps its terminal badge after Jouer and Accueil without replaying facts on reload
+ok 22 - a completed chapter keeps its terminal badge after Jouer and Accueil without replaying facts on reload
+  ---
+  duration_ms: 45.9909
+  type: 'test'
+  ...
+# Subtest: I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+ok 23 - I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+  ---
+  duration_ms: 1.5714
+  type: 'test'
+  ...
+# Subtest: I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+ok 24 - I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+  ---
+  duration_ms: 2.4265
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+ok 25 - I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+  ---
+  duration_ms: 0.2124
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+ok 26 - I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+  ---
+  duration_ms: 0.2912
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+ok 27 - I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+  ---
+  duration_ms: 0.1568
+  type: 'test'
+  ...
+# Subtest: I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+ok 28 - I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+  ---
+  duration_ms: 0.5785
+  type: 'test'
+  ...
+# Subtest: I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+ok 29 - I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+  ---
+  duration_ms: 1.3101
+  type: 'test'
+  ...
+# Subtest: I3 retry retains an expedition descriptor too, without consulting a changed current journey
+ok 30 - I3 retry retains an expedition descriptor too, without consulting a changed current journey
+  ---
+  duration_ms: 0.1066
+  type: 'test'
+  ...
+# Subtest: I4 admitted journey stage agrees with Back/Forward and a reload
+ok 31 - I4 admitted journey stage agrees with Back/Forward and a reload
+  ---
+  duration_ms: 0.6744
+  type: 'test'
+  ...
+# Subtest: I4 slow deep-link journey preserves explicit Profile/Explorer destination
+ok 32 - I4 slow deep-link journey preserves explicit Profile/Explorer destination
+  ---
+  duration_ms: 0.609
+  type: 'test'
+  ...
+# Subtest: I4 navigation during pending journey GET rejects every old game and route commit
+ok 33 - I4 navigation during pending journey GET rejects every old game and route commit
+  ---
+  duration_ms: 0.2188
+  type: 'test'
+  ...
+# Subtest: M1 filtered archive layout is explicitly a list, without misleading weekday columns
+ok 34 - M1 filtered archive layout is explicitly a list, without misleading weekday columns
+  ---
+  duration_ms: 6.6166
+  type: 'test'
+  ...
+# Subtest: explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+ok 35 - explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+  ---
+  duration_ms: 0.1545
+  type: 'test'
+  ...
+# Subtest: explicit Retry on the board supersedes a previous background surface without losing collection context
+ok 36 - explicit Retry on the board supersedes a previous background surface without losing collection context
+  ---
+  duration_ms: 0.1007
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for daily
+ok 37 - F1 real retry admission preserves later Profile for daily
+  ---
+  duration_ms: 0.1956
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for challenge
+ok 38 - F1 real retry admission preserves later Profile for challenge
+  ---
+  duration_ms: 0.0705
+  type: 'test'
+  ...
+# Subtest: F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+ok 39 - F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+  ---
+  duration_ms: 0.4553
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+ok 40 - F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.1639
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage network cannot replace later Profile with its error surface
+ok 41 - F2 obsolete Voyage network cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.0708
+  type: 'test'
+  ...
+# Subtest: the release matrix preserves each of the 44 literal criteria with existing evidence and explicit remaining gates
+ok 42 - the release matrix preserves each of the 44 literal criteria with existing evidence and explicit remaining gates
+  ---
+  duration_ms: 49.6381
+  type: 'test'
+  ...
+# Subtest: durable reports and receipts exactly match their declared archive hashes and original path provenance
+ok 43 - durable reports and receipts exactly match their declared archive hashes and original path provenance
+  ---
+  duration_ms: 16.9494
+  type: 'test'
+  ...
+# Subtest: nuage conservative high annotation is documented without silently rewriting its genuine historical reason
+ok 44 - nuage conservative high annotation is documented without silently rewriting its genuine historical reason
+  ---
+  duration_ms: 2.7869
+  type: 'test'
+  ...
+1..44
+# tests 44
+# suites 0
+# pass 44
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1815.1777

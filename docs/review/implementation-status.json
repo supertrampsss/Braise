@@ -312,12 +312,13 @@
         "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
         "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
         "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
-        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log",
+        "docs/review/qualification-2026-10-13/task8b-fix-round1/source-qualification.md"
       ],
       "limitations": [
         "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
       ],
-      "result": "Sorties/reprises et entrées concrètes visibles, URL et epochs protégés. Le plateau solo porte encore un libellé social trompeur. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score."
+      "result": "Sorties/reprises et entrées concrètes visibles, URL et epochs protégés. Observation HISTORIQUE 8A : le plateau solo portait un libellé social trompeur. État corrigé 8B : le parcours solo est nommé dans l’onglet et le plateau sans changer mode/ref/seed/score ; un chapitre récompensé affiche « Chapitre terminé » après Jouer ou Accueil."
     },
     {
       "id": "D11",
@@ -599,7 +600,8 @@
         "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
         "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
         "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
-        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log",
+        "docs/review/qualification-2026-10-13/task8b-fix-round1/source-qualification.md"
       ],
       "limitations": [
         "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
@@ -899,7 +901,8 @@
         "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
         "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
         "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
-        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log",
+        "docs/review/qualification-2026-10-13/task8b-fix-round1/source-qualification.md"
       ],
       "limitations": [
         "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
@@ -1045,12 +1048,13 @@
         "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
         "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
         "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
-        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log",
+        "docs/review/qualification-2026-10-13/task8b-fix-round1/source-qualification.md"
       ],
       "limitations": [
         "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
       ],
-      "result": "Une suggestion par vrais faits locaux, priorité parcours/collection/reprise ; notice terminale ambiguë observée. Une suggestion terminale annonce explicitement une autre partie réellement inachevée."
+      "result": "Une suggestion par vrais faits locaux, priorité parcours/collection/reprise ; Observation HISTORIQUE 8A : notice terminale ambiguë. État corrigé 8B : une suggestion terminale annonce explicitement une autre partie réellement inachevée."
     },
     {
       "id": "A10",
@@ -1263,7 +1267,7 @@
     "verifiedBuild": {
       "exit": 0,
       "proof": "docs/review/qualification-2026-10-13/evidence/task8b-build-final.log",
-      "scope": "Final production inputs. Subsequent changes limited to an obsolete test expectation and documentation/evidence; no repeat immutable build needed."
+      "scope": "Historical Task8B production build before the terminal chapter badge fix; current followup build is recorded separately in fixRound1."
     },
     "immutableAssets": {
       "changedPaths": [],
@@ -1273,6 +1277,46 @@
     "clientAuthorityBoundary": {
       "matches": 0,
       "proof": "docs/review/qualification-2026-10-13/evidence/task8b-client-boundary.json"
+    },
+    "fixRound1": {
+      "baseCommit": "98b9426b8fa98693254822520230177bc938ed26",
+      "scope": "Focused correction after approved8B review; original full387/composed384 counts remain historical and are not inflated by these repeated cases. No second fullsuite.",
+      "focused": {
+        "exit": 0,
+        "tests": 44,
+        "pass": 44,
+        "fail": 0,
+        "skip": 0,
+        "proof": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-focused.log"
+      },
+      "typecheck": {
+        "exit": 0,
+        "proof": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-typecheck.log"
+      },
+      "lint": {
+        "exit": 0,
+        "errors": 0,
+        "warnings": 0,
+        "proof": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-lint.log"
+      },
+      "verifiedBuild": {
+        "exit": 0,
+        "proof": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-build.log",
+        "scope": "New verified production build after the Game chapter badge correction; only test assertions and documentation/metadata changed afterward, production inputs unchanged."
+      },
+      "immutableAssets": {
+        "checkedPaths": 160,
+        "changedPaths": [],
+        "proof": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-frozen-identity.json"
+      },
+      "reportAndReview": {
+        "report": "docs/review/qualification-2026-10-13/task8b-fix-round1/source-qualification.md",
+        "prior8BReport": "docs/review/qualification-2026-10-13/task8b-fix-round1/task-8b-report.md",
+        "prior8BReview": "docs/review/qualification-2026-10-13/task8b-fix-round1/task-8b-review.md",
+        "manifest": "docs/review/qualification-2026-10-13/task8b-fix-round1/manifest.json"
+      },
+      "trackedWorkspaceReportRemoval": "Only task-2-report.md and task-8a-report.md untracked after exact durable provenance verification; original physical files retained and ignored.",
+      "nativeAndHosted": "Still controller gates, no new native/browser/hosted qualification claimed."
     }
   }
 }

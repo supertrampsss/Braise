@@ -10,12 +10,15 @@ test('the release matrix preserves each of the 44 literal criteria with existing
  for(const criterion of backlog){const item=status.items.find((x:{id:string})=>x.id===criterion.id);assert.ok(item);assert.equal(item.validation,criterion.validation);assert.ok(item.status.startsWith('source_'));assert.ok(item.limitations.length);assert.ok(item.files.length);assert.ok(item.proofs.length);
   for(const path of [...item.files,...item.proofs]){assert.doesNotMatch(path,/^\.superpowers\//);assert.doesNotMatch(path,/^work\//,'matrix evidence must survive scratch cleanup');assert.ok(readFileSync(path).length,path);}
  }
+ for(const id of ['D10','A09']) {const result=status.items.find((x:{id:string})=>x.id===id).result;assert.match(result,/Observation HISTORIQUE 8A/);assert.match(result,/État corrigé 8B/);}
  assert.ok(status.items.find((x:{id:string})=>x.id==='D26').limitations.join(' ').includes('Lecteur d’écran natif'));
  assert.ok(status.items.find((x:{id:string})=>x.id==='A10').limitations.join(' ').includes('non exécutées'));
 });
 test('durable reports and receipts exactly match their declared archive hashes and original path provenance',()=>{
- const archive=parse('docs/review/qualification-2026-10-13/manifest.json');assert.ok(Date.parse(archive.priorReportCutoff));assert.ok(archive.entries.length>40);
+ for(const path of ['docs/review/qualification-2026-10-13/manifest.json','docs/review/qualification-2026-10-13/task8b-fix-round1/manifest.json']) {
+ const archive=parse(path);assert.ok(Date.parse(archive.priorReportCutoff ?? archive.captureCutoff));assert.equal(archive.entries.length,path.endsWith('task8b-fix-round1/manifest.json')?14:84);
  for(const entry of archive.entries){assert.ok(entry.originalPath);assert.ok(entry.archivedPath.startsWith('docs/review/qualification-2026-10-13/'));const bytes=readFileSync(entry.archivedPath);assert.equal(bytes.length,entry.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),entry.sha256,entry.originalPath);assert.ok(Date.parse(entry.capturedAt));}
+ }
 });
 test('nuage conservative high annotation is documented without silently rewriting its genuine historical reason',()=>{
  const selection=parse('data/editorial-v2-selection.json');const matches:Array<{ambiguity:string;reason:string}>=[];

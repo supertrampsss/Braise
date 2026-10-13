@@ -268,3 +268,56 @@ test('a terminal win suggests another actual unfinished save and clearly identif
   try{assert.match(text(tree.root),/Une autre partie commencée vous attend : Partie libre/);assert.doesNotMatch(text(tree.root),/Cette partie commencée attend votre prochain mot/);assert.ok(button(tree,'Continuer à jouer'));}
   finally{await act(async()=>tree.unmount());}
 });
+
+
+test('a completed chapter keeps its terminal badge after Jouer and Accueil without replaying facts on reload', async () => {
+  const expedition = EXPEDITIONS[0], seeds = ['1700000049', '1700000121', '1700000029'], answers = ['arbre', 'fleur', 'abeille'];
+  const b = browser(undefined, `https://braiz.test/?voyage=${expedition.id}`);
+  b.storage.setItem('braise.v1.profile', JSON.stringify({wins: [], guesses: 0, sound: true}));
+  for (let i = 0; i < 2; i++) b.storage.setItem(`braise.v1.game.free-${seeds[i]}`, JSON.stringify({startedAt: 1, hints: 0, pins: [], guesses: [{word: answers[i], order: 1, rank: 1, temperature: 100, found: true}]}));
+  const target = {...getLegacyPuzzle('challenge', seeds[2]).publicPuzzle, resetAt: '2099-01-01T00:00:00Z'};
+  const puzzleRequests: string[] = [], submittedRefs: unknown[] = [];
+  globalThis.fetch = async (url, options) => {
+    if (String(url) === '/api/expeditions') {
+      const {proofs} = JSON.parse(String(options?.body)) as {proofs: string[]};
+      assert.deepEqual(proofs, answers.slice(0, proofs.length));
+      return Response.json({id: expedition.id, completed: proofs.length, length: expedition.length, ...(proofs.length === expedition.length ? {reward: `expedition:${expedition.id}:completed`} : {seed: seeds[proofs.length]})});
+    }
+    if (options?.method === 'POST') {
+      submittedRefs.push(JSON.parse(String(options.body)).puzzleRef);
+      return Response.json({word: answers[2], temperature: 100, rank: 1, found: true, puzzleRef: target.ref});
+    }
+    puzzleRequests.push(String(url)); return Response.json(target);
+  };
+  let tree = await mount();
+  try {
+    assert.match(text(tree.root.findByProps({className: 'daily-pill'})), /étape 3\/3/);
+    await act(async () => tree.root.findByProps({id: 'guess'}).props.onChange({target: {value: answers[2]}}));
+    await act(async () => tree.root.findByProps({className: 'guess-form'}).props.onSubmit({preventDefault() {}, currentTarget: {contains() {return false;}}}));
+    assert.deepEqual(submittedRefs, [target.ref]);
+    await click(tree, 'Terminer le chapitre');
+    const saved = b.storage.getItem(`braise.v1.game.${target.id}`), profile = loadLocalProfile(b.storage).profile;
+    assert.deepEqual(JSON.parse(saved!).guesses.map((guess: {word: string; temperature: number; rank: number; found: boolean}) => ({word: guess.word, temperature: guess.temperature, rank: guess.rank, found: guess.found})), [{word: answers[2], temperature: 100, rank: 1, found: true}]);
+    const audio = b.audioCalls(), requestCount = puzzleRequests.length;
+    assert.equal(audio, 1, 'one newly accepted win, never replayed by terminal navigation');
+    const navigation = () => tree.root.findByProps({'aria-label': 'Navigation principale'});
+    await act(async () => navigation().findAllByType('a')[0].props.onClick({button: 0, preventDefault() {}}));
+    assert.equal(tree.root.findByProps({className: 'play-view voyage-play'}).props.hidden, false);
+    assert.equal(text(tree.root.findByProps({className: 'daily-pill'})), 'Chapitre terminé');
+    await act(async () => navigation().findAllByType('a')[1].props.onClick({button: 0, preventDefault() {}}));
+    await act(async () => tree.root.findByProps({'aria-label': 'Accueil', className: 'brand'}).props.onClick());
+    assert.equal(text(tree.root.findByProps({className: 'daily-pill'})), 'Chapitre terminé');
+    assert.equal(text(tree.root.findByProps({className: 'game-kicker'})), 'VOTRE VOYAGE');
+    assert.equal(b.win.location.searchParams.get('voyage'), expedition.id);
+    assert.equal(puzzleRequests.length, requestCount, 'return paths retain the exact final puzzle');
+    assert.equal(b.storage.getItem(`braise.v1.game.${target.id}`), saved);
+    assert.deepEqual(loadLocalProfile(b.storage).profile, profile);
+    assert.equal(b.audioCalls(), audio);
+    await act(async () => tree.unmount());
+    const restored = browser(b.storage, b.win.location.href); tree = await mount();
+    assert.match(text(tree.root), /Chapitre terminé/); assert.doesNotMatch(text(tree.root), /étape 4\/3/);
+    assert.equal(restored.audioCalls(), 0, 'completed chapter reload is silent');
+    assert.equal(restored.storage.getItem(`braise.v1.game.${target.id}`), saved);
+    assert.deepEqual(loadLocalProfile(restored.storage).profile, profile);
+  } finally { await act(async () => tree.unmount()); }
+});

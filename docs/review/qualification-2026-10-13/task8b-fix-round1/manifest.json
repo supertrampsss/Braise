@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "baseCommit": "98b9426b8fa98693254822520230177bc938ed26",
+  "captureCutoff": "2026-10-13T11:20:56.988678+00:00",
+  "scope": "Separate fix-round1 proofs; original 84-entry manifest and prior cutoff remain unchanged. Later source review/hosted/UI results belong to controller output annexes.",
+  "entries": [
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8b-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task-8b-report.md",
+      "sha256": "8e2a825f1e8bd24e9f929d9089902ee7db46fb42f194e1c0a95878801d1a7c4e",
+      "bytes": 12519,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8b-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task-8b-review.md",
+      "sha256": "587d7525e724c74c14291f089be8951af77737b1b76bcf57a32ff4f81c50d544",
+      "bytes": 6870,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/progress.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/progress.md",
+      "sha256": "3a60dd671d2767fbfb4e59e7b2f67555f4031585bbcb31abf851619a447aa7cf",
+      "bytes": 60564,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/test-task8b-fix.mjs",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/test-task8b-fix.mjs",
+      "sha256": "3fbebb80368d968fca95a994e03153909b23835cd252d4e139dca115326c957b",
+      "bytes": 870,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-red.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-red.log",
+      "sha256": "5aee7452096db0afde2ddc78d9d253e87e8d183c224f0cf6ee98623dfb93c881",
+      "bytes": 1406,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-focused.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-focused.log",
+      "sha256": "bc54b20cb928c2231b81f751192c835f2ff20c919cacf4f55bc4021b14b329de",
+      "bytes": 12125,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-focused-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-focused-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-typecheck.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-typecheck-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-typecheck-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-lint.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-lint-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-lint-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-build.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-build.log",
+      "sha256": "eb02d8450c4641600e375d5a76efa526002e0baa0e29e99b20bab843235d6cad",
+      "bytes": 2825,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-build-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-build-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    },
+    {
+      "originalPath": "work/task8b-fix-frozen-identity.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/task8b-fix-round1/task8b-fix-frozen-identity.json",
+      "sha256": "6ff1d83c9adcfe82a792d016b972dd01e488df8859bd2f8d14649975b7ee0050",
+      "bytes": 245,
+      "capturedAt": "2026-10-13T11:20:56.988678+00:00"
+    }
+  ]
+}
