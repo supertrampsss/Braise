@@ -13,7 +13,9 @@ async function workspace() {
   const root = await mkdtemp(join(tmpdir(), "braise-target-v2-"));
   return { root, source: join(root, "source.vec"), corpus: join(root, "corpus"), targets: join(root, "targets") };
 }
-async function remove(root: string) { await rm(root, { recursive: true, force: true }); }
+// Windows can briefly report ENOTEMPTY after closed fixture files are unlinked.
+// Retry teardown only; eviction assertions and persistent errors stay unchanged.
+async function remove(root: string) { await rm(root, { recursive: true, force: true, maxRetries: process.platform === 'win32' ? 3 : 0, retryDelay: 100 }); }
 
 const fixture = "6 2\nalpha 1 0\nbêta 1 0\ngamma 0 1\ndelta 0 -1\nepsilon -1 0\nomega 1 1";
 
