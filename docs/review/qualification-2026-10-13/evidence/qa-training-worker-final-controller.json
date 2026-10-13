@@ -1,0 +1,73 @@
+{
+  "head": "5fe07e573a6ff6d9794e2b901133bdd5dbea130d",
+  "manifest": "b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be",
+  "scope": "frozen production dist Next/Worker ASSETS on localhost:5198",
+  "totalBytes": 256074,
+  "firstVisitMetadataAndDownloadEnabled": true,
+  "explicitDownloadVerified": true,
+  "networkOffline": true,
+  "serverStopped": {
+    "pid": 43064,
+    "session": 90340,
+    "expectedExit": 1
+  },
+  "offlineReloadAssets": [
+    {
+      "type": "HTML",
+      "status": 200,
+      "fromServiceWorker": true,
+      "source": "cache-storage"
+    },
+    {
+      "type": "JS",
+      "status": 200,
+      "fromServiceWorker": true,
+      "source": "cache-storage"
+    },
+    {
+      "type": "CSS",
+      "status": 200,
+      "fromServiceWorker": true,
+      "source": "cache-storage"
+    },
+    {
+      "type": "pack JSON",
+      "status": 200,
+      "fromServiceWorker": true,
+      "source": "cache-storage"
+    }
+  ],
+  "standard": {
+    "navire": {
+      "score": 44.2,
+      "rank": 27
+    },
+    "unknown": {
+      "word": "zzqaabsent",
+      "scoreAdded": false,
+      "trialAdded": false,
+      "inputRetained": true
+    },
+    "hintCount": 1,
+    "port": {
+      "score": 100,
+      "rank": 1
+    },
+    "acceptedTrials": 2,
+    "won": true
+  },
+  "closedAndReopenedServerStillDown": {
+    "restoredWon": true,
+    "trials": 2,
+    "hints": 1
+  },
+  "restoredFocus": "BODY",
+  "profileBefore": {
+    "wins": 0,
+    "xp": 0,
+    "streak": 0
+  },
+  "profileStorageAfter": "{\"focus\":\"BODY\",\"profileKeys\":[{\"key\":\"braise.v2.profile.base.fresh\",\"value\":{\"schemaVersion\":2,\"provenance\":\"personal-local\",\"migration\":{\"source\":\"fresh\",\"sourceKey\":null,\"backupKey\":null,\"status\":\"complete\",\"excludedWins\":0},\"legacy\":{\"wins\":[],\"guesses\":0},\"sound\":false}}]}",
+  "mobileCapture": "08-entrainement-integre-hors-ligne-local.jpg",
+  "publication": false
+}

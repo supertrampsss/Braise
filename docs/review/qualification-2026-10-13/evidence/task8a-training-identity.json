@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-13T07:20:27.559Z",
+  "proofs": [
+    {
+      "path": "/training/shell-870e83d87d81675dba1297040d8a229c862d9f43b22699ce1d8cfb90daf41934.js",
+      "sha256": "870e83d87d81675dba1297040d8a229c862d9f43b22699ce1d8cfb90daf41934",
+      "identical": true
+    },
+    {
+      "path": "/training/style-b6d4e7377626df6d99b47f4970fab9a88255c3133a34ebceda1905cc40d79a14.css",
+      "sha256": "b6d4e7377626df6d99b47f4970fab9a88255c3133a34ebceda1905cc40d79a14",
+      "identical": true
+    }
+  ]
+}

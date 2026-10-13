@@ -139,7 +139,7 @@ async function* orderRecords(targetDir, manifest, corpusManifestSha256, contract
   if (nextPosition !== manifest.stats.dictionarySize) throw new Error("Order pages do not cover every admitted word");
 }
 
-async function prepareVerification({ corpusDir, outputDir, targetId, manifestName = null, expectedManifestSha256 = null, neighborCount = 12, verificationStorage = "auto" }, cacheGuard, corpus) {
+async function prepareVerification({ outputDir, targetId, manifestName = null, expectedManifestSha256 = null, neighborCount = 12, verificationStorage = "auto" }, cacheGuard, corpus) {
   if (!Number.isInteger(neighborCount) || neighborCount < 1 || neighborCount > 256) throw new Error("Target neighbor count is invalid");
   const targetDir = join(outputDir, corpus.manifest.corpusId, "targets", String(targetId).padStart(10, "0"));
   assertTargetCacheGuard(cacheGuard, join(outputDir, corpus.manifest.corpusId, "targets"));

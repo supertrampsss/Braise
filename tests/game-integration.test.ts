@@ -9,6 +9,7 @@ import { getLegacyPuzzle } from '../lib/legacy-puzzles';
 import { SyncMemory } from '../lib/device-sync';
 import { PRODUCT_EVENTS_KEY } from '../lib/product-events';
 import { countLabel } from '../lib/game-copy';
+import { loadLocalProfile } from '../lib/profile-storage';
 
 // Real Game hooks and handlers. Only DOM presentation primitives are replaced;
 // this is component evidence, never a browser/accessibility certification.
@@ -39,11 +40,11 @@ function text(node: ReactTestInstance): string { return node.children.map(child 
 function button(tree: ReactTestRenderer, label: string) { const match = tree.root.findAll(node => node.type === 'button' && text(node) === label)[0]; assert.ok(match, label); return match; }
 const deferred = <T,>() => { let resolve!: (value: T) => void; const promise = new Promise<T>(r => { resolve = r; }); return { promise, resolve }; };
 function browser(storage = new SyncMemory(), href = 'https://braiz.test/?libre=042') {
-  const listeners = new Map<string, () => void>(), frames: Array<() => void> = [];
+  const listeners = new Map<string, () => void>(), frames: Array<() => void> = []; let audioCalls = 0;
   const doc = { activeElement: null as unknown, body: {}, visibilityState: 'visible', addEventListener() {}, removeEventListener() {}, getElementById() { return null; } };
   const win = { localStorage: storage, setTimeout, clearTimeout, location: new URL(href), scrollTo() {}, addEventListener(key: string, callback: () => void) { listeners.set(key, callback); }, removeEventListener(key: string) { listeners.delete(key); }, history: { replaceState(_state: unknown, _title: unknown, url: string | URL) { win.location = new URL(url); Object.assign(globalThis, { location: win.location }); }, pushState(_state: unknown, _title: unknown, url: string | URL) { this.replaceState(_state, _title, url); } } };
-  Object.assign(globalThis, { window: win, document: doc, location: win.location, localStorage: storage, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, AudioContext: class { constructor() { assert.fail('restoration/import must stay silent'); } } });
-  return { storage, listeners, frames, doc, win };
+  Object.assign(globalThis, { window: win, document: doc, location: win.location, localStorage: storage, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, AudioContext: class { constructor() { audioCalls++; } } });
+  return { storage, listeners, frames, doc, win, audioCalls: () => audioCalls };
 }
 async function mount(strict = false) { let tree!: ReactTestRenderer; await act(async () => { tree = create(strict ? createElement(StrictMode, null, createElement(Game)) : createElement(Game), { createNodeMock: () => ({ focus() {}, select() {}, isConnected: true }) }); }); return tree; }
 async function click(tree: ReactTestRenderer, label: string) { await act(async () => button(tree, label).props.onClick({ currentTarget: {} })); }
@@ -72,6 +73,7 @@ test('Game Strict Mode admits one browser restoration and current popstate handl
 test('Game restores wins silently, removes terminal hint lock copy, and exposes honest clipboard/manual sharing without answer or guesses', async () => {
   const b = browser();
   b.storage.setItem('braise.v1.animationsPaused', 'true');
+  b.storage.setItem('braise.v1.profile', JSON.stringify({wins:[],guesses:0,sound:true}));
   b.storage.setItem(`braise.v1.game.${puzzle.id}`, JSON.stringify({ startedAt: 1, hints: 0, pins: [], guesses: [{ word: 'secret-answer', order: 1, rank: 1, temperature: 100, found: true }] }));
   globalThis.fetch = async () => Response.json(puzzle);
   const tree = await mount();
@@ -81,6 +83,7 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
     assert.equal(tree.root.findAllByProps({ className: 'hint-progress' }).length, 0);
     assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), null);
     assert.match(text(tree.root), /Animer la flamme/);
+    assert.equal(b.audioCalls(), 0, 'restored win with sound enabled must not create AudioContext');
     Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async () => { throw new Error('Clipboard denied'); } } } });
     await click(tree, 'Copier mon résultat');
     const payload = tree.root.findByProps({ 'aria-label': 'Texte à copier' }).props.value;
@@ -95,6 +98,16 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
     assert.equal(copied, payload);
     assert.equal(JSON.parse(b.storage.getItem(PRODUCT_EVENTS_KEY)!).events[0].type, 'shareCopied');
     assert.equal(tree.root.findAllByProps({ 'aria-label': 'Texte à copier' }).length, 0);
+    const navigation = tree.root.findByProps({ 'aria-label': 'Navigation principale' });
+    await act(async () => navigation.findAllByType('a')[2].props.onClick({ button: 0, preventDefault() {} }));
+    const profile = tree.root.findAll(node => typeof node.type === 'function' && node.props.snapshot && node.props.onDeviceSync)[0];
+    assert.equal(profile.props.snapshot.profile.sound, true, 'fixture explicitly enables sound');
+    const imported = JSON.parse(b.storage.getItem(`braise.v1.game.${puzzle.id}`)!); imported.pins=['secret-answer'];
+    b.storage.setItem(`braise.v1.game.${puzzle.id}`, JSON.stringify(imported));
+    const diagnosticBeforeImport = b.storage.getItem(PRODUCT_EVENTS_KEY);
+    await act(async () => profile.props.onDeviceSync(loadLocalProfile(b.storage)));
+    assert.equal(b.audioCalls(), 0, 'device import callback restores won board without audio');
+    assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), diagnosticBeforeImport);
   } finally { await act(async () => tree.unmount()); }
 });
 
@@ -213,6 +226,45 @@ test('expedition first mount starts at an already restored chapter', async () =>
   browser(); let tree!: ReactTestRenderer;
   const expedition=EXPEDITIONS[1];
   await act(async () => { tree=create(createElement(ExpeditionPicker,{disabled:false,journey:{id:expedition.id,completed:1,length:expedition.length,seed:'042'},currentStageSolved:false,error:'',onContinue(){}})); });
-  try { assert.match(text(tree.root),new RegExp(expedition.title)); assert.equal(tree.root.findByProps({'aria-label':'Progression du chapitre'}).props.value,1); }
+  try { assert.match(text(tree.root),new RegExp(expedition.title)); assert.equal(tree.root.findByProps({'aria-label':'Progression du chapitre'}).props.value,1); assert.match(text(tree.root),/1 épreuve sur/); assert.doesNotMatch(text(tree.root),/1 épreuves/); }
   finally { await act(async () => tree.unmount()); }
+});
+
+
+test('audio counter is observable on a real accepted action with sound enabled', async () => {
+  const b=browser();b.storage.setItem('braise.v1.profile',JSON.stringify({wins:[],guesses:0,sound:true}));
+  globalThis.fetch=async(_url,opts)=>opts?.method==='POST'?Response.json({word:'maison',temperature:100,rank:1,found:true,puzzleRef:puzzle.ref}):Response.json(puzzle);
+  const tree=await mount();
+  try {
+    assert.equal(b.audioCalls(),0);
+    await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:'maison'}}));
+    await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
+    assert.equal(b.audioCalls(),1,'the constructor counter records an audio attempt even if optional audio APIs are absent in this test DOM');
+  }finally{await act(async()=>tree.unmount());}
+});
+
+for(const kind of ['voyage','collection'] as const) test(`solo ${kind} names its tab and board without social copy or changing its reference`,async()=>{
+  const expedition=EXPEDITIONS[0], collection=COLLECTIONS[0],seed=kind==='voyage'?'042':collection.seeds[0];
+  browser(undefined,kind==='voyage'?`https://braiz.test/?voyage=${expedition.id}`:`https://braiz.test/?defi=${seed}&collection=${collection.id}`);
+  const target={...getLegacyPuzzle('challenge',seed).publicPuzzle,resetAt:'2099-01-01T00:00:00Z'};
+  const calls:string[]=[];
+  globalThis.fetch=async(url)=>{calls.push(String(url));return String(url)==='/api/expeditions'?Response.json({id:expedition.id,completed:0,length:expedition.length,seed}):Response.json(target);};
+  const tree=await mount();
+  try{
+    const trigger=tree.root.findAll(n=>n.type==='button'&&n.props.value==='challenge')[0];
+    assert.equal(text(trigger),kind==='voyage'?'Voyage':'Collection');
+    assert.match(text(tree.root.findByProps({className:'game-topline'})),kind==='voyage'?/VOTRE VOYAGE.*Parcours personnel/:/VOTRE COLLECTION.*Collection personnelle/);
+    assert.doesNotMatch(text(tree.root.findByProps({className:'game-topline'})),/Même mot, même défi/);
+    assert.ok(calls.some(path=>path.includes(`mode=challenge&seed=${seed}`)));
+  }finally{await act(async()=>tree.unmount());}
+});
+
+test('a terminal win suggests another actual unfinished save and clearly identifies it',async()=>{
+  const b=browser();
+  b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
+  b.storage.setItem('braise.v1.game.free-043',JSON.stringify({startedAt:2,hints:0,pins:['maison'],guesses:[{word:'maison',order:1,rank:20,temperature:12,found:false}]}));
+  globalThis.fetch=async()=>Response.json(puzzle);
+  const tree=await mount();
+  try{assert.match(text(tree.root),/Une autre partie commencée vous attend : Partie libre/);assert.doesNotMatch(text(tree.root),/Cette partie commencée attend votre prochain mot/);assert.ok(button(tree,'Continuer à jouer'));}
+  finally{await act(async()=>tree.unmount());}
 });

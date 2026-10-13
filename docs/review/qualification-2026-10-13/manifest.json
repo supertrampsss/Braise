@@ -1,0 +1,680 @@
+{
+  "schema": 1,
+  "sourceBase": "2b19b8102aeb1fe7e096414fe56568d3ebcdd6f5",
+  "priorReportCutoff": "2026-10-13T10:52:40.026745+00:00",
+  "scope": "Original bytes, paths and hashes; no raw diff packets, credentials or blob corpus. Later controller/wholebranch/publication proofs belong to output annexes, not this source snapshot.",
+  "entries": [
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/progress.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/progress.md",
+      "sha256": "2febe721835d3d773043bb7fa09c2727908605b2f2928868afa37f61921a77a9",
+      "bytes": 58734,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-1-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-1-brief.md",
+      "sha256": "bfd6939a14cb39931f87043249b01f00764a19197fb58627154d99282c6668b7",
+      "bytes": 4452,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-1-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-1-report.md",
+      "sha256": "acc903585180e58fbd0096985ce223e3bd75637f857560da4e768711b75e5cc0",
+      "bytes": 13459,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-1-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-1-review.md",
+      "sha256": "cdbb7442b5015edd1fff1b13546e692c3ec1ef9a60475e97bfd2b08903672456",
+      "bytes": 6808,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-2-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-2-brief.md",
+      "sha256": "9fe62956b836e39b2a7cdcb86c2eeb8b6ec448e912da27788f5fe975e7ce2856",
+      "bytes": 3897,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-2-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-2-fix-review.md",
+      "sha256": "02afea9e0e5865c3c60341683216ba3a4d69e164b04575c77385d331296f8319",
+      "bytes": 7601,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-2-fix2-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-2-fix2-review.md",
+      "sha256": "a9274497a3cd53dc2b4e9eea1ef3fd04a8f7eea72f2fd928b700b1c47868aa5e",
+      "bytes": 4688,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-2-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-2-report.md",
+      "sha256": "335226588b4cf5263b63ffad1e42dff9b9d91221ad69aa1a8334d95992db2cac",
+      "bytes": 25673,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-2-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-2-review.md",
+      "sha256": "afd7e48a7c11a7c95398a6b47abf29940b2c10ace7057a9381255d5d8c04cff3",
+      "bytes": 14373,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-3-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-3-brief.md",
+      "sha256": "49132eafd1d5d781f622ae9ad77ed45ed19ac02212ed30004d4bc26d003f0f0f",
+      "bytes": 2722,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-3-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-3-fix-review.md",
+      "sha256": "0f2d4f565f857a00892f70bd516839ff11a272df6d7bb66b42b673abe3bf1f81",
+      "bytes": 3678,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-3-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-3-report.md",
+      "sha256": "2d44f734be9428d18579c434d8e8099a888a047a91fff2acfa7ba8425bdcd678",
+      "bytes": 16546,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-3-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-3-review.md",
+      "sha256": "35d0942fe6b1c12647db75942842b508a2bba8cab912372efc57657b5133e7e6",
+      "bytes": 5027,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-4-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-4-brief.md",
+      "sha256": "3b515bdd92f11705118f6fd3521771eed76e8f22854c9e26c3bf2827f4e3cda7",
+      "bytes": 3720,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-4-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-4-fix-review.md",
+      "sha256": "f73c0f118c9a6f253a822f846f7cb2951a640241d65d214cdf8e13d559c1f94c",
+      "bytes": 6323,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-4-fix2-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-4-fix2-review.md",
+      "sha256": "09d65631b018b41c52f1a2febb59ab0b06e01fadadcc4d2622239743da8f7bb6",
+      "bytes": 3457,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-4-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-4-report.md",
+      "sha256": "af642555140dcebcbea0480c0c26246e7d85f870b90f3fa1033cfa7f81181b18",
+      "bytes": 20138,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-4-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-4-review.md",
+      "sha256": "da0f6fdc0675e742544ac69ad74fb562df09211edef416ea727360cf89a63026",
+      "bytes": 7868,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-5-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-5-brief.md",
+      "sha256": "ceeba44ec00348157ad97efc961e9699648dcd38b621cfe6337829e6854743e1",
+      "bytes": 2795,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-5-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-5-fix-review.md",
+      "sha256": "142ccbabb4e30d8b4ae4568054da5d6b476c8011036342514fd5a9d2c73f6df4",
+      "bytes": 5199,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-5-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-5-report.md",
+      "sha256": "5b68cd4cdbe451a1f1eb1e98d6b6b642bc1260185f75bc19834926497f4ccc8e",
+      "bytes": 12751,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-5-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-5-review.md",
+      "sha256": "56ed13f361acb0a98de688b7d9342e0184760698b94dfb0cf432fbd752a17602",
+      "bytes": 8989,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-6-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-6-brief.md",
+      "sha256": "b20f58f4b9b5ca1d6adb99e7e02b1d706cef3ce4c2bbf24f1e6fd367b10a8b1a",
+      "bytes": 5265,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-6-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-6-fix-review.md",
+      "sha256": "c1ffd161d2d8054810bd35e474c42cba655b46596ce2ecf90d562da546aeea2c",
+      "bytes": 6361,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-6-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-6-report.md",
+      "sha256": "3e3afdda321c139c1069fb90585db957e4441e22a3c7559a3a5b9153462e9c9b",
+      "bytes": 20928,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-6-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-6-review.md",
+      "sha256": "9fb5b2addd7ff51d1e916db794b50bf2f2788d91ae907418685f03874329b4cd",
+      "bytes": 7584,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7-brief.md",
+      "sha256": "f74a29c4b0be38af9a5a81997d8817dbc5aca00aed871f92320ddaa38ff1fc17",
+      "bytes": 8940,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7a-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7a-brief.md",
+      "sha256": "482a6e987bb34973f60b6fb4ddf376b5fcbd519113e113c8b2b8b0559403c355",
+      "bytes": 4844,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7a-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7a-report.md",
+      "sha256": "0cf7d787166ef9117968e830e0645b59d820e603eafe6f3cfbb3733cfdf07c10",
+      "bytes": 9270,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7a-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7a-review.md",
+      "sha256": "41ffb9aee4829888b3a21666785346cda791514f3ad273a71629b6171e82ea63",
+      "bytes": 6902,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b-brief.md",
+      "sha256": "2374bd87fd93137eaf2126f83b96e852652ca9a4ba17e5f09e7db798f618c992",
+      "bytes": 7369,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b1-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b1-fix-review.md",
+      "sha256": "33f7e964580769bd111ff5a63635e3522e92ec92a359e5273ac2270580f49a0d",
+      "bytes": 2700,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b1-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b1-report.md",
+      "sha256": "fa35c356808b3939ae041129e08e0c90426babea7512da14de3c48fe8f3d04df",
+      "bytes": 12445,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b1-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b1-review.md",
+      "sha256": "fa1770e9c39a95f34715fedea22c5c19270e232cdba02163f5254c5ea8c6f82c",
+      "bytes": 7176,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-brief.md",
+      "sha256": "f07aed7808608a8a1e0a5bcbd1d870715a6280a27d7b981bc0c063fa1bd780a9",
+      "bytes": 5596,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-content-runtime-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-content-runtime-review.md",
+      "sha256": "dc9c872d6a0b6da54409c2554bfe656e0d9274b5394a11d0c1bea1bf0d370b60",
+      "bytes": 12147,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-editorial-readonly-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-editorial-readonly-report.md",
+      "sha256": "6f9c38e41a6aa0ea6dd58a1aca2fb7a31609c9d59ff5e84a3b30461f5fb8b271",
+      "bytes": 14318,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-report.md",
+      "sha256": "e42e199a3eec68aeff09c032ec743ddc3c97edf84f78c5d54085e8139c8325b5",
+      "bytes": 18588,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-transport-fix-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-transport-fix-report.md",
+      "sha256": "f45a6172d65e603729cf9627bb1c41edbf9e96fed2e4ab6a98052f98c98471b8",
+      "bytes": 3610,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-transport-fix-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-transport-fix-review.md",
+      "sha256": "58d02b537ed51bbb52d2097316d5e0d69057394436b17c0f89cc8ac91149e6f1",
+      "bytes": 2803,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-7b2-transport-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-7b2-transport-review.md",
+      "sha256": "01c9b6839e45905ceaff6f6cd337dd9cecdbfff5e143421801e0a978fdd3dc3b",
+      "bytes": 5795,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-8-brief.md",
+      "sha256": "8761afe011afca0971a70431f2777b5c612e03de5709d076b7c51d8c9db42da6",
+      "bytes": 6746,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8a-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-8a-brief.md",
+      "sha256": "f7741a51fdcf5bb2cfa46b2474eac31082d7693d4f7477b928b6733f88eee983",
+      "bytes": 4407,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8a-report.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-8a-report.md",
+      "sha256": "3be1c4085daca4912c6eb8667432a4ffe477aa17b6b64d9509255caaa5926f39",
+      "bytes": 10537,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8a-review.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-8a-review.md",
+      "sha256": "b1c789ba70aa6094fee297ece781f442fb148832a880e1f5e654fd69a00670f3",
+      "bytes": 7818,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": ".superpowers/sdd/2026-10-12-full-review/task-8b-brief.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/task-8b-brief.md",
+      "sha256": "6ba69c0625c639ffa62d370f266a42f38928f57c70d00d5287e09688a225656d",
+      "bytes": 4026,
+      "category": "prior-task-report-review-ruling",
+      "capturedAt": "2026-10-13T10:52:40.026745+00:00"
+    },
+    {
+      "originalPath": "work/qa-candidate-8a-controller.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+      "sha256": "8bc8c9880bc705577c05a431b51ebe14c957b25528690a98a36bcb2a537716d9",
+      "bytes": 7593,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task8a-build-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-build-final.log",
+      "sha256": "a0d399f6e2449d9aa0eeb7a10420d20f0234290719d14fb2c237bf975781772c",
+      "bytes": 2558,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task8a-tests-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+      "sha256": "f0f898492afca2393aeaf0ec3a1169d3c0b44db3bad6dea7f8b4463ddb5e27d1",
+      "bytes": 39906,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/qa-classic-controller.md",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+      "sha256": "2730b11b3528e95ac7c774d89ca84eea5cdb0878fc399cd9ada35c2ad9163d23",
+      "bytes": 4395,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task4-fix1-d1.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task4-fix1-d1.log",
+      "sha256": "175e42840303793c36735262b1839d4db68833fe42cb7e4e52e3e3c47c32db95",
+      "bytes": 219,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task4-fix2-tests.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task4-fix2-tests.log",
+      "sha256": "7a05db0a1d3482b475a7f747e3e7dc3b67c92c7027658278664c24c6b1957ab7",
+      "bytes": 35427,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task4-fix1-tests.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task4-fix1-tests.log",
+      "sha256": "ffaf98e204c416ef88ed3d01684b8553b87f29257c89c175b09728c4833e32f0",
+      "bytes": 34157,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task5-fix1-tests.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task5-fix1-tests.log",
+      "sha256": "64fb6ef736fb712d318bf4bffe33aec1da398105a7675c3503bff452aca5cd31",
+      "bytes": 22684,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task5-fix1-d1.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task5-fix1-d1.log",
+      "sha256": "77e6a1519cd9add5f0b76ac69c71fb8c6dcf7a3a5ff123cfbbaf764f213fd089",
+      "bytes": 319,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/qa-training-worker-final-controller.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/qa-training-worker-final-controller.json",
+      "sha256": "c848dd6cb5e85e1f2caba359d41bd034077a4797cd27445499831a0339e06573",
+      "bytes": 1924,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/qa-neutral-upgrade-final-controller.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/qa-neutral-upgrade-final-controller.json",
+      "sha256": "b8e79f61fb164d9f27d88ee6b6a96fc68137bc18de17686ebdf6b1708133993f",
+      "bytes": 812,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task8a-training-identity.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-training-identity.json",
+      "sha256": "9241966e1cf4f12ad26515f4e8fa0dec7eaf9e81146242eb5ca3e798190763c1",
+      "bytes": 508,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/qa-declared-contrast.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/qa-declared-contrast.json",
+      "sha256": "480fd36d852d2705471a8d0b66487dabf29de820325b1d1215849518c35afc2f",
+      "bytes": 1979,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task7b2-integration-tests.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task7b2-integration-tests.log",
+      "sha256": "5efad1be2f5c945a7ad59b529401d15dcf472de24876aa784e3c8754455887b9",
+      "bytes": 27550,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/task3-fix1-targeted-tests.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task3-fix1-targeted-tests.log",
+      "sha256": "7bb7c76e0b0af14db8b2f2ae2787c20ea4a29901252e644f931f45e468245259",
+      "bytes": 27376,
+      "category": "existing-local-proof",
+      "capturedAt": "2026-10-13T10:29:14.182461+00:00"
+    },
+    {
+      "originalPath": "work/qualification/range-full-r2-verified-controller.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/range-full-r2-verified-controller.json",
+      "sha256": "99eed57c20f104c77f793bc4dc4bcbaf6bfa2cb1118df53577e5352386dbf8d6",
+      "bytes": 135487,
+      "category": "controller-completed-R2-receipt-no-credentials",
+      "capturedAt": "2026-10-13T10:32:02.332384+00:00"
+    },
+    {
+      "originalPath": "work/task8b-focused-first-86-87.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-focused-first-86-87.log",
+      "sha256": "60853c35ccc167ffdf1d26e167c32110552ce77b2b336db9e9121d63e612cbbc",
+      "bytes": 25248,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.189376+00:00"
+    },
+    {
+      "originalPath": "work/task8b-focused.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+      "sha256": "60b2e397fdebfadccdac9a5668145e68a8ef3eaa1e575a63953c9bc19473e8fd",
+      "bytes": 24454,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.190207+00:00"
+    },
+    {
+      "originalPath": "work/task8b-focused-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-focused-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.190586+00:00"
+    },
+    {
+      "originalPath": "work/task8b-full-tests.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+      "sha256": "359f85e701fc3e93a2c4380ec8992c46853e5b0471a907462f8a55a6fe89a520",
+      "bytes": 100823,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.191140+00:00"
+    },
+    {
+      "originalPath": "work/task8b-full-tests-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-full-tests-exit.txt",
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+      "bytes": 3,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.191496+00:00"
+    },
+    {
+      "originalPath": "work/task8b-foundations-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log",
+      "sha256": "0d7089f241fcb53b7c0cea5570eff82cea33367060c55fa4c29d87014bcbbc6c",
+      "bytes": 1695,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.191877+00:00"
+    },
+    {
+      "originalPath": "work/task8b-foundations-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-foundations-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.193011+00:00"
+    },
+    {
+      "originalPath": "work/task8b-typecheck-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-typecheck-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.193979+00:00"
+    },
+    {
+      "originalPath": "work/task8b-typecheck-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-typecheck-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.194995+00:00"
+    },
+    {
+      "originalPath": "work/task8b-lint-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.195882+00:00"
+    },
+    {
+      "originalPath": "work/task8b-lint-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-lint-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.196704+00:00"
+    },
+    {
+      "originalPath": "work/task8b-build-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-build-final.log",
+      "sha256": "03403217c03ab50bc576281dba6dc6c5f634bb2e639e68d7fa18d6ee32b60a6c",
+      "bytes": 2891,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.197044+00:00"
+    },
+    {
+      "originalPath": "work/task8b-build-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-build-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.197387+00:00"
+    },
+    {
+      "originalPath": "work/task8b-frozen-identity.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-frozen-identity.json",
+      "sha256": "c23692b6a749073368fc2c4244a510f28aabed330e6a4ef2bfdd17c5fde7a1f4",
+      "bytes": 263,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.197687+00:00"
+    },
+    {
+      "originalPath": "work/task8a-typecheck-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-typecheck-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.197990+00:00"
+    },
+    {
+      "originalPath": "work/task8a-lint-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-lint-final.log",
+      "sha256": "9f96a0444689fae1ea2cdf2a167e92aded531050cba4359687f310a4f4840010",
+      "bytes": 1370,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.198524+00:00"
+    },
+    {
+      "originalPath": "work/task8a-game-lint-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-game-lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.198849+00:00"
+    },
+    {
+      "originalPath": "work/task8a-training-identity.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8a-training-identity.log",
+      "sha256": "b73a823b7fcf14c37e407cbda319c08a2340309e2f0ac05506f6b53fae926063",
+      "bytes": 64,
+      "category": "phase8-source-check-log-or-immutable-identity",
+      "capturedAt": "2026-10-13T10:42:43.199306+00:00"
+    },
+    {
+      "originalPath": "work/task8b-client-boundary.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-client-boundary.json",
+      "sha256": "533ac9c8dd38b00bce1a59b59d74afc8fab8eb427b7f6adcb37fb98542645a12",
+      "bytes": 317,
+      "category": "phase8-built-client-boundary",
+      "capturedAt": "2026-10-13T10:42:43.256520+00:00"
+    },
+    {
+      "originalPath": "work/task8b-frozen-before.json",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-frozen-before.json",
+      "sha256": "f409733bfc6bbd1ba4c0afd0fde56276c2303764a86cff423c8c7bd3109c5a82",
+      "bytes": 27303,
+      "category": "phase8-identity-baseline-or-matrix-check",
+      "capturedAt": "2026-10-13T10:47:45.687034+00:00"
+    },
+    {
+      "originalPath": "work/task8b-matrix-check-final.log",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-matrix-check-final.log",
+      "sha256": "3e3e18bed68836a8887a3101c98cc298dfdfe049d260748781ab864d41493bcd",
+      "bytes": 990,
+      "category": "phase8-identity-baseline-or-matrix-check",
+      "capturedAt": "2026-10-13T10:47:45.687417+00:00"
+    },
+    {
+      "originalPath": "work/task8b-matrix-exit.txt",
+      "archivedPath": "docs/review/qualification-2026-10-13/evidence/task8b-matrix-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3,
+      "category": "phase8-identity-baseline-or-matrix-check",
+      "capturedAt": "2026-10-13T10:47:45.688642+00:00"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "head": "5fe07e573a6ff6d9794e2b901133bdd5dbea130d",
+  "manifest": "b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be",
+  "scope": "disposable localhost:5202 old-neutral fixture with canonical HTML redirects",
+  "oldNeutralControlledPageOpen": true,
+  "firstVisitReady": true,
+  "totalBytes": 256074,
+  "waitingBeforeConsent": "installed",
+  "activeBeforeConsent": "activated old neutral",
+  "explicitDownloadVerified": true,
+  "waitingAfterDownload": null,
+  "oldPageUnchanged": true,
+  "networkOfflineReload": true,
+  "description": "Fresh own registration, first visit shows metadata and enabled download. New worker stays waiting until explicit verified download; old controlled page retained. Offline reload and real fruit guess 48.10 rank49 pass. Fixture is not full Next Worker proof."
+}

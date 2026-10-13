@@ -1,0 +1,581 @@
+TAP version 13
+# Subtest: sync is distinct, preserves leading seed zeros and excludes credentials/unknown local storage
+ok 1 - sync is distinct, preserves leading seed zeros and excludes credentials/unknown local storage
+  ---
+  duration_ms: 7.4426
+  type: 'test'
+  ...
+# Subtest: strict fields, corrupt/future local saves and oversized sets refuse before upload
+ok 2 - strict fields, corrupt/future local saves and oversized sets refuse before upload
+  ---
+  duration_ms: 50.6893
+  type: 'test'
+  ...
+# Subtest: preview performs no writes; union preserves local trials/pins and repeat merge is neutral
+ok 3 - preview performs no writes; union preserves local trials/pins and repeat merge is neutral
+  ---
+  duration_ms: 6.8974
+  type: 'test'
+  ...
+# Subtest: stale revision, incompatible scores, pin overflow, context and future local save preserve all local state
+ok 4 - stale revision, incompatible scores, pin overflow, context and future local save preserve all local state
+  ---
+  duration_ms: 1.8413
+  type: 'test'
+  ...
+# Subtest: unknown fields in historical baseline cannot carry secrets
+ok 5 - unknown fields in historical baseline cannot carry secrets
+  ---
+  duration_ms: 0.6332
+  type: 'test'
+  ...
+# Subtest: actual merge admission invalidates late POST and resumed next guess retains merged trials and pins
+ok 6 - actual merge admission invalidates late POST and resumed next guess retains merged trials and pins
+  ---
+  duration_ms: 2.6831
+  type: 'test'
+  ...
+# Subtest: hint union never restores already consumed hints and rejects more than three distinct clues
+ok 7 - hint union never restores already consumed hints and rejects more than three distinct clues
+  ---
+  duration_ms: 0.6217
+  type: 'test'
+  ...
+# Subtest: game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order
+ok 8 - game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order
+  ---
+  duration_ms: 2.4772
+  type: 'test'
+  ...
+# Subtest: approved flame has an ember at zero and only a recognized win fully reveals it
+ok 9 - approved flame has an ember at zero and only a recognized win fully reveals it
+  ---
+  duration_ms: 0.6266
+  type: 'test'
+  ...
+# Subtest: accepted best temperatures reveal bottom-up without reaching full before a win
+ok 10 - accepted best temperatures reveal bottom-up without reaching full before a win
+  ---
+  duration_ms: 0.1342
+  type: 'test'
+  ...
+# Subtest: accepted guesses produce one identified feedback with visual priority
+ok 11 - accepted guesses produce one identified feedback with visual priority
+  ---
+  duration_ms: 0.7573
+  type: 'test'
+  ...
+# Subtest: an expired timer only consumes its own feedback
+ok 12 - an expired timer only consumes its own feedback
+  ---
+  duration_ms: 0.1234
+  type: 'test'
+  ...
+# Subtest: a consumed feedback id cannot be admitted twice in the same puzzle epoch
+ok 13 - a consumed feedback id cannot be admitted twice in the same puzzle epoch
+  ---
+  duration_ms: 0.1131
+  type: 'test'
+  ...
+# Subtest: a response clears only an input that was not edited during the request
+ok 14 - a response clears only an input that was not edited during the request
+  ---
+  duration_ms: 0.096
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Game Strict Mode admits one browser restoration and current popstate handlers retain navigation epochs
+ok 15 - Game Strict Mode admits one browser restoration and current popstate handlers retain navigation epochs
+  ---
+  duration_ms: 429.123
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Game restores wins silently, removes terminal hint lock copy, and exposes honest clipboard/manual sharing without answer or guesses
+ok 16 - Game restores wins silently, removes terminal hint lock copy, and exposes honest clipboard/manual sharing without answer or guesses
+  ---
+  duration_ms: 49.9027
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Game accepts only matching puzzle facts and preserves input edited during POST without extra restoration feedback
+ok 17 - Game accepts only matching puzzle facts and preserves input edited during POST without extra restoration feedback
+  ---
+  duration_ms: 29.7054
+  type: 'test'
+  ...
+# Subtest: missing historical counts remain unavailable; singular counters do not fabricate zero
+ok 18 - missing historical counts remain unavailable; singular counters do not fabricate zero
+  ---
+  duration_ms: 0.3868
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: archive and expedition selections track new parent destinations while user navigation remains usable
+ok 19 - archive and expedition selections track new parent destinations while user navigation remains usable
+  ---
+  duration_ms: 7.1402
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: collection and shared links restore browser facts, update on external changes and clean subscriptions
+ok 20 - collection and shared links restore browser facts, update on external changes and clean subscriptions
+  ---
+  duration_ms: 6.6653
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: advanced candidate has concrete reachable entries without creating accounts on Explorer visit
+ok 21 - advanced candidate has concrete reachable entries without creating accounts on Explorer visit
+  ---
+  duration_ms: 11.9584
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: weekly projection admits fresh same-day facts after noon and between clock ticks
+ok 22 - weekly projection admits fresh same-day facts after noon and between clock ticks
+  ---
+  duration_ms: 20.3912
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: expedition first mount starts at an already restored chapter
+ok 23 - expedition first mount starts at an already restored chapter
+  ---
+  duration_ms: 1.4383
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: audio counter is observable on a real accepted action with sound enabled
+ok 24 - audio counter is observable on a real accepted action with sound enabled
+  ---
+  duration_ms: 18.3407
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: solo voyage names its tab and board without social copy or changing its reference
+ok 25 - solo voyage names its tab and board without social copy or changing its reference
+  ---
+  duration_ms: 7.4021
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: solo collection names its tab and board without social copy or changing its reference
+ok 26 - solo collection names its tab and board without social copy or changing its reference
+  ---
+  duration_ms: 8.2826
+  type: 'test'
+  ...
+# Subtest: a terminal win suggests another actual unfinished save and clearly identifies it
+ok 27 - a terminal win suggests another actual unfinished save and clearly identifies it
+  ---
+  duration_ms: 7.8386
+  type: 'test'
+  ...
+# Subtest: I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+ok 28 - I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+  ---
+  duration_ms: 1.681
+  type: 'test'
+  ...
+# Subtest: I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+ok 29 - I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+  ---
+  duration_ms: 2.0421
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+ok 30 - I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+  ---
+  duration_ms: 0.1963
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+ok 31 - I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+  ---
+  duration_ms: 0.0773
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+ok 32 - I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+  ---
+  duration_ms: 0.0759
+  type: 'test'
+  ...
+# Subtest: I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+ok 33 - I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+  ---
+  duration_ms: 0.2076
+  type: 'test'
+  ...
+# Subtest: I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+ok 34 - I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+  ---
+  duration_ms: 1.1511
+  type: 'test'
+  ...
+# Subtest: I3 retry retains an expedition descriptor too, without consulting a changed current journey
+ok 35 - I3 retry retains an expedition descriptor too, without consulting a changed current journey
+  ---
+  duration_ms: 0.1138
+  type: 'test'
+  ...
+# Subtest: I4 admitted journey stage agrees with Back/Forward and a reload
+ok 36 - I4 admitted journey stage agrees with Back/Forward and a reload
+  ---
+  duration_ms: 0.6911
+  type: 'test'
+  ...
+# Subtest: I4 slow deep-link journey preserves explicit Profile/Explorer destination
+ok 37 - I4 slow deep-link journey preserves explicit Profile/Explorer destination
+  ---
+  duration_ms: 0.6387
+  type: 'test'
+  ...
+# Subtest: I4 navigation during pending journey GET rejects every old game and route commit
+ok 38 - I4 navigation during pending journey GET rejects every old game and route commit
+  ---
+  duration_ms: 0.2385
+  type: 'test'
+  ...
+# Subtest: M1 filtered archive layout is explicitly a list, without misleading weekday columns
+ok 39 - M1 filtered archive layout is explicitly a list, without misleading weekday columns
+  ---
+  duration_ms: 8.2314
+  type: 'test'
+  ...
+# Subtest: explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+ok 40 - explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+  ---
+  duration_ms: 0.1671
+  type: 'test'
+  ...
+# Subtest: explicit Retry on the board supersedes a previous background surface without losing collection context
+ok 41 - explicit Retry on the board supersedes a previous background surface without losing collection context
+  ---
+  duration_ms: 0.099
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for daily
+ok 42 - F1 real retry admission preserves later Profile for daily
+  ---
+  duration_ms: 0.226
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for challenge
+ok 43 - F1 real retry admission preserves later Profile for challenge
+  ---
+  duration_ms: 0.0644
+  type: 'test'
+  ...
+# Subtest: F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+ok 44 - F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+  ---
+  duration_ms: 0.4801
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+ok 45 - F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.1846
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage network cannot replace later Profile with its error surface
+ok 46 - F2 obsolete Voyage network cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.0726
+  type: 'test'
+  ...
+# Subtest: profile exposes short progression, objectives and reward names, with separate preferences and exact data scope
+ok 47 - profile exposes short progression, objectives and reward names, with separate preferences and exact data scope
+  ---
+  duration_ms: 26.5146
+  type: 'test'
+  ...
+# Subtest: transfer scope describes real exported progression words separately from absent full game saves
+ok 48 - transfer scope describes real exported progression words separately from absent full game saves
+  ---
+  duration_ms: 2.8793
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: TwoBraises accepted final action focus: focus ownership and restoration stay distinct
+ok 49 - TwoBraises accepted final action focus: focus ownership and restoration stay distinct
+  ---
+  duration_ms: 52.8352
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: TwoBraises accepted final action move-away: focus ownership and restoration stay distinct
+ok 50 - TwoBraises accepted final action move-away: focus ownership and restoration stay distinct
+  ---
+  duration_ms: 10.0371
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: TwoBraises accepted final action unmount: focus ownership and restoration stay distinct
+ok 51 - TwoBraises accepted final action unmount: focus ownership and restoration stay distinct
+  ---
+  duration_ms: 11.1371
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Intrus completed restore renders exactly one answer to review without replaying any response
+not ok 52 - Intrus completed restore renders exactly one answer to review without replaying any response
+  ---
+  duration_ms: 10.6774
+  type: 'test'
+  location: 'C:\\Users\\a.lebrou\\Documents\\Codex\\2026-10-12\\mobbin-plugin-app-69fdb9081018819193707354f21b366e-openai-curated\\work\\braiz-source\\work\\tests-task8b\\release-polish.test.mjs:5876:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/a.lebrou/Documents/Codex/2026-10-12/mobbin-plugin-app-69fdb9081018819193707354f21b366e-openai-curated/work/braiz-source/work/tests-task8b/release-polish.test.mjs:5894:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: profile picker has a meaningful name and its visible import button still triggers the native file control
+ok 53 - profile picker has a meaningful name and its visible import button still triggers the native file control
+  ---
+  duration_ms: 4.5399
+  type: 'test'
+  ...
+# Subtest: enabled integration copy describes real origin access without a stale public-closed claim
+ok 54 - enabled integration copy describes real origin access without a stale public-closed claim
+  ---
+  duration_ms: 8.4983
+  type: 'test'
+  ...
+# Subtest: production shard verification preserves every frozen V1 byte and the Git diff
+ok 55 - production shard verification preserves every frozen V1 byte and the Git diff
+  ---
+  duration_ms: 1602.5594
+  type: 'test'
+  ...
+# Subtest: verification rejects corrupt object and index without regeneration or mutation
+ok 56 - verification rejects corrupt object and index without regeneration or mutation
+  ---
+  duration_ms: 688.4697
+  type: 'test'
+  ...
+# (node:40836) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: every admitted BRV2 word is eligible as a fully verified target
+ok 57 - every admitted BRV2 word is eligible as a fully verified target
+  ---
+  duration_ms: 468.4473
+  type: 'test'
+  ...
+# Subtest: quantized cosine, competition ranks and stable tie order are exact
+ok 58 - quantized cosine, competition ranks and stable tie order are exact
+  ---
+  duration_ms: 119.1272
+  type: 'test'
+  ...
+# Subtest: target scoring resumes identically across every durable score boundary
+ok 59 - target scoring resumes identically across every durable score boundary
+  ---
+  duration_ms: 785.7126
+  type: 'test'
+  ...
+# Subtest: corrupt pages and incompatible rebuilds never receive a new activation
+ok 60 - corrupt pages and incompatible rebuilds never receive a new activation
+  ---
+  duration_ms: 133.8406
+  type: 'test'
+  ...
+# Subtest: uint32 ranks and order cross the 65,535 boundary
+ok 61 - uint32 ranks and order cross the 65,535 boundary
+  ---
+  duration_ms: 2805.3412
+  type: 'test'
+  ...
+# Subtest: the global staging quota prevents quadratic target accumulation
+ok 62 - the global staging quota prevents quadratic target accumulation
+  ---
+  duration_ms: 189.0121
+  type: 'test'
+  ...
+# Subtest: an interrupted target reserves its bounded cache slot before the first checkpoint
+ok 63 - an interrupted target reserves its bounded cache slot before the first checkpoint
+  ---
+  duration_ms: 153.2505
+  type: 'test'
+  ...
+# Subtest: explicit eviction is verified, frees one slot and regenerates identical immutable pages
+ok 64 - explicit eviction is verified, frees one slot and regenerates identical immutable pages
+  ---
+  duration_ms: 680.4195
+  type: 'test'
+  ...
+# Subtest: eviction never removes a target while a verified reader owns the shared guard
+ok 65 - eviction never removes a target while a verified reader owns the shared guard
+  ---
+  duration_ms: 306.4559
+  type: 'test'
+  ...
+# Subtest: shared verification accepts the empty legacy cache guard created by B1c
+ok 66 - shared verification accepts the empty legacy cache guard created by B1c
+  ---
+  duration_ms: 221.7114
+  type: 'test'
+  ...
+# Subtest: interrupted eviction remains counted and resumes before another cache mutation
+ok 67 - interrupted eviction remains counted and resumes before another cache mutation
+  ---
+  duration_ms: 373.3772
+  type: 'test'
+  ...
+# Subtest: bounded verifier memory has a hard 10 MiB record cap and keeps the SQLite fallback
+ok 68 - bounded verifier memory has a hard 10 MiB record cap and keeps the SQLite fallback
+  ---
+  duration_ms: 0.7383
+  type: 'test'
+  ...
+# Subtest: memory counting verification equals the original SQL oracle at signed extremes and exact ties
+ok 69 - memory counting verification equals the original SQL oracle at signed extremes and exact ties
+  ---
+  duration_ms: 688.6876
+  type: 'test'
+  ...
+# Subtest: grouped score preparation reproduces scalar manifests and resumes both durable boundaries
+ok 70 - grouped score preparation reproduces scalar manifests and resumes both durable boundaries
+  ---
+  duration_ms: 2322.7052
+  type: 'test'
+  ...
+# Subtest: grouped preparation does not bypass quota, live locks, incompatible checkpoints or target bounds
+ok 71 - grouped preparation does not bypass quota, live locks, incompatible checkpoints or target bounds
+  ---
+  duration_ms: 319.6308
+  type: 'test'
+  ...
+# Subtest: producer comparison sorting is bounded and keeps a forced independent SQL baseline
+ok 72 - producer comparison sorting is bounded and keeps a forced independent SQL baseline
+  ---
+  duration_ms: 0.5384
+  type: 'test'
+  ...
+# Subtest: eight grouped targets and independent grouped oracle exactly equal scalar SQL manifests and proofs
+ok 73 - eight grouped targets and independent grouped oracle exactly equal scalar SQL manifests and proofs
+  ---
+  duration_ms: 2152.6885
+  type: 'test'
+  ...
+# Subtest: self-consistent forged grouped score checkpoints cannot activate any target
+ok 74 - self-consistent forged grouped score checkpoints cannot activate any target
+  ---
+  duration_ms: 293.7363
+  type: 'test'
+  ...
+# Subtest: grouped eviction detects callback mutation before deleting even an earlier valid target
+ok 75 - grouped eviction detects callback mutation before deleting even an earlier valid target
+  ---
+  duration_ms: 485.1766
+  type: 'test'
+  ...
+# Subtest: grouped verification refuses rehashed wrong ranks and tie order without deleting any target
+ok 76 - grouped verification refuses rehashed wrong ranks and tie order without deleting any target
+  ---
+  duration_ms: 516.4734
+  type: 'test'
+  ...
+# Subtest: complete grouped checkpoints cannot hide late corpus corruption from activation
+ok 77 - complete grouped checkpoints cannot hide late corpus corruption from activation
+  ---
+  duration_ms: 199.9461
+  type: 'test'
+  ...
+# Subtest: later grouped archive failure retains all staged targets and the previous valid archive
+ok 78 - later grouped archive failure retains all staged targets and the previous valid archive
+  ---
+  duration_ms: 637.226
+  type: 'test'
+  ...
+# Subtest: forced SQL oracle still opens its full-UUID temporary file under the Windows legacy 261-character path
+ok 79 - forced SQL oracle still opens its full-UUID temporary file under the Windows legacy 261-character path
+  ---
+  duration_ms: 152.0168
+  type: 'test'
+  ...
+# (node:3124) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Studio real editing preview, bounded save and duplicate with synchronous async lock
+ok 80 - Studio real editing preview, bounded save and duplicate with synchronous async lock
+  ---
+  duration_ms: 47.8753
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: actual Intrus finite session reaches truthful result summary and explanation without replaying choices
+ok 81 - actual Intrus finite session reaches truthful result summary and explanation without replaying choices
+  ---
+  duration_ms: 136.762
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Two braises actual response displays independent A/B scores and preserves in-flight input edits
+ok 82 - Two braises actual response displays independent A/B scores and preserves in-flight input edits
+  ---
+  duration_ms: 15.0314
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: projection manual/polling uses sanitized API, stops when hidden and rejects aborted responses
+ok 83 - projection manual/polling uses sanitized API, stops when hidden and rejects aborted responses
+  ---
+  duration_ms: 8.4935
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Intrus refuses an old choice while navigation is synchronously starting
+ok 84 - Intrus refuses an old choice while navigation is synchronously starting
+  ---
+  duration_ms: 8.7473
+  type: 'test'
+  ...
+# Subtest: Two braises refuses old pair submission after synchronous navigation
+ok 85 - Two braises refuses old pair submission after synchronous navigation
+  ---
+  duration_ms: 7.5098
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: Studio real API and store recover lost duplication after source edit without an extra copy
+ok 86 - Studio real API and store recover lost duplication after source edit without an extra copy
+  ---
+  duration_ms: 56.2207
+  type: 'test'
+  ...
+# Subtest: Intrus Retry after summary failure retries summary rather than loading a question
+ok 87 - Intrus Retry after summary failure retries summary rather than loading a question
+  ---
+  duration_ms: 14.758
+  type: 'test'
+  ...
+1..87
+# tests 87
+# suites 0
+# pass 86
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19220.6539

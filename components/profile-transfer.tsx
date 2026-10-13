@@ -94,7 +94,7 @@ export function ProfileTransfer({ snapshot, onSnapshot }: { snapshot: ProfileSna
     <div className="profile-transfer-actions">
       <button type="button" className="secondary-button" onClick={download}><Download size={16} aria-hidden="true" />Télécharger mon profil</button>
       <button ref={importButtonRef} type="button" className="secondary-button" onClick={() => inputRef.current?.click()}><Upload size={16} aria-hidden="true" />Importer un fichier JSON</button>
-      <input ref={inputRef} className="profile-file-input" type="file" accept="application/json,.json" onChange={chooseFile} tabIndex={-1} aria-hidden="true" />
+      <input ref={inputRef} className="profile-file-input" type="file" aria-label="Fichier JSON du profil à importer" accept="application/json,.json" onChange={chooseFile} tabIndex={-1} aria-hidden="true" />
     </div>
     {candidate && <div className="import-preview" role="status" aria-live="polite" aria-atomic="true">
       <strong>{candidate.filename}</strong>

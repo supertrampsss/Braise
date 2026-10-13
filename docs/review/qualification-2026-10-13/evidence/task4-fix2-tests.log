@@ -1,0 +1,844 @@
+TAP version 13
+# Subtest: the frozen V1 corpus and target identities match the original source fingerprint
+ok 1 - the frozen V1 corpus and target identities match the original source fingerprint
+  ---
+  duration_ms: 19.7976
+  type: 'test'
+  ...
+# Subtest: legacy daily dates and exact string seeds reproduce the pinned V1 oracle
+ok 2 - legacy daily dates and exact string seeds reproduce the pinned V1 oracle
+  ---
+  duration_ms: 17.1305
+  type: 'test'
+  ...
+# Subtest: V1 selection survives a reordered and extended target catalogue
+ok 3 - V1 selection survives a reordered and extended target catalogue
+  ---
+  duration_ms: 14.6499
+  type: 'test'
+  ...
+# Subtest: real V1 temperatures and ranks match independently captured samples for all 120 targets
+ok 4 - real V1 temperatures and ranks match independently captured samples for all 120 targets
+  ---
+  duration_ms: 895.1653
+  type: 'test'
+  ...
+# Subtest: API accepts existing tabs and enforces every supplied puzzle version and context
+ok 5 - API accepts existing tabs and enforces every supplied puzzle version and context
+  ---
+  duration_ms: 23.0585
+  type: 'test'
+  ...
+# Subtest: calendar references and hints are checked against the same canonical puzzle
+ok 6 - calendar references and hints are checked against the same canonical puzzle
+  ---
+  duration_ms: 13.714
+  type: 'test'
+  ...
+# Subtest: a semantic storage failure returns 503 without inventing a result
+ok 7 - a semantic storage failure returns 503 without inventing a result
+  ---
+  duration_ms: 1.4872
+  type: 'test'
+  ...
+# Subtest: synthetic V1 saves restore through the actual UI reader with no storage writes or new wins
+ok 8 - synthetic V1 saves restore through the actual UI reader with no storage writes or new wins
+  ---
+  duration_ms: 1.4575
+  type: 'test'
+  ...
+# Subtest: missing, corrupted or inaccessible local storage falls back without overwriting raw data
+ok 9 - missing, corrupted or inaccessible local storage falls back without overwriting raw data
+  ---
+  duration_ms: 1.5125
+  type: 'test'
+  ...
+# Subtest: sync is distinct, preserves leading seed zeros and excludes credentials/unknown local storage
+ok 10 - sync is distinct, preserves leading seed zeros and excludes credentials/unknown local storage
+  ---
+  duration_ms: 15.3071
+  type: 'test'
+  ...
+# Subtest: strict fields, corrupt/future local saves and oversized sets refuse before upload
+ok 11 - strict fields, corrupt/future local saves and oversized sets refuse before upload
+  ---
+  duration_ms: 90.7014
+  type: 'test'
+  ...
+# Subtest: preview performs no writes; union preserves local trials/pins and repeat merge is neutral
+ok 12 - preview performs no writes; union preserves local trials/pins and repeat merge is neutral
+  ---
+  duration_ms: 22.1853
+  type: 'test'
+  ...
+# Subtest: stale revision, incompatible scores, pin overflow, context and future local save preserve all local state
+ok 13 - stale revision, incompatible scores, pin overflow, context and future local save preserve all local state
+  ---
+  duration_ms: 3.7614
+  type: 'test'
+  ...
+# Subtest: unknown fields in historical baseline cannot carry secrets
+ok 14 - unknown fields in historical baseline cannot carry secrets
+  ---
+  duration_ms: 1.1446
+  type: 'test'
+  ...
+# Subtest: actual merge admission invalidates late POST and resumed next guess retains merged trials and pins
+ok 15 - actual merge admission invalidates late POST and resumed next guess retains merged trials and pins
+  ---
+  duration_ms: 4.3479
+  type: 'test'
+  ...
+# Subtest: hint union never restores already consumed hints and rejects more than three distinct clues
+ok 16 - hint union never restores already consumed hints and rejects more than three distinct clues
+  ---
+  duration_ms: 1.338
+  type: 'test'
+  ...
+# Subtest: game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order
+ok 17 - game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order
+  ---
+  duration_ms: 5.6732
+  type: 'test'
+  ...
+# Subtest: French formatting uses comma, Paris dates and explicit unknowns without score conversion
+ok 18 - French formatting uses comma, Paris dates and explicit unknowns without score conversion
+  ---
+  duration_ms: 3.9495
+  type: 'test'
+  ...
+# Subtest: navigation exposes meaningful links, active text state and a safe way back
+ok 19 - navigation exposes meaningful links, active text state and a safe way back
+  ---
+  duration_ms: 21.1518
+  type: 'test'
+  ...
+# Subtest: local ledger caps real events, exports no user text and never transmits
+ok 20 - local ledger caps real events, exports no user text and never transmits
+  ---
+  duration_ms: 35.8414
+  type: 'test'
+  ...
+# Subtest: corrupt, future and sensitive ledger records are preserved without mutation
+ok 21 - corrupt, future and sensitive ledger records are preserved without mutation
+  ---
+  duration_ms: 0.5693
+  type: 'test'
+  ...
+# Subtest: distribution follows public origin while advanced access and partner frames stay closed
+ok 22 - distribution follows public origin while advanced access and partner frames stay closed
+  ---
+  duration_ms: 0.3882
+  type: 'test'
+  ...
+# Unable to run child process: ENOENT
+# Usage: node scripts/run-site.mjs dev|start|typecheck|lint|db:generate|install:ci|check
+# Subtest: portable runner preserves child failure, missing-command errors and bounded timeouts
+ok 23 - portable runner preserves child failure, missing-command errors and bounded timeouts
+  ---
+  duration_ms: 978.8934
+  type: 'test'
+  ...
+# Subtest: target-aware discovery visits all 120 actual targets, then reports depletion without answer
+ok 24 - target-aware discovery visits all 120 actual targets, then reports depletion without answer
+  ---
+  duration_ms: 260.0786
+  type: 'test'
+  ...
+# Subtest: same V1 target under distinct seeds and daily archive resolves to the same opaque identity
+ok 25 - same V1 target under distinct seeds and daily archive resolves to the same opaque identity
+  ---
+  duration_ms: 33.9385
+  type: 'test'
+  ...
+# Subtest: seeded GET preserves V1 identity, leading zeros and target mapping
+ok 26 - seeded GET preserves V1 identity, leading zeros and target mapping
+  ---
+  duration_ms: 55.2294
+  type: 'test'
+  ...
+# Subtest: discovery rejects overflow, malformed IDs, future dates and invalid flags
+ok 27 - discovery rejects overflow, malformed IDs, future dates and invalid flags
+  ---
+  duration_ms: 6.3315
+  type: 'test'
+  ...
+# Subtest: encounter ledger deduplicates, bounds and preserves corrupt data
+ok 28 - encounter ledger deduplicates, bounds and preserves corrupt data
+  ---
+  duration_ms: 0.8425
+  type: 'test'
+  ...
+# Subtest: resume uses civil dates and real valid unfinished saves without manufacturing journey identity
+ok 29 - resume uses civil dates and real valid unfinished saves without manufacturing journey identity
+  ---
+  duration_ms: 2.4908
+  type: 'test'
+  ...
+# Subtest: explicit collection and expedition contexts survive reload; corrupt contexts are retained
+ok 30 - explicit collection and expedition contexts survive reload; corrupt contexts are retained
+  ---
+  duration_ms: 1.3001
+  type: 'test'
+  ...
+# Subtest: win summary derives personal trials, actual hint rows, threshold order and best non-answer pistes
+ok 31 - win summary derives personal trials, actual hint rows, threshold order and best non-answer pistes
+  ---
+  duration_ms: 0.7557
+  type: 'test'
+  ...
+# Subtest: tutorial uses distinct daily target and exact real semantic response, not synthetic scoring
+ok 32 - tutorial uses distinct daily target and exact real semantic response, not synthetic scoring
+  ---
+  duration_ms: 59.9814
+  type: 'test'
+  ...
+# Subtest: input revisions and current-puzzle guard remain enforced; share text excludes words
+ok 33 - input revisions and current-puzzle guard remain enforced; share text excludes words
+  ---
+  duration_ms: 4.0753
+  type: 'test'
+  ...
+# Subtest: archive calendar safely renders invalid, out-of-range and missing deep-link dates
+ok 34 - archive calendar safely renders invalid, out-of-range and missing deep-link dates
+  ---
+  duration_ms: 43.6796
+  type: 'test'
+  ...
+# Subtest: I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+ok 35 - I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+  ---
+  duration_ms: 4.1168
+  type: 'test'
+  ...
+# Subtest: I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+ok 36 - I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+  ---
+  duration_ms: 4.9701
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+ok 37 - I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+  ---
+  duration_ms: 0.4896
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+ok 38 - I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+  ---
+  duration_ms: 0.1987
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+ok 39 - I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+  ---
+  duration_ms: 0.1842
+  type: 'test'
+  ...
+# Subtest: I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+ok 40 - I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+  ---
+  duration_ms: 0.5282
+  type: 'test'
+  ...
+# Subtest: I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+ok 41 - I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+  ---
+  duration_ms: 3.0835
+  type: 'test'
+  ...
+# Subtest: I3 retry retains an expedition descriptor too, without consulting a changed current journey
+ok 42 - I3 retry retains an expedition descriptor too, without consulting a changed current journey
+  ---
+  duration_ms: 0.2947
+  type: 'test'
+  ...
+# Subtest: I4 admitted journey stage agrees with Back/Forward and a reload
+ok 43 - I4 admitted journey stage agrees with Back/Forward and a reload
+  ---
+  duration_ms: 1.7636
+  type: 'test'
+  ...
+# Subtest: I4 slow deep-link journey preserves explicit Profile/Explorer destination
+ok 44 - I4 slow deep-link journey preserves explicit Profile/Explorer destination
+  ---
+  duration_ms: 1.5634
+  type: 'test'
+  ...
+# Subtest: I4 navigation during pending journey GET rejects every old game and route commit
+ok 45 - I4 navigation during pending journey GET rejects every old game and route commit
+  ---
+  duration_ms: 0.6464
+  type: 'test'
+  ...
+# Subtest: M1 filtered archive layout is explicitly a list, without misleading weekday columns
+ok 46 - M1 filtered archive layout is explicitly a list, without misleading weekday columns
+  ---
+  duration_ms: 16.7451
+  type: 'test'
+  ...
+# Subtest: explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+ok 47 - explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+  ---
+  duration_ms: 0.3743
+  type: 'test'
+  ...
+# Subtest: explicit Retry on the board supersedes a previous background surface without losing collection context
+ok 48 - explicit Retry on the board supersedes a previous background surface without losing collection context
+  ---
+  duration_ms: 0.2197
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for daily
+ok 49 - F1 real retry admission preserves later Profile for daily
+  ---
+  duration_ms: 0.4884
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for challenge
+ok 50 - F1 real retry admission preserves later Profile for challenge
+  ---
+  duration_ms: 0.1537
+  type: 'test'
+  ...
+# Subtest: F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+ok 51 - F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+  ---
+  duration_ms: 1.2272
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+ok 52 - F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.4219
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage network cannot replace later Profile with its error surface
+ok 53 - F2 obsolete Voyage network cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.1827
+  type: 'test'
+  ...
+# Subtest: same daily puzzle for everyone, all 120 targets visited before repeating
+ok 54 - same daily puzzle for everyone, all 120 targets visited before repeating
+  ---
+  duration_ms: 58.7639
+  type: 'test'
+  ...
+# Subtest: Paris reset respects midnight and daylight saving transitions
+ok 55 - Paris reset respects midnight and daylight saving transitions
+  ---
+  duration_ms: 1.0765
+  type: 'test'
+  ...
+# Subtest: challenge and free share the exact puzzle, without answer in public metadata
+ok 56 - challenge and free share the exact puzzle, without answer in public metadata
+  ---
+  duration_ms: 0.7293
+  type: 'test'
+  ...
+# Subtest: every answer wins, has rank 1 and its own score 100
+ok 57 - every answer wins, has rank 1 and its own score 100
+  ---
+  duration_ms: 1118.4898
+  type: 'test'
+  ...
+# Subtest: real semantic scores rank ocean closer to sea than cheese
+ok 58 - real semantic scores rank ocean closer to sea than cheese
+  ---
+  duration_ms: 18.0889
+  type: 'test'
+  ...
+# Subtest: hints are real valid words, never the answer, never an existing guess
+ok 59 - hints are real valid words, never the answer, never an existing guess
+  ---
+  duration_ms: 1264.4589
+  type: 'test'
+  ...
+# Subtest: invalid words never receive made-up semantic scores; errors preserve protocol
+ok 60 - invalid words never receive made-up semantic scores; errors preserve protocol
+  ---
+  duration_ms: 11.8445
+  type: 'test'
+  ...
+# Subtest: daily streak includes yesterday, excludes free games, and resets after a miss
+ok 61 - daily streak includes yesterday, excludes free games, and resets after a miss
+  ---
+  duration_ms: 0.8844
+  type: 'test'
+  ...
+# Subtest: profile exposes short progression, objectives and reward names, with separate preferences and exact data scope
+ok 62 - profile exposes short progression, objectives and reward names, with separate preferences and exact data scope
+  ---
+  duration_ms: 67.0467
+  type: 'test'
+  ...
+# Subtest: transfer scope describes real exported progression words separately from absent full game saves
+ok 63 - transfer scope describes real exported progression words separately from absent full game saves
+  ---
+  duration_ms: 12.7639
+  type: 'test'
+  ...
+# Subtest: V1 profiles migrate once with an exact immutable backup and identical progress
+ok 64 - V1 profiles migrate once with an exact immutable backup and identical progress
+  ---
+  duration_ms: 12.1977
+  type: 'test'
+  ...
+# Subtest: partial legacy data keeps valid facts without inventing invalid history
+ok 65 - partial legacy data keeps valid facts without inventing invalid history
+  ---
+  duration_ms: 0.8022
+  type: 'test'
+  ...
+# Subtest: corrupt, conflicting and future data is preserved instead of overwritten
+ok 66 - corrupt, conflicting and future data is preserved instead of overwritten
+  ---
+  duration_ms: 2.2358
+  type: 'test'
+  ...
+# Subtest: divergent concurrent migration bases stay conflicted and never absorb another boundary journal
+ok 67 - divergent concurrent migration bases stay conflicted and never absorb another boundary journal
+  ---
+  duration_ms: 4.0975
+  type: 'test'
+  ...
+# Subtest: storage failures never report a persisted migration
+ok 68 - storage failures never report a persisted migration
+  ---
+  duration_ms: 0.9359
+  type: 'test'
+  ...
+# Subtest: memory-only progress survives later commands and is retried when storage returns
+ok 69 - memory-only progress survives later commands and is retried when storage returns
+  ---
+  duration_ms: 4.5163
+  type: 'test'
+  ...
+# Subtest: invalid V2 metadata never discards an otherwise valid V1 game
+ok 70 - invalid V2 metadata never discards an otherwise valid V1 game
+  ---
+  duration_ms: 1.2129
+  type: 'test'
+  ...
+# Subtest: append-only events converge across tabs without duplicate guesses or victories
+ok 71 - append-only events converge across tabs without duplicate guesses or victories
+  ---
+  duration_ms: 7.1766
+  type: 'test'
+  ...
+# Subtest: a migrated profile exports in clear and imports atomically into a fresh profile
+ok 72 - a migrated profile exports in clear and imports atomically into a fresh profile
+  ---
+  duration_ms: 6.2261
+  type: 'test'
+  ...
+# Subtest: reimporting the same profile is idempotent and does not create more records
+ok 73 - reimporting the same profile is idempotent and does not create more records
+  ---
+  duration_ms: 15.9193
+  type: 'test'
+  ...
+# Subtest: fresh profile imports preserve both sides and reconcile preferences deterministically
+ok 74 - fresh profile imports preserve both sides and reconcile preferences deterministically
+  ---
+  duration_ms: 2.7331
+  type: 'test'
+  ...
+# Subtest: different V1 histories conflict without writing any import record
+ok 75 - different V1 histories conflict without writing any import record
+  ---
+  duration_ms: 0.7401
+  type: 'test'
+  ...
+# Subtest: a concurrent local change makes a confirmed import stale before any write
+ok 76 - a concurrent local change makes a confirmed import stale before any write
+  ---
+  duration_ms: 0.9731
+  type: 'test'
+  ...
+# Subtest: invalid and future transfer files are rejected without touching local progress
+ok 77 - invalid and future transfer files are rejected without touching local progress
+  ---
+  duration_ms: 0.6931
+  type: 'test'
+  ...
+# Subtest: a failed atomic import reports unavailability and keeps the previous snapshot
+ok 78 - a failed atomic import reports unavailability and keeps the previous snapshot
+  ---
+  duration_ms: 0.9652
+  type: 'test'
+  ...
+# Subtest: an import preserves and atomically persists progress that was only in memory
+ok 79 - an import preserves and atomically persists progress that was only in memory
+  ---
+  duration_ms: 1.6536
+  type: 'test'
+  ...
+# Subtest: an unmigrated V1 destination is a real boundary and conflicts before any write
+ok 80 - an unmigrated V1 destination is a real boundary and conflicts before any write
+  ---
+  duration_ms: 0.6187
+  type: 'test'
+  ...
+# Subtest: a missing historical backup remains a conflict
+ok 81 - a missing historical backup remains a conflict
+  ---
+  duration_ms: 0.2997
+  type: 'test'
+  ...
+# Subtest: a recovered daily win played through archives remains transferable
+ok 82 - a recovered daily win played through archives remains transferable
+  ---
+  duration_ms: 3.6952
+  type: 'test'
+  ...
+# Subtest: hostile JSON values and forged weekly rewards return controlled rejection
+ok 83 - hostile JSON values and forged weekly rewards return controlled rejection
+  ---
+  duration_ms: 1.1125
+  type: 'test'
+  ...
+# Subtest: exports refuse ignored records and transfer limits use UTF-8 bytes
+ok 84 - exports refuse ignored records and transfer limits use UTF-8 bytes
+  ---
+  duration_ms: 11.9661
+  type: 'test'
+  ...
+# Subtest: memory-only V1 migration exports a valid recovery file
+ok 85 - memory-only V1 migration exports a valid recovery file
+  ---
+  duration_ms: 0.8202
+  type: 'test'
+  ...
+# Subtest: a permanent reward keeps its historical proof through reconciliation and transfer
+ok 86 - a permanent reward keeps its historical proof through reconciliation and transfer
+  ---
+  duration_ms: 3.3098
+  type: 'test'
+  ...
+# Subtest: the final merged bundle is byte-bounded before storage is changed
+ok 87 - the final merged bundle is byte-bounded before storage is changed
+  ---
+  duration_ms: 231.3805
+  type: 'test'
+  ...
+# Subtest: a pending preferred win keeps the imported reward proof it replaces
+ok 88 - a pending preferred win keeps the imported reward proof it replaces
+  ---
+  duration_ms: 3.3999
+  type: 'test'
+  ...
+# Subtest: game reconciliation records only post-migration attempts and is repeatable
+ok 89 - game reconciliation records only post-migration attempts and is repeatable
+  ---
+  duration_ms: 2.2006
+  type: 'test'
+  ...
+# Subtest: profile keys are explicitly recognizable for cross-tab refresh
+ok 90 - profile keys are explicitly recognizable for cross-tab refresh
+  ---
+  duration_ms: 0.256
+  type: 'test'
+  ...
+# Subtest: cosmetic preferences converge without changing historical progress
+ok 91 - cosmetic preferences converge without changing historical progress
+  ---
+  duration_ms: 1.7156
+  type: 'test'
+  ...
+# Subtest: invalid cosmetic events are ignored instead of changing sound or progress
+ok 92 - invalid cosmetic events are ignored instead of changing sound or progress
+  ---
+  duration_ms: 0.4007
+  type: 'test'
+  ...
+# Subtest: completed weekly objectives materialize one durable reward identity
+ok 93 - completed weekly objectives materialize one durable reward identity
+  ---
+  duration_ms: 9.3385
+  type: 'test'
+  ...
+# (node:22856) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: completed duels free the active quota and concurrent retries remain neutral
+ok 94 - completed duels free the active quota and concurrent retries remain neutral
+  ---
+  duration_ms: 1594.0343
+  type: 'test'
+  ...
+# Subtest: circle participation cannot bypass the common game quota
+ok 95 - circle participation cannot bypass the common game quota
+  ---
+  duration_ms: 36.6382
+  type: 'test'
+  ...
+# Subtest: studio preserves draft concurrency, immutable editions and withdrawal across all game routes
+ok 96 - studio preserves draft concurrency, immutable editions and withdrawal across all game routes
+  ---
+  duration_ms: 20.8246
+  type: 'test'
+  ...
+# Subtest: duels accept one opponent, freeze targets, hide facts and enforce exact deadline
+ok 97 - duels accept one opponent, freeze targets, hide facts and enforce exact deadline
+  ---
+  duration_ms: 17.1241
+  type: 'test'
+  ...
+# Subtest: duel cap, winning closure, revocation and unaccepted expiry are factual
+ok 98 - duel cap, winning closure, revocation and unaccepted expiry are factual
+  ---
+  duration_ms: 30.7478
+  type: 'test'
+  ...
+# Subtest: circles preserve invitation replay, common targets and exclusion across generic game APIs
+ok 99 - circles preserve invitation replay, common targets and exclusion across generic game APIs
+  ---
+  duration_ms: 19.4291
+  type: 'test'
+  ...
+# Subtest: server sessions hash tokens, expire and isolate game ownership
+ok 100 - server sessions hash tokens, expire and isolate game ownership
+  ---
+  duration_ms: 7.3877
+  type: 'test'
+  ...
+# Subtest: atomic server guesses preserve revision, request idempotency and final state
+ok 101 - atomic server guesses preserve revision, request idempotency and final state
+  ---
+  duration_ms: 9.6185
+  type: 'test'
+  ...
+# Subtest: session revocation and competing revisions reject stale mutations
+ok 102 - session revocation and competing revisions reject stale mutations
+  ---
+  duration_ms: 7.7112
+  type: 'test'
+  ...
+# Subtest: CSRF boundary rejects absent and foreign origins
+ok 103 - CSRF boundary rejects absent and foreign origins
+  ---
+  duration_ms: 36.0096
+  type: 'test'
+  ...
+# Subtest: recovery rotates sessions, consumes code once and retries lost response safely
+ok 104 - recovery rotates sessions, consumes code once and retries lost response safely
+  ---
+  duration_ms: 15.3756
+  type: 'test'
+  ...
+# Subtest: game creation rechecks expiry and revocation atomically and preserves replay identity
+ok 105 - game creation rechecks expiry and revocation atomically and preserves replay identity
+  ---
+  duration_ms: 6.9749
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: real upload button reconciles latest pending memory preferences and concurrent disk facts without local writes
+ok 106 - real upload button reconciles latest pending memory preferences and concurrent disk facts without local writes
+  ---
+  duration_ms: 89.9569
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: circle: unavailable and pending inspections cannot create a guest or accept; exit retains normal entry
+ok 107 - circle: unavailable and pending inspections cannot create a guest or accept; exit retains normal entry
+  ---
+  duration_ms: 128.8874
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: circle: available invitation enables explicit identity creation, reinspection and acceptance
+ok 108 - circle: available invitation enables explicit identity creation, reinspection and acceptance
+  ---
+  duration_ms: 21.2163
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: circle: accepted inspection resumes its owned destination; changed token cannot use a stale ready result
+ok 109 - circle: accepted inspection resumes its owned destination; changed token cannot use a stale ready result
+  ---
+  duration_ms: 42.779
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: duel: unavailable and pending inspections cannot create a guest or accept; exit retains normal entry
+ok 110 - duel: unavailable and pending inspections cannot create a guest or accept; exit retains normal entry
+  ---
+  duration_ms: 145.4463
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: duel: available invitation enables explicit identity creation, reinspection and acceptance
+ok 111 - duel: available invitation enables explicit identity creation, reinspection and acceptance
+  ---
+  duration_ms: 24.6219
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: duel: accepted inspection resumes its owned destination; changed token cannot use a stale ready result
+ok 112 - duel: accepted inspection resumes its owned destination; changed token cannot use a stale ready result
+  ---
+  duration_ms: 41.5667
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: real upload preparation refuses unreadable newer local facts without offering confirmation or modifying storage
+ok 113 - real upload preparation refuses unreadable newer local facts without offering confirmation or modifying storage
+  ---
+  duration_ms: 7.2662
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: actual upload preparation refuses missing/stale saved games known from pending profile or current board
+ok 114 - actual upload preparation refuses missing/stale saved games known from pending profile or current board
+  ---
+  duration_ms: 32.1798
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: a new upload preparation retires the old confirmation before refusal or network failure
+ok 115 - a new upload preparation retires the old confirmation before refusal or network failure
+  ---
+  duration_ms: 27.4756
+  type: 'test'
+  ...
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+# Subtest: confirmation rechecks the prepared local revision, current board and live save admission before PUT
+ok 116 - confirmation rechecks the prepared local revision, current board and live save admission before PUT
+  ---
+  duration_ms: 41.2796
+  type: 'test'
+  ...
+# (node:39492) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: sync API validates authentication, origin, CSRF, own copies, stale revisions, deletion and revoked sessions
+ok 117 - sync API validates authentication, origin, CSRF, own copies, stale revisions, deletion and revoked sessions
+  ---
+  duration_ms: 86.133
+  type: 'test'
+  ...
+# Subtest: corrupt/future/unknown envelopes never create server rows; no blind replacement loses remote games
+ok 118 - corrupt/future/unknown envelopes never create server rows; no blind replacement loses remote games
+  ---
+  duration_ms: 28.9688
+  type: 'test'
+  ...
+# Subtest: optional circle goal owner bounds, real completed IDs, replay dedup and Paris weekly boundary
+ok 119 - optional circle goal owner bounds, real completed IDs, replay dedup and Paris weekly boundary
+  ---
+  duration_ms: 15.7838
+  type: 'test'
+  ...
+# Subtest: duel deadline/invite expiry derive truthful lifecycle and reject late guesses
+ok 120 - duel deadline/invite expiry derive truthful lifecycle and reject late guesses
+  ---
+  duration_ms: 10.0736
+  type: 'test'
+  ...
+# Subtest: invitation preview distinguishes unavailable, ready, accepted, expired, revoked and full without consuming a link
+ok 121 - invitation preview distinguishes unavailable, ready, accepted, expired, revoked and full without consuming a link
+  ---
+  duration_ms: 16.9932
+  type: 'test'
+  ...
+# Subtest: sync request body is bounded during streaming, before JSON parsing or writes
+ok 122 - sync request body is bounded during streaming, before JSON parsing or writes
+  ---
+  duration_ms: 14.2676
+  type: 'test'
+  ...
+# Subtest: replacement rejects hint/date metadata loss or conflict with 409 and unchanged bytes; reordered superset is allowed
+ok 123 - replacement rejects hint/date metadata loss or conflict with 409 and unchanged bytes; reordered superset is allowed
+  ---
+  duration_ms: 23.6362
+  type: 'test'
+  ...
+# Subtest: invitation destinations are returned only to actual circle members and duel participants
+ok 124 - invitation destinations are returned only to actual circle members and duel participants
+  ---
+  duration_ms: 28.7603
+  type: 'test'
+  ...
+# Subtest: Paris weeks start on Monday across DST and year boundaries
+ok 125 - Paris weeks start on Monday across DST and year boundaries
+  ---
+  duration_ms: 4.6525
+  type: 'test'
+  ...
+# Subtest: the configured ritual has exactly three varied and stable objectives
+ok 126 - the configured ritual has exactly three varied and stable objectives
+  ---
+  duration_ms: 0.9272
+  type: 'test'
+  ...
+# Subtest: real dated facts complete the three objectives and earn each reward once
+ok 127 - real dated facts complete the three objectives and earn each reward once
+  ---
+  duration_ms: 4.8795
+  type: 'test'
+  ...
+# Subtest: hints, future facts and undated legacy wins never invent weekly progress
+ok 128 - hints, future facts and undated legacy wins never invent weekly progress
+  ---
+  duration_ms: 0.5582
+  type: 'test'
+  ...
+# Subtest: past rewards remain unlocked after the weekly counters reset
+ok 129 - past rewards remain unlocked after the weekly counters reset
+  ---
+  duration_ms: 0.8035
+  type: 'test'
+  ...
+# Subtest: only the latest available cosmetic selection becomes active
+ok 130 - only the latest available cosmetic selection becomes active
+  ---
+  duration_ms: 1.2834
+  type: 'test'
+  ...
+# Subtest: a materialized reward stays permanent after a later win reconciliation
+ok 131 - a materialized reward stays permanent after a later win reconciliation
+  ---
+  duration_ms: 2.2688
+  type: 'test'
+  ...
+1..131
+# tests 131
+# suites 0
+# pass 131
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13114.5827

@@ -1,87 +1,1278 @@
 {
-  "schema": 1,
-  "phase": "task-8a-unpublished-candidate",
+  "schema": 2,
+  "phase": "task-8b-final-source",
   "updatedOnParis": "2026-10-13",
-  "baseCommit": "7b089800d29dfec9ff217a7edfdea204dcdc91a6",
+  "baseCommit": "2b19b8102aeb1fe7e096414fe56568d3ebcdd6f5",
   "publication": "none",
   "advancedEntry": "enabled-on-unpublished-candidate",
-  "final44AcceptanceGate": "pending-task-8b",
+  "final44AcceptanceGate": "source/local evidence separated from controller pending hosted/publication and unexecuted native checks",
   "phaseA": {
     "focusedTests": {
       "passed": 141,
       "failed": 0,
       "skipped": 0,
-      "log": "work/task8a-tests-final.log"
+      "log": "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log"
     },
     "typecheck": {
       "exit": 0,
-      "log": "work/task8a-typecheck-final.log"
+      "log": "docs/review/qualification-2026-10-13/evidence/task8a-typecheck-final.log"
     },
     "lint": {
       "exit": 0,
       "errors": 0,
       "warnings": 4,
-      "log": "work/task8a-lint-final.log"
+      "log": "docs/review/qualification-2026-10-13/evidence/task8a-lint-final.log"
     },
     "verifiedBuild": {
       "exit": 0,
-      "log": "work/task8a-build-final.log"
+      "log": "docs/review/qualification-2026-10-13/evidence/task8a-build-final.log"
     },
     "gameLint": {
       "errors": 0,
       "warnings": 0,
-      "log": "work/task8a-game-lint-final.log"
+      "log": "docs/review/qualification-2026-10-13/evidence/task8a-game-lint-final.log"
     },
     "frozenProducerDependenciesUnchanged": 9,
-    "trainingJsCssByteIdentical": true
+    "trainingJsCssByteIdentical": true,
+    "baseCommit": "7b089800d29dfec9ff217a7edfdea204dcdc91a6",
+    "sourceCommit": "f7b5a57c5efb6ff340db6348293c8f08fe118a55"
   },
   "reusedProofs": [
     {
       "scope": "authenticated sync, invitations, circle ownership/CAS",
-      "source": ".superpowers/sdd/2026-10-12-full-review/task-4-report.md",
+      "source": "docs/review/qualification-2026-10-13/task-4-report.md",
       "detail": "task4 fix1 real isolated D1; fix2 only component changes"
     },
     {
       "scope": "Studio duplication, immutable publication, participation/projection, withdrawal/auth",
-      "source": ".superpowers/sdd/2026-10-12-full-review/task-5-report.md",
+      "source": "docs/review/qualification-2026-10-13/task-5-report.md",
       "detail": "fix1 real isolated D1 migrations0000-0007"
     },
     {
       "scope": "actual Worker training download/offline and neutral upgrade",
-      "source": "work/qa-training-worker-final-controller.json",
-      "secondarySource": "work/qa-neutral-upgrade-final-controller.json",
+      "source": "docs/review/qualification-2026-10-13/evidence/qa-training-worker-final-controller.json",
+      "secondarySource": "docs/review/qualification-2026-10-13/evidence/qa-neutral-upgrade-final-controller.json",
       "detail": "controller proof retained with its original date; UI/native/browser tests not rerun here"
     }
   ],
   "pending": [
     {
-      "scope": "task7-b2-D30",
-      "detail": "400 editorial approvals, 365-day calendar, runtime/R2/Worker activation; numerical jobs ongoing, no completion claimed"
+      "scope": "fresh wholebranch review and final controller UI",
+      "detail": "Source checks complete with composed qualification documented; new corrected UI remains to be observed by root after review."
     },
     {
-      "scope": "controller actual browser UI QA",
-      "detail": "newly enabled routes, keyboard/focus/responsive/private sync/native clipboard/manual fallback/embed; no screenreader or native calendar certification claimed"
+      "scope": "hosted416 / publication / future product activation",
+      "detail": "811 actual R2 GETSHA complete. Root still owns416 real Worker/R2 probes, publication, futurepin and temporary capability closure."
     },
     {
-      "scope": "task8-b",
-      "detail": "fresh independent review, all44 traced matrix, ONE final full suite after7B2, wholebranch gate and authorized controller publication"
+      "scope": "native checks unavailable or unexecuted",
+      "detail": "Screenreader, native mobile keyboard/zoom, native calendar client and native share success are not certified."
     }
   ],
-  "warnings": [
+  "warnings": [],
+  "source": {
+    "base": "2b19b8102aeb1fe7e096414fe56568d3ebcdd6f5",
+    "phaseA": "f7b5a57c5efb6ff340db6348293c8f08fe118a55",
+    "finalCommit": "controller records immutable final commit externally after commit; no self-referential hash",
+    "advancedEntry": "enabled",
+    "publicVersion": "controller gate pending; earlier public32 is not this source"
+  },
+  "items": [
     {
-      "file": "components/flame-scene.tsx",
-      "count": 2,
-      "reason": "original native flame image artwork preserved"
+      "id": "D01",
+      "validation": "Chaque fonction annoncée possède une entrée accessible et une version source identifiée ; les redirections sont intentionnelles et documentées.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/release.ts",
+        "components/app-navigation.tsx",
+        "components/game.tsx",
+        "docs/FULL-REVIEW-FOUNDATIONS.md",
+        "docs/review/implementation-status.json"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "La candidate f7 expose les entrées avancées ; cette version ne constitue pas une disponibilité publique. 8B retire le statut de fermeture périmé dans l’intégration sans élargir les origines."
     },
     {
-      "file": "scripts/build-semantic-shards.mjs",
-      "count": 1,
-      "reason": "existing unused scores destructuring; V1 producer unchanged"
+      "id": "D02",
+      "validation": "Un environnement complet permet première réponse, indice, victoire, reprise et parcours social ; la recette consigne version et preuves.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "package.json",
+        "scripts/run-site.mjs",
+        "scripts/build-verified.mjs",
+        "scripts/build-semantic-shards.mjs",
+        "app/api/game/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "docs/review/qualification-2026-10-13/task-7a-report.md",
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-build-final.log",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "Unique suite complète :383pass/1attente périmée/3skips ; attente corrigée par6/6foundations. Qualification composée384cas uniques sans fail non résolu ; pas de faux exit0fullsuite. Trois symlinks de fichiers Windows non exécutés faute EPERM."
+      ],
+      "result": "Scores V1 réels, indice/victoire/reprises locaux observés ; D1 réel séparément qualifié, environnement complet de release non encore livré."
     },
     {
-      "file": "scripts/verify-semantic-target-v2.mjs",
-      "count": 1,
-      "reason": "existing corpusDir unused; immutable numerical job dependency, deliberately unchanged"
+      "id": "D03",
+      "validation": "Un débutant identifie l’action sans lire une aide ; le même mot d’action figure sur classique, serveur, duel et Deux braises.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "components/server-game.tsx",
+        "components/duels.tsx",
+        "components/two-braises-game.tsx",
+        "components/game-parts/play-tutorial.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Proposer commun, busy/Enter conservés ; classique/Deux braises réellement observés localement."
+    },
+    {
+      "id": "D04",
+      "validation": "À la souris, au tactile et au clavier, la raison du verrouillage reste lisible ; le cinquième essai déverrouille l’action sans rechargement.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "app/api/game/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Le cinquième essai déverrouille un indice réel ; avis retiré après victoire dans f7."
+    },
+    {
+      "id": "D05",
+      "validation": "Un essai moins proche est correctement interprété et le record reste identifiable ; couleur et texte donnent le même sens.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "lib/game-types.ts",
+        "lib/format-fr.ts",
+        "components/game-parts/play-hub.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Dernier/record séparés et proximité/rang exacts ; essai moins chaud ne diminue pas le record."
+    },
+    {
+      "id": "D06",
+      "validation": "Le premier écran explique le principe sans ouverture obligatoire d’une fenêtre ; aide et retour au champ préservent le contexte.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "components/game-parts/play-tutorial.tsx",
+        "lib/tutorial-field.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Principe près du champ ; vraie fermeture Radix retourne au champ sans remplacer la partie."
+    },
+    {
+      "id": "D07",
+      "validation": "Le dernier essai et le meilleur restent repérables dans les deux tris ; une épingle se pose et se retire au clavier avec son nom de mot.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "lib/legacy-storage.ts",
+        "lib/game-write-admission.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Repère DERNIER, tri nommé et épingle nommée ; clavier/recharge des épingles réellement observés."
+    },
+    {
+      "id": "D08",
+      "validation": "Une archive, un quotidien et leurs sauvegardes restent distinguables après reprise ou partage.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "components/game-parts/archive-calendar.tsx",
+        "lib/calendar.ts",
+        "lib/game-navigation.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Badge/date/retour/règle de série et sauvegardes archive distincts ; requêtes limites400 réelles."
+    },
+    {
+      "id": "D09",
+      "validation": "Le joueur sait quelle partie est active et retrouve son historique ; les répétitions sont présentées honnêtement.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "lib/free-discovery.ts",
+        "lib/free-discovery.server.ts",
+        "lib/play-hub.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "120 cibles V1 annoncées honnêtement, anciennes parties préservées, autre cible volontaire."
+    },
+    {
+      "id": "D10",
+      "validation": "Chaque mode possède une sortie et une reprise prévisibles ; retour, rechargement et liens directs gardent le contexte.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/app-navigation.tsx",
+        "components/game.tsx",
+        "components/server-game-links.tsx",
+        "lib/game-navigation.ts",
+        "components/expedition-picker.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/task-5-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Sorties/reprises et entrées concrètes visibles, URL et epochs protégés. Le plateau solo porte encore un libellé social trompeur. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score."
+    },
+    {
+      "id": "D11",
+      "validation": "Les prochaines actions et récompenses se trouvent sans chercher dans une longue fenêtre ; le détail reste consultable.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/profile-panel.tsx",
+        "components/profile-panel.css",
+        "components/game.tsx",
+        "lib/personal-statistics.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Profil court, détails/préférences/données séparés ; XP réels et détails clavier observés."
+    },
+    {
+      "id": "D12",
+      "validation": "Chaque objectif affiche progrès, échéance Paris et récompense ; reprise/import n’attribuent rien en double.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/weekly-ritual.tsx",
+        "lib/weekly-ritual.ts",
+        "lib/profile-storage.ts",
+        "components/profile-panel.tsx",
+        "components/game.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Progrès/échéance/récompenses réels, style durable après recharge ; mémo admet faits après-midi/entre ticks. Tests audio8B : préférence active, compteur observable, contrôle positif sur victoire nouvelle et0 appels sur restauration/callback import."
+    },
+    {
+      "id": "D13",
+      "validation": "Un transfert ne promet pas une reprise absente ; aperçu, annulation et confirmation conservent toutes les données valides.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/profile-transfer.tsx",
+        "lib/profile-storage.ts",
+        "components/profile-panel.tsx",
+        "components/device-sync.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Tableau export exact ; vraie annulation puis union de deux profils QA conserve collection et évite double crédit. Input de fichier technique nommé et hors tabulation, bouton visible d’import conservé."
+    },
+    {
+      "id": "D14",
+      "validation": "Le joueur reprend une énigme en cours sans ouvrir plusieurs niveaux ; un recoupement ne se présente pas comme un nouveau mot unique.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/collection-picker.tsx",
+        "lib/collections.ts",
+        "components/game.tsx",
+        "lib/play-hub.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Cinq cartes et recoupements ; Nature repris réellement avec essai/épingle. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score."
+    },
+    {
+      "id": "D15",
+      "validation": "Une expédition se termine sans détour par le catalogue ; la prochaine référence est obtenue après preuve réelle de réussite.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/expedition-picker.tsx",
+        "components/game.tsx",
+        "lib/expedition-resume.ts",
+        "lib/expedition-server.ts",
+        "lib/expeditions.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Étape1 gagnée réellement puis étape2/3 obtenue, reload conserve chapitre/étape/URL. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score. Les singuliers observés Voyage/Intrus/Deux braises sont corrigés."
+    },
+    {
+      "id": "D16",
+      "validation": "Les états nouveau, existant, expiré, révoqué et déjà accepté possèdent un message et une action propres ; la destination est conservée.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/invitation-status.tsx",
+        "components/circles.tsx",
+        "components/duels.tsx",
+        "components/server-game.tsx",
+        "app/api/invitations/route.ts",
+        "lib/server-security.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix1-d1.log",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix2-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "États d’invitation/retour après récupération et propriété qualifiés D1/tests ; visite locale invité403 voulue."
+    },
+    {
+      "id": "D17",
+      "validation": "Le participant rejoint le bon défi et comprend le classement ; aucun mot adverse ne figure dans une vue de groupe.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/circles.tsx",
+        "lib/circle-store.ts",
+        "app/api/circles/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix1-d1.log",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix1-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Défi/résultats/membres, gestion owner-only et absence de mots adverses documentés/testés."
+    },
+    {
+      "id": "D18",
+      "validation": "Attente, actif, terminé, expiré, annulé et abandonné restent distincts ; les règles d’égalité sont compréhensibles.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/duels.tsx",
+        "lib/duel-store.ts",
+        "lib/duel-rules.ts",
+        "app/api/duels/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix1-tests.log",
+        "tests/social-sync.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Cycles/échéance/manches/essais/bilan/égalité/abandon/revanche implémentés avec faits réels."
+    },
+    {
+      "id": "D19",
+      "validation": "L’auteur comprend ce que verra le participant ; modifier un brouillon ne change pas une édition existante ; retrait et retour sont explicites.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/studio.tsx",
+        "components/studio-preview.tsx",
+        "lib/studio-metadata.ts",
+        "lib/studio-store.ts",
+        "app/api/studio/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-5-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-d1.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Aperçu participant, liste et version immuable qualifiés ; duplication après réponse perdue préserve sa provenance."
+    },
+    {
+      "id": "D20",
+      "validation": "Une panne n’affiche pas des données anciennes comme fraîches ; capture et annonces ne révèlent aucun mot.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/streamer.tsx",
+        "lib/projection.ts",
+        "app/api/projection/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-5-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-d1.log",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Projection numérique authentifiée, horodatage vrai/ancien/panne/polling contrôlé, sans mot."
+    },
+    {
+      "id": "D21",
+      "validation": "La sélection reste explicite, une réponse conservée se restitue sans nouvel effet et la dernière énigme offre une sortie.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/intruder-game.tsx",
+        "lib/intruder-server.ts",
+        "app/api/intruder/route.ts",
+        "app/api/intruder/summary/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-5-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "20 réponses UI réelles :19 justes/1 à revoir, reprise sans rejouer, premier choix gardé et bilan exact. Les singuliers observés Voyage/Intrus/Deux braises sont corrigés."
+    },
+    {
+      "id": "D22",
+      "validation": "Les deux cibles sont distinguables sans couleur seule ; une cible trouvée reste acquise et la fin attend les deux.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/two-braises-game.tsx",
+        "lib/two-braises.ts",
+        "lib/two-braises-server.ts",
+        "app/api/two-braises/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-5-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "CiblesA/B/rangs/températures exacts, seuleA puis deux résolues, changer paire/reload conserve données et profil classique exclu. Les singuliers observés Voyage/Intrus/Deux braises sont corrigés. Focus terminal Deux braises uniquement après action admise ; éloignement, démontage et restauration restent silencieux."
+    },
+    {
+      "id": "D23",
+      "validation": "Coupure, retour réseau, mise à jour et fermeture/reprise conservent le profil sans promettre de calcul hors ligne.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/offline-registration.tsx",
+        "public/sw.js",
+        "public/offline.html",
+        "lib/training.ts",
+        "components/training.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-6-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-training-worker-final-controller.json",
+        "docs/review/qualification-2026-10-13/evidence/qa-neutral-upgrade-final-controller.json",
+        "docs/review/qualification-2026-10-13/evidence/task8a-training-identity.json",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Vraie coupure/serveur arrêté, quatre assets SW200, mise à jour neutral et reprise pack vérifiées sur identités exactes."
+    },
+    {
+      "id": "D24",
+      "validation": "La qualification contrôle accès, dimensions, clavier, origine exacte et absence de transmission de mots ; une erreur possède un repli.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "app/embed/page.tsx",
+        "components/embed-demo.tsx",
+        "components/embed-bridge.tsx",
+        "lib/embed-contract.ts",
+        "lib/distribution.ts",
+        "worker/index.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "tests/embed.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Origines exacte primaire+alias, source-window/hauteur/repli et limites cookies documentés ; parent localhost volontairement refusé. 8B retire le statut de fermeture périmé dans l’intégration sans élargir les origines."
+    },
+    {
+      "id": "D25",
+      "validation": "Le plateau garde sa stabilité et aucune annonce ne sépare deux essais ; aucun revenu ou remplissage fictif n’est affiché.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/ad-placement.tsx",
+        "lib/advertising.ts",
+        "app/layout.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "tests/advertising.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Adapter skip→null et aucune demande d’annonce ; script de vérification existant seul. Confidentialité réelle observée."
+    },
+    {
+      "id": "D26",
+      "validation": "Recette clavier et lecteur d’écran ; contraste normal ≥ 4,5:1 et grand texte ≥ 3:1 ; minimum WCAG 2.2 de cible appliqué avec ses exceptions, confort produit visé à 44 px.",
+      "status": "source_local_evidence_native_checks_unexecuted",
+      "files": [
+        "app/shared-shell.css",
+        "components/ui/dialog.tsx",
+        "components/game.tsx",
+        "components/profile-panel.css",
+        "components/training.css",
+        "components/flame-scene.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/task-6-report.md",
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-declared-contrast.json",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "Lecteur d’écran natif, zoom/clavier mobile natifs non exécutés ; contrôles navigateur/AX/émulation et contraste de palettes déclarées ne constituent pas une certification AA."
+      ],
+      "result": "Clavier/Radix/épingle/calendrier réel ; mobile390/320 sans overflow, visible≥24px avec exception fichier. Contraste source déclaré, pas page composée certifiée. Focus terminal Deux braises uniquement après action admise ; éloignement, démontage et restauration restent silencieux. Input de fichier technique nommé et hors tabulation, bouton visible d’import conservé. Tests audio8B : préférence active, compteur observable, contrôle positif sur victoire nouvelle et0 appels sur restauration/callback import."
+    },
+    {
+      "id": "D27",
+      "validation": "Les indicateurs ont une définition stable, un périmètre et une source réels ; aucun classement personnel importé n’est traité comme résultat compétitif.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/product-events.ts",
+        "components/product-diagnostics.tsx",
+        "components/game.tsx",
+        "components/profile-transfer.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "tests/foundations.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Journal local fermé/borné sans mots/identité, vrais événements acceptés et copie uniquement après succès ; export/import volontaires distincts. Tests audio8B : préférence active, compteur observable, contrôle positif sur victoire nouvelle et0 appels sur restauration/callback import."
+    },
+    {
+      "id": "D28",
+      "validation": "Tous les messages et libellés d’action sont français ; les mêmes valeurs et états ont la même présentation.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/format-fr.ts",
+        "lib/game-copy.ts",
+        "components/game.tsx",
+        "components/profile-panel.tsx",
+        "components/expedition-picker.tsx",
+        "components/intruder-game.tsx",
+        "components/two-braises-game.tsx",
+        "components/embed-demo.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-1-report.md",
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Proposer/nombres/date Paris/singuliers principaux corrigés ; f7 a encore trois singuliers variants et copie périmée. 8B retire le statut de fermeture périmé dans l’intégration sans élargir les origines. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score. Les singuliers observés Voyage/Intrus/Deux braises sont corrigés. Une suggestion terminale annonce explicitement une autre partie réellement inachevée."
+    },
+    {
+      "id": "D29",
+      "validation": "À petite largeur et avec clavier ouvert, le joueur voit la saisie et le retour ; les effets respectent les préférences et la performance est mesurée.",
+      "status": "source_local_evidence_native_checks_unexecuted",
+      "files": [
+        "components/game.tsx",
+        "components/flame-scene.tsx",
+        "lib/flame-presentation.ts",
+        "app/foyer.css",
+        "app/approved-braiz.css"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/task-8a-report.md",
+        "tests/flame-presentation.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "Lecteur d’écran natif, zoom/clavier mobile natifs non exécutés ; contrôles navigateur/AX/émulation et contraste de palettes déclarées ne constituent pas une certification AA."
+      ],
+      "result": "Artwork/performance pause/visibilité/reduced-motion conservés ; mobile390/320 sans overflow et reduced-motion émulée vérifiée sur victoire restaurée. Focus terminal Deux braises uniquement après action admise ; éloignement, démontage et restauration restent silencieux. Une suggestion terminale annonce explicitement une autre partie réellement inachevée."
+    },
+    {
+      "id": "D30",
+      "validation": "Chaque cible publiée a des scores et indices vérifiés ; le calendrier requis est complet ; l’extension ne change aucune réponse historique.",
+      "status": "source_content_calendar_runtime_qualified_hosted_gate_pending",
+      "files": [
+        "scripts/build-semantic-target-v2.mjs",
+        "scripts/qualify-semantic-batch-v2.mjs",
+        "scripts/editorial-evidence-v2.mjs",
+        "lib/editorial-calendar.ts",
+        "lib/semantic-v2-reader.ts",
+        "lib/semantic-v2-range-r2.ts",
+        "lib/semantic-runtime-qualification.ts",
+        "data/editorial-v2-calendar.json",
+        "data/editorial-v2-runtime.json",
+        "lib/classic-game.server.ts",
+        "lib/daily-v2.server.ts",
+        "lib/daily-v2-storage.ts",
+        "lib/daily-v2-pin.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-7a-report.md",
+        "docs/review/qualification-2026-10-13/task-7b1-report.md",
+        "docs/review/qualification-2026-10-13/task-7b2-report.md",
+        "docs/review/qualification-2026-10-13/task-7b2-transport-fix-report.md",
+        "docs/program/qualification-2026-10-12/task7b2-range-real-local-results.json",
+        "docs/review/qualification-2026-10-13/task-7b2-content-runtime-review.md",
+        "docs/program/qualification-2026-10-12/task7b2-checkpoint-proof-index.json",
+        "docs/program/qualification-2026-10-12/task7b2-range-full-opaque-local-results.json",
+        "docs/program/qualification-2026-10-12/task7b2-runtime-full-compiler-opaque-audit.json",
+        "docs/program/qualification-2026-10-12/task7b2-editorial-calendar-authority-proof.json",
+        "docs/review/qualification-2026-10-13/editorial-conservative-ambiguity-note.md",
+        "docs/review/qualification-2026-10-13/evidence/task7b2-integration-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/range-full-r2-verified-controller.json",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "R2 :811 nouveaux blobs/2,985,466,694octets réellement GET+SHA+taille par contrôleur le13octobre10:26:48.518UTC. Publication,416 vrais cas Worker/R2 et activation futurepin restent en attente de ses preuves finales, sans blocage externe inventé.",
+        "BRAIZ_DAILY_V2_QUALIFICATION_PIN demeure absent jusqu’à416PASS hébergés ; le pin produit/autorité/calendrier reste immuable pendant le transfert.",
+        "Nuage9455 : ambiguïté structurée high conservatrice fait autorité ; motif historique moyenne conservé exactement et contradiction documentée dans la note, sans nouvelle décision ni modification des pins."
+      ],
+      "result": "Checkpoint2b19 Approved :432 candidats/406 approuvés/26 rejetés,1218 indices,365 dates2027-01-05→2028-01-04,416 résultats locaux opaques. Historique V1/seeds privés/Studio conservés ; quotidien/archives futurs stricts uniquement, aucune activation sans pin hébergé exact."
+    },
+    {
+      "id": "A01",
+      "validation": "Aucun mot quotidien ni progression compétitive n’est modifié ; le tutoriel peut être interrompu et relancé.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game-parts/play-tutorial.tsx",
+        "lib/tutorial-field.ts",
+        "app/api/game/route.ts",
+        "components/game.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Exemple V1 distinct, deux réponses/3étapes, aucune sauvegarde/progression du quotidien et sortie facultative."
+    },
+    {
+      "id": "A02",
+      "validation": "Reprise après fermeture vers le bon mode et la bonne étape, avec essais et épingles disponibles selon leur portée réelle.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game-parts/play-hub.tsx",
+        "lib/play-hub.ts",
+        "components/game.tsx",
+        "components/server-game.tsx",
+        "components/server-game-links.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Reprises libre/collection/expédition locales exactes essai/épingle ; reprise propriétaire serveur qualifiée séparément D1. 8B nomme le parcours solo dans l’onglet et le plateau sans changer mode/ref/seed/score."
+    },
+    {
+      "id": "A03",
+      "validation": "Toutes les valeurs dérivent des essais réels ; le partage ne contient ni solution ni pistes révélatrices.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game-parts/play-hub.tsx",
+        "lib/play-hub.ts",
+        "components/game.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Bilan dérivé réel, propositions personnelles/indices/jalons/pistes hors réponse ; vraie copie résultat neutre lue au clipboard. Une suggestion terminale annonce explicitement une autre partie réellement inachevée."
+    },
+    {
+      "id": "A04",
+      "validation": "Les dates futures et antérieures au lancement restent refusées ; une victoire d’archive ne prolonge pas la série.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game-parts/archive-calendar.tsx",
+        "lib/calendar.ts",
+        "lib/play-hub.ts",
+        "app/api/game/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Mois/filtres/roving keyboard ; flèche ne sélectionne pas avant activation ; avantlancement/futur400."
+    },
+    {
+      "id": "A05",
+      "validation": "Pas de fausse nouveauté ; le calendrier quotidien et les seeds existantes restent inchangés.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/free-discovery.ts",
+        "lib/free-discovery.server.ts",
+        "components/game.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "tests/game-core-review.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "120 identités dédupliquées jusqu’à épuisement, nouveauté limitée aux faits disponibles ; vieux seed exacts conservés."
+    },
+    {
+      "id": "A06",
+      "validation": "Le joueur reprend réellement une partie en cours sur un autre appareil ; conflits, révocation et suppression d’accès sont explicites.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/device-sync.ts",
+        "lib/device-sync-admission.ts",
+        "components/device-sync.tsx",
+        "components/profile-panel.tsx",
+        "components/game.tsx",
+        "app/api/sync/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix1-d1.log",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix2-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Copie facultative/aperçu/CAS/fusion/revocation/suppression testés, mémoire courante vsdisque et prepare→refus couverts ; pas encore vraie reprise inter-appareils auth navigateur."
+    },
+    {
+      "id": "A07",
+      "validation": "Aucune difficulté annoncée sans définition ; le quotidien conserve les mêmes règles pour tous.",
+      "status": "source_editorial_training_qualified_user_difficulty_unmeasured",
+      "files": [
+        "components/training.tsx",
+        "lib/training.ts",
+        "scripts/build-training-pack.mjs",
+        "docs/training-offline.md"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-6-report.md",
+        "tests/training.test.ts",
+        "tests/training-components.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/qa-training-worker-final-controller.json",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "Définitions éditoriales visibles, 624 comparaisons oracle ; pas d’étude de difficulté mesurée/retours utilisateurs réels ou de popularité annoncés."
+      ],
+      "result": "3 niveaux éditoriaux définis (pomme/port/curiosité),9 indices/208 mots/624 valeurs oracle ; aucune difficulté mesurée ou feedback utilisateur inventé."
+    },
+    {
+      "id": "A08",
+      "validation": "Une réussite est comptée une seule fois ; état accompli et contributions sont explicites sans exposer les mots.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/circles.tsx",
+        "lib/circle-store.ts",
+        "app/api/circles/route.ts",
+        "db/schema.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-4-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task4-fix1-d1.log",
+        "tests/social-sync.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Objectif owner/semaine Paris, COUNT DISTINCT vrais succès serveur ; limites et déduplication D1 qualifiées sans mots."
+    },
+    {
+      "id": "A09",
+      "validation": "La suggestion explique son motif et laisse un choix direct ; aucune difficulté, affinité ou popularité n’est inventée.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/play-hub.ts",
+        "components/game-parts/play-hub.tsx",
+        "components/game.tsx"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Une suggestion par vrais faits locaux, priorité parcours/collection/reprise ; notice terminale ambiguë observée. Une suggestion terminale annonce explicitement une autre partie réellement inachevée."
+    },
+    {
+      "id": "A10",
+      "validation": "Aucun rappel activé par défaut ; désactivation immédiate ; le fuseau choisi est respecté.",
+      "status": "source_calendar_qualified_native_client_unexecuted",
+      "files": [
+        "lib/calendar-reminder.ts",
+        "components/calendar-reminder.tsx",
+        "lib/product-events.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task3-fix1-targeted-tests.log",
+        "tests/calendar-reminder.test.ts",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "Ajout/arrêt ICS préparés et fuseau/DST vérifiés ; installation, annulation honorée et alertes d’un client calendrier externe non exécutées. Aucun ajout automatique."
+      ],
+      "result": "ICS choisi après3jours acceptés réels, fuseau/DST/UID/arrêt testés ; ajout externe préparé, jamais installé attesté."
+    },
+    {
+      "id": "A11",
+      "validation": "Une version publiée reste stable ; le créateur prévisualise et comprend qui peut accéder au lien.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/studio.tsx",
+        "components/studio-preview.tsx",
+        "lib/studio-metadata.ts",
+        "lib/studio-store.ts",
+        "app/api/studio/route.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-5-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-d1.log",
+        "docs/review/qualification-2026-10-13/evidence/task5-fix1-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées.",
+        "D1 local authentifié déjà qualifié ; navigateurlocalhost refuse volontairement Origine403. Vrais parcours HTTPS autorisés à effectuer par root avec seules nouvelles identitésQA, sans modifier les données existantes."
+      ],
+      "result": "Titre/description/préréglage bornés, aperçu/audience par lien/duplication propriétaire stable et après perte de réponse qualifiés."
+    },
+    {
+      "id": "A12",
+      "validation": "Aucun score de secours inventé ; un problème réseau n’est pas présenté comme un mot absent ; le joueur garde sa saisie.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/game.tsx",
+        "app/api/game/route.ts",
+        "lib/product-events.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-2-report.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "zzqaabsent réel422 reste dans champ/0essai ; fiche volontaire locale, erreur réseau distincte et aucun score de secours."
+    },
+    {
+      "id": "A13",
+      "validation": "Les anciens faits incomplets restent identifiés ; aucune moyenne ou tendance n’est calculée sur des données absentes.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "lib/personal-statistics.ts",
+        "components/profile-panel.tsx",
+        "lib/profile-storage.ts"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-3-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-classic-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8a-tests-final.log",
+        "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Médianes/dénominateurs réels, modes distincts, inconnus noninventés ; union deux profils QA garde XP/série sans doublecrédit."
+    },
+    {
+      "id": "A14",
+      "validation": "Coupure réelle : pack jouable, scores vérifiés, reprise locale ; les résultats personnels ne deviennent pas compétitifs.",
+      "status": "source_implemented_local_evidence_hosted_gate_pending",
+      "files": [
+        "components/training.tsx",
+        "lib/training.ts",
+        "public/sw.js",
+        "public/training/manifest.json",
+        "scripts/training-shell.tsx",
+        "scripts/build-training-pack.mjs"
+      ],
+      "proofs": [
+        "docs/review/qualification-2026-10-13/task-6-report.md",
+        "docs/review/qualification-2026-10-13/evidence/qa-training-worker-final-controller.json",
+        "docs/review/qualification-2026-10-13/evidence/qa-neutral-upgrade-final-controller.json",
+        "docs/review/qualification-2026-10-13/evidence/task8a-training-identity.json",
+        "docs/review/qualification-2026-10-13/evidence/task8b-focused.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+        "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      ],
+      "limitations": [
+        "Qualification finale de cette source et publication/recette hébergée du contrôleur distinctes des preuves locales/historiques citées."
+      ],
+      "result": "Coupure réelle et serveur arrêté, quatreassetsSW200, score/inconnue/indice/victoire/reprise froide ; pack/profil/compétitif séparés."
     }
-  ]
+  ],
+  "globalGates": {
+    "finalLocalChecks": "qualified_by_one_full_run_plus_scoped_correction_three_documented_EPERM_cases_unexecuted",
+    "freshWholebranchReview": "controller_pending",
+    "R2FullTransfer": {
+      "status": "controller_completed_actual_GET_SHA_size",
+      "count": 811,
+      "bytes": 2985466694,
+      "completedAt": "2026-10-13T10:26:48.518Z",
+      "proof": "docs/review/qualification-2026-10-13/evidence/range-full-r2-verified-controller.json",
+      "proofSha256": "99eed57c20f104c77f793bc4dc4bcbaf6bfa2cb1118df53577e5352386dbf8d6",
+      "scope": "Storage receipt only; not hosted reader/API execution"
+    },
+    "hosted416Cases": "controller_pending",
+    "futureProductPin": "absent until all416 hostedPASS",
+    "publicationAndHostedUI": "controller_pending"
+  },
+  "localQA": {
+    "proof": "docs/review/qualification-2026-10-13/evidence/qa-candidate-8a-controller.md",
+    "sourceCommit": "f7b5a57c5efb6ff340db6348293c8f08fe118a55",
+    "scope": "Actual local browser interactions/reduced-motion emulation with QA-only data; historical proof reused by identity, not final hosted/UI certification"
+  },
+  "nativeUnexecuted": [
+    "screenreader",
+    "native mobile keyboard/zoom",
+    "native calendar installation/cancellation/alerts",
+    "native share success"
+  ],
+  "historicalMeasurements": {
+    "group8": {
+      "commit": "4b3229d87855ea30d62b8f9f5a67bdaa3c34c5c9",
+      "elapsedSeconds": 164.119,
+      "targetCount": 8,
+      "proof": "docs/program/qualification-2026-10-12/task7b1-final-group8.json",
+      "scope": "Actual immutable historical batch. No controlled speedup ratio, no timing of final8B producer/verifier edits; historical script hashes remain original."
+    }
+  },
+  "sourceChecks": {
+    "focused": {
+      "exit": 0,
+      "tests": 87,
+      "pass": 87,
+      "fail": 0,
+      "skip": 0,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-focused.log"
+    },
+    "oneFullSuite": {
+      "executedOnce": true,
+      "exit": 1,
+      "tests": 387,
+      "pass": 383,
+      "fail": 1,
+      "skip": 3,
+      "durationMs": 96518.0172,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-full-tests.log",
+      "resolvedFailure": {
+        "case": 70,
+        "reason": "Obsolete EXTRA_MODES_ENABLED=false expectation predating approved f7 advanced entry",
+        "changedFile": "tests/foundations.test.ts",
+        "correction": "explicit true expectation; unauthorized partner/origin checks retained",
+        "followupExit": 0,
+        "followupTests": 6,
+        "followupPass": 6,
+        "proof": "docs/review/qualification-2026-10-13/evidence/task8b-foundations-final.log"
+      },
+      "unexecutedCases": [
+        "symbolic source refusal",
+        "symbolic partial refusal",
+        "partial-path symlink swap"
+      ],
+      "skipReason": "Windows file-symlink privilege unavailable (EPERM); security cases not executed"
+    },
+    "composedQualification": {
+      "uniquePassingCases": 384,
+      "unexecutedCases": 3,
+      "unresolvedFailures": 0,
+      "scope": "383 unchanged passes from single full run plus its one corrected case; focused duplicates are not added to counts. NOT a fictional full-suite exit0."
+    },
+    "typecheck": {
+      "exit": 0,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-typecheck-final.log"
+    },
+    "lint": {
+      "exit": 0,
+      "errors": 0,
+      "warnings": 0,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-lint-final.log",
+      "scope": "Two narrow unchanged-native-art exemptions only, source rules retained"
+    },
+    "verifiedBuild": {
+      "exit": 0,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-build-final.log",
+      "scope": "Final production inputs. Subsequent changes limited to an obsolete test expectation and documentation/evidence; no repeat immutable build needed."
+    },
+    "immutableAssets": {
+      "changedPaths": [],
+      "checkedPaths": 160,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-frozen-identity.json"
+    },
+    "clientAuthorityBoundary": {
+      "matches": 0,
+      "proof": "docs/review/qualification-2026-10-13/evidence/task8b-client-boundary.json"
+    }
+  }
 }

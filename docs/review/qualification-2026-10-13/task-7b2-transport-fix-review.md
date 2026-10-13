@@ -1,0 +1,13 @@
+**I1 — Annulation R2 permanente bloquant la deadline : ADDRESSED.** `lib/semantic-v2-range-r2.ts:18` et `:24` déclenchent maintenant le nettoyage sans attendre sa promesse ; les erreurs `v2-range-response-metadata` et `v2-range-body-overflow` restent immédiates et précises. Le finally conserve la libération du lecteur (`:27`).
+
+**I1 — Verrous et wrapper : ADDRESSED.** `lib/semantic-v2-bounded-r2.ts:32` déclenche `reader.cancel()` avec rejet absorbé puis libère immédiatement le verrou et l'inscription pending via `finish` (`:28`). Abort (`:33`), budget (`:43`), erreur de lecture (`:46`) et cancel consommateur (`:48`) utilisent ce nettoyage sans attente. L'objet arrivé après fermeture/abort est également nettoyé sans bloquer (`:19`). Le cancel standard termine les lectures pendantes avant la libération du verrou ; les gardes du pull empêchent ensuite de restituer des octets après abort/fermeture.
+
+**Couverture de I1 : confirmée dans le diff et le journal fourni.** `tests/semantic-v2-range-r2.test.ts:89` ajoute six sous-cas avec une promesse de cancel permanente : métadonnées, surplus, budget, abort et deux cas adaptateur direct. Ils exigent une terminaison bornée, l'erreur attendue, un cancel réel, `raw.locked === false` et, pour l'adaptateur direct, la réutilisation de capacité. `work/task7b2-transport-fix-tests.log` contient ces six succès, parent 34,3138 ms, et le total 40/40, 0 échec, 0 skip, 1266,3742 ms.
+
+**Nouvelle régression dans le diff : aucune.** Les trois fichiers modifiés restent limités au nettoyage R2 et à sa couverture ; pins, contrôles d'intégrité, budgets et autorisation ne changent pas. Aucune Critical/Important nouvelle identifiée.
+
+**Observations hors périmètre : aucune nouvelle.** Les quatre warnings lint préexistants restent consignés dans le journal et ne bloquent pas cette correction.
+
+**Contrôles consultés :** brief7B/7B2, revue initiale, rapport de correction, diff fourni lu une seule fois et journaux ciblés existants. Typecheck annoncé 0 avec journal sans diagnostic ; lint 0 erreur/4 warnings ; build annoncé 0 avec journal « Build complete » et route de qualification incluse. Ces exécutions sont celles de l'implémenteur, pas des relances indépendantes. Aucun doute supplémentaire n'imposait de test ciblé ; aucune suite relancée et aucune commande Git.
+
+**Fix round : All findings addressed, no new Critical/Important breakage — APPROVED.** BASE `01ed71d2b2237b6c7544d72626cbf1493a4ff6ee`, HEAD `18f96e64cc9479409bb8425d05af2af32a138648`. Aucun finding ouvert. Verdict limité à I1 et au diff de correction ; la qualification hébergée et l'achèvement global de Task7 restent à réaliser. Aucun accès cloud, preview, mutation source/index/HEAD/data ; seul ce rapport est écrit.

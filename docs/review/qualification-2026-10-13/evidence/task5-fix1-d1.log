@@ -1,0 +1,1 @@
+PASS real local D1 migrations0000-0007: durable duplicate receipt after source edit, source-ID reuse409, replay at quota50, CSRF/origin, own duplicate, immutable metadata and edition entries, revision409, numeric projection only, owner-only projection, withdrawn edition blocks games, revoked403. Local fixtures only.

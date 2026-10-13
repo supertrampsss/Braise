@@ -59,7 +59,7 @@ test("actual Intrus finite session reaches truthful result summary and explanati
       assert.ok(tree.root.findAll(n => n.props.className === "laboratory-explanation").length); if (index < 19) await click(tree, "Énigme suivante");
     }
     assert.equal(choices, 20); await click(tree, "Voir le bilan des 20 énigmes"); assert.equal(summaries, 1);
-    const summary = tree.root.findByProps({ "aria-label": "Bilan de la session" }); assert.match(text(summary), /20 \/ 20 énigmes terminées/); const correct = Array.from({ length: 20 }, (_, i) => answerIntruder(i, 0)).filter(a => a.correct).length; assert.ok(text(summary).includes(`${correct} réponses justes`)); assert.equal(buttons(tree, "Énigme suivante").length, 0);
+    const summary = tree.root.findByProps({ "aria-label": "Bilan de la session" }); assert.match(text(summary), /20 \/ 20 énigmes terminées/); const correct = Array.from({ length: 20 }, (_, i) => answerIntruder(i, 0)).filter(a => a.correct).length; assert.ok(text(summary).includes(`${correct} réponse${correct === 1 ? "" : "s"} juste${correct === 1 ? "" : "s"}`)); assert.equal(buttons(tree, "Énigme suivante").length, 0);
     await act(async () => tree.unmount()); await act(async () => { tree = create(createElement(Intruder)); }); assert.equal(choices, 20); assert.equal(summaries, 2);
   } finally { await act(async () => tree.unmount()); }
 });

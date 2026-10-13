@@ -82,7 +82,7 @@ const index = {
   corpus: { id: version, sourceSha256, dictionarySize: source.words.length, targetCount: source.puzzles.length },
   meta: { ...source.meta, encoding: "Immutable gzip-compressed BRZ1 target shards; scores, competition ranks and stable order are precomputed." },
   words: source.words,
-  puzzles: source.puzzles.map(({ scores, ...puzzle }) => puzzle),
+  puzzles: source.puzzles.map(puzzle => Object.fromEntries(Object.entries(puzzle).filter(([key]) => key !== "scores"))),
   segments,
 };
 if (!verifyOnly) {

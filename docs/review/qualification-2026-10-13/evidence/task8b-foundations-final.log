@@ -1,0 +1,48 @@
+TAP version 13
+# Subtest: French formatting uses comma, Paris dates and explicit unknowns without score conversion
+ok 1 - French formatting uses comma, Paris dates and explicit unknowns without score conversion
+  ---
+  duration_ms: 0.9167
+  type: 'test'
+  ...
+# Subtest: navigation exposes meaningful links, active text state and a safe way back
+ok 2 - navigation exposes meaningful links, active text state and a safe way back
+  ---
+  duration_ms: 7.8053
+  type: 'test'
+  ...
+# Subtest: local ledger caps real events, exports no user text and never transmits
+ok 3 - local ledger caps real events, exports no user text and never transmits
+  ---
+  duration_ms: 17.4915
+  type: 'test'
+  ...
+# Subtest: corrupt, future and sensitive ledger records are preserved without mutation
+ok 4 - corrupt, future and sensitive ledger records are preserved without mutation
+  ---
+  duration_ms: 0.3761
+  type: 'test'
+  ...
+# Subtest: distribution follows public origin with advanced entry enabled and unauthorized partner frames closed
+ok 5 - distribution follows public origin with advanced entry enabled and unauthorized partner frames closed
+  ---
+  duration_ms: 0.2545
+  type: 'test'
+  ...
+# Unable to run child process: ENOENT
+# Usage: node scripts/run-site.mjs dev|start|typecheck|lint|db:generate|install:ci|check
+# Subtest: portable runner preserves child failure, missing-command errors and bounded timeouts
+ok 6 - portable runner preserves child failure, missing-command errors and bounded timeouts
+  ---
+  duration_ms: 723.8093
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1078.508

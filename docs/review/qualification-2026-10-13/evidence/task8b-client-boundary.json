@@ -1,0 +1,7 @@
+{
+  "checkedAt": "2026-10-13T10:42:43.256520+00:00",
+  "sourceBase": "2b19b8102aeb1fe7e096414fe56568d3ebcdd6f5",
+  "builtClientFiles": 179,
+  "serverAuthorityPinMatches": [],
+  "scope": "Exact product and opaque416 authority pins absent from verified build client graph; no token/credential scan or output."
+}

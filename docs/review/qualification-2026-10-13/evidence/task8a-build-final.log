@@ -1,0 +1,78 @@
+{"mode":"verified-frozen","sourceSha256":"7bfcdbe58d335f191b1c72f9764b563e47d0035d45227603300db12428d64e16","targetCount":120,"rawTargetBytes":21607680,"compressedTargetBytes":20039248,"manifestBytes":380041}
+
+  vinext build  (Vite 8.0.13)
+
+[1/5] analyze client references...
+[2K
+transforming...✓ 226 modules transformed.
+rendering chunks...
+[PLUGIN_TIMINGS] Your build spent significant time in plugins. Here is a breakdown:
+  - rsc:use-client (14%)
+  - vinext:jsx-in-js (13%)
+  - vinext:strip-server-exports (13%)
+  - vinext:mdx (13%)
+  - vite:css (12%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 16.69s
+[2/5] analyze server references...
+[2K
+transforming...✓ 253 modules transformed.
+rendering chunks...
+✓ built in 574ms
+[3/5] build rsc environment...
+[2K
+transforming...✓ 232 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 1.94s
+[4/5] build client environment...
+[2K
+transforming...✓ 2053 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 2.66s
+[5/5] build ssr environment...
+[2K
+transforming...✓ 259 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 909ms
+[0m
+  Route (app)
+  ┌ ? /                        
+  ├ λ /api/circles             
+  ├ λ /api/duels               
+  ├ λ /api/expeditions         
+  ├ λ /api/game                
+  ├ λ /api/intruder            
+  ├ λ /api/intruder/summary    
+  ├ λ /api/invitations         
+  ├ λ /api/projection          
+  ├ λ /api/recovery            
+  ├ λ /api/semantic-transfer   
+  ├ λ /api/server-games        
+  ├ λ /api/session             
+  ├ λ /api/studio              
+  ├ λ /api/sync                
+  ├ λ /api/two-braises         
+  ├ ? /cercles                 
+  ├ ? /duels                   
+  ├ ? /embed                   
+  ├ ? /entrainement            
+  ├ ? /espace                  
+  ├ ? /integration             
+  ├ ? /laboratoire             
+  ├ ? /laboratoire/deux-braises
+  ├ λ /semantic-data.json      
+  ├ ? /streamer                
+  └ ? /studio                  
+
+  λ API  ? Unknown
+
+  ? Some routes could not be classified. vinext currently uses static analysis
+    and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+    Automatic classification will be improved in a future release.
+
+  Build complete. Run `vinext start` to start the production server.
+

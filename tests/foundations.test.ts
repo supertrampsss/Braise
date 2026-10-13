@@ -58,9 +58,9 @@ test("corrupt, future and sensitive ledger records are preserved without mutatio
   const unavailable = { getItem: () => { throw new Error("denied"); }, setItem() {}, removeItem() {} };
   assert.equal(recordProductEvent(unavailable, "gameOpened", "daily"), false);
 });
-test("distribution follows public origin while advanced access and partner frames stay closed", () => {
+test("distribution follows public origin with advanced entry enabled and unauthorized partner frames closed", () => {
   assert.equal(DISTRIBUTION.origin, PUBLIC_ORIGIN); assert.equal(DISTRIBUTION.embedUrl, `${PUBLIC_ORIGIN}/embed`);
-  assert.equal(EMBED_ORIGIN, PUBLIC_ORIGIN); assert.equal(EXTRA_MODES_ENABLED, false);
+  assert.equal(EMBED_ORIGIN, PUBLIC_ORIGIN); assert.equal(EXTRA_MODES_ENABLED, true);
   for (const origin of ["null", "https://partner.test", `${PUBLIC_ORIGIN}:444`, `${PUBLIC_ORIGIN}.evil.test`]) assert.equal(validEmbedMessage(origin, { protocol: EMBED_PROTOCOL, type: "hello" }, "hello"), false);
 });
 test("portable runner preserves child failure, missing-command errors and bounded timeouts", async () => {

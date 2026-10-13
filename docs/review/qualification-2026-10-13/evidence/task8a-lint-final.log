@@ -1,0 +1,13 @@
+
+C:\Users\a.lebrou\Documents\Codex\2026-10-12\mobbin-plugin-app-69fdb9081018819193707354f21b366e-openai-curated\work\braiz-source\components\flame-scene.tsx
+  53:5  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  54:5  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\a.lebrou\Documents\Codex\2026-10-12\mobbin-plugin-app-69fdb9081018819193707354f21b366e-openai-curated\work\braiz-source\scripts\build-semantic-shards.mjs
+  85:34  warning  'scores' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\a.lebrou\Documents\Codex\2026-10-12\mobbin-plugin-app-69fdb9081018819193707354f21b366e-openai-curated\work\braiz-source\scripts\verify-semantic-target-v2.mjs
+  142:38  warning  'corpusDir' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 4 problems (0 errors, 4 warnings)
+

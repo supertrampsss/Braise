@@ -1,0 +1,62 @@
+{
+  "head": "5fe07e573a6ff6d9794e2b901133bdd5dbea130d",
+  "method": "WCAG relative luminance sRGB opaque source declarations; rendered composites and interactions remain Task8 browser QA",
+  "pairs": [
+    {
+      "label": "training text",
+      "foreground": "#faf6ed",
+      "background": "#191919",
+      "ratio": 16.3,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "training muted",
+      "foreground": "#ffbc8a",
+      "background": "#191919",
+      "ratio": 10.73,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "training action",
+      "foreground": "#191919",
+      "background": "#ff995d",
+      "ratio": 8.34,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "training panel text",
+      "foreground": "#faf6ed",
+      "background": "#252525",
+      "ratio": 14.21,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "global foreground",
+      "foreground": "#f5f3ee",
+      "background": "#111214",
+      "ratio": 16.9,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "global muted",
+      "foreground": "#a4a5ae",
+      "background": "#202125",
+      "ratio": 6.57,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "global action",
+      "foreground": "#161311",
+      "background": "#ff754d",
+      "ratio": 6.96,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    },
+    {
+      "label": "braiz muted",
+      "foreground": "#e0c9ae",
+      "background": "#302728",
+      "ratio": 9.08,
+      "scope": "Declared source opaque palette only, not whole rendered page certification"
+    }
+  ]
+}

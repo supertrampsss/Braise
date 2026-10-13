@@ -16,21 +16,27 @@ export default function TwoBraisesGame() {
   const [announcement, setAnnouncement] = useState("");
   const [warning, setWarning] = useState(false);
   const alive = useRef(true); const field = useRef<HTMLInputElement>(null);
+  const resultHeading = useRef<HTMLHeadingElement>(null), focusFrame = useRef<number | null>(null);
   const submitting = useRef(false);
   const revision = useRef(0); const currentPair = useRef(0);
   const memory = useRef(new Map<number, TwoBraisesGuess[]>());
   // Browser-only silent restoration after hydration.
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { alive.current = true; setGuesses(readTwoBraises(0)); setReady(true); return () => { alive.current = false; }; }, []);
+  useEffect(() => { alive.current = true; setGuesses(readTwoBraises(0)); setReady(true); return () => { alive.current = false; if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current); }; }, []);
   const found = [0, 1].map(index => guesses.some(guess => guess.values[index].found));
   function changePair(next: number) {
     if (submitting.current) return;
+    if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
     currentPair.current = next; memory.current.set(pair, guesses); setPair(next);
     setGuesses(memory.current.get(next) ?? readTwoBraises(next)); setInput(""); setError(""); setAnnouncement(""); revision.current++;
   }
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (pair !== currentPair.current || !ready || submitting.current || found.every(Boolean) || !input.trim()) return;
+    const focusOwner = document.activeElement;
+    const returnFocus = focusOwner === field.current || Boolean(event.currentTarget?.contains(focusOwner));
+    let terminalAccepted = false;
+    if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
     submitting.current = true; setBusy(true); setError(""); const version = revision.current;
     try {
       const response = await fetch("/api/two-braises", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ edition: "deux-braises-v1", pair, word: input.trim() }) });
@@ -39,6 +45,7 @@ export default function TwoBraisesGame() {
       if (!response.ok) throw new Error(data.error || "Connexion impossible.");
       if (guesses.some(guess => guess.word === data.word)) { setError("Ce mot figure déjà dans vos essais."); return; }
       const guess: TwoBraisesGuess = { edition: "deux-braises-v1", pair, word: data.word, values: data.values, acceptedAt: new Date().toISOString() };
+      terminalAccepted = [0, 1].every(index => guess.values[index].found || guesses.some(item => item.values[index].found));
       setAnnouncement(`Essai enregistré. Cible A : ${formatScoreFr(guess.values[0].temperature)} degrés. Cible B : ${formatScoreFr(guess.values[1].temperature)} degrés.`);
       const saved = saveTwoBraises(guess); setWarning(!saved);
       setGuesses(current => {
@@ -47,7 +54,17 @@ export default function TwoBraisesGame() {
       });
       if (version === revision.current) setInput("");
     } catch (cause) { if (alive.current) setError(cause instanceof Error ? cause.message : "Connexion impossible."); }
-    finally { submitting.current = false; if (alive.current) { setBusy(false); field.current?.focus(); } }
+    finally {
+      submitting.current = false;
+      if (alive.current && pair === currentPair.current) {
+        setBusy(false);
+        if (returnFocus) focusFrame.current = requestAnimationFrame(() => {
+          focusFrame.current = null;
+          if (!alive.current || pair !== currentPair.current || (document.activeElement !== focusOwner && document.activeElement !== document.body)) return;
+          (terminalAccepted ? resultHeading.current : field.current)?.focus({preventScroll:true});
+        });
+      }
+    }
   }
   return <main className="main-shell laboratory-shell">
     <AppNavigation active="explore" modeName="Deux braises" />
@@ -60,9 +77,9 @@ export default function TwoBraisesGame() {
         const best = guesses.map(guess => guess.values[index]).reduce<(typeof guesses)[number]["values"][number] | null>((current, value) => !current || value.rank < current.rank ? value : current, null);
         return <section className="two-braises-target" key={index} aria-label={`Cible ${index === 0 ? "A" : "B"}`}><h2>Cible {index === 0 ? "A" : "B"} : {found[index] ? "trouvée ✓" : "à découvrir"}</h2>{best ? <p>Meilleure piste : <strong>{formatScoreFr(best.temperature)}°</strong><br />Rang {formatNumberFr(best.rank)}</p> : <p>Aucun essai enregistré.</p>}</section>;
       })}</div><p role="status">{announcement}</p>
-      {found.every(Boolean) ? <h2>Les deux mots sont trouvés ! {guesses.length} essais.</h2> : <form className="guess-form" onSubmit={submit}><label className="sr-only" htmlFor="two-guess">Votre proposition</label><input id="two-guess" ref={field} value={input} onChange={event => { revision.current++; setInput(event.target.value); }} maxLength={50} autoComplete="off" autoCapitalize="none" placeholder="Un mot français…" disabled={!ready} /><button type="submit" className="guess-button" disabled={busy || !ready || !input.trim()} aria-label="Proposer ce mot">{busy ? "Analyse…" : "Proposer"}</button></form>}
+      {found.every(Boolean) ? <h2 ref={resultHeading} tabIndex={-1}>Les deux mots sont trouvés ! {guesses.length} essai{guesses.length === 1 ? "" : "s"}.</h2> : <form className="guess-form" onSubmit={submit}><label className="sr-only" htmlFor="two-guess">Votre proposition</label><input id="two-guess" ref={field} value={input} onChange={event => { revision.current++; setInput(event.target.value); }} maxLength={50} autoComplete="off" autoCapitalize="none" placeholder="Un mot français…" disabled={!ready} /><button type="submit" className="guess-button" disabled={busy || !ready || !input.trim()} aria-label="Proposer ce mot">{busy ? "Analyse…" : "Proposer"}</button></form>}
       {error && <p role="alert">{error}</p>}{warning && <p role="status">Sauvegarde indisponible : vos essais restent en mémoire dans cette page.</p>}
-      <div className="two-braises-history"><table><caption>{guesses.length} essais distincts</caption><thead><tr><th>Mot</th><th scope="col">Cible A</th><th scope="col">Cible B</th></tr></thead><tbody>{[...guesses].reverse().map(guess => <tr key={guess.word}><th scope="row">{guess.word}</th>{guess.values.map((value, index) => <td key={index} aria-label={`Cible ${index === 0 ? "A" : "B"} : ${formatScoreFr(value.temperature)} degrés, ${value.found ? "trouvée" : `rang ${formatNumberFr(value.rank)}`}`} style={{ color: warmth(value.temperature).color }}>{formatScoreFr(value.temperature)}°<small>{value.found ? "Trouvé ✓" : `Rang ${formatNumberFr(value.rank)}`}</small></td>)}</tr>)}</tbody></table></div>
+      <div className="two-braises-history"><table><caption>{guesses.length} essai{guesses.length === 1 ? "" : "s"} distinct{guesses.length === 1 ? "" : "s"}</caption><thead><tr><th>Mot</th><th scope="col">Cible A</th><th scope="col">Cible B</th></tr></thead><tbody>{[...guesses].reverse().map(guess => <tr key={guess.word}><th scope="row">{guess.word}</th>{guess.values.map((value, index) => <td key={index} aria-label={`Cible ${index === 0 ? "A" : "B"} : ${formatScoreFr(value.temperature)} degrés, ${value.found ? "trouvée" : `rang ${formatNumberFr(value.rank)}`}`} style={{ color: warmth(value.temperature).color }}>{formatScoreFr(value.temperature)}°<small>{value.found ? "Trouvé ✓" : `Rang ${formatNumberFr(value.rank)}`}</small></td>)}</tr>)}</tbody></table></div>
       <p>Historique personnel, séparé du classique et exclu de son export. Aucun classement compétitif ni score combiné.</p>
     </section>
   </main>;

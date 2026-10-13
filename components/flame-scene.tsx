@@ -50,7 +50,9 @@ export default function FlameScene({ temperature, celebrating, paused, solved = 
     data-paused={paused} data-visible={visible} data-solved={solved} data-reveal-motion={revealMotion} data-celebrating={celebrating && solved}
     data-renderer="approved-art" style={{ "--reveal-top": `${(1 - level) * 100}%` } as CSSProperties}>
     <svg className="approved-flame-defs" aria-hidden="true"><defs><filter id={filterId} x="-5%" y="-5%" width="110%" height="110%"><feTurbulence ref={turbulence} type="fractalNoise" baseFrequency=".015 .035" numOctaves="2" seed="4" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
+    {/* eslint-disable-next-line @next/next/no-img-element -- Approved native artwork is layered with the same SVG filter; preserve its rendering and pause/performance contract. */}
     <img src="/art/braiz-approved-flame.png" alt="" className="approved-flame-cold" aria-hidden="true" />
+    {/* eslint-disable-next-line @next/next/no-img-element -- Approved native artwork is layered with the same SVG filter; preserve its rendering and pause/performance contract. */}
     <img src="/art/braiz-approved-flame.png" alt="" className="approved-flame-hot" style={{ filter:`url(#${filterId})` }} aria-hidden="true" />
     <span className="approved-sparks" aria-hidden="true"><i/><i/><i/><i/><i/><i/></span>
   </div>;

@@ -1,0 +1,743 @@
+TAP version 13
+# Subtest: archive dates are strict civil dates bounded by launch and Paris today
+ok 1 - archive dates are strict civil dates bounded by launch and Paris today
+  ---
+  duration_ms: 1.4297
+  type: 'test'
+  ...
+# Subtest: archive availability changes exactly at Paris midnight across both DST seasons
+ok 2 - archive availability changes exactly at Paris midnight across both DST seasons
+  ---
+  duration_ms: 0.5778
+  type: 'test'
+  ...
+# Subtest: an archive resolves the exact historical daily target without exposing the answer
+ok 3 - an archive resolves the exact historical daily target without exposing the answer
+  ---
+  duration_ms: 0.4775
+  type: 'test'
+  ...
+# Subtest: archive API validates the date and version before scoring guesses or hints
+ok 4 - archive API validates the date and version before scoring guesses or hints
+  ---
+  duration_ms: 49.905
+  type: 'test'
+  ...
+# Subtest: an expired daily request stays expired instead of becoming an archive
+ok 5 - an expired daily request stays expired instead of becoming an archive
+  ---
+  duration_ms: 1.4534
+  type: 'test'
+  ...
+# Subtest: archive completion time is distinct and never extends the daily streak
+ok 6 - archive completion time is distinct and never extends the daily streak
+  ---
+  duration_ms: 2.8203
+  type: 'test'
+  ...
+# Subtest: a historical daily win keeps priority over replaying the same archive
+ok 7 - a historical daily win keeps priority over replaying the same archive
+  ---
+  duration_ms: 1.519
+  type: 'test'
+  ...
+# Subtest: reconciling an older saved daily win preserves its original completion context
+ok 8 - reconciling an older saved daily win preserves its original completion context
+  ---
+  duration_ms: 0.2957
+  type: 'test'
+  ...
+# Subtest: a pending daily win outranks a concurrent archive win when storage recovers
+ok 9 - a pending daily win outranks a concurrent archive win when storage recovers
+  ---
+  duration_ms: 2.9151
+  type: 'test'
+  ...
+# Subtest: qualified future authority preserves V1 boundary and fails closed outside its immutable calendar
+ok 10 - qualified future authority preserves V1 boundary and fails closed outside its immutable calendar
+  ---
+  duration_ms: 14.9497
+  type: 'test'
+  ...
+# (node:13796) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: three literal hints handle 3000 previous words with a fixed four-read page path
+ok 11 - three literal hints handle 3000 previous words with a fixed four-read page path
+  ---
+  duration_ms: 32.5324
+  type: 'test'
+  ...
+# Subtest: actual GET/POST route returns bounded JSON refusals for unset gate, future date, missing storage and after end
+ok 12 - actual GET/POST route returns bounded JSON refusals for unset gate, future date, missing storage and after end
+  ---
+  duration_ms: 20.9061
+  type: 'test'
+  ...
+# Subtest: V2 save is explicitly versioned; cold restoration and V1 bytes remain separate
+ok 13 - V2 save is explicitly versioned; cold restoration and V1 bytes remain separate
+  ---
+  duration_ms: 5.8938
+  type: 'test'
+  ...
+# Subtest: unknown, forged and corrupt V2 documents cannot be overwritten
+ok 14 - unknown, forged and corrupt V2 documents cannot be overwritten
+  ---
+  duration_ms: 1.2003
+  type: 'test'
+  ...
+# Subtest: mixed sync preserves V1 leading-zero identity and full V2 ranks without replaying profile credit
+ok 15 - mixed sync preserves V1 leading-zero identity and full V2 ranks without replaying profile credit
+  ---
+  duration_ms: 20.5445
+  type: 'test'
+  ...
+# Subtest: profile export labels mixed facts and validates exact V2 corpus/calendar/date on import
+ok 16 - profile export labels mixed facts and validates exact V2 corpus/calendar/date on import
+  ---
+  duration_ms: 1.5327
+  type: 'test'
+  ...
+# Subtest: sync is distinct, preserves leading seed zeros and excludes credentials/unknown local storage
+ok 17 - sync is distinct, preserves leading seed zeros and excludes credentials/unknown local storage
+  ---
+  duration_ms: 8.047
+  type: 'test'
+  ...
+# Subtest: strict fields, corrupt/future local saves and oversized sets refuse before upload
+ok 18 - strict fields, corrupt/future local saves and oversized sets refuse before upload
+  ---
+  duration_ms: 45.8929
+  type: 'test'
+  ...
+# Subtest: preview performs no writes; union preserves local trials/pins and repeat merge is neutral
+ok 19 - preview performs no writes; union preserves local trials/pins and repeat merge is neutral
+  ---
+  duration_ms: 7.2766
+  type: 'test'
+  ...
+# Subtest: stale revision, incompatible scores, pin overflow, context and future local save preserve all local state
+ok 20 - stale revision, incompatible scores, pin overflow, context and future local save preserve all local state
+  ---
+  duration_ms: 2.0344
+  type: 'test'
+  ...
+# Subtest: unknown fields in historical baseline cannot carry secrets
+ok 21 - unknown fields in historical baseline cannot carry secrets
+  ---
+  duration_ms: 0.7293
+  type: 'test'
+  ...
+# Subtest: actual merge admission invalidates late POST and resumed next guess retains merged trials and pins
+ok 22 - actual merge admission invalidates late POST and resumed next guess retains merged trials and pins
+  ---
+  duration_ms: 2.9481
+  type: 'test'
+  ...
+# Subtest: hint union never restores already consumed hints and rejects more than three distinct clues
+ok 23 - hint union never restores already consumed hints and rejects more than three distinct clues
+  ---
+  duration_ms: 0.6363
+  type: 'test'
+  ...
+# Subtest: game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order
+ok 24 - game fact union preserves known timestamps in either direction, rejects clue/date conflicts, and keeps local order
+  ---
+  duration_ms: 2.1782
+  type: 'test'
+  ...
+# Subtest: an inactive 365-day Paris edition is explicit, contiguous and non-repeating
+ok 25 - an inactive 365-day Paris edition is explicit, contiguous and non-repeating
+  ---
+  duration_ms: 42.7081
+  type: 'test'
+  ...
+# Subtest: calendar refuses gaps, repeats, forged hashes and insufficient approvals
+ok 26 - calendar refuses gaps, repeats, forged hashes and insufficient approvals
+  ---
+  duration_ms: 70.4976
+  type: 'test'
+  ...
+# Subtest: 400 agent-reviewed candidates remain distinct from approved targets
+ok 27 - 400 agent-reviewed candidates remain distinct from approved targets
+  ---
+  duration_ms: 5.0134
+  type: 'test'
+  ...
+# Subtest: catalogue refuses duplicate identities and unproven approvals
+ok 28 - catalogue refuses duplicate identities and unproven approvals
+  ---
+  duration_ms: 6.999
+  type: 'test'
+  ...
+# Subtest: target-aware discovery visits all 120 actual targets, then reports depletion without answer
+ok 29 - target-aware discovery visits all 120 actual targets, then reports depletion without answer
+  ---
+  duration_ms: 96.8532
+  type: 'test'
+  ...
+# Subtest: same V1 target under distinct seeds and daily archive resolves to the same opaque identity
+ok 30 - same V1 target under distinct seeds and daily archive resolves to the same opaque identity
+  ---
+  duration_ms: 14.5315
+  type: 'test'
+  ...
+# Subtest: seeded GET preserves V1 identity, leading zeros and target mapping
+ok 31 - seeded GET preserves V1 identity, leading zeros and target mapping
+  ---
+  duration_ms: 18.8158
+  type: 'test'
+  ...
+# Subtest: discovery rejects overflow, malformed IDs, future dates and invalid flags
+ok 32 - discovery rejects overflow, malformed IDs, future dates and invalid flags
+  ---
+  duration_ms: 2.1414
+  type: 'test'
+  ...
+# Subtest: encounter ledger deduplicates, bounds and preserves corrupt data
+ok 33 - encounter ledger deduplicates, bounds and preserves corrupt data
+  ---
+  duration_ms: 0.5208
+  type: 'test'
+  ...
+# Subtest: resume uses civil dates and real valid unfinished saves without manufacturing journey identity
+ok 34 - resume uses civil dates and real valid unfinished saves without manufacturing journey identity
+  ---
+  duration_ms: 0.8294
+  type: 'test'
+  ...
+# Subtest: explicit collection and expedition contexts survive reload; corrupt contexts are retained
+ok 35 - explicit collection and expedition contexts survive reload; corrupt contexts are retained
+  ---
+  duration_ms: 0.3678
+  type: 'test'
+  ...
+# Subtest: win summary derives personal trials, actual hint rows, threshold order and best non-answer pistes
+ok 36 - win summary derives personal trials, actual hint rows, threshold order and best non-answer pistes
+  ---
+  duration_ms: 0.808
+  type: 'test'
+  ...
+# Subtest: tutorial uses distinct daily target and exact real semantic response, not synthetic scoring
+ok 37 - tutorial uses distinct daily target and exact real semantic response, not synthetic scoring
+  ---
+  duration_ms: 24.9503
+  type: 'test'
+  ...
+# Subtest: input revisions and current-puzzle guard remain enforced; share text excludes words
+ok 38 - input revisions and current-puzzle guard remain enforced; share text excludes words
+  ---
+  duration_ms: 1.1773
+  type: 'test'
+  ...
+# Subtest: archive calendar safely renders invalid, out-of-range and missing deep-link dates
+ok 39 - archive calendar safely renders invalid, out-of-range and missing deep-link dates
+  ---
+  duration_ms: 18.0531
+  type: 'test'
+  ...
+# Subtest: I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+ok 40 - I1 future raw bytes survive accepted guess, indirect profile projection and pin mutation
+  ---
+  duration_ms: 1.7018
+  type: 'test'
+  ...
+# Subtest: I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+ok 41 - I1 compatible unversioned V1 writes and late future-format replacement are handled at mutation time
+  ---
+  duration_ms: 2.4195
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+ok 42 - I2 delayed input error cannot attach to a newer edit: Ce mot est absent du dictionnaire.
+  ---
+  duration_ms: 0.2193
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+ok 43 - I2 delayed input error cannot attach to a newer edit: Choisissez une autre association pour comparer.
+  ---
+  duration_ms: 0.0872
+  type: 'test'
+  ...
+# Subtest: I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+ok 44 - I2 delayed input error cannot attach to a newer edit: Connexion impossible.
+  ---
+  duration_ms: 0.2939
+  type: 'test'
+  ...
+# Subtest: I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+ok 45 - I2 edit-back-to-original remains a newer revision; accepted old response also preserves it
+  ---
+  duration_ms: 0.2674
+  type: 'test'
+  ...
+# Subtest: I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+ok 46 - I3 failed collection GET then retry keeps descriptor, banner identity, URL, stored context and next step
+  ---
+  duration_ms: 1.627
+  type: 'test'
+  ...
+# Subtest: I3 retry retains an expedition descriptor too, without consulting a changed current journey
+ok 47 - I3 retry retains an expedition descriptor too, without consulting a changed current journey
+  ---
+  duration_ms: 0.1238
+  type: 'test'
+  ...
+# Subtest: I4 admitted journey stage agrees with Back/Forward and a reload
+ok 48 - I4 admitted journey stage agrees with Back/Forward and a reload
+  ---
+  duration_ms: 0.7405
+  type: 'test'
+  ...
+# Subtest: I4 slow deep-link journey preserves explicit Profile/Explorer destination
+ok 49 - I4 slow deep-link journey preserves explicit Profile/Explorer destination
+  ---
+  duration_ms: 0.7608
+  type: 'test'
+  ...
+# Subtest: I4 navigation during pending journey GET rejects every old game and route commit
+ok 50 - I4 navigation during pending journey GET rejects every old game and route commit
+  ---
+  duration_ms: 0.3783
+  type: 'test'
+  ...
+# Subtest: M1 filtered archive layout is explicitly a list, without misleading weekday columns
+ok 51 - M1 filtered archive layout is explicitly a list, without misleading weekday columns
+  ---
+  duration_ms: 6.6964
+  type: 'test'
+  ...
+# Subtest: explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+ok 52 - explicit tutorial return owns close focus only while route, puzzle and focus ownership remain current
+  ---
+  duration_ms: 0.1379
+  type: 'test'
+  ...
+# Subtest: explicit Retry on the board supersedes a previous background surface without losing collection context
+ok 53 - explicit Retry on the board supersedes a previous background surface without losing collection context
+  ---
+  duration_ms: 0.0865
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for daily
+ok 54 - F1 real retry admission preserves later Profile for daily
+  ---
+  duration_ms: 0.193
+  type: 'test'
+  ...
+# Subtest: F1 real retry admission preserves later Profile for challenge
+ok 55 - F1 real retry admission preserves later Profile for challenge
+  ---
+  duration_ms: 0.0669
+  type: 'test'
+  ...
+# Subtest: F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+ok 56 - F2 status 200 then stage 503 exposes the contextual error on Game and retries the same saved expedition
+  ---
+  duration_ms: 0.4942
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+ok 57 - F2 obsolete Voyage 503 cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.1617
+  type: 'test'
+  ...
+# Subtest: F2 obsolete Voyage network cannot replace later Profile with its error surface
+ok 58 - F2 obsolete Voyage network cannot replace later Profile with its error surface
+  ---
+  duration_ms: 0.0726
+  type: 'test'
+  ...
+# Subtest: profile exposes short progression, objectives and reward names, with separate preferences and exact data scope
+ok 59 - profile exposes short progression, objectives and reward names, with separate preferences and exact data scope
+  ---
+  duration_ms: 27.9379
+  type: 'test'
+  ...
+# Subtest: transfer scope describes real exported progression words separately from absent full game saves
+ok 60 - transfer scope describes real exported progression words separately from absent full game saves
+  ---
+  duration_ms: 3.1244
+  type: 'test'
+  ...
+# Subtest: V1 profiles migrate once with an exact immutable backup and identical progress
+ok 61 - V1 profiles migrate once with an exact immutable backup and identical progress
+  ---
+  duration_ms: 5.3306
+  type: 'test'
+  ...
+# Subtest: partial legacy data keeps valid facts without inventing invalid history
+ok 62 - partial legacy data keeps valid facts without inventing invalid history
+  ---
+  duration_ms: 0.3653
+  type: 'test'
+  ...
+# Subtest: corrupt, conflicting and future data is preserved instead of overwritten
+ok 63 - corrupt, conflicting and future data is preserved instead of overwritten
+  ---
+  duration_ms: 0.3521
+  type: 'test'
+  ...
+# Subtest: divergent concurrent migration bases stay conflicted and never absorb another boundary journal
+ok 64 - divergent concurrent migration bases stay conflicted and never absorb another boundary journal
+  ---
+  duration_ms: 1.3385
+  type: 'test'
+  ...
+# Subtest: storage failures never report a persisted migration
+ok 65 - storage failures never report a persisted migration
+  ---
+  duration_ms: 0.2222
+  type: 'test'
+  ...
+# Subtest: memory-only progress survives later commands and is retried when storage returns
+ok 66 - memory-only progress survives later commands and is retried when storage returns
+  ---
+  duration_ms: 1.5062
+  type: 'test'
+  ...
+# Subtest: invalid V2 metadata never discards an otherwise valid V1 game
+ok 67 - invalid V2 metadata never discards an otherwise valid V1 game
+  ---
+  duration_ms: 0.3446
+  type: 'test'
+  ...
+# Subtest: append-only events converge across tabs without duplicate guesses or victories
+ok 68 - append-only events converge across tabs without duplicate guesses or victories
+  ---
+  duration_ms: 2.7259
+  type: 'test'
+  ...
+# Subtest: a migrated profile exports in clear and imports atomically into a fresh profile
+ok 69 - a migrated profile exports in clear and imports atomically into a fresh profile
+  ---
+  duration_ms: 2.9392
+  type: 'test'
+  ...
+# Subtest: reimporting the same profile is idempotent and does not create more records
+ok 70 - reimporting the same profile is idempotent and does not create more records
+  ---
+  duration_ms: 6.7885
+  type: 'test'
+  ...
+# Subtest: fresh profile imports preserve both sides and reconcile preferences deterministically
+ok 71 - fresh profile imports preserve both sides and reconcile preferences deterministically
+  ---
+  duration_ms: 1.0998
+  type: 'test'
+  ...
+# Subtest: different V1 histories conflict without writing any import record
+ok 72 - different V1 histories conflict without writing any import record
+  ---
+  duration_ms: 0.3117
+  type: 'test'
+  ...
+# Subtest: a concurrent local change makes a confirmed import stale before any write
+ok 73 - a concurrent local change makes a confirmed import stale before any write
+  ---
+  duration_ms: 0.3811
+  type: 'test'
+  ...
+# Subtest: invalid and future transfer files are rejected without touching local progress
+ok 74 - invalid and future transfer files are rejected without touching local progress
+  ---
+  duration_ms: 0.2777
+  type: 'test'
+  ...
+# Subtest: a failed atomic import reports unavailability and keeps the previous snapshot
+ok 75 - a failed atomic import reports unavailability and keeps the previous snapshot
+  ---
+  duration_ms: 0.3791
+  type: 'test'
+  ...
+# Subtest: an import preserves and atomically persists progress that was only in memory
+ok 76 - an import preserves and atomically persists progress that was only in memory
+  ---
+  duration_ms: 0.6253
+  type: 'test'
+  ...
+# Subtest: an unmigrated V1 destination is a real boundary and conflicts before any write
+ok 77 - an unmigrated V1 destination is a real boundary and conflicts before any write
+  ---
+  duration_ms: 0.2702
+  type: 'test'
+  ...
+# Subtest: a missing historical backup remains a conflict
+ok 78 - a missing historical backup remains a conflict
+  ---
+  duration_ms: 0.1263
+  type: 'test'
+  ...
+# Subtest: a recovered daily win played through archives remains transferable
+ok 79 - a recovered daily win played through archives remains transferable
+  ---
+  duration_ms: 1.4682
+  type: 'test'
+  ...
+# Subtest: hostile JSON values and forged weekly rewards return controlled rejection
+ok 80 - hostile JSON values and forged weekly rewards return controlled rejection
+  ---
+  duration_ms: 0.4304
+  type: 'test'
+  ...
+# Subtest: exports refuse ignored records and transfer limits use UTF-8 bytes
+ok 81 - exports refuse ignored records and transfer limits use UTF-8 bytes
+  ---
+  duration_ms: 6.3537
+  type: 'test'
+  ...
+# Subtest: memory-only V1 migration exports a valid recovery file
+ok 82 - memory-only V1 migration exports a valid recovery file
+  ---
+  duration_ms: 0.4507
+  type: 'test'
+  ...
+# Subtest: a permanent reward keeps its historical proof through reconciliation and transfer
+ok 83 - a permanent reward keeps its historical proof through reconciliation and transfer
+  ---
+  duration_ms: 1.5881
+  type: 'test'
+  ...
+# Subtest: the final merged bundle is byte-bounded before storage is changed
+ok 84 - the final merged bundle is byte-bounded before storage is changed
+  ---
+  duration_ms: 107.4911
+  type: 'test'
+  ...
+# Subtest: a pending preferred win keeps the imported reward proof it replaces
+ok 85 - a pending preferred win keeps the imported reward proof it replaces
+  ---
+  duration_ms: 2.1808
+  type: 'test'
+  ...
+# Subtest: game reconciliation records only post-migration attempts and is repeatable
+ok 86 - game reconciliation records only post-migration attempts and is repeatable
+  ---
+  duration_ms: 0.9222
+  type: 'test'
+  ...
+# Subtest: profile keys are explicitly recognizable for cross-tab refresh
+ok 87 - profile keys are explicitly recognizable for cross-tab refresh
+  ---
+  duration_ms: 0.122
+  type: 'test'
+  ...
+# Subtest: cosmetic preferences converge without changing historical progress
+ok 88 - cosmetic preferences converge without changing historical progress
+  ---
+  duration_ms: 0.6583
+  type: 'test'
+  ...
+# Subtest: invalid cosmetic events are ignored instead of changing sound or progress
+ok 89 - invalid cosmetic events are ignored instead of changing sound or progress
+  ---
+  duration_ms: 0.1197
+  type: 'test'
+  ...
+# Subtest: completed weekly objectives materialize one durable reward identity
+ok 90 - completed weekly objectives materialize one durable reward identity
+  ---
+  duration_ms: 3.5161
+  type: 'test'
+  ...
+# (node:27400) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: compiler covers each approved identity with BEE score/rank and preserves the baseline
+ok 91 - compiler covers each approved identity with BEE score/rank and preserves the baseline
+  ---
+  duration_ms: 2.6431
+  type: 'test'
+  ...
+# Subtest: compiler rejects missing or duplicated identities and inconsistent counts
+ok 92 - compiler rejects missing or duplicated identities and inconsistent counts
+  ---
+  duration_ms: 0.7281
+  type: 'test'
+  ...
+# Subtest: compiler refuses changed evidence, archive pin, baseline pin and absent approved hints
+ok 93 - compiler refuses changed evidence, archive pin, baseline pin and absent approved hints
+  ---
+  duration_ms: 0.6302
+  type: 'test'
+  ...
+# Subtest: compiler enforces root, target-package and case namespace bounds
+ok 94 - compiler enforces root, target-package and case namespace bounds
+  ---
+  duration_ms: 0.4733
+  type: 'test'
+  ...
+# Subtest: private qualification requires temporary bounded auth and exact compiled capability before any read
+ok 95 - private qualification requires temporary bounded auth and exact compiled capability before any read
+  ---
+  duration_ms: 23.5485
+  type: 'test'
+  ...
+# Subtest: qualification accepts only one compiled case and emits hashes/counters, no words or paths
+ok 96 - qualification accepts only one compiled case and emits hashes/counters, no words or paths
+  ---
+  duration_ms: 17.2216
+  type: 'test'
+  ...
+# Subtest: bounded R2 counts received bytes, rejects excess reads and cancels excess bodies
+ok 97 - bounded R2 counts received bytes, rejects excess reads and cancels excess bodies
+  ---
+  duration_ms: 0.9222
+  type: 'test'
+  ...
+# Subtest: deadline cancels a stalled body and cancels a late object returned by a pending R2 get
+ok 98 - deadline cancels a stalled body and cancels a late object returned by a pending R2 get
+  ---
+  duration_ms: 9.3961
+  type: 'test'
+  ...
+# Subtest: bounded R2 close rejects pending work and cancels late bodies without a signal abort
+ok 99 - bounded R2 close rejects pending work and cancels late bodies without a signal abort
+  ---
+  duration_ms: 15.0591
+  type: 'test'
+  ...
+# Subtest: qualification cancels an oversized or aborted request body before storage access
+ok 100 - qualification cancels an oversized or aborted request body before storage access
+  ---
+  duration_ms: 2.2168
+  type: 'test'
+  ...
+# Subtest: request cancellation cannot extend the deadline while its underlying cancel promise stalls
+ok 101 - request cancellation cannot extend the deadline while its underlying cancel promise stalls
+  ---
+  duration_ms: 1.1626
+  type: 'test'
+  ...
+# Subtest: range transport reconstructs a crossed file, validates full hash and freezes its root pin
+ok 102 - range transport reconstructs a crossed file, validates full hash and freezes its root pin
+  ---
+  duration_ms: 11.4083
+  type: 'test'
+  ...
+# Subtest: range transport refuses corrupt metadata and coherent metadata pointing to corrupt file bytes
+    # Subtest: root corruption
+    ok 1 - root corruption
+      ---
+      duration_ms: 1.0046
+      type: 'test'
+      ...
+    # Subtest: logical file corruption
+    ok 2 - logical file corruption
+      ---
+      duration_ms: 1.7095
+      type: 'test'
+      ...
+    1..2
+ok 103 - range transport refuses corrupt metadata and coherent metadata pointing to corrupt file bytes
+  ---
+  duration_ms: 3.2401
+  type: 'test'
+  ...
+# Subtest: range transport checks total object size, exact range metadata and streamed body length
+    # Subtest: total
+    ok 1 - total
+      ---
+      duration_ms: 3.1449
+      type: 'test'
+      ...
+    # Subtest: offset
+    ok 2 - offset
+      ---
+      duration_ms: 0.9005
+      type: 'test'
+      ...
+    # Subtest: length
+    ok 3 - length
+      ---
+      duration_ms: 0.7936
+      type: 'test'
+      ...
+    # Subtest: short
+    ok 4 - short
+      ---
+      duration_ms: 1.2553
+      type: 'test'
+      ...
+    # Subtest: overflow
+    ok 5 - overflow
+      ---
+      duration_ms: 0.9411
+      type: 'test'
+      ...
+    # Subtest: missing
+    ok 6 - missing
+      ---
+      duration_ms: 0.7988
+      type: 'test'
+      ...
+    1..6
+ok 104 - range transport checks total object size, exact range metadata and streamed body length
+  ---
+  duration_ms: 8.9614
+  type: 'test'
+  ...
+# Subtest: pinned metadata refuses overlapping routes, duplicate paths, unsafe bounds and more than two chunks
+ok 105 - pinned metadata refuses overlapping routes, duplicate paths, unsafe bounds and more than two chunks
+  ---
+  duration_ms: 0.6216
+  type: 'test'
+  ...
+# Subtest: range transport admits at most four operations and releases capacity after failure
+ok 106 - range transport admits at most four operations and releases capacity after failure
+  ---
+  duration_ms: 1.3259
+  type: 'test'
+  ...
+# Subtest: R2 cleanup never waits for permanent cancel on metadata, overflow, byte budget or abort
+    # Subtest: metadata
+    ok 1 - metadata
+      ---
+      duration_ms: 0.931
+      type: 'test'
+      ...
+    # Subtest: overflow
+    ok 2 - overflow
+      ---
+      duration_ms: 0.361
+      type: 'test'
+      ...
+    # Subtest: byte-budget
+    ok 3 - byte-budget
+      ---
+      duration_ms: 0.4774
+      type: 'test'
+      ...
+    # Subtest: abort
+    ok 4 - abort
+      ---
+      duration_ms: 22.8219
+      type: 'test'
+      ...
+    # Subtest: direct adapter metadata
+    ok 5 - direct adapter metadata
+      ---
+      duration_ms: 0.5643
+      type: 'test'
+      ...
+    # Subtest: direct adapter overflow
+    ok 6 - direct adapter overflow
+      ---
+      duration_ms: 0.437
+      type: 'test'
+      ...
+    1..6
+ok 107 - R2 cleanup never waits for permanent cancel on metadata, overflow, byte budget or abort
+  ---
+  duration_ms: 26.3221
+  type: 'test'
+  ...
+1..107
+# tests 121
+# suites 0
+# pass 121
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3151.9298
