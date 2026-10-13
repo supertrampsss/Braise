@@ -1,0 +1,19 @@
+{
+  "scope": "all metadata validated; every logical range bounded; complete target canonical object bytes compared with independently verified runtime archive; no numerical recalculation or hosted claim",
+  "rootReference": {
+    "sha256": "49f548a439d8034ceeee1d553c00ddaf42c52f0802afae201963e131bb587f70",
+    "bytes": 45316
+  },
+  "shards": 260,
+  "files": 65829,
+  "maxShardBytes": 56172,
+  "crossedRangeFiles": 2,
+  "targets": [
+    {
+      "prefix": "fr-fasttext-complete-bc68b0703375-0f34b2449278/targets/0000000091/",
+      "bytes": 7338496,
+      "objects": 35,
+      "sha256": "6adf8582b4c36c02e6fd0075031c130d31702bd8aae5dfb56949374f18d30786"
+    }
+  ]
+}

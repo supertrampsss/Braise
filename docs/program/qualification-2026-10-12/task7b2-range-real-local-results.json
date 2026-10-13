@@ -1,0 +1,101 @@
+{
+  "scope": "local files as R2 range transport; NOT hosted execution; existing independent archived numeric proofs",
+  "rootReference": {
+    "sha256": "49f548a439d8034ceeee1d553c00ddaf42c52f0802afae201963e131bb587f70",
+    "bytes": 45316
+  },
+  "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+  "elapsedMs": 446.2657,
+  "results": [
+    {
+      "status": 200,
+      "caseId": "common-presence",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "21d40a24605b4dbce19f80c62cea220da53584ef3438bbf8b576763b0e237f1a",
+      "reads": 7,
+      "bytes": 300499
+    },
+    {
+      "status": 200,
+      "caseId": "accent-presence",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "870c605370937b9d45d59ae56d9952508710c1380a319c773cde215419f6d590",
+      "reads": 7,
+      "bytes": 300645
+    },
+    {
+      "status": 200,
+      "caseId": "rare-presence",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "d776390775b9aa1a81a542327045492c07b0ec8f2f868a15f4f9cf89f5283606",
+      "reads": 7,
+      "bytes": 300762
+    },
+    {
+      "status": 200,
+      "caseId": "absent-presence",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "reads": 7,
+      "bytes": 300400
+    },
+    {
+      "status": 200,
+      "caseId": "exact-score",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "4f09cb6930a8b76dd5f1b10b691c74ca1a24171627413d951351091da446840d",
+      "reads": 4,
+      "bytes": 455328
+    },
+    {
+      "status": 200,
+      "caseId": "related-score",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "3ff296032e171ea5b27c9dd8cec73acd62036d2120213c570497e48f99bb0930",
+      "reads": 4,
+      "bytes": 455328
+    },
+    {
+      "status": 200,
+      "caseId": "rare-score",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "0de059a552a94457f47fb61d9fe7376e93a7c1e9f4ae310ba12bebbd0c040c31",
+      "reads": 4,
+      "bytes": 328462
+    },
+    {
+      "status": 200,
+      "caseId": "crossed-range",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "628419244846164f55a4b9634edc227b001ee3bfae8ee45afdf90e8823b4bce9",
+      "reads": 4,
+      "bytes": 187794
+    },
+    {
+      "status": 200,
+      "caseId": "wrong-pin",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "2452697a38c25bd670ebe403f5f96e18affe9b3ef80bc027b90af528536fcc6d",
+      "reads": 3,
+      "bytes": 102277
+    },
+    {
+      "status": 200,
+      "caseId": "corrupt-range",
+      "pass": true,
+      "pinset": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+      "resultSha256": "2452697a38c25bd670ebe403f5f96e18affe9b3ef80bc027b90af528536fcc6d",
+      "reads": 3,
+      "bytes": 212271
+    }
+  ]
+}

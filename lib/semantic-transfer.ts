@@ -1,4 +1,5 @@
 // Server-only, temporary authenticated import of immutable content-addressed blobs.
+import { semanticTransferAuthorized } from './semantic-transfer-auth';
 export const TRANSFER_MAX_BYTES = 8 * 1024 * 1024;
 type Stored = { size: number; body: ReadableStream<Uint8Array>; checksums?: { sha256?: ArrayBuffer } };
 export type TransferBucket = {
@@ -9,12 +10,7 @@ export type TransferBucket = {
 const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
 const hex = (buffer: ArrayBuffer) => Array.from(new Uint8Array(buffer), b => b.toString(16).padStart(2, '0')).join('');
 export async function semanticTransfer(request: Request, runtime: { token?: string; expires?: string; bucket?: TransferBucket }) {
-  const provided = request.headers.get('authorization') ?? '';
-  if (!runtime.token || runtime.token.length < 64 || !runtime.expires || !Number.isFinite(Date.parse(runtime.expires)) || Date.now() >= Date.parse(runtime.expires)) return new Response(null, { status: 404, headers });
-  const [a, b] = await Promise.all([provided, `Bearer ${runtime.token}`].map(s => crypto.subtle.digest('SHA-256', new TextEncoder().encode(s))));
-  let difference = 0; const av = new Uint8Array(a), bv = new Uint8Array(b);
-  for (let i = 0; i < av.length; i++) difference |= av[i] ^ bv[i];
-  if (difference) return new Response(null, { status: 404, headers });
+  if (!await semanticTransferAuthorized(request, runtime)) return new Response(null, { status: 404, headers });
   if (!runtime.bucket) return new Response(null, { status: 503, headers });
   const hash = new URL(request.url).searchParams.get('sha256') ?? '';
   if (!/^[a-f0-9]{64}$/.test(hash)) return new Response(null, { status: 400, headers });
