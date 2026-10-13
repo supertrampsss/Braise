@@ -55,3 +55,7 @@ Auto-relecture : diff UI limité aux textes/noms/focus action, rAF annulé/gard�
 ## Propriété et suite
 
 Aucune source catalogue/calendrier/evidence/corpus/opaque416/pin/runtimeinventory/blobdata modifiée. Aucun changement de device-syncV2 : le probe scratch du contrôleur n’a pas à être rebundlé pour ce lot. Aucun preview, agent, push, Site/source sync, cloud/credentials ou déploiement lancé. Root seul : revue fraîche/wholebranch, QA nouvelle source, publication Site existant,416 probes réellement hébergés, pin futur seulement après ALLPASS, fermeture des capacités temporaires et annexes utilisateur. Lecteur d’écran/natif mobile/calendrier et succès partage natif restent non exécutés, sans certification inventée.
+
+## Conservation des octets dans Git
+
+Un contrôle des blobs Git après le premier commit a détecté la normalisation automatique des fins de ligne dans 58 preuves. Les copies originales et leur manifeste étaient exacts. La règle locale `.gitattributes` `* -text` conserve maintenant ces octets sans conversion : les 84 entrées de l’index Git correspondent à leur SHA256 et taille déclarées. La correction concerne uniquement le dossier de qualification ; aucun fichier de production ni entrée du build vérifié ne change.

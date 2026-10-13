@@ -1,0 +1,2 @@
+# Retain original proof bytes and declared SHA-256 across all Git checkouts.
+* -text
