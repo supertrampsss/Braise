@@ -9,7 +9,13 @@ import { getLegacyPuzzle } from '../lib/legacy-puzzles';
 import { SyncMemory } from '../lib/device-sync';
 import { PRODUCT_EVENTS_KEY } from '../lib/product-events';
 import { countLabel } from '../lib/game-copy';
-import { loadLocalProfile } from '../lib/profile-storage';
+import { loadLocalProfile, createLocalProfileExport, recordLocalGameProgress } from '../lib/profile-storage';
+import { discoverFree } from '../lib/free-discovery.server';
+import { dailyV2Ref } from '../lib/daily-v2-contract';
+import { getLegacyArchivePuzzle } from '../lib/legacy-puzzles';
+import futureRuntime from '../data/editorial-v2-runtime.json';
+import legacyManifest from '../data/legacy-v1.json';
+import type { Puzzle, SavedGame } from '../lib/game-types';
 
 // Real Game hooks and handlers. Only DOM presentation primitives are replaced;
 // this is component evidence, never a browser/accessibility certification.
@@ -42,7 +48,7 @@ const deferred = <T,>() => { let resolve!: (value: T) => void; const promise = n
 function browser(storage = new SyncMemory(), href = 'https://braiz.test/?libre=042') {
   const listeners = new Map<string, () => void>(), frames: Array<() => void> = []; let audioCalls = 0;
   const doc = { activeElement: null as unknown, body: {}, visibilityState: 'visible', addEventListener() {}, removeEventListener() {}, getElementById() { return null; } };
-  const win = { localStorage: storage, setTimeout, clearTimeout, location: new URL(href), scrollTo() {}, addEventListener(key: string, callback: () => void) { listeners.set(key, callback); }, removeEventListener(key: string) { listeners.delete(key); }, history: { replaceState(_state: unknown, _title: unknown, url: string | URL) { win.location = new URL(url); Object.assign(globalThis, { location: win.location }); }, pushState(_state: unknown, _title: unknown, url: string | URL) { this.replaceState(_state, _title, url); } } };
+  const win = { localStorage: storage, setTimeout, clearTimeout, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, location: new URL(href), scrollTo() {}, addEventListener(key: string, callback: () => void) { listeners.set(key, callback); }, removeEventListener(key: string) { listeners.delete(key); }, history: { replaceState(_state: unknown, _title: unknown, url: string | URL) { win.location = new URL(url); Object.assign(globalThis, { location: win.location }); }, pushState(_state: unknown, _title: unknown, url: string | URL) { this.replaceState(_state, _title, url); } } };
   Object.assign(globalThis, { window: win, document: doc, location: win.location, localStorage: storage, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, AudioContext: class { constructor() { audioCalls++; } } });
   return { storage, listeners, frames, doc, win, audioCalls: () => audioCalls };
 }
@@ -320,4 +326,134 @@ test('a completed chapter keeps its terminal badge after Jouer and Accueil witho
     assert.equal(restored.storage.getItem(`braise.v1.game.${target.id}`), saved);
     assert.deepEqual(loadLocalProfile(restored.storage).profile, profile);
   } finally { await act(async () => tree.unmount()); }
+});
+
+
+const importInstant = new Date('2026-10-13T10:00:00Z');
+async function importThroughGame(tree: ReactTestRenderer, file: string) {
+  const navigation = tree.root.findByProps({'aria-label': 'Navigation principale'});
+  await act(async () => navigation.findAllByType('a')[2].props.onClick({button: 0, preventDefault() {}}));
+  const input = tree.root.findByProps({type: 'file'});
+  await act(async () => input.props.onChange({currentTarget: {files: [{name: 'profil.json', size: Buffer.byteLength(file), text: async () => file}], value: ''}}));
+  assert.ok(tree.root.findAll(n => n.type === 'button' && text(n) === 'Confirmer l’import').length, tree.root.findAll(n => n.type === 'section' && n.props.className === 'profile-transfer').map(text).join(' '));
+  await click(tree, 'Confirmer l’import');
+}
+function legacyProfileFile(ids: string[]) {
+  const source = new SyncMemory();
+  source.setItem('braise.v1.profile', JSON.stringify({wins: ids.map(id => ({id, date: '2026-10-13', mode: 'free', tries: 1, hints: 0})), guesses: ids.length, sound: false}));
+  const result = createLocalProfileExport(loadLocalProfile(source), importInstant); assert.ok(result.ok); return result.text;
+}
+function discoveryFetch(bodies: Array<{encountered: string[]; excluded: string[]; replay: boolean}>, now = importInstant, resolved?: (result: Awaited<ReturnType<typeof discoverFree>>) => void) {
+  return async (url: Parameters<typeof fetch>[0], options?: RequestInit) => {
+    if (options?.method === 'POST') {
+      const body = JSON.parse(String(options.body)); assert.equal(body.action, 'discover'); bodies.push(body);
+      const result = await discoverFree(body, now); resolved?.(result); return Response.json(result);
+    }
+    const seed = new URL(String(url), 'https://braiz.test').searchParams.get('seed') || '042';
+    return Response.json({...getLegacyPuzzle('free', seed, now).publicPuzzle, resetAt: '2099-01-01T00:00:00Z'});
+  };
+}
+for (const complete of [true, false]) test(`real profile-only import reaches discovery with ${complete ? 'all120 targets exhausted' : 'one known target excluded'}`, async () => {
+  const seeds = new Map<number, string>();
+  for (let seed = 0; seeds.size < 120; seed++) {const index = getLegacyPuzzle('free', String(seed), importInstant).legacyIndex; if (!seeds.has(index)) seeds.set(index, String(seed));}
+  const ids = [...seeds.values()].map(seed => `free-${seed}`), imported = complete ? ids : [ids[0]];
+  const b = browser(), bodies: Array<{encountered: string[]; excluded: string[]; replay: boolean}> = [];
+  const replyReady = deferred<void>(); globalThis.fetch = discoveryFetch(bodies, importInstant, () => replyReady.resolve()); const tree = await mount();
+  try {
+    await importThroughGame(tree, legacyProfileFile(imported));
+    const snapshot = loadLocalProfile(b.storage); assert.equal(snapshot.profile.wins.length, imported.length);
+    assert.ok(imported.every(id => b.storage.getItem(`braise.v1.game.${id}`) === null), 'profile import never creates their full saves');
+    await act(async () => tree.root.findByProps({'aria-label': 'Navigation principale'}).findAllByType('a')[1].props.onClick({button: 0, preventDefault() {}}));
+    const diagnosticBefore = b.storage.getItem(PRODUCT_EVENTS_KEY);
+    await click(tree, 'Découvrir un mot en libre');
+    await act(async () => replyReady.promise);
+    assert.ok(imported.every(id => bodies[0].encountered.includes(id)), 'Game submits identities from the actual imported snapshot');
+    if (complete) {assert.match(text(tree.root), /Vous avez rencontré les 120 cibles V1/);assert.doesNotMatch(text(tree.root), /Cible non rencontrée/);assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), diagnosticBefore);}
+    else {const selected = b.win.location.searchParams.get('libre');assert.ok(selected);assert.notEqual(getLegacyPuzzle('free', selected, importInstant).legacyIndex, getLegacyPuzzle('free', imported[0].slice(5), importInstant).legacyIndex);}
+    assert.deepEqual(loadLocalProfile(b.storage).profile, snapshot.profile, 'discovery gives no extra profile credit');
+    assert.equal(b.audioCalls(), 0);
+  } finally {await act(async () => tree.unmount());}
+});
+
+for (const version of ['V1','V2'] as const) test(`lexical refusal ${version} retains exact corpus/ref in a voluntary local download and distinguishes503`, async () => {
+  const target: Puzzle = version === 'V1' ? puzzle : {id: 'daily-v2-2027-01-05', mode: 'archive', seed: '2027-01-05', date: '2027-01-05', number: 121, vocabularySize: 1013881, resetAt: '2099-01-01T00:00:00Z', ref: dailyV2Ref('2027-01-05','archive')};
+  const b = browser(undefined, version === 'V1' ? 'https://braiz.test/?libre=042' : 'https://braiz.test/?archive=2027-01-05');
+  let status = 422, posts = 0, captured: Blob | undefined, downloads = 0;
+  globalThis.fetch = async (_url, options) => {if (options?.method === 'POST') {posts++;return Response.json({error: status === 422 ? 'Mot absent du lexique.' : 'Stockage indisponible.'}, {status});} return Response.json(target);};
+  const originalCreate = URL.createObjectURL, originalRevoke = URL.revokeObjectURL;
+  URL.createObjectURL = blob => {assert.ok(blob instanceof Blob);captured = blob;return 'blob:local-feedback';}; URL.revokeObjectURL = () => {};
+  Object.assign(b.doc, {createElement: () => ({click() {downloads++;}})});
+  const tree = await mount();
+  try {
+    await act(async () => tree.root.findByProps({id: 'guess'}).props.onChange({target: {value: 'zzabsentqa'}}));
+    await act(async () => tree.root.findByProps({className: 'guess-form'}).props.onSubmit({preventDefault() {}, currentTarget: {contains() {return false;}}}));
+    const report = tree.root.findByProps({className: 'refused-word-report'});
+    assert.ok(text(report).includes(target.ref.corpusVersion), 'lexicon copy identifies the actual corpus');
+    assert.equal(tree.root.findByProps({id: 'guess'}).props.value, 'zzabsentqa');assert.equal(downloads, 0);assert.equal(posts, 1);
+    const diagnosticBefore = b.storage.getItem(PRODUCT_EVENTS_KEY);
+    await click(tree, 'Télécharger le signalement'); assert.equal(downloads, 1);assert.equal(posts, 1);assert.ok(captured);
+    const payload = JSON.parse(await captured.text());assert.deepEqual(payload.puzzleRef, target.ref);assert.equal(payload.corpusVersion, target.ref.corpusVersion);assert.equal(payload.word, 'zzabsentqa');assert.equal(payload.reason, 'absent-from-lexicon');
+    assert.deepEqual(JSON.parse(diagnosticBefore!).events.map((event: {type: string}) => event.type), ['guessRejected']);
+    assert.deepEqual(JSON.parse(b.storage.getItem(PRODUCT_EVENTS_KEY)!).events.map((event: {type: string}) => event.type), ['guessRejected','refusedWordReported']);
+    status = 503;await act(async () => tree.root.findByProps({id: 'guess'}).props.onChange({target: {value: 'zzautreaq'}}));
+    await act(async () => tree.root.findByProps({className: 'guess-form'}).props.onSubmit({preventDefault() {}, currentTarget: {contains() {return false;}}}));
+    assert.equal(tree.root.findAllByProps({className: 'refused-word-report'}).length, 0);assert.equal(posts, 2);assert.equal(downloads, 1);
+    const ledger = b.storage.getItem(PRODUCT_EVENTS_KEY)!;assert.deepEqual(JSON.parse(ledger).events.map((event: {type: string}) => event.type), ['guessRejected','refusedWordReported','networkFailed']);assert.doesNotMatch(ledger,/zzabsentqa|zzautreaq|puzzleRef|corpusVersion/);for(const event of JSON.parse(ledger).events) assert.deepEqual(Object.keys(event).sort(), ['context','occurredAt','type']);
+  } finally {await act(async () => tree.unmount());URL.createObjectURL = originalCreate;URL.revokeObjectURL = originalRevoke;}
+});
+
+
+const nonterminalGame = (instant: string): SavedGame => ({guesses:[{word:'arbre',temperature:12.25,rank:1234,found:false,order:1,acceptedAt:instant}],hints:0,pins:[],startedAt:Date.parse(instant),profileV2StartIndex:0});
+test('real nonterminal profile import and transferred evidence retain leading zeroes and admissible daily V1 identities', async () => {
+  const source = new SyncMemory(), leading = getLegacyPuzzle('free','00042',importInstant).publicPuzzle, daily = getLegacyArchivePuzzle('2026-10-12',importInstant).publicPuzzle;
+  let snapshot = recordLocalGameProgress(leading,nonterminalGame(importInstant.toISOString()),source);
+  snapshot = recordLocalGameProgress(daily,nonterminalGame(importInstant.toISOString()),source,snapshot);
+  const exported = createLocalProfileExport(snapshot,importInstant);assert.ok(exported.ok);
+  // Retain an earlier witness of a genuine nonterminal fact as transfer evidence.
+  // The full import validator checks its identity; it adds no extra counter.
+  const file = JSON.parse(exported.text);file.evidence.push({...file.activities[0],occurredAt:'2026-10-13T09:00:00.000Z'});
+  const b = browser(), bodies: Array<{encountered: string[]; excluded: string[]; replay: boolean}> = [], ready = deferred<void>();
+  globalThis.fetch = discoveryFetch(bodies,importInstant,()=>ready.resolve());const tree = await mount();
+  try {await importThroughGame(tree,JSON.stringify(file));const actual = loadLocalProfile(b.storage);assert.ok(actual.activities.length);assert.ok(actual.transferEvidence.length);assert.equal(actual.profile.wins.length,0);
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));await click(tree,'Découvrir un mot en libre');await act(async()=>ready.promise);
+    assert.ok(bodies[0].encountered.includes('free-00042'));assert.ok(bodies[0].encountered.includes('daily-2026-10-12'));assert.equal(bodies[0].encountered.filter(id=>id==='free-00042').length,1);assert.equal(b.storage.getItem('braise.v1.game.free-00042'),null);assert.equal(b.storage.getItem('braise.v1.game.daily-2026-10-12'),null);assert.deepEqual(loadLocalProfile(b.storage).profile,actual.profile);
+  }finally{await act(async()=>tree.unmount());}
+});
+
+test('an accepted memory-only fact reaches actual Game discovery even when no game or profile write succeeded', async () => {
+  class Unwritable extends SyncMemory {refuse=true;override setItem(key:string,value:string){if(this.refuse)throw new Error('quota');super.setItem(key,value);}}
+  const storage = new Unwritable(), b = browser(storage,'https://braiz.test/?libre=00042'), target = getLegacyPuzzle('free','00042',importInstant).publicPuzzle;
+  const bodies: Array<{encountered: string[]; excluded: string[]; replay: boolean}> = [], ready = deferred<void>(); const discover = discoveryFetch(bodies,importInstant,()=>ready.resolve());
+  globalThis.fetch = async(url,options)=>options?.method==='POST'&&JSON.parse(String(options.body)).action==='guess'?Response.json({word:'arbre',temperature:12.25,rank:1234,found:false,puzzleRef:target.ref}):discover(url,options);
+  const tree = await mount();try{
+    await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:'arbre'}}));await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
+    assert.equal(storage.getItem('braise.v1.game.free-00042'),null);assert.equal(loadLocalProfile(storage).profile.guesses,0);
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[2].props.onClick({button:0,preventDefault(){}}));const panel=tree.root.findAll(n=>typeof n.type==='function'&&n.props.snapshot&&n.props.onDeviceSync)[0];assert.equal(panel.props.snapshot.profile.guesses,1);assert.ok(panel.props.snapshot.pendingActivities.some((fact:{type:string;puzzleRef?:{id:string}})=>fact.type==='guessAccepted'&&fact.puzzleRef?.id==='free-00042'));
+    const pendingFacts=panel.props.snapshot.pendingActivities;
+    storage.refuse=false;await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));await click(tree,'Découvrir un mot en libre');await act(async()=>ready.promise);
+    assert.ok(bodies[0].encountered.includes('free-00042'));assert.equal(loadLocalProfile(storage).profile.guesses,0,'reading pending identities never persists or repeats credit');
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[2].props.onClick({button:0,preventDefault(){}}));const retained=tree.root.findAll(n=>typeof n.type==='function'&&n.props.snapshot&&n.props.onDeviceSync)[0].props.snapshot;assert.equal(retained.profile.guesses,1);assert.deepEqual(retained.pendingActivities,pendingFacts);assert.equal(b.audioCalls(),0);
+  }finally{await act(async()=>tree.unmount());}
+});
+
+for (const common of [true,false]) test(`real mixed profile import leaves ${common?'common':'non-common'} dailyV2 reference on its canonical server discovery path`,async()=>{
+  const now = new Date('2028-01-04T12:00:00Z'), OriginalDate=Date;
+  class FutureClock extends OriginalDate {constructor(value?:string|number|Date){super(value===undefined?now.getTime():value instanceof OriginalDate?value.getTime():value);}static now(){return now.getTime();}}
+  Object.assign(globalThis,{Date:FutureClock});
+  const currentIndex=getLegacyPuzzle('free','042',now).legacyIndex;
+  const assignment=futureRuntime.calendar.assignments.find(row=>{const word=futureRuntime.entries.find(entry=>entry.targetId===row.targetId)!.word;const index=legacyManifest.targets.indexOf(word);return common?index>=0&&index!==currentIndex:index<0;});assert.ok(assignment);
+  const target: Puzzle={id:`daily-v2-${assignment.date}`,mode:'archive',seed:assignment.date,date:assignment.date,number:121,vocabularySize:1013881,resetAt:now.toISOString(),ref:dailyV2Ref(assignment.date,'archive')};
+  const source=new SyncMemory(), snapshot=recordLocalGameProgress(target,nonterminalGame(now.toISOString()),source), exported=createLocalProfileExport(snapshot,now);assert.ok(exported.ok);
+  const b=browser(), bodies:Array<{encountered:string[];excluded:string[];replay:boolean}>=[], ready=deferred<Awaited<ReturnType<typeof discoverFree>>>();globalThis.fetch=discoveryFetch(bodies,now,value=>ready.resolve(value));const tree=await mount();
+  try {await importThroughGame(tree,exported.text);assert.equal(b.storage.getItem(`braise.v1.game.${target.id}`),null);const before=loadLocalProfile(b.storage).profile;
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));await click(tree,'Découvrir un mot en libre');let result!:Awaited<ReturnType<typeof discoverFree>>;await act(async()=>{result=await ready.promise;});
+    assert.ok(bodies[0].encountered.includes(target.id));assert.ok(!bodies[0].encountered.includes(`free-${assignment.targetId}`));assert.equal(result.remaining,common?119:120,'only a canonically common V2 word excludes an additional V1 target');assert.deepEqual(loadLocalProfile(b.storage).profile,before);assert.equal(b.audioCalls(),0);
+  }finally{await act(async()=>tree.unmount());Object.assign(globalThis,{Date:OriginalDate});}
+});
+
+
+test('hint422 with an empty proposal is an error, not a refused word to download',async()=>{
+ const b=browser();b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:Array.from({length:5},(_,i)=>({word:'piste'+i,temperature:12.25,rank:1234,found:false,order:i+1}))}));
+ const actions:string[]=[];globalThis.fetch=async(_url,options)=>{if(options?.method==='POST'){actions.push(JSON.parse(String(options.body)).action);return Response.json({error:'Indice indisponible.'},{status:422});}return Response.json(puzzle);};
+ const tree=await mount();try{const hint=tree.root.findByProps({className:'hint-button'});assert.equal(hint.props.disabled,false);await act(async()=>hint.props.onClick());assert.equal(tree.root.findByProps({id:'guess'}).props.value,'');assert.equal(tree.root.findAllByProps({className:'refused-word-report'}).length,0);assert.deepEqual(actions,['hint']);assert.match(text(tree.root),/Indice indisponible/);}finally{await act(async()=>tree.unmount());}
 });

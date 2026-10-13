@@ -22,7 +22,7 @@ import { warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/li
 
 import { dailyIdentity } from "@/lib/daily-v2-contract";
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
-import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
+import { samePuzzleRef, type EvaluationResponse, type GameEffect, type PuzzleRef } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
 import { isProfileStorageKey, refreshLocalProfile, setLocalCosmetic, setLocalSound, type ProfileSnapshot } from "@/lib/profile-storage";
 import { archiveDateStatus, LEGACY_ARCHIVE_START_DATE, latestArchiveDate, parisDate } from "@/lib/calendar";
@@ -36,7 +36,7 @@ import { ArchiveCalendar } from "@/components/game-parts/archive-calendar";
 import { PlayTutorial } from "@/components/game-parts/play-tutorial";
 import { ResumeHub, WinSummary } from "@/components/game-parts/play-hub";
 import { readLocalPlays, rememberPlayContext, resumeSuggestion, type LocalPlay, type PlayContext } from "@/lib/play-hub";
-import { readEncountered, rememberEncountered } from "@/lib/free-discovery";
+import { readEncountered, rememberEncountered, collectDiscoveryHistory } from "@/lib/free-discovery";
 import { recordProductEvent, type ProductEventType, type ProductEventContext } from "@/lib/product-events";
 import { formatScoreFr } from "@/lib/format-fr";
 import "@/components/game-parts/game-parts.css";
@@ -94,13 +94,13 @@ export default function Game() {
   const [discoveryExhausted, setDiscoveryExhausted] = useState(false);
   const discoveryPending = useRef(false);
   const [discoveryBusy, setDiscoveryBusy] = useState(false);
-  const [refusedWord, setRefusedWord] = useState("");
+  const [refusal, setRefusal] = useState<{word: string; puzzleRef: PuzzleRef} | null>(null);
   const [collectionContext, setCollectionContext] = useState<string | undefined>();
   function refreshPlays() { try { setLocalPlays(readLocalPlays(localStorage)); } catch {} }
   function diagnostic(type: ProductEventType, context?: ProductEventContext) { try { recordProductEvent(localStorage, type, context ?? (journey ? "expedition" : collectionContext ? "collection" : mode)); } catch {} }
   function downloadRefusedWord() {
-    if(!refusedWord) return;
-    const blob = new Blob([JSON.stringify({format:"braiz-lexicon-feedback",version:1,word:refusedWord,reason:"absent-v1",createdAt:new Date().toISOString()},null,2)],{type:"application/json"});
+    if(!refusal) return;
+    const blob = new Blob([JSON.stringify({format:"braiz-lexicon-feedback",version:2,word:refusal.word,reason:"absent-from-lexicon",corpusVersion:refusal.puzzleRef.corpusVersion,puzzleRef:refusal.puzzleRef,createdAt:new Date().toISOString()},null,2)],{type:"application/json"});
     const url=URL.createObjectURL(blob), link=document.createElement("a");link.href=url;link.download="braiz-mot-refuse.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);diagnostic("refusedWordReported");
   }
   const [flamePaused, setFlamePaused] = useState(false);
@@ -234,7 +234,7 @@ export default function Game() {
     setJourney(expedition ?? null);
     collection=COLLECTIONS.find(item=>item.id===collection && item.seeds.includes(locator))?.id;
     setCollectionContext(collection);
-    setRefusedWord("");
+    setRefusal(null);
     setDiscoveryNote("");setDiscoveryExhausted(false);
     const descriptor: PuzzleLoad={mode:nextMode,locator,sessionSave,expedition,collection,destination};
     lastLoad.current = descriptor;
@@ -339,9 +339,7 @@ export default function Game() {
     try {
       const excluded = readEncountered(localStorage);
       if (!excluded) throw new Error("L’historique de découverte est illisible et a été conservé. Vous pouvez reprendre une partie existante.");
-      const encountered: string[] = [];
-      for(let i=0;i<localStorage.length;i++) { const key=localStorage.key(i); if(key?.startsWith("braise.v1.game.")) encountered.push(key.slice("braise.v1.game.".length)); }
-      if(encountered.length > 3000) throw new Error("L’historique dépasse la limite de découverte. Reprenez une partie existante.");
+      const encountered = collectDiscoveryHistory(localStorage, profileSnapshot);
       const response = await fetch("/api/game", { method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"discover",excluded,encountered,replay}) });
       const data = await response.json() as {error?:string;encountered:string[];exhausted:boolean;puzzle:(Puzzle & {targetIdentity:string}) | null};
       if(generation !== requestRef.current || epoch !== navigationEpoch.current) return;
@@ -514,14 +512,14 @@ export default function Game() {
     if (!isHint && !word) { inputRef.current?.focus(); return; }
     if (!isHint && game.guesses.some(g => g.word === word)) { setError(`« ${word} » est déjà dans vos essais.`); inputRef.current?.select(); return; }
     if (isHint && game.hints >= 3) return;
-    submitting.current = true; setBusy(true); setError(""); setRefusedWord("");
+    submitting.current = true; setBusy(true); setError(""); setRefusal(null);
     const request = requestRef.current;
     try {
       const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: isHint ? "hint" : "guess", hintLevel: game.hints, guesses: isHint ? game.guesses.map(g => g.word) : undefined }) });
       const data = await response.json() as EvaluationResponse & { error?: string };
       if (request !== requestRef.current) return;
       if (!response.ok) {
-        if(response.status === 422) { if(inputRevisionRef.current === submittedRevision) setRefusedWord(word);diagnostic("guessRejected"); }
+        if(response.status === 422) { if(!isHint && word && inputRevisionRef.current === submittedRevision) setRefusal({word,puzzleRef:puzzle.ref});diagnostic("guessRejected"); }
         else if(response.status >= 500) diagnostic("networkFailed");
         throw new Error(data.error || "Impossible d’analyser ce mot.");
       }
@@ -650,8 +648,8 @@ export default function Game() {
               {mode === "free" && <p className="free-discovery-note">Libre · 120 cibles V1. Vos parties commencées restent dans Explorer. Les anciens liens conservent leur mot.</p>}
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essai{game.guesses.length === 1 ? "" : "s"}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><p className="game-guidance">Le sens compte, pas les lettres. Plus la température monte, plus le sens est proche. <button className="text-action" type="button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer en 3 étapes</button></p><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); setRefusedWord(""); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback proximity-rule" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Proposer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <span><span style={{ color: warmth(latest.temperature).color }}>Dernier essai : {latest.word} : {formatScoreFr(latest.temperature)}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></span> : null)}</div></div>}
-              {refusedWord && <div className="refused-word-report"><p>Ce refus concerne le lexique V1. Votre mot reste dans le champ. Vous pouvez télécharger volontairement une fiche contenant « {refusedWord} » pour une revue ultérieure ; aucun envoi automatique.</p><button className="secondary-button" onClick={downloadRefusedWord}>Télécharger le signalement</button></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{game.guesses.length} essai{game.guesses.length === 1 ? "" : "s"}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><p className="game-guidance">Le sens compte, pas les lettres. Plus la température monte, plus le sens est proche. <button className="text-action" type="button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer en 3 étapes</button></p><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); setRefusal(null); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback proximity-rule" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Proposer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : latest ? <span><span style={{ color: warmth(latest.temperature).color }}>Dernier essai : {latest.word} : {formatScoreFr(latest.temperature)}°</span><span> {warmth(latest.temperature).label.toLowerCase()}.</span></span> : null)}</div></div>}
+              {refusal && <div className="refused-word-report"><p>Ce refus concerne le lexique de cette partie : {refusal.puzzleRef.corpusVersion}. Votre mot reste dans le champ. Vous pouvez télécharger volontairement une fiche contenant « {refusal.word} » pour une revue ultérieure ; aucun envoi automatique.</p><button className="secondary-button" onClick={downloadRefusedWord}>Télécharger le signalement</button></div>}
               <p id="proximity-rule" className="game-guidance">La température mesure une proximité, pas une probabilité. Le rang 1 est le meilleur sur {puzzle?.vocabularySize.toLocaleString("fr-FR") ?? "le dictionnaire"} mots.</p>
               {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
                 <div><span>Meilleure piste</span><strong>{best.word}</strong></div>
