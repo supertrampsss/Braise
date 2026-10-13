@@ -15,8 +15,8 @@ export function boundedRangeBucket(bucket: RangeBucket, limits: { reads: number;
     const cancelPending = () => rejectAbort(aborted());
     const abortPromise = new Promise<never>((_, reject) => { rejectAbort = reject; });
     pending.add(cancelPending);
-    const operation = bucket.get(key, options).then(async object => {
-      if (limits.signal.aborted || closed) { if (object) await object.body.cancel(); throw aborted(); }
+    const operation = bucket.get(key, options).then(object => {
+      if (limits.signal.aborted || closed) { if (object) void object.body.cancel().catch(() => {}); throw aborted(); }
       return object;
     });
     let object;
@@ -26,7 +26,11 @@ export function boundedRangeBucket(bucket: RangeBucket, limits: { reads: number;
     const reader = object.body.getReader(); let finished = false; let cancelling = false;
     let controller: ReadableStreamDefaultController<Uint8Array>;
     const finish = () => { pending.delete(cancelBody); if (!finished) { finished = true; reader.releaseLock(); } };
-    const cancelBody = () => { if (finished || cancelling) return; cancelling = true; controller.error(aborted()); void reader.cancel().catch(() => {}).finally(finish); };
+    // Cancellation is cleanup, never a dependency of deadline/error completion.
+    // Calling cancel settles pending reads even if the underlying source's
+    // cancellation promise never settles; release our reader lock immediately.
+    const cancelReader = () => { if (!finished) { void reader.cancel().catch(() => {}); finish(); } };
+    const cancelBody = () => { if (finished || cancelling) return; cancelling = true; controller.error(aborted()); cancelReader(); };
     const body = new ReadableStream<Uint8Array>({
       start(value) { controller = value; pending.add(cancelBody); if (limits.signal.aborted) cancelBody(); },
       async pull(output) {
@@ -36,12 +40,12 @@ export function boundedRangeBucket(bucket: RangeBucket, limits: { reads: number;
           if (limits.signal.aborted || closed || cancelling) { if (!finished) cancelBody(); return; }
           if (done) { finish(); output.close(); return; }
           counters.bytes += value.length;
-          if (counters.bytes > limits.bytes) { await reader.cancel(); finish(); output.error(new Error('v2-range-byte-budget')); return; }
+          if (counters.bytes > limits.bytes) { cancelReader(); output.error(new Error('v2-range-byte-budget')); return; }
           if (limits.corruptRange && options?.range && !corrupted && value.length) { const changed = new Uint8Array(value); changed[0] ^= 1; corrupted = true; output.enqueue(changed); }
           else output.enqueue(value);
-        } catch (error) { if (!finished) { await reader.cancel().catch(() => {}); finish(); output.error(error); } }
+        } catch (error) { if (!finished) { cancelReader(); output.error(error); } }
       },
-      async cancel() { if (!finished) { await reader.cancel(); finish(); } },
+      cancel() { cancelReader(); },
     }, { highWaterMark: 0 });
     return { ...object, body };
   } };

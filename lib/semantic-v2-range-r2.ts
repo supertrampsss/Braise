@@ -15,13 +15,13 @@ const digest = async (bytes: Uint8Array) => [...new Uint8Array(await crypto.subt
 
 async function exactBody(object: ReadableObject, total: number, length: number, range?: { offset: number; length: number }) {
   if (object.size !== total || range && (object.range?.offset !== range.offset || object.range?.length !== range.length)) {
-    await object.body.cancel(); throw new Error("v2-range-response-metadata");
+    void object.body.cancel().catch(() => {}); throw new Error("v2-range-response-metadata");
   }
   const bytes = new Uint8Array(length); const reader = object.body.getReader(); let cursor = 0;
   try {
     for (;;) {
       const { done, value } = await reader.read(); if (done) break;
-      if (value.length > length - cursor) { await reader.cancel(); throw new Error("v2-range-body-overflow"); }
+      if (value.length > length - cursor) { void reader.cancel().catch(() => {}); throw new Error("v2-range-body-overflow"); }
       bytes.set(value, cursor); cursor += value.length;
     }
   } finally { reader.releaseLock(); }

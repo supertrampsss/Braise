@@ -85,3 +85,41 @@ test("range transport admits at most four operations and releases capacity after
   await Promise.all(pending.map(p => assert.rejects(p, /not-pinned/)));
   await assert.rejects(load("absent/key", 7), /not-pinned/);
 });
+
+test('R2 cleanup never waits for permanent cancel on metadata, overflow, byte budget or abort', async t => {
+  const { boundedRangeBucket } = await import('../lib/semantic-v2-bounded-r2');
+  async function within<T>(work: Promise<T>) {
+    let timer: ReturnType<typeof setTimeout>;
+    try { return await Promise.race([work, new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('test-cleanup-still-pending')), 1000); })]); }
+    finally { clearTimeout(timer!); }
+  }
+  for (const fault of ['metadata', 'overflow', 'byte-budget', 'abort']) await t.test(fault, async () => {
+    const f = fixture(); const control = new AbortController(); let cancelled = 0;
+    const raw = new ReadableStream<Uint8Array>({
+      start(c) { if (fault === 'overflow' || fault === 'byte-budget') c.enqueue(new Uint8Array(f.rootPin.bytes + 1)); },
+      cancel() { cancelled++; return new Promise<void>(() => {}); },
+    });
+    const bucket: RangeBucket = { get: async () => ({ size: f.rootPin.bytes + (fault === 'metadata' ? 1 : 0), body: raw }) };
+    const network = boundedRangeBucket(bucket, { reads: 4, bytes: fault === 'byte-budget' ? f.rootPin.bytes - 1 : 1024 * 1024, signal: control.signal });
+    let abortTimer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      const work = pinnedRangeR2Loader(network.bucket, f.rootPin)('corpus/presence/leaf-aa', 7);
+      if (fault === 'abort') abortTimer = setTimeout(() => control.abort(), 20);
+      const expected = fault === 'metadata' ? /response-metadata/ : fault === 'overflow' ? /body-overflow/ : fault === 'byte-budget' ? /byte-budget/ : /deadline/;
+      await assert.rejects(within(work), expected);
+      assert.equal(cancelled, 1); assert.equal(raw.locked, false, 'underlying R2 reader lock released');
+      assert.equal(network.counters.reads, 1);
+    } finally { clearTimeout(abortTimer); control.abort(); network.close(); }
+  });
+  for (const fault of ['metadata', 'overflow']) await t.test('direct adapter ' + fault, async () => {
+    const f = fixture(); let cancelled = 0;
+    const raw = new ReadableStream<Uint8Array>({ start(c) { if (fault === 'overflow') c.enqueue(new Uint8Array(f.rootPin.bytes + 1)); }, cancel() { cancelled++; return new Promise<void>(() => {}); } });
+    const bucket: RangeBucket = { get: async () => ({ size: f.rootPin.bytes + (fault === 'metadata' ? 1 : 0), body: raw }) };
+    const load = pinnedRangeR2Loader(bucket, f.rootPin);
+    await assert.rejects(within(load('corpus/presence/leaf-aa', 7)), fault === 'metadata' ? /response-metadata/ : /body-overflow/);
+    assert.equal(cancelled, 1); assert.equal(raw.locked, false);
+    // Capacity was released despite the uncooperative source; a subsequent
+    // request reaches the same integrity check instead of retaining a slot.
+    await assert.rejects(within(load('corpus/presence/leaf-aa', 7)), fault === 'metadata' ? /response-metadata/ : /body-truncated/);
+  });
+});
