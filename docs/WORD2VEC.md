@@ -28,15 +28,17 @@ Le cosinus porte sur les composantes float32 originales promues avant les opéra
 
 Le rang est ordinal : la cible exacte d'abord, puis cosinus **avant arrondi** décroissant, puis identifiant source croissant en cas d'égalité. Les 155 562 lignes participent, y compris les collisions canoniques. Une température stockée vaut `floor(cosinus × 10000 + 0.5)`, bornée entre -10000 et 9999 hors cible ; seule l'identité exacte porte 10000 et le rang 1. Le lecteur renvoie exactement ce score divisé par 100, soit deux décimales et un maximum de 99,99 hors victoire, sans nouvel arrondi. Une proximité élevée n'est jamais une identité.
 
-Chaque objet BWS1 a un en-tête little-endian de 32 octets : magic `BWS1` à 0, version uint32 1 à 4, nombre de lignes à 8, identifiant source du secret à 12, offset des scores à 16, offset des rangs à 20, longueur brute à 24, réservé zéro à 28. Suivent 155 562 scores int16 puis 155 562 rangs uint32. Le gzip est déterministe : date zéro, sans nom de fichier, niveau 9 et byte OS 255.
+Chaque objet **BWS2** a un en-tête little-endian de 32 octets : magic `BWS2` à 0, version uint32 2 à 4, nombre de lignes à 8, identifiant source du secret à 12, offset des températures à 16, offset des identifiants à 20, longueur brute à 24, réservé zéro à 28. Suivent 155 562 températures int16 **dans l’ordre des rangs**, puis la permutation correspondante des 155 562 identifiants source uint32. Le rang est la position dans cette permutation plus un. Le lecteur reconstruit les tableaux de températures et rangs par identifiant source ; il refuse les identifiants dupliqués/hors limites, une hausse de température dans cet ordre, la cible incohérente et tout autre format. Le gzip est déterministe : date zéro, sans nom de fichier, niveau 9 et byte OS 255.
+
+Ce réordonnancement compresse mieux les températures monotones, sans retirer de mot/cible ni modifier une température ou un rang. L’ancien BWS1 inédit stockait les scores et rangs par identifiant ; son archive de 358 424 058 octets a été refusée par le plafond natif de 256 Mio et n’est jamais devenue publique. BWS2 remplace ce seul codec, sans fallback BWS1 et sans changement de l’identité du corpus ou des sauvegardes numériques.
 
 Le manifeste serveur contient les 155 562 mots alignés aux identifiants, la provenance, les collisions, les correspondances et les tailles/SHA-256 de chaque objet compressé et brut. Il ne doit jamais être importé côté client.
 
 ## Stockage et contrôles
 
-`lib/word2vec.server.ts` utilise explicitement `env.ASSETS`, indépendamment du stockage R2 historique. Il valide taille compressée, empreinte compressée, décompression bornée, empreinte brute, en-tête et identité. Objet absent, binding absent, corruption ou échec de lecture produisent une erreur de stockage, sans repli sémantique. Un mot inconnu renvoie `null`.
+`lib/word2vec.server.ts` utilise explicitement `env.ASSETS`, indépendamment du stockage R2 historique. Il valide taille compressée, empreinte compressée, décompression bornée, empreinte brute, en-tête BWS2, permutation complète, ordre décroissant des températures et identité. Objet absent, binding absent, corruption ou échec de lecture produisent une erreur de stockage, sans repli sémantique. Un mot inconnu renvoie `null`.
 
-Les 475 objets portent l’extension `.bws` et contiennent les octets gzip épinglés. Une extension `.gz` faisait déclarer `Content-Encoding: gzip` au serveur statique : `fetch` décompressait alors la réponse avant sa validation. Le renommage conserve toutes les empreintes et tous les scores ; le lecteur conserve un seul contrat compressé, sans accepter un second format brut. L’attribution publique est accessible dans Confidentialité et dans `/semantic/word2vec-NOTICE.txt`.
+Les 475 objets portent l’extension `.bws` et contiennent les octets gzip épinglés. Une extension `.gz` faisait déclarer `Content-Encoding: gzip` au serveur statique : `fetch` décompressait alors la réponse avant sa validation. Le renommage initial préservait les octets BWS1 ; la compaction BWS2 a ensuite remplacé leurs empreintes dans le manifeste. Le lecteur conserve un seul contrat compressé, sans accepter un second format brut. L’attribution publique est accessible dans Confidentialité et dans `/semantic/word2vec-NOTICE.txt`.
 
 ## Éditions classiques et reprise
 
@@ -48,7 +50,7 @@ Les nouveaux documents de partie déclarent `schemaVersion: 3`, leur référence
 
 Le cache LRU de tableaux décodés est borné à 4 Mio. Au plus quatre objets distincts sont chargés simultanément ; les lectures d'un même objet partagent leur promesse. Un échec reste réessayable. Le cache n'inclut pas le manifeste ni les buffers transitoires ; sa borne n'est pas une mesure de mémoire totale du Worker. La qualification publiée relève du contrôleur.
 
-Livraison : 475 objets, 443 366 900 octets bruts, 329 587 952 octets compressés (314,32 Mio), objet compressé maximal 702 359 octets, manifeste 1 893 810 octets. Chaque objet reste sous 25 Mio. Le binaire source reste sous `work/`, ignoré par Git.
+Mesures de la première livraison BWS1 non publiée : 475 objets, 443 366 900 octets bruts, 329 587 952 octets compressés (314,32 Mio), objet compressé maximal 702 359 octets, manifeste 1 893 810 octets. Livraison BWS2 actuelle : 475 objets, 443 366 900 octets bruts, **214 468 367 octets compressés (204,533 Mio)**, objet maximal 454 117 octets et manifeste 1 892 385 octets. Les 73 891 950 températures et autant de rangs reconstruits sont identiques à la baseline BWS1 conservée ; la comparaison détaillée figure dans le rapport de compaction. Chaque objet reste sous 25 Mio. Le binaire source et la copie BWS1 de preuve restent sous `work/`, ignoré par Git.
 
 ## Reconstruction et oracle
 
@@ -65,7 +67,9 @@ npm run build
 
 `--source`, `--root` et `--report` permettent de préciser les chemins. Le générateur contrôle le fichier entier (taille, MD5, SHA-256, en-tête, EOF, vecteurs et normes), puis calcule des lots de 16 cibles. Il n'utilise ni limite de vocabulaire ni liste de voisins.
 
-Le vérificateur n'importe aucun calcul du générateur : il relit la source en streaming, recalcule séparément normes et produits scalaires float64, et contrôle **73 891 950 températures et 73 891 950 rangs**, toutes les correspondances mot/identifiant, les 120 emplacements historiques, chaque en-tête et empreinte et l'inventaire des 475 fichiers. Il utilise une réduction NumPy indépendante du produit matriciel BLAS du constructeur et un tri stable distinct. Les rapports locaux sont `work/word2vec-build-report.json` et `work/word2vec-verification.json`.
+Le vérificateur n'importe aucun calcul du générateur : il relit la source en streaming, recalcule séparément normes et produits scalaires float64, reconstruit les tableaux BWS2 et contrôle **73 891 950 températures et 73 891 950 rangs**, toutes les correspondances mot/identifiant, les 120 emplacements historiques, chaque en-tête et empreinte et l'inventaire des 475 fichiers. Il utilise une réduction NumPy indépendante du produit matriciel BLAS du constructeur et un tri stable distinct. Les rapports locaux sont `work/word2vec-build-report.json` et `work/word2vec-verification.json`.
+
+La compaction initiale BWS2 a été réalisée par repack exact des colonnes BWS1 conservées : ordre déterminé par leurs rangs existants, comparaison intégrale des tableaux reconstruits avant/après, puis oracle indépendant actuel depuis les vecteurs. Aucun nouveau calcul de score n’est utilisé pour repacker. Le générateur versionné produit désormais directement BWS2 pour une reconstruction future. Preuves locales : `work/word2vec-bws2-repack-comparison.json` et la baseline `work/word2vec-source/bws1-baseline/`.
 
 Observations de la colonne « assiette » (score stocké et renvoyé en centièmes de degré) :
 

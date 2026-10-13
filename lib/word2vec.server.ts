@@ -68,21 +68,24 @@ async function gunzipBounded(bytes: ArrayBuffer, expectedBytes: number) {
 
 function parseColumn(raw: ArrayBuffer, target: Target): Column {
   const count = index.vocabularySize;
-  const ranksOffset = 32 + count * 2;
+  const idsOffset = 32 + count * 2;
   const view = new DataView(raw);
-  if (raw.byteLength !== 32 + count * 6 || String.fromCharCode(...new Uint8Array(raw, 0, 4)) !== "BWS1" ||
-      view.getUint32(4, true) !== 1 || view.getUint32(8, true) !== count || view.getUint32(12, true) !== target.wordId ||
-      view.getUint32(16, true) !== 32 || view.getUint32(20, true) !== ranksOffset || view.getUint32(24, true) !== raw.byteLength || view.getUint32(28, true) !== 0) {
+  if (index.format !== 'BWS2' || raw.byteLength !== 32 + count * 6 || String.fromCharCode(...new Uint8Array(raw, 0, 4)) !== "BWS2" ||
+      view.getUint32(4, true) !== 2 || view.getUint32(8, true) !== count || view.getUint32(12, true) !== target.wordId ||
+      view.getUint32(16, true) !== 32 || view.getUint32(20, true) !== idsOffset || view.getUint32(24, true) !== raw.byteLength || view.getUint32(28, true) !== 0) {
     throw new Word2vecStorageError("corrupt", "Word2Vec binary header differs from its manifest");
   }
   const scores = new Int16Array(count);
   const ranks = new Uint32Array(count);
-  for (let id = 0; id < count; id++) {
-    scores[id] = view.getInt16(32 + id * 2, true);
-    ranks[id] = view.getUint32(ranksOffset + id * 4, true);
-    if (scores[id] < -10000 || scores[id] > (id === target.wordId ? 10000 : 9999) || ranks[id] < 1 || ranks[id] > count) {
-      throw new Word2vecStorageError("corrupt", "Word2Vec score or rank is out of bounds");
+  let previous = 10000;
+  for (let position = 0; position < count; position++) {
+    const id = view.getUint32(idsOffset + position * 4, true);
+    const score = view.getInt16(32 + position * 2, true);
+    if (id >= count || ranks[id] !== 0 || score < -10000 || score > (position === 0 ? 10000 : 9999) || score > previous ||
+        position === 0 && (id !== target.wordId || score !== 10000)) {
+      throw new Word2vecStorageError("corrupt", "Word2Vec rank permutation, score order or identity is invalid");
     }
+    scores[id] = score; ranks[id] = position + 1; previous = score;
   }
   if (scores[target.wordId] !== 10000 || ranks[target.wordId] !== 1) throw new Word2vecStorageError("corrupt", "Word2Vec target identity is invalid");
   return { scores, ranks, bytes: scores.byteLength + ranks.byteLength };

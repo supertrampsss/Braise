@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { createHash } from 'node:crypto';
+import { gzipSync } from 'node:zlib';
 import legacy from "../data/legacy-v1.json";
 import manifest from "../data/word2vec-index.json";
 import { evaluateWord2vec, loadWord2vecObjectFromRuntime, setWord2vecObjectLoaderForTests, word2vecAvailable, word2vecCacheStats, Word2vecStorageError, word2vecLegacyTargets, word2vecMetadata, word2vecTargets } from "../lib/word2vec.server";
@@ -9,6 +11,74 @@ async function asset(key: string) {
   const value = await readFile(`public/${key}`);
   return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength);
 }
+
+// Codec fixtures deliberately repin their test transport so inner validation,
+// rather than the outer digest check, must reject malformed binary structure.
+function rankedFixture() {
+  const target = manifest.targets.find(target => target.word === 'assiette')!;
+  const count = manifest.vocabularySize, raw = Buffer.alloc(32 + count * 6), idsOffset = 32 + count * 2;
+  raw.write('BWS2');
+  for (const [offset, value] of [[4, 2], [8, count], [12, target.wordId], [16, 32], [20, idsOffset], [24, raw.length], [28, 0]]) {
+    raw.writeUInt32LE(value, offset);
+  }
+  const order = [target.wordId, ...Array.from({ length: count }, (_, id) => id).filter(id => id !== target.wordId)];
+  const taxe = manifest.words.indexOf('taxe'), position = order.indexOf(taxe);
+  [order[137], order[position]] = [order[position], order[137]];
+  for (let rank = 0; rank < count; rank++) {
+    raw.writeInt16LE(rank === 0 ? 10000 : 3579, 32 + rank * 2);
+    raw.writeUInt32LE(order[rank], idsOffset + rank * 4);
+  }
+  return raw;
+}
+async function withCodecFixture(raw: Buffer, check: () => Promise<void>) {
+  const target = manifest.targets.find(target => target.word === 'assiette')!;
+  const original = { ...target }, format = manifest.format, compressed = gzipSync(raw);
+  const hash = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
+  Object.assign(target, { rawBytes: raw.length, compressedBytes: compressed.length, rawSha256: hash(raw), objectSha256: hash(compressed) });
+  manifest.format = 'BWS2';
+  setWord2vecObjectLoaderForTests(async () => compressed.buffer.slice(compressed.byteOffset, compressed.byteOffset + compressed.byteLength));
+  try {
+    await check();
+  } finally {
+    Object.assign(target, original); manifest.format = format; setWord2vecObjectLoaderForTests(null);
+  }
+}
+
+test('BWS2 reconstructs temperatures by source identity and ordinal ranks by permutation position', async () => {
+  await withCodecFixture(rankedFixture(), async () => {
+    assert.deepEqual(await evaluateWord2vec('assiette', 'assiette'), { word: 'assiette', temperature: 100, rank: 1, found: true });
+    assert.deepEqual(await evaluateWord2vec('assiette', 'taxe'), { word: 'taxe', temperature: 35.79, rank: 138, found: false });
+  });
+});
+test('the Word2Vec codec refuses BWS1 instead of falling back to its unpublished format', async () => {
+  const ranked = rankedFixture(), count = manifest.vocabularySize, raw = Buffer.from(ranked), idsOffset = 32 + count * 2;
+  raw.write('BWS1'); raw.writeUInt32LE(1, 4);
+  for (let position = 0; position < count; position++) {
+    const id = ranked.readUInt32LE(idsOffset + position * 4);
+    raw.writeInt16LE(ranked.readInt16LE(32 + position * 2), 32 + id * 2);
+    raw.writeUInt32LE(position + 1, idsOffset + id * 4);
+  }
+  await withCodecFixture(raw, async () => {
+    await assert.rejects(evaluateWord2vec('assiette', 'taxe'), (error: unknown) => error instanceof Word2vecStorageError && error.code === 'corrupt');
+  });
+});
+test('BWS2 refuses repinned duplicate, out-of-bounds, unordered and inconsistent target columns', async () => {
+  const count = manifest.vocabularySize, idsOffset = 32 + count * 2;
+  const mutations = [
+    (raw: Buffer) => raw.writeUInt32LE(raw.readUInt32LE(idsOffset), idsOffset + 4),
+    (raw: Buffer) => raw.writeUInt32LE(count, idsOffset + 4),
+    (raw: Buffer) => raw.writeInt16LE(3580, 36),
+    (raw: Buffer) => raw.writeInt16LE(9999, 32),
+    (raw: Buffer) => raw.writeUInt32LE(0, 12),
+  ];
+  for (const mutate of mutations) {
+    const raw = rankedFixture(); mutate(raw);
+    await withCodecFixture(raw, async () => {
+      await assert.rejects(evaluateWord2vec('assiette', 'taxe'), (error: unknown) => error instanceof Word2vecStorageError && error.code === 'corrupt');
+      assert.equal(word2vecCacheStats().entries, 0);
+    });
+  }
+});
 
 test("Word2Vec retains all source entries and covers every historical secret", async () => {
   const manifest = await readFile("data/word2vec-index.json", "utf8").then(JSON.parse, () => null);

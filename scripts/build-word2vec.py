@@ -115,11 +115,9 @@ def main():
             similarities[target_id] = 1.0
             # Identity leads even if another source entry has the same vector.
             order = np.lexsort((ids, -similarities, ids != target_id))
-            ranks = np.empty(COUNT, dtype="<u4")
-            ranks[order] = np.arange(1, COUNT + 1, dtype=np.uint32)
             scores = np.clip(np.floor(similarities * 10000 + 0.5), -10000, 9999).astype("<i2")
             scores[target_id] = 10000
-            raw = struct.pack("<4s7I", b"BWS1", 1, COUNT, target_id, 32, 32 + COUNT * 2, 32 + COUNT * 6, 0) + scores.tobytes() + ranks.tobytes()
+            raw = struct.pack("<4s7I", b"BWS2", 2, COUNT, target_id, 32, 32 + COUNT * 2, 32 + COUNT * 6, 0) + scores[order].tobytes() + order.astype("<u4").tobytes()
             compressed = gzip.compress(raw, compresslevel=9, mtime=0)
             # Freeze the OS byte as well (Python 3.11/3.12 delegated it to zlib).
             compressed = compressed[:9] + b"\xff" + compressed[10:]
@@ -134,7 +132,7 @@ def main():
                              "compressedBytes": len(compressed), "rawSha256": hashlib.sha256(raw).hexdigest(),
                              "objectSha256": hashlib.sha256(compressed).hexdigest()})
         print(f"Generated {min(start + batch_size, len(target_words))}/{len(target_words)} columns", flush=True)
-    manifest = {"schemaVersion": 1, "format": "BWS1", "corpusVersion": CORPUS,
+    manifest = {"schemaVersion": 1, "format": "BWS2", "corpusVersion": CORPUS,
                 "vocabularySize": COUNT, "dimensions": DIMENSIONS,
                 "normalization": "NFC-lowercase-trim-apostrophe-v1", "lookupCollisionPolicy": "first-source-id; all rows retained in ranking",
                 "numericalContract": "float32-source/float64-cosine; floor(x*10000+0.5); ordinal rank before rounding; identity first then cosine descending then source id",

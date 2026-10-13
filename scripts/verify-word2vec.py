@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent exhaustive oracle for BWS1; never imports the generator."""
+"""Independent exhaustive oracle for BWS2; never imports the generator."""
 import argparse
 from collections import defaultdict
 import gzip
@@ -30,7 +30,7 @@ def main():
     manifest_bytes = (args.root / "data/word2vec-index.json").read_bytes()
     manifest = json.loads(manifest_bytes)
     require(manifest["corpusVersion"] == "frwac-word2vec-155562-d617b3a27db2-v1", "Wrong corpus identity")
-    require(manifest["format"] == "BWS1" and manifest["schemaVersion"] == 1, "Wrong manifest schema")
+    require(manifest["format"] == "BWS2" and manifest["schemaVersion"] == 1, "Wrong manifest schema")
     require(args.source.stat().st_size == 312726847, "Wrong source size")
     md5, sha = hashlib.md5(), hashlib.sha256()
     with args.source.open("rb") as source:
@@ -97,9 +97,16 @@ def main():
         raw = gzip.decompress(compressed)
         require(len(raw) == 933404 == entry["rawBytes"], "Raw size mismatch")
         require(hashlib.sha256(raw).hexdigest() == entry["rawSha256"], "Raw hash mismatch")
-        require(struct.unpack_from("<4s7I", raw) == (b"BWS1", 1, 155562, target_id, 32, 311156, 933404, 0), "Binary header mismatch")
-        actual_scores = np.frombuffer(raw, dtype="<i2", count=155562, offset=32)
-        actual_ranks = np.frombuffer(raw, dtype="<u4", count=155562, offset=311156)
+        require(struct.unpack_from("<4s7I", raw) == (b"BWS2", 2, 155562, target_id, 32, 311156, 933404, 0), "Binary header mismatch")
+        ranked_scores = np.frombuffer(raw, dtype="<i2", count=155562, offset=32)
+        ranked_ids = np.frombuffer(raw, dtype="<u4", count=155562, offset=311156)
+        require(np.array_equal(np.sort(ranked_ids), ids), "Invalid source-id permutation")
+        require(np.all(ranked_scores[:-1] >= ranked_scores[1:]), "Temperatures are not rank-ordered")
+        require(ranked_ids[0] == target_id and ranked_scores[0] == 10000, "Rank-one target identity differs")
+        actual_scores = np.empty(155562, dtype=np.int16)
+        actual_ranks = np.empty(155562, dtype=np.uint32)
+        actual_scores[ranked_ids] = ranked_scores
+        actual_ranks[ranked_ids] = np.arange(1, 155563, dtype=np.uint32)
         # No BLAS matmul and no persisted scores: independent float64 reduction.
         cosine = np.einsum("ij,j->i", vectors, vectors[target_id], optimize=False)
         cosine /= norms * norms[target_id]
@@ -127,7 +134,7 @@ def main():
         if number % 16 == 0 or number == len(manifest["targets"]):
             print(f"Verified every score/rank of {number}/{len(manifest['targets'])} columns", flush=True)
     require({path.name for path in (args.root / "public/semantic/word2vec").iterdir()} == expected_files, "Unlisted or missing Word2Vec objects")
-    report = {"status": "verified", "sourceEntries": 155562, "dimensions": 500, "historicalSlots": 120,
+    report = {"status": "verified", "format": "BWS2", "sourceEntries": 155562, "dimensions": 500, "historicalSlots": 120,
               "targets": len(manifest["targets"]), "scoresChecked": 155562 * len(manifest["targets"]), "ranksChecked": 155562 * len(manifest["targets"]),
               "canonicalCollisions": len(collisions), "zeroNorms": 0, "originalMissingSecrets": missing,
               "rawBytes": raw_total, "compressedBytes": compressed_total, "manifestSha256": hashlib.sha256(manifest_bytes).hexdigest(),
