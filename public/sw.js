@@ -6,6 +6,7 @@ const FALLBACK = "/offline.html";
 const FALLBACK_TRANSPORT = "/offline";
 const TRAINING_PREFIX = "braiz-training-";
 const INSTALLED = "/training/installed.json";
+const TRAINING_SCREEN_TRANSPORT = "/api/training/screen";
 // BEGIN TRAINING PIN
 const TRAINING_PIN = {"path":"/training/manifest-b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be.json","sha256":"b851f8807838797ca5cb2ec5285ad52e6f6d023f9c6bd6717f1d7c80284e91be","bytes":999,"packSha256":"ace47abbbeda8bebf838d0dbe14982e8a0557b42f0ab166882f36fb53309c061","totalBytes":256074,"wordCount":208,"puzzleCount":3};
 // END TRAINING PIN
@@ -96,11 +97,13 @@ self.addEventListener("message", event => {
       // A failed/partial attempt never replaces an earlier usable installation.
       const responses = [];
       for (const asset of manifest.assets) {
-        // Only the manifest-approved content-addressed HTML screen gets this
-        // explicit clean-URL alias. Hash/size verification and logical storage
-        // identities stay unchanged, including for earlier installed versions.
-        const transport = asset.path === manifest.shellPath && asset.path === `/training/screen-${asset.sha256}.html` ? asset.path.slice(0, -5) : asset.path;
-        responses.push(await verifiedResponse(await fetch(transport, { cache: "no-store", redirect: "error" }), asset));
+        // Only the current pinned screen uses the closed binary API transport.
+        // Edge HTML injection must not alter its bytes. The immutable manifest,
+        // logical .html key and both size/SHA checks remain unchanged.
+        const currentScreen = asset.path === manifest.shellPath && asset.path === "/training/screen-13763f7fff10d0fc36f0f9cd2597c5c95704f18c3b481c637af467f3e021a807.html";
+        const transport = currentScreen ? TRAINING_SCREEN_TRANSPORT : asset.path;
+        const response = await verifiedResponse(await fetch(transport, { cache: "no-store", redirect: "error" }), asset);
+        responses.push(currentScreen ? new Response(await response.arrayBuffer(), { headers: { "content-type": "text/html; charset=utf-8" } }) : response);
       }
       const name = `${TRAINING_PREFIX}${TRAINING_PIN.sha256}-${crypto.randomUUID()}`;
       try {

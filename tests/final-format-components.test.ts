@@ -14,3 +14,12 @@ for(const [kind,Component] of [['duel',Duels],['server',ServerGame]] as const) t
  let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Component));});
  try{if(kind==='duel')await act(async()=>tree.root.findAll(n=>n.type==='button'&&text(n).startsWith('Défi owned'))[0].props.onClick());assert.match(text(tree.root),/12,25°/);assert.match(text(tree.root),/1\u202f234/);assert.doesNotMatch(text(tree.root),/12\.3°/);assert.equal(JSON.stringify(guess),original);}finally{await act(async()=>tree.unmount());}
 });
+
+for (const revision of [0, 1, 2]) test(`server real resumed revision ${revision} uses truthful singular/plural copy`, async () => {
+ Object.assign(globalThis,{window:{addEventListener(){},removeEventListener(){},setInterval(){return 0;},clearInterval(){}},document:{hidden:false,addEventListener(){},removeEventListener(){}},location:{hash:'',search:'?game=owned',pathname:'/espace',origin:'https://braiz.test'},sessionStorage:new SyncMemory()});
+ const view={game:{id:'owned',state:'active',revision},guesses:Array.from({length:revision},(_,index)=>({word:'maison',temperature:33.2,rank:121,ordinal:index+1,found:false}))};
+ const original=JSON.stringify(view);
+ globalThis.fetch=async url=>{const path=String(url);if(path==='/api/session')return Response.json({guest:{id:'guest',name:'A'},csrf:'csrf'});if(path.includes('?id='))return Response.json(view);return Response.json({games:[]});};
+ let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(ServerGame));});
+ try{assert.match(text(tree.root),new RegExp(`${revision} ${revision===1?'essai conservé':'essais conservés'} côté serveur`));assert.equal(JSON.stringify(view),original);}finally{await act(async()=>tree.unmount());}
+});
