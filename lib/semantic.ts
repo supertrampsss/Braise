@@ -58,3 +58,5 @@ export async function nextHint(targetIndex: number, hintLevel: number, guesses: 
   return candidate === undefined ? null : evaluateWord(targetIndex, candidate);
 }
 export const datasetMetadata = dataset.meta;
+// Server-only canonical identity for cross-edition tutorial comparison.
+export function legacyTargetWord(targetIndex: number) { return targets[targetIndex].word; }

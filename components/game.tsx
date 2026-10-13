@@ -20,6 +20,7 @@ import { resumeExpedition } from "@/lib/expedition-resume";
 import { ExpeditionPicker } from "@/components/expedition-picker";
 import { warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
+import { dailyIdentity } from "@/lib/daily-v2-contract";
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
 import { samePuzzleRef, type EvaluationResponse, type GameEffect } from "@/lib/game-contracts";
 import { consumeGameFeedback, createGameFeedback, inputAfterAcceptedGuess, shouldAdmitGameFeedback } from "@/lib/game-feedback";
@@ -392,7 +393,7 @@ export default function Game() {
     setSurface(destination === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : destination);setView(destination === "game" ? "play" : "explore");refreshPlays();
     const archive=params.get("archive"), challenge=params.get("defi"), free=params.get("libre"), voyage=params.get("voyage");
     if(EXTRA_MODES_ENABLED && voyage && EXPEDITIONS.some(item=>item.id===voyage)) { if(journey?.id!==voyage || !puzzle || puzzle.seed!==journey.seed) void openJourney(voyage,undefined,destination); }
-    else if(archive!==null) { if(puzzle?.id!==`daily-${archive}` || mode!=="archive") void loadPuzzle("archive",archive); }
+    else if(archive!==null) { if(puzzle?.id!==dailyIdentity(archive) || mode!=="archive") void loadPuzzle("archive",archive); }
     else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==`free-${challenge}` || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined); }
     else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==`free-${free}` || mode!=="free") void loadPuzzle("free",free); }
     else if(mode!=="daily") void loadPuzzle("daily");

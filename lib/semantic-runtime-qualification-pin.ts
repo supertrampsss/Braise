@@ -1,2 +1,2 @@
-// Exact compiled qualification capability; no environment default activates it.
-export const RUNTIME_QUALIFICATION_PIN = 'd24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb';
+// Server-only compiled qualification authority; disabled without exact temporary capability.
+export const RUNTIME_QUALIFICATION_PIN = '931a2db284eea74431998e1578f92c68fc441cc57aee7f1692f1c4eb202603af';

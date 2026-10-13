@@ -2,6 +2,7 @@
 import { useState, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { LEGACY_ARCHIVE_START_DATE, shiftCalendarDate, isCalendarDate } from '@/lib/calendar';
 import { formatDateFr } from '@/lib/format-fr';
+import { dailyIdentity } from '@/lib/daily-v2-contract';
 import type { LocalPlay } from '@/lib/play-hub';
 /** Filtered dates are a named list, never compacted underneath weekday columns. */
 export function ArchiveDateLayout({filtered,children}:{filtered:boolean;children:ReactNode}) {
@@ -16,7 +17,7 @@ export function ArchiveCalendar({max,selected,plays,disabled,onOpen}:{max:string
   }
   const root = useRef<HTMLDivElement>(null);
   const first = `${month}-01`, date = new Date(`${first}T12:00:00Z`), count = new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth()+1,0)).getUTCDate();
-  const state = (day:string) => { const play = plays.find(p => p.id === `daily-${day}`); return play?.game.guesses.some(g=>g.found) ? 'Terminé' : play ? 'Commencé' : 'Non joué'; };
+  const state = (day:string) => { const play = plays.find(p => p.id === dailyIdentity(day)); return play?.game.guesses.some(g=>g.found) ? 'Terminé' : play ? 'Commencé' : 'Non joué'; };
   const days = Array.from({length:count},(_,i)=>`${month}-${String(i+1).padStart(2,'0')}`).filter(day => day >= LEGACY_ARCHIVE_START_DATE && day <= max && (filter === 'all' || state(day) === (filter === 'resume' ? 'Commencé' : filter)));
   function moveMonth(delta:number) { const value=new Date(`${first}T12:00:00Z`);value.setUTCMonth(value.getUTCMonth()+delta);setMonth(value.toISOString().slice(0,7)); }
   function keyboard(event:KeyboardEvent<HTMLButtonElement>,day:string) {

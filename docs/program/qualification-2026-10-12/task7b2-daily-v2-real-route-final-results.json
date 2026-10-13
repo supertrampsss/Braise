@@ -1,0 +1,60 @@
+{
+  "scope": "actual source API + local immutable full range files, fixture clocks; NOT hosted execution or activation",
+  "authorityPin": "ecff16ede959fdd9dac5587b61bada2d534438e2916cdcf457fa847a4c84543d",
+  "results": [
+    {
+      "date": "2027-01-05",
+      "action": "guess",
+      "status": 200,
+      "targetId": 541,
+      "evidenceSha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605",
+      "temperature": 67.03,
+      "rank": 13
+    },
+    {
+      "date": "2027-01-05",
+      "action": "hint",
+      "status": 200,
+      "targetId": 541,
+      "evidenceSha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605",
+      "temperature": 67.03,
+      "rank": 13
+    },
+    {
+      "date": "2027-07-06",
+      "action": "guess",
+      "status": 200,
+      "targetId": 121,
+      "evidenceSha256": "c1ac61a662b35bb3c61ea22e3b06ca086772f7ab1d5abb8694859b062f7fe95e",
+      "temperature": 47.78,
+      "rank": 62
+    },
+    {
+      "date": "2027-07-06",
+      "action": "hint",
+      "status": 200,
+      "targetId": 121,
+      "evidenceSha256": "c1ac61a662b35bb3c61ea22e3b06ca086772f7ab1d5abb8694859b062f7fe95e",
+      "temperature": 47.78,
+      "rank": 62
+    },
+    {
+      "date": "2028-01-04",
+      "action": "guess",
+      "status": 200,
+      "targetId": 3414,
+      "evidenceSha256": "78b0ca23e1d91d084455b5cdecd6754c0bb7540d21b02ffafd9f3cbe6a9441a6",
+      "temperature": 56.38,
+      "rank": 43
+    },
+    {
+      "date": "2028-01-04",
+      "action": "hint",
+      "status": 200,
+      "targetId": 3414,
+      "evidenceSha256": "78b0ca23e1d91d084455b5cdecd6754c0bb7540d21b02ffafd9f3cbe6a9441a6",
+      "temperature": 56.38,
+      "rank": 43
+    }
+  ]
+}

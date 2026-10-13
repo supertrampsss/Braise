@@ -3,13 +3,19 @@ import { createLocalProfileExport, inspectLocalProfileImport, importLocalProfile
 import { PLAY_CONTEXT_KEY, readContexts } from './play-hub';
 import { archiveDateStatus, parisDate } from './calendar';
 import type { SavedGame } from './game-types';
+import { DAILY_V2_START, dailyV2Date, dailyV2Ref, isDailyV2Ref } from './daily-v2-contract';
+import { dailyV2Document, dailyV2GameSchema, parseDailyV2Document } from './daily-v2-storage';
 export const SYNC_MAX_BYTES = 1 * 1024 * 1024;
 const PREFIX = 'braise.v1.game.';
 const instant = z.string().datetime();
 const contextSchema = z.object({ mode:z.enum(['daily','archive','free','challenge']), collection:z.string().max(80).optional(), expedition:z.string().max(80).optional(), expeditionStep:z.number().int().min(1).max(3).optional() }).strict();
 const guessSchema = z.object({word:z.string().min(1).max(50),temperature:z.number().min(-100).max(100),rank:z.number().int().min(1).max(30000),found:z.boolean(),order:z.number().int().min(1).max(3000),hint:z.boolean().optional(),acceptedAt:instant.optional()}).strict();
 const gameSchema = z.object({ guesses:z.array(guessSchema).max(3000),pins:z.array(z.string().min(1).max(50)).max(3),hints:z.number().int().min(0).max(3),startedAt:z.number().int().nonnegative(),solvedAt:z.number().int().nonnegative().optional(),completedMode:z.enum(['daily','archive','free','challenge']).optional(),profileV2StartIndex:z.number().int().nonnegative().optional(),version:z.literal(1).optional(),schemaVersion:z.literal(1).optional(),formatVersion:z.literal(1).optional() }).strict();
-const schema=z.object({format:z.literal('braiz-personal-device-sync'),version:z.literal(1),corpus:z.literal('fr-fasttext-30000-v1'),rules:z.literal('classic-v1'),provenance:z.literal('personal-unverified'),createdAt:instant,profile:z.string().max(8*1024*1024),games:z.array(z.object({id:z.string().max(40),game:gameSchema,context:contextSchema.optional()}).strict()).max(1000)}).strict();
+const legacyItem=z.object({id:z.string().max(40),game:gameSchema,context:contextSchema.optional()}).strict();
+const v2Item=z.object({id:z.string().max(40),puzzleRef:z.custom<import('./game-contracts').PuzzleRef>(isDailyV2Ref),game:dailyV2GameSchema,context:contextSchema.optional()}).strict();
+const legacySchema=z.object({format:z.literal('braiz-personal-device-sync'),version:z.literal(1),corpus:z.literal('fr-fasttext-30000-v1'),rules:z.literal('classic-v1'),provenance:z.literal('personal-unverified'),createdAt:instant,profile:z.string().max(8*1024*1024),games:z.array(legacyItem).max(1000)}).strict();
+const mixedSchema=z.object({format:z.literal('braiz-personal-device-sync'),version:z.literal(2),corpus:z.literal('mixed-v1-v2'),rules:z.literal('identity-bound'),provenance:z.literal('personal-unverified'),createdAt:instant,profile:z.string().max(8*1024*1024),games:z.array(z.union([legacyItem,v2Item])).max(1000)}).strict();
+const schema=z.union([legacySchema,mixedSchema]);
 export type DeviceEnvelope=z.infer<typeof schema>;
 export class SyncMemory implements ProfileStorage {
   values=new Map<string,string>();
@@ -18,28 +24,30 @@ export class SyncMemory implements ProfileStorage {
 }
 function fail(message:string):never{throw new Error(message);}
 function parseJson(text:string):unknown{try{return JSON.parse(text);}catch{return fail('Copie JSON illisible. Aucune donnée modifiée.');}}
-function parseSavedGame(text:string){const parsed=gameSchema.safeParse(parseJson(text));if(!parsed.success)fail('Sauvegarde de partie illisible, inconnue ou incompatible.');return parsed.data;}
-function validId(id:string,now:Date){return /^free-\d{1,10}$/.test(id)&&Number(id.slice(5))<=2147483647 || /^daily-/.test(id)&&(archiveDateStatus(id.slice(6),now)==='available'||id.slice(6)===parisDate(now));}
+function parseSavedGame(text:string,id:string):SavedGame{const value=parseJson(text);if(id.startsWith('daily-v2-')){const game=parseDailyV2Document(value,id);if(!game)fail('Sauvegarde V2 inconnue ou incompatible.');return game;}const parsed=gameSchema.safeParse(value);if(!parsed.success)fail('Sauvegarde de partie illisible, inconnue ou incompatible.');return parsed.data;}
+function validId(id:string,now:Date){const v2=dailyV2Date(id);return v2 ? v2<=parisDate(now) : /^free-\d{1,10}$/.test(id)&&Number(id.slice(5))<=2147483647 || /^daily-\d{4}-\d{2}-\d{2}$/.test(id)&&id.slice(6)<DAILY_V2_START&&(archiveDateStatus(id.slice(6),now)==='available'||id.slice(6)===parisDate(now));}
 function validateGame(game:SavedGame,now:Date){
   if(game.startedAt>now.getTime()||(game.solvedAt??0)>now.getTime()||game.guesses.some(g=>g.acceptedAt&&Date.parse(g.acceptedAt)>now.getTime())||new Set(game.guesses.map(g=>g.word)).size!==game.guesses.length||new Set(game.guesses.map(g=>g.order)).size!==game.guesses.length||(game.profileV2StartIndex??0)>game.guesses.length) fail('Partie incohérente ou datée dans le futur.');
 }
 export function parseDeviceEnvelope(text:string,now=new Date()):DeviceEnvelope{
   if(new TextEncoder().encode(text).length>SYNC_MAX_BYTES)fail('Copie trop grande (1 Mio maximum), aucune donnée tronquée.');
   const result=schema.safeParse(parseJson(text));if(!result.success)fail('Format de synchronisation inconnu, futur ou incohérent.');const value=result.data;
+  if(value.version===1 && value.profile.includes('"classic-v2"'))fail('Une copie V1 ne peut déclarer des parties V2.');
   if(Date.parse(value.createdAt)>now.getTime()||new Set(value.games.map(g=>g.id)).size!==value.games.length)fail('Copie incohérente ou datée dans le futur.');
   const rawProfile=parseJson(value.profile) as {legacyRaw?:unknown};
   if(rawProfile&&typeof rawProfile.legacyRaw==='string'){const legacy=z.object({wins:z.array(z.object({id:z.string(),date:z.string(),mode:z.enum(['daily','free','challenge']),tries:z.number(),hints:z.number()}).strict()),guesses:z.number(),sound:z.boolean()}).strict();if(!legacy.safeParse(parseJson(rawProfile.legacyRaw)).success)fail('La copie historique contient des champs inconnus : transfert refusé.');}
   const profile=inspectLocalProfileImport(value.profile,new SyncMemory(),now);if(!['ready','unchanged'].includes(profile.status))fail(profile.reason);
-  for(const item of value.games){if(!validId(item.id,now))fail('Identité de partie incompatible.');validateGame(item.game,now);if(item.game.guesses.some(g=>g.found)||item.game.solvedAt)fail('Seules les parties en cours appartiennent à cette copie.');
+  for(const item of value.games){if(!validId(item.id,now))fail('Identité de partie incompatible.');const v2=dailyV2Date(item.id);if(v2 ? value.version!==2 || !('puzzleRef' in item) || !isDailyV2Ref(item.puzzleRef,now) || item.puzzleRef.id!==item.id : 'puzzleRef' in item)fail('Référence de partie incompatible.');validateGame(item.game,now);if(v2&&(parisDate(new Date(item.game.startedAt))<v2||item.game.guesses.some(g=>g.acceptedAt&&parisDate(new Date(g.acceptedAt))<v2)))fail('Partie V2 antérieure à sa publication.');if(item.game.guesses.some(g=>g.found)||item.game.solvedAt)fail('Seules les parties en cours appartiennent à cette copie.');
     if(item.context){const memory=new SyncMemory();memory.setItem(PLAY_CONTEXT_KEY,JSON.stringify({version:1,items:{[item.id]:item.context}}));if(!readContexts(memory)||item.id.startsWith('daily-')!==['daily','archive'].includes(item.context.mode))fail('Contexte de partie incohérent.');}
   }return value;
 }
 export function createDeviceEnvelope(storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date()){
   const profile=createLocalProfileExport(snapshot,now);if(!profile.ok)fail(profile.reason);
   const contexts=readContexts(storage);if(!contexts)fail('Contextes locaux illisibles : copie refusée.');
-  const games:DeviceEnvelope['games']=[];
-  for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(PREFIX))continue;const id=key.slice(PREFIX.length);const game=parseSavedGame(storage.getItem(key)!);validateGame(game,now);if(!validId(id,now))fail('Une partie locale utilise une identité inconnue.');if(game.guesses.some(g=>g.found)||game.solvedAt)continue;games.push({id,game,...(contexts[id]?{context:contexts[id]}:{})});}
-  const value:DeviceEnvelope={format:'braiz-personal-device-sync',version:1,corpus:'fr-fasttext-30000-v1',rules:'classic-v1',provenance:'personal-unverified',createdAt:now.toISOString(),profile:profile.text,games};const text=JSON.stringify(value);parseDeviceEnvelope(text,now);return text;
+  const games:z.infer<typeof mixedSchema>['games']=[];
+  for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(PREFIX))continue;const id=key.slice(PREFIX.length);const game=parseSavedGame(storage.getItem(key)!,id);validateGame(game,now);if(!validId(id,now))fail('Une partie locale utilise une identité inconnue.');if(game.guesses.some(g=>g.found)||game.solvedAt)continue;const date=dailyV2Date(id);games.push({id,game,...(date?{puzzleRef:dailyV2Ref(date,'daily')} : {}),...(contexts[id]?{context:contexts[id]}:{})});}
+  const mixed=games.some(item=>'puzzleRef' in item)||profile.text.includes('"classic-v2"');
+  const value={format:'braiz-personal-device-sync',...(mixed?{version:2,corpus:'mixed-v1-v2',rules:'identity-bound'}:{version:1,corpus:'fr-fasttext-30000-v1',rules:'classic-v1'}),provenance:'personal-unverified',createdAt:now.toISOString(),profile:profile.text,games};const text=JSON.stringify(value);parseDeviceEnvelope(text,now);return text;
 }
 /** Reconcile the current memory facts and latest disk facts in a private staging copy only. */
 export type LiveDeviceGame={id:string;game:SavedGame};
@@ -47,13 +55,13 @@ export function prepareDeviceUpload(storage:ProfileStorage,snapshot:ProfileSnaps
   const incomplete='La partie en mémoire n’est pas entièrement enregistrée. Envoi refusé pour éviter une copie incomplète. Réessayez après une sauvegarde réussie.';
   if(live&&(live.game.guesses.length||live.game.pins.length||live.game.hints)){
     const raw=storage.getItem(PREFIX+live.id);if(!raw)fail(incomplete);
-    const saved=parseSavedGame(raw);try{assertGameFactsPreserved(live.game,saved);}catch{fail(incomplete);}
+    const saved=parseSavedGame(raw,live.id);try{assertGameFactsPreserved(live.game,saved);}catch{fail(incomplete);}
   }
   // Pending profile facts cannot stand in for a missing playable save, even without a mounted board.
   for(const fact of snapshot.pendingActivities){
     if(fact.type!=='guessAccepted'||fact.puzzleRef.variant!=='classic'||!validId(fact.puzzleRef.id,now)||snapshot.profile.wins.some(win=>win.id===fact.puzzleRef.id))continue;
     const raw=storage.getItem(PREFIX+fact.puzzleRef.id);
-    if(!raw||!parseSavedGame(raw).guesses.some(guess=>guess.word===fact.word&&!guess.hint))fail(incomplete);
+    if(!raw||!parseSavedGame(raw,fact.puzzleRef.id).guesses.some(guess=>guess.word===fact.word&&!guess.hint))fail(incomplete);
   }
   const exported=createLocalProfileExport(snapshot,now);if(!exported.ok)fail(exported.reason);
   const staged=new SyncMemory(storage);
@@ -91,9 +99,9 @@ function unionGame(local:SavedGame,incoming:SavedGame,now:Date):SavedGame{
 export function inspectDeviceMerge(text:string,storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date()){
   const value=parseDeviceEnvelope(text,now);const staged=new SyncMemory(storage);const contexts=readContexts(staged);if(!contexts)fail('Contextes locaux illisibles.');
   const preview=inspectLocalProfileImport(value.profile,staged,now,snapshot);if(!preview.planId||!['ready','unchanged'].includes(preview.status))fail(preview.reason);
-  for(const item of value.games){const key=PREFIX+item.id;const raw=staged.getItem(key);const local=raw?parseSavedGame(raw):null;
+  for(const item of value.games){const key=PREFIX+item.id;const raw=staged.getItem(key);const local=raw?parseSavedGame(raw,item.id):null;
     if(contexts[item.id]&&item.context&&JSON.stringify(contexts[item.id])!==JSON.stringify(item.context))fail('Contextes différents pour une même partie : choisissez un appareil source.');
-    const game=local?unionGame(local,item.game,now):{...item.game,profileV2StartIndex:item.game.guesses.length};staged.setItem(key,JSON.stringify(game));if(!contexts[item.id]&&item.context)contexts[item.id]=item.context;
+    const game=local?unionGame(local,item.game,now):{...item.game,profileV2StartIndex:item.game.guesses.length};staged.setItem(key,JSON.stringify(dailyV2Date(item.id)?dailyV2Document(item.id,game):game));if(!contexts[item.id]&&item.context)contexts[item.id]=item.context;
   }
   staged.setItem(PLAY_CONTEXT_KEY,JSON.stringify({version:1,items:contexts}));
   const imported=importLocalProfile(value.profile,preview.planId,staged,snapshot,now);if(!imported.persisted)fail(imported.reason);

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "rootReference": {
+    "sha256": "49f548a439d8034ceeee1d553c00ddaf42c52f0802afae201963e131bb587f70",
+    "bytes": 45316
+  },
+  "pins": {
+    "corpusId": "fr-fasttext-complete-bc68b0703375-0f34b2449278",
+    "manifestSha256": "e1c07accdc55196c180968d710030e938b861bd7b6c7bf2c0f764e030f365cf7",
+    "semanticSha256": "8440d4e963ae309c5761818a58bcf752d1aa5750b6b6876d94a055ca177f732d",
+    "dictionarySize": 1013881,
+    "index": {
+      "key": "fr-fasttext-complete-bc68b0703375-0f34b2449278/presence/manifest-e89d3e3c6a84a7ee-77178f6fc85de9d5.json",
+      "sha256": "77178f6fc85de9d5523db3f13141b751abdeb1c6b2d3ad6a4d020346a795c426"
+    },
+    "targets": {
+      "91": {
+        "key": "fr-fasttext-complete-bc68b0703375-0f34b2449278/targets/0000000091/manifest-b203b0b3110de961-ee333e66d388b407.json",
+        "sha256": "ee333e66d388b407487e931a1ac38555ced5e2e183b4e0c882a036f1f7a3b155"
+      }
+    }
+  },
+  "cases": [
+    {
+      "caseId": "common-presence",
+      "kind": "lookup",
+      "word": "pays",
+      "expected": {
+        "id": 91,
+        "word": "pays"
+      }
+    },
+    {
+      "caseId": "accent-presence",
+      "kind": "lookup",
+      "word": " ÉTATS ",
+      "expected": {
+        "id": 152,
+        "word": "états"
+      }
+    },
+    {
+      "caseId": "rare-presence",
+      "kind": "lookup",
+      "word": "baspays",
+      "expected": {
+        "id": 1005188,
+        "word": "baspays"
+      }
+    },
+    {
+      "caseId": "absent-presence",
+      "kind": "lookup",
+      "word": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      "expected": null
+    },
+    {
+      "caseId": "exact-score",
+      "kind": "evaluate",
+      "targetId": 91,
+      "wordId": 91,
+      "expected": {
+        "temperature": 100,
+        "rank": 1,
+        "found": true
+      }
+    },
+    {
+      "caseId": "related-score",
+      "kind": "evaluate",
+      "targetId": 91,
+      "wordId": 152,
+      "expected": {
+        "temperature": 43.24,
+        "rank": 27,
+        "found": false
+      }
+    },
+    {
+      "caseId": "rare-score",
+      "kind": "evaluate",
+      "targetId": 91,
+      "wordId": 1005188,
+      "expected": {
+        "temperature": 60.09,
+        "rank": 2,
+        "found": false
+      }
+    },
+    {
+      "caseId": "crossed-range",
+      "kind": "range",
+      "key": "fr-fasttext-complete-bc68b0703375-0f34b2449278/presence/prefixes/prefix-5e-f03bb7aa4a9adc5a.json",
+      "bytes": 86306,
+      "sha256": "f03bb7aa4a9adc5a1ba274597d61a6aeaf3ff275c6bbc6a294146a4d98700592"
+    },
+    {
+      "caseId": "wrong-pin",
+      "kind": "wrong-pin",
+      "word": "pays"
+    },
+    {
+      "caseId": "corrupt-range",
+      "kind": "corrupt-range",
+      "targetId": 91,
+      "wordId": 152
+    }
+  ]
+}

@@ -1,0 +1,3669 @@
+{
+  "schemaVersion": 1,
+  "scope": "BEE-derived expected values, not hosted execution or numerical attestation",
+  "catalogueSha256": "63451e5e2b0014bea7762ee76706dcded2640798d021d8ea0b391c79226ba73b",
+  "baselineSha256": "d24043ff12595c6ee40ec011c23a20937697d0eccb2249e8776d0a0714fedceb",
+  "pinset": "931a2db284eea74431998e1578f92c68fc441cc57aee7f1692f1c4eb202603af",
+  "rootReference": {
+    "sha256": "e08f4bcca2586ab52f7964f87012fd4685c46d2fe8cdebc04e5b350c91382161",
+    "bytes": 113761
+  },
+  "approvedTargets": 406,
+  "cases": 416,
+  "provenance": [
+    {
+      "caseId": "editorial-6afc822b701305a590b9",
+      "targetId": 541,
+      "wordId": 1495,
+      "quantizedScore": 6703,
+      "rank": 13,
+      "evidenceSha256": "f7d61f12aefa6c07234082e6c93329ee2daf6a7cdcd1b8097bd1096af8dba605",
+      "targetManifestSha256": "c5b0850414fc5d98ada3bbd4eeb12ee4684ca9f54a03690c9dcb2e4ec452422d"
+    },
+    {
+      "caseId": "editorial-12d5dda51706a8fa1d80",
+      "targetId": 1181,
+      "wordId": 21678,
+      "quantizedScore": 6516,
+      "rank": 10,
+      "evidenceSha256": "8685253559bf9f001d0344dab676158418ded59f4f934318f959608943a7ac41",
+      "targetManifestSha256": "211d1953dfbd1bae6c6a20e217e76270c5210d292689a3851711fd3a2793cea9"
+    },
+    {
+      "caseId": "editorial-5708d8f99230f40e1a46",
+      "targetId": 1305,
+      "wordId": 68266,
+      "quantizedScore": 5630,
+      "rank": 26,
+      "evidenceSha256": "b047d5211fa6597e39b03e630651307172e89a0d57ffb78e054d00dc4e70052e",
+      "targetManifestSha256": "f4bc8565e560e185d2f1d63c596eed20c2fd04fe9cb7c870f15b6b3dd699b240"
+    },
+    {
+      "caseId": "editorial-35c00a35d72371f1ac5b",
+      "targetId": 834,
+      "wordId": 2653,
+      "quantizedScore": 5866,
+      "rank": 11,
+      "evidenceSha256": "307bf5ac3b3d9597a935ac1f596e7236950e221e767207462000ab6eed87047b",
+      "targetManifestSha256": "387d63dd5fc3de0dd6e72b6ef6c816d7d20d212dde03602d6d99f12421607b71"
+    },
+    {
+      "caseId": "editorial-7331f0fcaa99a007ff46",
+      "targetId": 1677,
+      "wordId": 1495,
+      "quantizedScore": 6285,
+      "rank": 10,
+      "evidenceSha256": "fb2622a9a0ea53c3422b999e24012b4e5d2ea823e915d02fa2a45bffc66362e3",
+      "targetManifestSha256": "b9e5face3bcbf31ead9e9fb9d79cafc64c76916e42a3544415828cb753c5da95"
+    },
+    {
+      "caseId": "editorial-204af98e3bc1a8615b4b",
+      "targetId": 2077,
+      "wordId": 463,
+      "quantizedScore": 5945,
+      "rank": 12,
+      "evidenceSha256": "effe734c1d2f65813f36a4d4a4d5487046b3568761f06e1815c364c86f7d94b9",
+      "targetManifestSha256": "0abf6adbb7cc230435e039672b6b27a1c305d3f45f2a413c248fbd714cc77c24"
+    },
+    {
+      "caseId": "editorial-98a42df9e2dae3697909",
+      "targetId": 2106,
+      "wordId": 17487,
+      "quantizedScore": 6019,
+      "rank": 8,
+      "evidenceSha256": "9d2fc6b88292e76be23666afc098e8f98122ed6d4eae464c04cd42a0070488f5",
+      "targetManifestSha256": "cd8e1939892b5f4ddca4a72d0c006def8610319f6a747652817f8551cebc0481"
+    },
+    {
+      "caseId": "editorial-f47b2ccff288be49ad46",
+      "targetId": 2122,
+      "wordId": 6656,
+      "quantizedScore": 5492,
+      "rank": 9,
+      "evidenceSha256": "fd209f41f7322b19149ac501a290c357ce0e47703d1691097b63638049da5f5d",
+      "targetManifestSha256": "37af10c767d4a6e61af7c4ac894651d16137121931fc500bd858699ef3f80f5c"
+    },
+    {
+      "caseId": "editorial-926cf0c76f295712e2aa",
+      "targetId": 1619,
+      "wordId": 89076,
+      "quantizedScore": 5261,
+      "rank": 8,
+      "evidenceSha256": "877b17c9c5dc86004ee469d03d3ed97425186bd47cd25a2d235a902160209e67",
+      "targetManifestSha256": "d6b8a851978727f8a4249a78bc62a27309f9452b1d794b2cc5b356f260fd59a3"
+    },
+    {
+      "caseId": "editorial-e992680ed846b067a3e6",
+      "targetId": 1344,
+      "wordId": 2341,
+      "quantizedScore": 5779,
+      "rank": 10,
+      "evidenceSha256": "b5b4d7ed43297e49e76fb39722234314eb5da631d387e17c0a52cd90efbe491c",
+      "targetManifestSha256": "ff2e32ba1004ab833bcf127457a09921c5cb444c12df888dbb99fd89392a2d64"
+    },
+    {
+      "caseId": "editorial-8fe84ecaf0f9b02b547b",
+      "targetId": 2069,
+      "wordId": 52061,
+      "quantizedScore": 6399,
+      "rank": 24,
+      "evidenceSha256": "125261b987a77289ada13e0ce366cc676ca660b101a1b242f6c8ea78a6dc263b",
+      "targetManifestSha256": "2bb0aa0860377b520c69e4bce614d185d2ba91dd42ec742f4b16f32e60c495a6"
+    },
+    {
+      "caseId": "editorial-349b7d7d94761da3127d",
+      "targetId": 1767,
+      "wordId": 2497,
+      "quantizedScore": 7597,
+      "rank": 2,
+      "evidenceSha256": "4be3d19fa8e7330bebc2aab8d4e929b0d9854696c8bf9b437710fb765b589450",
+      "targetManifestSha256": "207b65c0705db9251b695be154449bd911d9d2c059e6dcdbbed888c1a5055f68"
+    },
+    {
+      "caseId": "editorial-e1b6702985cfdba8064d",
+      "targetId": 1502,
+      "wordId": 25495,
+      "quantizedScore": 7136,
+      "rank": 4,
+      "evidenceSha256": "ac412fbba456c0daf7fc58554700d3116d7c6d8a1a3dc4deb9e3739eb1038c1d",
+      "targetManifestSha256": "7ece89bc50ca32292078b87ba9c38b319673b1d9cc22bf8e028964f2cc0df8f9"
+    },
+    {
+      "caseId": "editorial-81a50afed6ccc539cf31",
+      "targetId": 1987,
+      "wordId": 2447,
+      "quantizedScore": 8566,
+      "rank": 2,
+      "evidenceSha256": "906b4dc7409bd77aeb955e5b4c343f60ed361434cb8e841b380a6fe09c3cbe45",
+      "targetManifestSha256": "8051270d953b42680a7268448302d182cacb2d1a1b8a5f3c5379e703dee2957b"
+    },
+    {
+      "caseId": "editorial-26485dcee7647e019b9e",
+      "targetId": 898,
+      "wordId": 2447,
+      "quantizedScore": 6425,
+      "rank": 4,
+      "evidenceSha256": "ed96a4bbe257e7348cbe6a0194bfea4e64b54225261bd6622d2cf1422e7dfc0d",
+      "targetManifestSha256": "40e379cfca5a5b8dbc3fa2db67ae936c118afd54590b5fd41d4e62df70b2b1d1"
+    },
+    {
+      "caseId": "editorial-a53394a3b3f55dc58923",
+      "targetId": 1488,
+      "wordId": 21507,
+      "quantizedScore": 6801,
+      "rank": 3,
+      "evidenceSha256": "7a37e47c8aef8759ab1bb0c1995997077acc6bbfae8457d97c1f5861a19eaaa5",
+      "targetManifestSha256": "fb7cdb39929ae0f86404d9b67c078c0f81fde435189783c2aea969e0ed54db7d"
+    },
+    {
+      "caseId": "editorial-89210cf1e28fb249d7e8",
+      "targetId": 1572,
+      "wordId": 26263,
+      "quantizedScore": 5041,
+      "rank": 34,
+      "evidenceSha256": "969b654cdbd0053b8d5c5501741f2ace7c3568762ce8234a98f3f37d69c63397",
+      "targetManifestSha256": "0c2fed1a0ad5148e9aadcde4186eff5ad21444c2af1e68a36c477ceadf4283b0"
+    },
+    {
+      "caseId": "editorial-7c13b18889afbac97326",
+      "targetId": 493,
+      "wordId": 4929,
+      "quantizedScore": 5684,
+      "rank": 12,
+      "evidenceSha256": "9daa437fe0459f56b9a0471943e43656d8198b8ec282b3a40e06359ec84f842e",
+      "targetManifestSha256": "5e5a50b6ebb61e6679a919fcf1b3c94ab0f940dec558927d57c2a554e197dcb4"
+    },
+    {
+      "caseId": "editorial-24d4e31fb69862b357d7",
+      "targetId": 372,
+      "wordId": 2069,
+      "quantizedScore": 4762,
+      "rank": 18,
+      "evidenceSha256": "d09be32b7de6c6e72f59cabc8e057ef976c01b3b3c4960b6da15b2ce8883ce2b",
+      "targetManifestSha256": "d801da28c160e06aee8a7e339c4215a394580ae7e5ecf3820c2a8a0e598d6406"
+    },
+    {
+      "caseId": "editorial-fd435d99d33fa36f75d2",
+      "targetId": 848,
+      "wordId": 623,
+      "quantizedScore": 7960,
+      "rank": 2,
+      "evidenceSha256": "6ce7fffc56374443bc51c25b992b61d0e115f072afce61bbcf984cdc54c02d67",
+      "targetManifestSha256": "7b320bda7eee34813234319cc916c19f826bb1a72269afd86965ccbf0f556ecf"
+    },
+    {
+      "caseId": "editorial-dd5554438f8b263bf4d7",
+      "targetId": 69,
+      "wordId": 735,
+      "quantizedScore": 6217,
+      "rank": 4,
+      "evidenceSha256": "fba6a13f994d47f6f8ced118eb6fd36c4f0a9c8b88c05330b601798deb677e18",
+      "targetManifestSha256": "fa73e0cc629936702dbd16f216bc9efad773e26a640e2a46c9e4a2a2c667caf0"
+    },
+    {
+      "caseId": "editorial-a463197409348cec9709",
+      "targetId": 198,
+      "wordId": 1086,
+      "quantizedScore": 5577,
+      "rank": 24,
+      "evidenceSha256": "e9d28ea2135977ad497f629f9761893ba5b07757f40efb9388993cef9e514b98",
+      "targetManifestSha256": "1683878cfd506b7a6f9860771a3c23ffeda13b1c7a3f419d970634e713b80dc0"
+    },
+    {
+      "caseId": "editorial-4ca6ad3862bbfe6ba862",
+      "targetId": 91,
+      "wordId": 3562,
+      "quantizedScore": 4159,
+      "rank": 46,
+      "evidenceSha256": "0288d29ce92900f8fce1de464162c6b82e4e3e74b335a3e6571554086350492e",
+      "targetManifestSha256": "ee333e66d388b407487e931a1ac38555ced5e2e183b4e0c882a036f1f7a3b155"
+    },
+    {
+      "caseId": "editorial-dcdc31128ffb2321d2c4",
+      "targetId": 140,
+      "wordId": 3238,
+      "quantizedScore": 4992,
+      "rank": 45,
+      "evidenceSha256": "e08c191776ebeb84c1a87c4bc275d451a2b10775b3cec8b79b97b44190f5801d",
+      "targetManifestSha256": "4e5aa5eeac7e2644f76a76182abf981a314b5ed0d76fb2fa4b16e7b2b0ee2804"
+    },
+    {
+      "caseId": "editorial-60a05f8ee78c1e572782",
+      "targetId": 239,
+      "wordId": 7307,
+      "quantizedScore": 6868,
+      "rank": 9,
+      "evidenceSha256": "75e0f77225bce8bd00b2396cc23adbaf2f8cf92726dbf4116acb143aba4fc23f",
+      "targetManifestSha256": "fdcda3d83907f2cfe812355137ec07c8d1d83f58854471fe57e2e5a6df509127"
+    },
+    {
+      "caseId": "editorial-0569c671c1abc109b5ef",
+      "targetId": 502,
+      "wordId": 2450,
+      "quantizedScore": 6880,
+      "rank": 8,
+      "evidenceSha256": "db5a6d0a9af242cdbf9677adceb44e4cf223f1d754366471403378c72afa3ae2",
+      "targetManifestSha256": "ef11fd9fbede68e57e88679072e0aed124109c10ac5fd04a3665445817cbfa96"
+    },
+    {
+      "caseId": "editorial-a0cf7969ef48e2a4e303",
+      "targetId": 648,
+      "wordId": 8429,
+      "quantizedScore": 6283,
+      "rank": 35,
+      "evidenceSha256": "b65f2abd1a132d020d7cc4409a37725658a23fe64a58d175f1b0b46e06a2c78d",
+      "targetManifestSha256": "f76090529786a23750e0a81a268db31736832143846427770fef935754277a58"
+    },
+    {
+      "caseId": "editorial-f8ac53791e68ac500721",
+      "targetId": 656,
+      "wordId": 6045,
+      "quantizedScore": 5554,
+      "rank": 49,
+      "evidenceSha256": "fc73b64b490d15f56cc42b6e0df1c0840c3e48c6a9960a2be427e60964dd253d",
+      "targetManifestSha256": "92ff455c18a93351a9288e440eee5f158ad3e7c0001665442ff409cf380b00c9"
+    },
+    {
+      "caseId": "editorial-bcb2fa8591eed5836f96",
+      "targetId": 865,
+      "wordId": 3975,
+      "quantizedScore": 6481,
+      "rank": 5,
+      "evidenceSha256": "8724bd8f04980f9d3452836d7486391bb54afba9b6c14beb3a6eadcccd570831",
+      "targetManifestSha256": "ae1e67c9813956aaa57c49d2f58d65f55b83de1695f7d5ebaac96494d96b0643"
+    },
+    {
+      "caseId": "editorial-c0b43c87cfd98dc4ba17",
+      "targetId": 1467,
+      "wordId": 5305,
+      "quantizedScore": 6491,
+      "rank": 35,
+      "evidenceSha256": "42136dbdf4fc706e799b564de7313bc4fe0ff96ba7b390af9e2e2e24a9ee410a",
+      "targetManifestSha256": "12974159c67b4f1ebe23104b018fa4759beb2224e85c5bd5c3013e336522f300"
+    },
+    {
+      "caseId": "editorial-b4d749c99f1c0efcaee5",
+      "targetId": 1562,
+      "wordId": 7693,
+      "quantizedScore": 7157,
+      "rank": 15,
+      "evidenceSha256": "20ca70cb347c1c13499db60e93fc25e3284b5ed5f6c17982c813dce9039ef0c1",
+      "targetManifestSha256": "ce42d71a77c6373bc84ac81738fa4e2974bbcff30b605934414f48a840999040"
+    },
+    {
+      "caseId": "editorial-df1099f81bcc259d58c5",
+      "targetId": 1627,
+      "wordId": 3664,
+      "quantizedScore": 5815,
+      "rank": 43,
+      "evidenceSha256": "623b554c273312342b79ce8cf0576c54846d356f753995fac21c1b012b45fc97",
+      "targetManifestSha256": "3d8fe2560ddf82a701704697019f0e376e1b946f0980409cec6d6ecadeca75e9"
+    },
+    {
+      "caseId": "editorial-50f0dc5cb3d14f29a6a6",
+      "targetId": 389,
+      "wordId": 811,
+      "quantizedScore": 5341,
+      "rank": 33,
+      "evidenceSha256": "bfb8d66cf7759425985184c135939bd40962ca8414b52c54c79c54978e10b132",
+      "targetManifestSha256": "90a2d7781777a202350480fca2f21e83e18f5367716bca4e10c978a64368ab07"
+    },
+    {
+      "caseId": "editorial-79a916e30aa694de3fda",
+      "targetId": 240,
+      "wordId": 8733,
+      "quantizedScore": 5565,
+      "rank": 50,
+      "evidenceSha256": "71455dad10d7f6f654a3bfda3d5d8d3265152d6103e9fbc5dc4bec2069fe397a",
+      "targetManifestSha256": "40266092dbeabcaab6dcd7d99be9971e36e1ed480ea74f67ff60dfd684d21a28"
+    },
+    {
+      "caseId": "editorial-a2c0db7b7a72930a91c7",
+      "targetId": 536,
+      "wordId": 14256,
+      "quantizedScore": 5171,
+      "rank": 50,
+      "evidenceSha256": "74e96d9fab77587761bae798a18c39a5501f12288e2f107f8cc7469c777707e0",
+      "targetManifestSha256": "8639852c3c10baa4f5be2f65ff5b4e779de43163c1d4c1e6cf31304aeff4f681"
+    },
+    {
+      "caseId": "editorial-40168ff580745795a079",
+      "targetId": 558,
+      "wordId": 16295,
+      "quantizedScore": 5998,
+      "rank": 20,
+      "evidenceSha256": "cbd52abfc8f3cb878d821970581d39eea80b2bb7d312523883117523eb7b4d96",
+      "targetManifestSha256": "0c92f18f6d5c391261941aa8053e4bb922efa7df507c5828613b9c309f2720bc"
+    },
+    {
+      "caseId": "editorial-adbdaf4f7337b15a46f7",
+      "targetId": 826,
+      "wordId": 239,
+      "quantizedScore": 4872,
+      "rank": 54,
+      "evidenceSha256": "c173ca56c5809b66c2420e8a6b8c3ec96b4f67725aecc22cc6670d3e10e5808d",
+      "targetManifestSha256": "d946c282807d16a0b760b68f5de3ace70264247a441c9445ba1861c7500ba74f"
+    },
+    {
+      "caseId": "editorial-57fbd632347aede284ad",
+      "targetId": 1051,
+      "wordId": 70958,
+      "quantizedScore": 6237,
+      "rank": 60,
+      "evidenceSha256": "442c8b8e13293dc9d7404bcd76a9c2c81c220ca001781471d60bfac2a296ca78",
+      "targetManifestSha256": "ad97cbfd24e355a0b04b64328fed483a25d875cff4ee88922622dbab159d06a5"
+    },
+    {
+      "caseId": "editorial-b2a025830414b46f7176",
+      "targetId": 148,
+      "wordId": 1505,
+      "quantizedScore": 6211,
+      "rank": 63,
+      "evidenceSha256": "80f9d5d7b59505b1fbddf1554602cdf6caaafb8d9c816169bd1530d5bfa73a45",
+      "targetManifestSha256": "4a0d4979f0b80e0b6608e040f0d64b37c7317d8bd2b21b7943a38b71901b558f"
+    },
+    {
+      "caseId": "editorial-a6858384c63a86a6017d",
+      "targetId": 811,
+      "wordId": 6903,
+      "quantizedScore": 4846,
+      "rank": 58,
+      "evidenceSha256": "d7149f6cd04e3233edb9e69eb9d8c546c962a702588da784497c3d0402d300d4",
+      "targetManifestSha256": "a685812982dbfe870da04655e5d0c85534f1dd91d92a1d1805683dfcaf16f4c5"
+    },
+    {
+      "caseId": "editorial-001d4f5d00645417914a",
+      "targetId": 1660,
+      "wordId": 4396,
+      "quantizedScore": 5947,
+      "rank": 9,
+      "evidenceSha256": "14afd3394efa1d98dbd4fa67688b0f4ab4545481fecf1c895b82328dcebfa3d5",
+      "targetManifestSha256": "81b94feec864bd896561ab3c11254dfb9ae620ac9fba9df3fb1624f3abd75810"
+    },
+    {
+      "caseId": "editorial-f72cd8c56a66c183a01f",
+      "targetId": 1797,
+      "wordId": 3030,
+      "quantizedScore": 6854,
+      "rank": 11,
+      "evidenceSha256": "90d7c932c4ad25908f0e3667d52b9912434df0c189a7dbe38f2274e4dbbd95a9",
+      "targetManifestSha256": "a4d328ab7a95aa3c6bd59b1a530f7fc362e7d21d1e9543b980b4cd17ba746d78"
+    },
+    {
+      "caseId": "editorial-629cdb030fe4bc6d2fce",
+      "targetId": 1836,
+      "wordId": 13116,
+      "quantizedScore": 7744,
+      "rank": 3,
+      "evidenceSha256": "add9163fd21141c0ea816b7cbeb13f5867c7cdba4e17d109417e81f9dae0091d",
+      "targetManifestSha256": "0627f7045ab164b760d3eebfb147f082165eb86a98d20a60e8b78abb54f1dd18"
+    },
+    {
+      "caseId": "editorial-42d6e19db3f5312ae554",
+      "targetId": 1504,
+      "wordId": 7943,
+      "quantizedScore": 7598,
+      "rank": 5,
+      "evidenceSha256": "d85a9fe200f3fdfd2b15967863772c444803a2c4aaa62e6508200b6660b43713",
+      "targetManifestSha256": "2ffd0001273c63670cce308bd17f5dfb3c23612648b809edd20d296dcab3671f"
+    },
+    {
+      "caseId": "editorial-5b70c6b14a23fb423195",
+      "targetId": 1523,
+      "wordId": 20973,
+      "quantizedScore": 6363,
+      "rank": 51,
+      "evidenceSha256": "16b9e5261ec2098fe61b148dfb1a76da34a47d22fed89d8d599d9d5dad2bc416",
+      "targetManifestSha256": "ba2f9dd137c877bb208597cfd163359b4d9d6e14e4ebf836a9c1c1d3a8f81305"
+    },
+    {
+      "caseId": "editorial-02380a1497532acad5bf",
+      "targetId": 2147,
+      "wordId": 148866,
+      "quantizedScore": 5248,
+      "rank": 52,
+      "evidenceSha256": "eefc83cd1564127460f29938dc7ee8c6982d176e69cf931963fae0e6b86d7735",
+      "targetManifestSha256": "22d6e7f8c28ddf539f4038e40da215ff4f37a841e5cc20568c69bde8ce9fd02d"
+    },
+    {
+      "caseId": "editorial-af952a1ce0fc7c53e943",
+      "targetId": 1629,
+      "wordId": 15321,
+      "quantizedScore": 5638,
+      "rank": 27,
+      "evidenceSha256": "44c2b677d4932a564568794de93240314839e0ac6e696cbec7b7af90ff808850",
+      "targetManifestSha256": "404c0f75f3b270a606cc5d450e397f9efb382615ac836d7ecf03a55c121275cc"
+    },
+    {
+      "caseId": "editorial-f7bb4d446df10141eddb",
+      "targetId": 1817,
+      "wordId": 732,
+      "quantizedScore": 6298,
+      "rank": 7,
+      "evidenceSha256": "8a9382d1336823a40ca85fdfcd8bcae2a5211cc6fac4002ac0bc27abd02aad90",
+      "targetManifestSha256": "a1de2dc784951ab1ec3f68fae267e8610965510f4d7ca60e8908d3dd60e17230"
+    },
+    {
+      "caseId": "editorial-203d2fe6ca60609f0282",
+      "targetId": 379,
+      "wordId": 20744,
+      "quantizedScore": 4328,
+      "rank": 52,
+      "evidenceSha256": "760bb73066be12d2eb1707d62e9305dfcdd6e85828a6edaa1e667927697dd539",
+      "targetManifestSha256": "3d20f80b7d751be119c9b328fda388f160788808b140315a0db952a3ca93e9f6"
+    },
+    {
+      "caseId": "editorial-fd542d58422f0fffa590",
+      "targetId": 410,
+      "wordId": 341,
+      "quantizedScore": 5259,
+      "rank": 31,
+      "evidenceSha256": "45199548193104551bef13b62fff7caebb58ffab2c1f0b3ea175ec32eeaba585",
+      "targetManifestSha256": "25d13b54378e13c57a08614122aa665d1bdd100b68e7d4205693b12c5593b10a"
+    },
+    {
+      "caseId": "editorial-addb162fcc429306b68f",
+      "targetId": 766,
+      "wordId": 1930,
+      "quantizedScore": 4375,
+      "rank": 62,
+      "evidenceSha256": "06df49ac8c0e75e5e04387a0aac84498300e69b8a862ceee8b388c3b9c2fc82d",
+      "targetManifestSha256": "c5f54005a04f8afb595fe180353408a4d098bede64f4f192a2b5c1a11fd38a6e"
+    },
+    {
+      "caseId": "editorial-4da3d63a0354330436e0",
+      "targetId": 819,
+      "wordId": 66791,
+      "quantizedScore": 4727,
+      "rank": 62,
+      "evidenceSha256": "65a9f3aef07eaab8d8eb0f632b04c6a98a16aa004c64009de8d98f3824fa363e",
+      "targetManifestSha256": "30532a5f33d0caa9869c739ebd0b7b94e5441909325488a5989ac6fa866dd4dd"
+    },
+    {
+      "caseId": "editorial-bb6e3c0b5256de9d487e",
+      "targetId": 940,
+      "wordId": 29067,
+      "quantizedScore": 5475,
+      "rank": 38,
+      "evidenceSha256": "d39e5226d18554b2ea7bf1a4dff1136a9db37709782fef1329da9aac6812147c",
+      "targetManifestSha256": "c2233afc221466b123c2df36f50febc2f907949866c3e2707efe4519dd93bb35"
+    },
+    {
+      "caseId": "editorial-9e51a4404efabd5a037b",
+      "targetId": 1017,
+      "wordId": 26219,
+      "quantizedScore": 4746,
+      "rank": 45,
+      "evidenceSha256": "5c2782164391924e3d92866584605e8b8b7e0f4d5fe5919bba23f6421874e580",
+      "targetManifestSha256": "bb36c7b0b1678bc84d4bffb79e25fcb44bb0b732502d9174c939543923496c86"
+    },
+    {
+      "caseId": "editorial-ecf762ea3865231bcddd",
+      "targetId": 1021,
+      "wordId": 15231,
+      "quantizedScore": 4809,
+      "rank": 52,
+      "evidenceSha256": "aa1b137fbfb04846aa750c5c581c6e3aca21b443651ed613e3182e606750ae16",
+      "targetManifestSha256": "a20e88515f0c3cd7916cf011e9c5375841333004316dc34de2c5a0e6fac7dce8"
+    },
+    {
+      "caseId": "editorial-3eff9c6219ce65dd7803",
+      "targetId": 1752,
+      "wordId": 20842,
+      "quantizedScore": 4161,
+      "rank": 64,
+      "evidenceSha256": "ce85f43936d94a59f043d857b5911ef72a11259c0f0ddff2dce2572db6adb4fd",
+      "targetManifestSha256": "c37dadbcdff16974ca75e503de17e13d6ad5c1ceb00511dbfc87d59d845b9ea7"
+    },
+    {
+      "caseId": "editorial-be9e5cf5b92e1af0630c",
+      "targetId": 1235,
+      "wordId": 3664,
+      "quantizedScore": 5264,
+      "rank": 29,
+      "evidenceSha256": "98638c79ca9a3b0258bb7ec67840998f05622fc115f89520133447da1eef6069",
+      "targetManifestSha256": "f20ca731bff55fe1d332cf8bc6e8eaafd7aefb7f46fe14239fc116e5832db54c"
+    },
+    {
+      "caseId": "editorial-9e201aa1be49478955e1",
+      "targetId": 1134,
+      "wordId": 46625,
+      "quantizedScore": 6852,
+      "rank": 39,
+      "evidenceSha256": "2028d4c2adeb7aa121d3ab9e5e74c61e1c46f8ed5395c604a44d6fb035297041",
+      "targetManifestSha256": "5cb2690cf3fb4c43bd8df7f071e53000c350779cdaa9d84c2086f5c750eb57ee"
+    },
+    {
+      "caseId": "editorial-4ba2edea790ef61a3eb5",
+      "targetId": 2184,
+      "wordId": 24675,
+      "quantizedScore": 5723,
+      "rank": 61,
+      "evidenceSha256": "a53d6404af9ab2eebc50fc2dbe751299a4410d4a4b9798928bf0001074e3e0f8",
+      "targetManifestSha256": "1377230921f69ad707452326a71affefe2355e5d7bccfa81461131af6f5f51b4"
+    },
+    {
+      "caseId": "editorial-4c05be8f94a077e887fe",
+      "targetId": 2146,
+      "wordId": 4862,
+      "quantizedScore": 4481,
+      "rank": 29,
+      "evidenceSha256": "95c2817bcb93fc0cfa00ecbebd1a3edd87856b5e1dc220f0d0fb550d8b7bbf7e",
+      "targetManifestSha256": "816d653440d0c903190a89a1ab958ed2b18e67babb4d27e9e73f7fd00c0d6b2c"
+    },
+    {
+      "caseId": "editorial-1556aa834a248249b55d",
+      "targetId": 252,
+      "wordId": 224,
+      "quantizedScore": 7788,
+      "rank": 5,
+      "evidenceSha256": "912b2a9c9e24fd6394bee31048e56ad67ecc4eeaea51464a85004b119749dcc9",
+      "targetManifestSha256": "79c1a746d9eb6664a5db147e1ca1260bba2c24e97a4268a81bad431bc2f2ab79"
+    },
+    {
+      "caseId": "editorial-916467adf2b7d9f7ea3b",
+      "targetId": 467,
+      "wordId": 1460,
+      "quantizedScore": 6356,
+      "rank": 15,
+      "evidenceSha256": "46341391f9f7847599b807a34932455ac17544f630204bc3f630c6cc075c7549",
+      "targetManifestSha256": "4e5df77a6b3aa6a78dc6e4235948c1f6702852deaf5f32dc01353d1207bbb678"
+    },
+    {
+      "caseId": "editorial-b7437f7113b4e8caca3a",
+      "targetId": 598,
+      "wordId": 14649,
+      "quantizedScore": 6384,
+      "rank": 18,
+      "evidenceSha256": "2f414e18c930f7743cf817c52b2e6124e31f9f618e210fc62096e95ddb25049c",
+      "targetManifestSha256": "3a2a02887db247d6b54df923d44bce176e421dc887b1a5bb2dffc626c257dc2c"
+    },
+    {
+      "caseId": "editorial-7fcc218f6ebd3cae00e4",
+      "targetId": 1294,
+      "wordId": 22305,
+      "quantizedScore": 6779,
+      "rank": 17,
+      "evidenceSha256": "c46afbeb4177125f386f86c27a32b5acc2f1fa4bdd1c2dd57dbc848a98fe75ce",
+      "targetManifestSha256": "a6d1b2294b52cfa121a8c4c09a0b325a8ad11f9a7f6f57f245a859cbe495e062"
+    },
+    {
+      "caseId": "editorial-7c48058de4b7766463c3",
+      "targetId": 885,
+      "wordId": 1460,
+      "quantizedScore": 5564,
+      "rank": 37,
+      "evidenceSha256": "0dae936252fc346a6f62529523071454ec6ee4ba6a27ad125f72805e5daa7509",
+      "targetManifestSha256": "8734d2f127baa45da28a7f8d4eabb2b47c54c31257f817d55165f29a91591fb3"
+    },
+    {
+      "caseId": "editorial-a241879fecc804e830af",
+      "targetId": 213,
+      "wordId": 3595,
+      "quantizedScore": 4524,
+      "rank": 35,
+      "evidenceSha256": "3f5556e148cee2062027f478af1c336d8f533f75d1c68d15e7a80074b0f2ef29",
+      "targetManifestSha256": "6f39098d68f0ee00fb9d3016147775952d8cfb64602c18becc9704d9c2f028bb"
+    },
+    {
+      "caseId": "editorial-37eae0326be08bcdb962",
+      "targetId": 1969,
+      "wordId": 10928,
+      "quantizedScore": 5895,
+      "rank": 37,
+      "evidenceSha256": "7db8023328292bb4c279341f51b78f012c15d830c5ca7508d6aadb6dbe0f7e81",
+      "targetManifestSha256": "9a325e78c9a38f4e2a2d734f2df51cbbe71eefbdad97792edccc8f0f58a22925"
+    },
+    {
+      "caseId": "editorial-5f7da4418bf2f7e7efa0",
+      "targetId": 606,
+      "wordId": 3837,
+      "quantizedScore": 7511,
+      "rank": 5,
+      "evidenceSha256": "f05f4e16a1ba50bfe502ba8bca689ae323648f5edf97bcbb7175fa9e369ba2cd",
+      "targetManifestSha256": "fc0ec5879603d1d64b07118d3d4eb17b71a7c84ed4137106c52ef43dbcc9dd09"
+    },
+    {
+      "caseId": "editorial-a6f557288faec2963f30",
+      "targetId": 1421,
+      "wordId": 7274,
+      "quantizedScore": 8040,
+      "rank": 2,
+      "evidenceSha256": "f3af3c3cfae8983fbbe3ce935ef535fd679a965cfccc63710a6cc4d78c3f9735",
+      "targetManifestSha256": "baff3c5cb43b7516098b3ace1c7ed74f5d8f58330847986aee21e3ba76118c67"
+    },
+    {
+      "caseId": "editorial-f602213ed2f57df196ea",
+      "targetId": 1640,
+      "wordId": 11117,
+      "quantizedScore": 6153,
+      "rank": 19,
+      "evidenceSha256": "255e5020823643ab491ca1e017131e13fc245f4082e38339795e602a43e478e1",
+      "targetManifestSha256": "fcd685692ecff611092037c843299dea38be40c9fd947ce6c4ea44986a654c55"
+    },
+    {
+      "caseId": "editorial-23fbc03e0d37b0a8aa27",
+      "targetId": 1120,
+      "wordId": 2183,
+      "quantizedScore": 5612,
+      "rank": 62,
+      "evidenceSha256": "0fae14660547a9527c7eecc8ada934f6ac08dd9ce92f7128850573700a97e18e",
+      "targetManifestSha256": "314d1eff4d6a4b83169f4019f9c799c3055e32d55599e9ada33518b401defb88"
+    },
+    {
+      "caseId": "editorial-4f20fcf993c20b798ff2",
+      "targetId": 1111,
+      "wordId": 40924,
+      "quantizedScore": 6483,
+      "rank": 34,
+      "evidenceSha256": "4249719d1eb3a708c1b331fd0ca39aeedcab80872c43ee337f85e3fe82e7cfe0",
+      "targetManifestSha256": "d40edd5d420ff1416ee7b6ce7698b8f4e4940ddb07b14b98c79108f295409d3a"
+    },
+    {
+      "caseId": "editorial-3c82d27ec159a8a36464",
+      "targetId": 526,
+      "wordId": 24874,
+      "quantizedScore": 6180,
+      "rank": 61,
+      "evidenceSha256": "2eb6b23a3b4da06340c03431c76d3a246198bb1281c8f83b33de7b5499be927b",
+      "targetManifestSha256": "dd63eb8fdf1aef4691f9b1397af3c35f573dd60547884d417b8800d5b8e9face"
+    },
+    {
+      "caseId": "editorial-c2f3a795e2483a1d4f4f",
+      "targetId": 553,
+      "wordId": 3438,
+      "quantizedScore": 6323,
+      "rank": 46,
+      "evidenceSha256": "b73640b619c4603d382900427239df8add76d01b9506a4a767c0524faec9f82d",
+      "targetManifestSha256": "e104653b0c5d976950258538c1b8e8d4f3099ac2e68a72ff93540864261d42fd"
+    },
+    {
+      "caseId": "editorial-316996afa5a1a03be2fa",
+      "targetId": 2190,
+      "wordId": 23828,
+      "quantizedScore": 6599,
+      "rank": 48,
+      "evidenceSha256": "d044c96d14a6969364daa3afe4397a72d6cfcd594086ce5314873fc355d0f368",
+      "targetManifestSha256": "ec485e206304f920642d91121e484af2208a121bc4834bee359918fb4533d020"
+    },
+    {
+      "caseId": "editorial-49626cd1f5ab52ca227e",
+      "targetId": 1215,
+      "wordId": 2248,
+      "quantizedScore": 6006,
+      "rank": 46,
+      "evidenceSha256": "b8e2568e831a9c7af7c2f36265600914048a078aaa7dc62b62102f1004103b0c",
+      "targetManifestSha256": "4b841f76162c1cdf9e89f293bf5b07e2d536a29d487acb84a535dc0b7bbf1fab"
+    },
+    {
+      "caseId": "editorial-3876b22faa4783e21168",
+      "targetId": 1312,
+      "wordId": 24874,
+      "quantizedScore": 6187,
+      "rank": 31,
+      "evidenceSha256": "6fc0220331d719f8042a2b9f2b8abb7e73a5044e8cd9ddef27eb49d583cbec2e",
+      "targetManifestSha256": "155c148bf367725c8bb1b71462cae46d0dda6a4d49d11a19ee1019488df08e83"
+    },
+    {
+      "caseId": "editorial-264a634bbef562cc33fd",
+      "targetId": 367,
+      "wordId": 213,
+      "quantizedScore": 5472,
+      "rank": 46,
+      "evidenceSha256": "6f2815244b30e3d6212c50001a10334d430467117b5b1205940bfe85f2dc0051",
+      "targetManifestSha256": "e5dd1797e7a5c4faea6ca0e8e86f7082b7605aec78a275861f4980bd2e7cf580"
+    },
+    {
+      "caseId": "editorial-bcf89ba0614ecfc2d65a",
+      "targetId": 421,
+      "wordId": 252,
+      "quantizedScore": 6231,
+      "rank": 60,
+      "evidenceSha256": "c421489d3d0cfd4198d2a6841028dd20dc69957e8b369a51e5a3dae95a0b1951",
+      "targetManifestSha256": "7e0b1c46a3085bd35554b3282d262f3b48d10168cb0ae89f21af2c4bc64cca5a"
+    },
+    {
+      "caseId": "editorial-a00a690ca11f9c234b59",
+      "targetId": 471,
+      "wordId": 49025,
+      "quantizedScore": 6299,
+      "rank": 50,
+      "evidenceSha256": "555df5a2b79cbb47195db1f3a3bf25592b96ac9ee5f5b01aaa4f824ba71f9490",
+      "targetManifestSha256": "c01a9d1ae7df41959cc1aa295551d66518a38c3d991bb4f3b75af53c4836d7d5"
+    },
+    {
+      "caseId": "editorial-d3854a4ec36624b4cf1b",
+      "targetId": 223,
+      "wordId": 13485,
+      "quantizedScore": 6105,
+      "rank": 53,
+      "evidenceSha256": "757dcffd0eecd4228eb1e9c2bae339146508d0e421731a5227ff792ae88e96a0",
+      "targetManifestSha256": "b3c54c5f0e62d199210c72a8edd1850370c24a989ede65b21fbc7166bd9251ac"
+    },
+    {
+      "caseId": "editorial-94336266f436570fd74b",
+      "targetId": 450,
+      "wordId": 8334,
+      "quantizedScore": 5873,
+      "rank": 43,
+      "evidenceSha256": "9cf7c383c6014fa30020ef721a4d70d5177720bafb0a2b4e662b4921e4d0acfd",
+      "targetManifestSha256": "c368836d805b9ed945044b778eba3e760c84b292a50c86de8d7fa97bd95615fa"
+    },
+    {
+      "caseId": "editorial-f15735e0961837f2c007",
+      "targetId": 935,
+      "wordId": 3701,
+      "quantizedScore": 5684,
+      "rank": 46,
+      "evidenceSha256": "3c2d00bc3a8ec05ccdf045bd1d9a9ef66219087e4a412fd0973e8c94a1910959",
+      "targetManifestSha256": "1f4b204c9f33416e774bbdbc04a8d87daf81d370c83cc99372e5ea5b9361bd4e"
+    },
+    {
+      "caseId": "editorial-ed57449719f4981e7481",
+      "targetId": 966,
+      "wordId": 21179,
+      "quantizedScore": 5614,
+      "rank": 61,
+      "evidenceSha256": "7df69fbc9d866c9d70c581c10413af71f292796402b5871f49cf260e259fdfd6",
+      "targetManifestSha256": "0f880e88c975f38680ec54d3ffdb0fcc76dcd45700a9011f502d6e99cc8dc950"
+    },
+    {
+      "caseId": "editorial-ff55df2ab93a9f3cb82a",
+      "targetId": 1303,
+      "wordId": 3223,
+      "quantizedScore": 8813,
+      "rank": 2,
+      "evidenceSha256": "80ba9bd5d3ba1b64a1dc6ca5915485136ada5bdd8355a4c66f391f832fc84d6d",
+      "targetManifestSha256": "4e88ca5fe1d289feff4502d1bf4f8ad4397483911f52f0c8efd0c6d58a515d08"
+    },
+    {
+      "caseId": "editorial-61385aa794e7c7732633",
+      "targetId": 1364,
+      "wordId": 1337,
+      "quantizedScore": 7482,
+      "rank": 17,
+      "evidenceSha256": "c303b406e4d4d196fbdc62bfccd17362f7d38fbbe69d0f8027dea6c5bd079201",
+      "targetManifestSha256": "0986117bfa1039d91f2d8c74931150b32900a99ec365831590a06ea6c27281f9"
+    },
+    {
+      "caseId": "editorial-a530f1b7b42e7301bc44",
+      "targetId": 2196,
+      "wordId": 26818,
+      "quantizedScore": 5954,
+      "rank": 57,
+      "evidenceSha256": "c432820d5fa95ae2ec0bc276d9dc8e1299c5f97c0d20089bd90915502320efcf",
+      "targetManifestSha256": "b6ea105275d858252de22403139573fc640f522aa2c69df88a5203e7cebb7fb9"
+    },
+    {
+      "caseId": "editorial-35960b9fc8a50d005f09",
+      "targetId": 1880,
+      "wordId": 11640,
+      "quantizedScore": 5928,
+      "rank": 29,
+      "evidenceSha256": "ff1fc0d453eac77808e445e9134f83548d32906dd7f7544eada3e919ce8646e7",
+      "targetManifestSha256": "a986bf26061fec316eaa0658f262e6f6b4b71ef008755f407177f290687eef55"
+    },
+    {
+      "caseId": "editorial-80ff7070d73a7ddab31e",
+      "targetId": 2182,
+      "wordId": 51577,
+      "quantizedScore": 5630,
+      "rank": 48,
+      "evidenceSha256": "949cbfd8ad9a527e83e0f3ff19ca678c5b90c3a98303dc21faca5ef080ebb0f7",
+      "targetManifestSha256": "a32fdcd9e4b7bb40ed9dca8193462b7cbc36735a7f324ff4b59eed4ae496905a"
+    },
+    {
+      "caseId": "editorial-55e781cd0a28ae0f2c9a",
+      "targetId": 1934,
+      "wordId": 15342,
+      "quantizedScore": 5616,
+      "rank": 62,
+      "evidenceSha256": "87976bf688d2196be28a0c341e31a1f2fb7fdbc2d147fe1d0d39da781ac171bf",
+      "targetManifestSha256": "863f2f018a8d785016a44c0035dfabcd6efe5b38c03869a84b23d98f025c77ec"
+    },
+    {
+      "caseId": "editorial-fc5cb8f94f7b94bedc2b",
+      "targetId": 1734,
+      "wordId": 15581,
+      "quantizedScore": 5057,
+      "rank": 62,
+      "evidenceSha256": "ef5ef84493331c1fa2a46db7eb426ac93718528b69fb0339841201e41412681d",
+      "targetManifestSha256": "a571f83ad7268b525f467033c17e12e2fb45ecea3aaedd3199c598cc4f9bd5cb"
+    },
+    {
+      "caseId": "editorial-0d8bd11cc8ab9b635832",
+      "targetId": 1100,
+      "wordId": 25256,
+      "quantizedScore": 7113,
+      "rank": 63,
+      "evidenceSha256": "9cedb65cfedc6dacbd213c45ab2144cb22d0ebd4278442cc383c67bf25f52b9d",
+      "targetManifestSha256": "39950e1c0be57d2977a20b4783dfbfe984e0e917e826168789bdb2307965996c"
+    },
+    {
+      "caseId": "editorial-74f8a19b72722d4e3838",
+      "targetId": 1668,
+      "wordId": 57943,
+      "quantizedScore": 5664,
+      "rank": 56,
+      "evidenceSha256": "40218d9bea8ba1ad786a722a2692f6d02c3b39270936c5d5f99be2a92c36ec4c",
+      "targetManifestSha256": "ae9e060694c3d5a9f9ab8601e4912aa5b78e552b21f214ce24c49becf45f3e67"
+    },
+    {
+      "caseId": "editorial-037fb423d9e7e5437c6b",
+      "targetId": 1218,
+      "wordId": 129576,
+      "quantizedScore": 6310,
+      "rank": 57,
+      "evidenceSha256": "e2cbf6f2303e745a8095ac5a6add33e2d263c56aa31fc4fd28efc0d2007b39d3",
+      "targetManifestSha256": "ab537edcd07ff3833042f6f0c13bb98dc334da0fa151e76ca201417b99b03a9f"
+    },
+    {
+      "caseId": "editorial-65d46d9b9d03dfde3f78",
+      "targetId": 320,
+      "wordId": 2182,
+      "quantizedScore": 6230,
+      "rank": 48,
+      "evidenceSha256": "cf703876dfc86a260d8bb8e9c9bf4ef2954cccf20e6241a573f750f0dab4b98d",
+      "targetManifestSha256": "08223072ab5eb25eeb41af285507b000a4426ada851995cd1901a42383f0ad91"
+    },
+    {
+      "caseId": "editorial-a7dadf9f467c4a9d97b6",
+      "targetId": 341,
+      "wordId": 526,
+      "quantizedScore": 5366,
+      "rank": 59,
+      "evidenceSha256": "6018b4ad3d91536f96964b1201204cfb15502e68b6cce531da82abba7fed7d86",
+      "targetManifestSha256": "41ab80ff9f41202c4b41dfb50d90060d2fbd76497a141b10485716e785734ff2"
+    },
+    {
+      "caseId": "editorial-18a037eb923abfff1e24",
+      "targetId": 1296,
+      "wordId": 1100,
+      "quantizedScore": 6346,
+      "rank": 19,
+      "evidenceSha256": "9b8529fe3f711e6356e29280d574dab6b9f858f1042343144f896e18b9cf6be7",
+      "targetManifestSha256": "6cc72d8784918c994a92e810fb8fb4fe74b0ff22728b94a9aa417b6eb56bddf4"
+    },
+    {
+      "caseId": "editorial-1ab0c9be8a4e405a228d",
+      "targetId": 1353,
+      "wordId": 5337,
+      "quantizedScore": 6433,
+      "rank": 23,
+      "evidenceSha256": "393848abf6939ce15c0e2c8b6e885ad8726c76d639315d09610e257653c6a779",
+      "targetManifestSha256": "ac47c5c0ef8cf988fb622edd4970f5d546e8dd067d125eed8927d340f2d00af9"
+    },
+    {
+      "caseId": "editorial-3ca92fdad4afbd43a45a",
+      "targetId": 624,
+      "wordId": 3589,
+      "quantizedScore": 6168,
+      "rank": 31,
+      "evidenceSha256": "327cfb9efc8e2ff4c4e16cb7e16a10d88af6b92d34c47a26e0378beadaad4851",
+      "targetManifestSha256": "fbf2e0e1dad147aac797a103f71975a7b563a4100b653b7cd1fed4f10c4b98ca"
+    },
+    {
+      "caseId": "editorial-1b1bbbca0b3a8d657533",
+      "targetId": 683,
+      "wordId": 2694,
+      "quantizedScore": 6541,
+      "rank": 54,
+      "evidenceSha256": "a4de10a5a75b95c2e409ac5dff04f4643d44d5425bf2ed32ebed94eb0536c646",
+      "targetManifestSha256": "7f9d62ee43b75d5f8ebe83bba0ed378cbd9e4ee2ad26d8e4d7418995402659cb"
+    },
+    {
+      "caseId": "editorial-233ec723a9e9281481f0",
+      "targetId": 2007,
+      "wordId": 50085,
+      "quantizedScore": 4913,
+      "rank": 58,
+      "evidenceSha256": "f9fef5a5ba00fe6fe40fff00b229b2c778ea554bb40da38283983461dac1baa6",
+      "targetManifestSha256": "7c0676462264266697e52cffe4100d2c2b412a27b062903c17349dc2b034cba1"
+    },
+    {
+      "caseId": "editorial-a24740f82841dcbed8c4",
+      "targetId": 1274,
+      "wordId": 8169,
+      "quantizedScore": 4877,
+      "rank": 43,
+      "evidenceSha256": "4487434d9a004d952c34bcc0a013c7ed65a3b3786a604d1eb1e08dd6874995e5",
+      "targetManifestSha256": "25d2cf3c6871968d16db4078536eef413cef42e751c1f4ff25deb51beefe9142"
+    },
+    {
+      "caseId": "editorial-1a13680c3ba91896f63e",
+      "targetId": 265,
+      "wordId": 1258,
+      "quantizedScore": 5664,
+      "rank": 57,
+      "evidenceSha256": "bb317973847a231b2bc786708f34fc6b255ede63a33ec79db2f66e9db9f6eba7",
+      "targetManifestSha256": "03bf132b822878abfa28d81dc96a8e4f002ad19dfdd6d35484f841816398741c"
+    },
+    {
+      "caseId": "editorial-97c3ebf4aad68d31ad6c",
+      "targetId": 2107,
+      "wordId": 1960,
+      "quantizedScore": 5736,
+      "rank": 55,
+      "evidenceSha256": "970db01bccee2d32692b0cee0330ad09a30d24ae22113d3354e1cf71ba99319a",
+      "targetManifestSha256": "8f808b2b144491b716a6e4f35a6a1b96510d93b54676cc5c6f9aecac96dff361"
+    },
+    {
+      "caseId": "editorial-027fa1b0b8e2ce16ec62",
+      "targetId": 1735,
+      "wordId": 437,
+      "quantizedScore": 5153,
+      "rank": 25,
+      "evidenceSha256": "f3a2fceb6b1d7c1d2218bd68be7ef3c8ebe031b58291b1abaa5db85ab9b61da3",
+      "targetManifestSha256": "7bcb98c26db8a6bf6577a1ac684ceda9a2554bf3521a4b14048397fb27fd28b4"
+    },
+    {
+      "caseId": "editorial-1cde1c7ea7450500ae10",
+      "targetId": 1666,
+      "wordId": 6518,
+      "quantizedScore": 5728,
+      "rank": 42,
+      "evidenceSha256": "a610306371611454bd70f909afcb80c318413b70bb7da80f4c3c848e3f82ec86",
+      "targetManifestSha256": "0764c7fa88281715e4759f78304575fce49238ffcc0d5c57104d556144343df7"
+    },
+    {
+      "caseId": "editorial-8122f6f49f525407591d",
+      "targetId": 1052,
+      "wordId": 4756,
+      "quantizedScore": 5327,
+      "rank": 59,
+      "evidenceSha256": "bb4ece70cfc72c18571aacf5daf4aa0d12fab302ae973932f145d732fa9d57e6",
+      "targetManifestSha256": "f5c9d2a3cc590c73fb59db74bb54110cd1bcc55d4e6d2ac7507889deadc02b6e"
+    },
+    {
+      "caseId": "editorial-f8e5562cd57382c60393",
+      "targetId": 1266,
+      "wordId": 13911,
+      "quantizedScore": 6101,
+      "rank": 53,
+      "evidenceSha256": "ddbe37b6ef21a98f39a8192f09b147b06c8452f921b372345b2f12a5587828c6",
+      "targetManifestSha256": "7a983b14d9894343398b283b5409dcef32d2e0f743dd11610751a5734e685cc5"
+    },
+    {
+      "caseId": "editorial-bb524d7bb5b8eec28e0e",
+      "targetId": 1161,
+      "wordId": 30667,
+      "quantizedScore": 6220,
+      "rank": 24,
+      "evidenceSha256": "6c5e40fb3ec91ef96e3a42d642408ce1389ea238a18b33ff1296dd46bab86775",
+      "targetManifestSha256": "df4bb4e4144c888b39ff19acc10044f578e16bfce4c03a82e8d3fd39529affea"
+    },
+    {
+      "caseId": "editorial-ffdb6209f8d5729185f8",
+      "targetId": 1437,
+      "wordId": 9691,
+      "quantizedScore": 5862,
+      "rank": 61,
+      "evidenceSha256": "6f77fbd3198cce6ab5b4083069d1e207e9de3144b84ff868b59997452e663262",
+      "targetManifestSha256": "38a23921860bf324aec3e25d7799e44b81aa38ce9155589f68cfac07f96b5509"
+    },
+    {
+      "caseId": "editorial-0713ab280612a20464e8",
+      "targetId": 1208,
+      "wordId": 25030,
+      "quantizedScore": 5091,
+      "rank": 45,
+      "evidenceSha256": "6a651f6a062e46518e3f62383c7238216aed3f3e58a8fdfc1a315e60f9374ef1",
+      "targetManifestSha256": "2c9491f8a4431cb811db3ca4b19f0276216e95fc219d9f82caecf6607cc23418"
+    },
+    {
+      "caseId": "editorial-03916880f6e99bf515f1",
+      "targetId": 965,
+      "wordId": 18336,
+      "quantizedScore": 5403,
+      "rank": 40,
+      "evidenceSha256": "42b97870367f4aaf59834d06fc475210fb11502160ee2423cdcf1a1557a87893",
+      "targetManifestSha256": "bbc4c363461b55794584a146b41fcde01588ed8e3961114e4dca9ea67a55c4a6"
+    },
+    {
+      "caseId": "editorial-b2f860c90047bd29c663",
+      "targetId": 494,
+      "wordId": 5332,
+      "quantizedScore": 5641,
+      "rank": 31,
+      "evidenceSha256": "8487e1cc562860a663e1bc60a5afaeec7abbee40903a287e05a2f5e509e8f267",
+      "targetManifestSha256": "f5a7d0c624c5652f7c92e77d7603f036da8b013332478713f046626d582080ed"
+    },
+    {
+      "caseId": "editorial-1c5c7e69eaff1786292f",
+      "targetId": 1041,
+      "wordId": 34641,
+      "quantizedScore": 5905,
+      "rank": 63,
+      "evidenceSha256": "2acf181cf9e6c7b5cece17401a9a6e8b8e4ad5a577348a902ce27862e0268f16",
+      "targetManifestSha256": "b80b1b5e3cfcdec9fd92d169b51f004fa0311cb520962e531d1180cb6322fdf3"
+    },
+    {
+      "caseId": "editorial-95618c9d4a27474d9ef4",
+      "targetId": 1738,
+      "wordId": 19113,
+      "quantizedScore": 4645,
+      "rank": 53,
+      "evidenceSha256": "dcc023a249fc9b2ec47863eeda1b7936cbdf66f71ed4ed7a08bc10406133295e",
+      "targetManifestSha256": "14aeb03b4f6fe34f2cf4bc9a330524bd776ec56ec1165dd7f5a0045451f508b2"
+    },
+    {
+      "caseId": "editorial-4a2c837894804a27664b",
+      "targetId": 1073,
+      "wordId": 6397,
+      "quantizedScore": 5679,
+      "rank": 17,
+      "evidenceSha256": "bc4ec1928c26b7aa3839f1b442a88f4bfe9ad2612b1549e3421aa9e9cb03fc11",
+      "targetManifestSha256": "8290479a1e7a22a221360f77bcc4122cdf7793fa68ecaba5706ff40dc872c0f8"
+    },
+    {
+      "caseId": "editorial-7cc80eb583eaad0cfe99",
+      "targetId": 1626,
+      "wordId": 7858,
+      "quantizedScore": 6666,
+      "rank": 52,
+      "evidenceSha256": "24372c21801800973db3631ec00f2db9a27a264d6e7076a67978115ca8b47d71",
+      "targetManifestSha256": "7ce9566bed298a708f4a22c62316a44601e2e09e6d554b312863c9b91d8a33ba"
+    },
+    {
+      "caseId": "editorial-c8a6da5bb925bcd37bba",
+      "targetId": 1556,
+      "wordId": 8495,
+      "quantizedScore": 7362,
+      "rank": 9,
+      "evidenceSha256": "7988be17d7cde4209504c0f4f1a2c86919c75c96285a7743dda8284f1b670f3a",
+      "targetManifestSha256": "126ac5ba1db2e04afeee20308627f138b121aed8d9733a1355eb2439de5ff25f"
+    },
+    {
+      "caseId": "editorial-cc99f8ca28e8fdcba80e",
+      "targetId": 1955,
+      "wordId": 9836,
+      "quantizedScore": 5074,
+      "rank": 25,
+      "evidenceSha256": "ef16e29567d5294d095c54176c5ec7c35b7701f8af25616d6120bfc8dabf8f35",
+      "targetManifestSha256": "1a4b608f1ca719e44be3fe9ba101aedca6f72b795f75236120d54f044448b8d8"
+    },
+    {
+      "caseId": "editorial-0fbddf989d09b164ced8",
+      "targetId": 1064,
+      "wordId": 4294,
+      "quantizedScore": 4517,
+      "rank": 30,
+      "evidenceSha256": "de55811d86a80e25f8a1d51c77cdb2e29c26f4dbf68bf837d238ed8f45d90f9a",
+      "targetManifestSha256": "930be1fae6ca50c8317a25251226e94fe8094c69762337f6e0b144c4e57a58a5"
+    },
+    {
+      "caseId": "editorial-c34c17f0000e94c2d2c6",
+      "targetId": 1116,
+      "wordId": 6330,
+      "quantizedScore": 6343,
+      "rank": 34,
+      "evidenceSha256": "427c5afa50f7bffa083b7dc3d6ff1ced8e43fe5b6329ad053912fe4022f9d4dd",
+      "targetManifestSha256": "26d9837f4d51184cd14760cd37487cd63447c77ca0f0d452d50fa6363b86b8da"
+    },
+    {
+      "caseId": "editorial-817e665219149be4fc3c",
+      "targetId": 383,
+      "wordId": 11865,
+      "quantizedScore": 4364,
+      "rank": 48,
+      "evidenceSha256": "70c92a6e5fd9c779053a20f6c6f73cde6826f7fa2e741d639c0b616be0efffea",
+      "targetManifestSha256": "2533743f1e6b232260bc306a8705ee45793efddeaf59f9dedfebf1d4108acb61"
+    },
+    {
+      "caseId": "editorial-4d67504ef11e5a447861",
+      "targetId": 430,
+      "wordId": 6142,
+      "quantizedScore": 4229,
+      "rank": 47,
+      "evidenceSha256": "351befbab2ce7225d4fef860a5d2cb0decf5be83f4e98497eb05b092944c26d8",
+      "targetManifestSha256": "ab3eed4867990e4376ec7cd9d91788f50c83e8b8042b07d358c4c615ebb06f40"
+    },
+    {
+      "caseId": "editorial-47d7dc730a14fbb44df4",
+      "targetId": 852,
+      "wordId": 13721,
+      "quantizedScore": 4456,
+      "rank": 33,
+      "evidenceSha256": "36659afd524225f5786f154c5218289d7a028c92e0ba6b0a9804b697ac2ed304",
+      "targetManifestSha256": "81968f5828e439bb580422d285f7b69ce1c1cf2c6b04a883845cf5070954de98"
+    },
+    {
+      "caseId": "editorial-f199a474aa96e49c6745",
+      "targetId": 1213,
+      "wordId": 15417,
+      "quantizedScore": 4393,
+      "rank": 54,
+      "evidenceSha256": "497deff7d65036adbd608150d4934d0892ba7018db5c548ca37d206ddb9489fe",
+      "targetManifestSha256": "b46c74d514ec496155f4a437353349ea2371efc96540a9baa08a0a2eea01300f"
+    },
+    {
+      "caseId": "editorial-8367e00c97f5027fd914",
+      "targetId": 1896,
+      "wordId": 10887,
+      "quantizedScore": 4903,
+      "rank": 54,
+      "evidenceSha256": "899cdaabd7628dbc6a51821e6b23388c7feecb402bc57efb265b360b51666d87",
+      "targetManifestSha256": "964667ee041896eb41f7d1bf2c2ebe2ee2d2eb2209b949a410cfd56d70d2af89"
+    },
+    {
+      "caseId": "editorial-0b51cb1a4b52e3c35c05",
+      "targetId": 905,
+      "wordId": 6656,
+      "quantizedScore": 3812,
+      "rank": 63,
+      "evidenceSha256": "5d5bc48b49c1307f563f48b5427bfe083e722ec3edc6eb98a0108382e00a60d9",
+      "targetManifestSha256": "2979cf18078d83d0a4ccd2f6420368f310dd26859ac512092bca7f0ce52d6d98"
+    },
+    {
+      "caseId": "editorial-f2b7351718151b757bce",
+      "targetId": 554,
+      "wordId": 1337,
+      "quantizedScore": 4601,
+      "rank": 36,
+      "evidenceSha256": "5054b7bd086e47d0b1296670b1bfa50f639db86eef20c69509dffb661028f051",
+      "targetManifestSha256": "5ee34a3ea7b92a11b3b174c0180b33538fb18455d40f21675dc0c0d80b0252c2"
+    },
+    {
+      "caseId": "editorial-4540adc0bb9309c0e759",
+      "targetId": 186,
+      "wordId": 178,
+      "quantizedScore": 6200,
+      "rank": 61,
+      "evidenceSha256": "9fce1d37f963aaa997d8b467b018ab55e4a4d96db56546cbac8f9f0a23772158",
+      "targetManifestSha256": "1d40c4091e799844006a45c146222201f5ca26b973c215a2593e232802c2f877"
+    },
+    {
+      "caseId": "editorial-d1662cf8a3bc96f27f2f",
+      "targetId": 1028,
+      "wordId": 756,
+      "quantizedScore": 6315,
+      "rank": 21,
+      "evidenceSha256": "84e67a1e2e81db9c398fed04415e2a35dc1ac8000df9910e8054e437c557796c",
+      "targetManifestSha256": "ead33cb6b9e2ad0cc166d557d1f6f30f9a77a74144728862ddc2b90e814ed63b"
+    },
+    {
+      "caseId": "editorial-7868045f1b8aa7db3a8b",
+      "targetId": 837,
+      "wordId": 186,
+      "quantizedScore": 6312,
+      "rank": 52,
+      "evidenceSha256": "2776cdd0c197db6c859e57e67d8474dc6cccd857817e1adf7a1a754efdd314d0",
+      "targetManifestSha256": "82d1d4f3dc20398fb9519be49a8276edb03148bf46112d9fdc3b271e79c3eeb6"
+    },
+    {
+      "caseId": "editorial-404ab7a3b75620a64072",
+      "targetId": 623,
+      "wordId": 6910,
+      "quantizedScore": 5763,
+      "rank": 57,
+      "evidenceSha256": "3a93a56998ae65f519709f94ebc341e218345521793fbab651d5398bad655ac6",
+      "targetManifestSha256": "a1b955697e44c75da1ec578d04d02c8f7597c3667c4a3fe97f555eb1aa7eda05"
+    },
+    {
+      "caseId": "editorial-7608b30b800206442949",
+      "targetId": 1891,
+      "wordId": 529,
+      "quantizedScore": 7104,
+      "rank": 8,
+      "evidenceSha256": "264733b213018f964542a8fbc602535ab15c02e61f9df46004455a4493eab5b3",
+      "targetManifestSha256": "ce66c4ec8db5038b0c5f010a8969c05af6693f5951115852df36af969a1986bb"
+    },
+    {
+      "caseId": "editorial-43788118908fdab26c4d",
+      "targetId": 756,
+      "wordId": 392,
+      "quantizedScore": 5837,
+      "rank": 23,
+      "evidenceSha256": "23abf9e95074e7be1c96becd0bb42307d88ed36a93a0be94f6225dd263c58040",
+      "targetManifestSha256": "5fa6825f5533748f0b2682d19c458471c457da083d058a8ee91c84a26d867a44"
+    },
+    {
+      "caseId": "editorial-152bb20fd30f43908a0b",
+      "targetId": 375,
+      "wordId": 390,
+      "quantizedScore": 5474,
+      "rank": 46,
+      "evidenceSha256": "f7b9f4df3dcf1f736c414f86711ab086300d238db7a06236c580a88bbff38e7f",
+      "targetManifestSha256": "b370d4875d41f0a77d60ee73fc73980e04266c99a74ce58cb87d22975a09c57b"
+    },
+    {
+      "caseId": "editorial-63a11a063f14ba985b3e",
+      "targetId": 361,
+      "wordId": 2167,
+      "quantizedScore": 5577,
+      "rank": 49,
+      "evidenceSha256": "5e14ddef444a4259522b57b78c9420c0c873fd375923e535a9058a38c1e0d988",
+      "targetManifestSha256": "91bba03d8f4041ba1409ba59bdeb39c4307c3bd0af8a31603606249d9d9f9de8"
+    },
+    {
+      "caseId": "editorial-345b6043ef37806ec3a3",
+      "targetId": 520,
+      "wordId": 205,
+      "quantizedScore": 5109,
+      "rank": 56,
+      "evidenceSha256": "8f38617470ea0e402c2b60cc547def98940eaad775e07b01101c491cc2b74959",
+      "targetManifestSha256": "3d5fc225eaf051e5cdd1e75bf7c18af17fc8079b876f623f48485fcecb635cfa"
+    },
+    {
+      "caseId": "editorial-ec6b54782031c46b13e6",
+      "targetId": 580,
+      "wordId": 392,
+      "quantizedScore": 5266,
+      "rank": 51,
+      "evidenceSha256": "faa764e6e93d26a3051e2885f045240c6243f5cd31763d7e7c9001d3073722fc",
+      "targetManifestSha256": "66bee9c100e51408ac1d2b2a94686904fe0452dfbd81d5fd75a16483d7f36bde"
+    },
+    {
+      "caseId": "editorial-2933aedcd034a93156f2",
+      "targetId": 1445,
+      "wordId": 392,
+      "quantizedScore": 5548,
+      "rank": 38,
+      "evidenceSha256": "c8b47909955f208f8bc2d60923932825b52518919cf778f82a55edabc28db8a8",
+      "targetManifestSha256": "a3053b2dab050115d733f566e12eb33d5c39c6c7f227c18c1eed2082db40df05"
+    },
+    {
+      "caseId": "editorial-e3763875b0e60a0ea98c",
+      "targetId": 477,
+      "wordId": 15457,
+      "quantizedScore": 5284,
+      "rank": 60,
+      "evidenceSha256": "711ba1983ec999bd640f867a43d1117a5f777dd8400e3966f3fbaf0a28912d14",
+      "targetManifestSha256": "2692fc492188a9ab72163749bf3e844101068088ba77fc683f9ec479535b4e48"
+    },
+    {
+      "caseId": "editorial-93900e4e31c2172a8cf1",
+      "targetId": 916,
+      "wordId": 5839,
+      "quantizedScore": 5489,
+      "rank": 41,
+      "evidenceSha256": "3542d84b6cbfae810c12ea42b18e38f58d741319446606042e9994af67aaf76e",
+      "targetManifestSha256": "acc2c31ff751339fef7aa89c8f7d1a688a8c6f39f4a47fac843439111b26eee8"
+    },
+    {
+      "caseId": "editorial-1b1b1c63d9d298cb703d",
+      "targetId": 1365,
+      "wordId": 3403,
+      "quantizedScore": 5285,
+      "rank": 9,
+      "evidenceSha256": "f83d2198131e22f3c305c0fc6db3626a84b887552e9b267a890cd275fc76d3fc",
+      "targetManifestSha256": "272213dfb8f2b6ce75bdd6b0edeadd0bd4dcfb4089a53c001757a4fc99bbcdf9"
+    },
+    {
+      "caseId": "editorial-eef2aae8e20c983d8b26",
+      "targetId": 1080,
+      "wordId": 112591,
+      "quantizedScore": 5109,
+      "rank": 56,
+      "evidenceSha256": "e3431643d75b6cfcea513a0767bfc66c5594c77b885cdeef3881e82ac33b6855",
+      "targetManifestSha256": "d686baf3b647b13b73218cf8a2afd8aa0bf9d26457ed9b182b44cd98585be4ce"
+    },
+    {
+      "caseId": "editorial-e2959b33aca6c819fa56",
+      "targetId": 933,
+      "wordId": 1872,
+      "quantizedScore": 5219,
+      "rank": 54,
+      "evidenceSha256": "8a3e4125c51a169027e38c655fc7946805ad469da805f29bd10d61a53c4d1d78",
+      "targetManifestSha256": "89c1de327ecee185038f49bb1e2fc35f59a9e849f5c28059e26df919134d8af9"
+    },
+    {
+      "caseId": "editorial-e5ebf858e1b40977c102",
+      "targetId": 1954,
+      "wordId": 5360,
+      "quantizedScore": 6426,
+      "rank": 58,
+      "evidenceSha256": "75e7958007428a5804906d38c335712e0bbf077d4921173d0cf545ff8841046f",
+      "targetManifestSha256": "f786f6f353254642ba2bab3fa6956ec392a5ebf8f211164a7a8cf249ef703218"
+    },
+    {
+      "caseId": "editorial-747f96e845e1687c9e57",
+      "targetId": 809,
+      "wordId": 13304,
+      "quantizedScore": 5346,
+      "rank": 32,
+      "evidenceSha256": "7c035d5f91a0d22ad93ec2b37ef7180638cf287d29c57c239086b74533037b66",
+      "targetManifestSha256": "10c4f76d29c10d1a9c67cd76b7dd9c7263342b0063409be51432ae38bad7e0aa"
+    },
+    {
+      "caseId": "editorial-dfa822c6fb6e4c231932",
+      "targetId": 1563,
+      "wordId": 6882,
+      "quantizedScore": 5071,
+      "rank": 37,
+      "evidenceSha256": "db877c612b6aa70b79a6e1dbccb190de8b83e0594baa997b1f38735658a62c9a",
+      "targetManifestSha256": "02f3fc8dcb41b050250d1ccee9057b99c82dd10b6a0f9a33ad3b1c063c7d2192"
+    },
+    {
+      "caseId": "editorial-c4deb79419577a3f78b6",
+      "targetId": 1072,
+      "wordId": 1581,
+      "quantizedScore": 4811,
+      "rank": 42,
+      "evidenceSha256": "6d3ed86f2e4bb24d8a12c6b2cc6ed112a7528743b8b681714f4c02b927ab8d98",
+      "targetManifestSha256": "c83746a0898458349363264d09c49e29ea5488ccda0d04bfdd1ded4de734570e"
+    },
+    {
+      "caseId": "editorial-06bbbdfcc97801b4ffc7",
+      "targetId": 1042,
+      "wordId": 2763,
+      "quantizedScore": 5368,
+      "rank": 34,
+      "evidenceSha256": "ce97342b7295e31fc77ac31cab49d49dd1079a0b2579e11c801df60f490840ae",
+      "targetManifestSha256": "181f67066e5b669c9e077f459d1aced17e0cde874637b6d58007cfd6df82e8cc"
+    },
+    {
+      "caseId": "editorial-830e71f0ad97e6ee8f74",
+      "targetId": 1170,
+      "wordId": 8814,
+      "quantizedScore": 5399,
+      "rank": 23,
+      "evidenceSha256": "e681e1df4133467eaeedd0c91684795b84587b5f41cc12f95c6437050ced441d",
+      "targetManifestSha256": "313c98cbfd9741042d68b92e5ffbfc781cb4b1b9381de8ab75891d5f1fd00646"
+    },
+    {
+      "caseId": "editorial-dfa68cbd92e78546d23a",
+      "targetId": 726,
+      "wordId": 3081,
+      "quantizedScore": 5684,
+      "rank": 60,
+      "evidenceSha256": "fa4c182f2bd5a32bea675f0f1e89c62328af639d23cb2560bc8059b9cd3d2824",
+      "targetManifestSha256": "679fe9f2078e86e6081e7d34bec79a19a1da59d33272fe0ae8bea2206f4ac2ff"
+    },
+    {
+      "caseId": "editorial-616b1d92ea22438cb3ce",
+      "targetId": 515,
+      "wordId": 1244,
+      "quantizedScore": 5950,
+      "rank": 58,
+      "evidenceSha256": "6ca76ad948c4e1276b192530038590f1c1925637089d74484668720b747f198a",
+      "targetManifestSha256": "af0d753e86d0bf8fc6803a580f93414d55d28cf963d77f9914713d3dd3c50d9c"
+    },
+    {
+      "caseId": "editorial-19b67c5a5995a4435355",
+      "targetId": 1244,
+      "wordId": 18777,
+      "quantizedScore": 5417,
+      "rank": 56,
+      "evidenceSha256": "3b65da6f15a700fb1dc29b070034c791809b2dc122144248cafe644004aae6d7",
+      "targetManifestSha256": "e2e60cb8aec29c1c441c3bf71a1400b45e74bb9bbcd7bbb1ec1fcd60329a90e6"
+    },
+    {
+      "caseId": "editorial-3c1812cfb7f02fb1fd2d",
+      "targetId": 1121,
+      "wordId": 34375,
+      "quantizedScore": 5505,
+      "rank": 57,
+      "evidenceSha256": "2f8d9d757d61e289120730e919e7c5d1c1427ada1d330f554e8f6984bd62c5da",
+      "targetManifestSha256": "215b6ec4571c0d9f97d37f59630ae86228b8a841b495245c42d7657cbc593ede"
+    },
+    {
+      "caseId": "editorial-a2ba9abc24eea2f219d3",
+      "targetId": 2208,
+      "wordId": 7518,
+      "quantizedScore": 5107,
+      "rank": 65,
+      "evidenceSha256": "3ea2b42fb5da03f70aa11569f56ea2e65896d6950b3669760f8dbbe4c91d69be",
+      "targetManifestSha256": "81de20c340b1274fe01896d301db1e9b787b758d48b11165826fbf64e9a08000"
+    },
+    {
+      "caseId": "editorial-7f6ac8b62946243eab52",
+      "targetId": 1154,
+      "wordId": 9451,
+      "quantizedScore": 4731,
+      "rank": 47,
+      "evidenceSha256": "55b95745c0d328d8c3fcf791e1eaa6d333f9cf864de467b0e3fa53b6e420cd98",
+      "targetManifestSha256": "3215a969c5235064bb4b54c36d9ca9eaffd6b0917e16fc7f3b20bf43d17adc7b"
+    },
+    {
+      "caseId": "editorial-1d6b25ac45bf407e87c4",
+      "targetId": 1054,
+      "wordId": 67498,
+      "quantizedScore": 5824,
+      "rank": 63,
+      "evidenceSha256": "bb6894ad5709feab5663c7f1cf4a28b235a6037477b2849b7d0ea0134dfe4483",
+      "targetManifestSha256": "fc5c602bdb98e52f54c39f4f328074d7813258f22681d6894d749264e30d0825"
+    },
+    {
+      "caseId": "editorial-77e965c0317114b99c58",
+      "targetId": 1231,
+      "wordId": 34098,
+      "quantizedScore": 5748,
+      "rank": 42,
+      "evidenceSha256": "1c4d56bcb789d4a3eacbda56cd926fa0bbbbd9e81a04c1d81b559f03d36d069f",
+      "targetManifestSha256": "097afb0dfd5ea01227b26b3f05e9f64cdc48ff89c36983541b69bfedf091a087"
+    },
+    {
+      "caseId": "editorial-94e1639c37fb735cb298",
+      "targetId": 1813,
+      "wordId": 7595,
+      "quantizedScore": 4803,
+      "rank": 51,
+      "evidenceSha256": "7a47e7206a49c181799203c10e642c7c2eec4312c61e33aa013c194fe6eecd75",
+      "targetManifestSha256": "58d178962e573f87af5d0b6f9c50e9bccce00c2aaa3a3df48657145116836be4"
+    },
+    {
+      "caseId": "editorial-71683bca9b26997e369b",
+      "targetId": 1267,
+      "wordId": 21544,
+      "quantizedScore": 5256,
+      "rank": 29,
+      "evidenceSha256": "054d773cf2b376e05f465e28f28283b967032b20d0fd6c16eb308283fe388ee0",
+      "targetManifestSha256": "17ffa36f5a05c82b19244c127217ada25a1cb2a4420c01264781102a7018b11d"
+    },
+    {
+      "caseId": "editorial-b3b36b2ceb3d0a24302a",
+      "targetId": 2176,
+      "wordId": 7734,
+      "quantizedScore": 5857,
+      "rank": 56,
+      "evidenceSha256": "1f751cbd14faf22eebe01250aa4124da50b41cba6d8e3b2f904e0c51148ec1bb",
+      "targetManifestSha256": "6db1e5797849471c60688c26fcd3df2ddad6e5e42b9df28c2eacb4a2289532bf"
+    },
+    {
+      "caseId": "editorial-80e5765d50215a9cd61d",
+      "targetId": 818,
+      "wordId": 7122,
+      "quantizedScore": 4666,
+      "rank": 57,
+      "evidenceSha256": "c6e72ac9b6e702cc3e3fef2b318d771a7a07b1a456b7c75fcd5339fcf50bd8d6",
+      "targetManifestSha256": "69a3cef4fb69e8ad747534a3a517744f8fdb7f9c23918a08d517c56c6f3f3dd9"
+    },
+    {
+      "caseId": "editorial-90e72c3238f0ada6dc8a",
+      "targetId": 1788,
+      "wordId": 25178,
+      "quantizedScore": 4755,
+      "rank": 56,
+      "evidenceSha256": "eec48071ed272df4f8a9605f2e53e8e0f6ba0f0f9f81b7f724edadb4dc4d1363",
+      "targetManifestSha256": "4645b42b29a55e5db2020930938e1da25d5ff7ab5faf7c7539e9e4c4a45f18ca"
+    },
+    {
+      "caseId": "editorial-69ee960d8a8354c506b3",
+      "targetId": 1983,
+      "wordId": 2438,
+      "quantizedScore": 6139,
+      "rank": 17,
+      "evidenceSha256": "b2a96c1a8360aa2c5f3c883ab3be901469e72c7b6313d04f5681655a5847661c",
+      "targetManifestSha256": "3f35b0909153e063ed26d51399e10e3a24cf2f85843d904773d3de3e7c6ad432"
+    },
+    {
+      "caseId": "editorial-327be25fd02a74598bbb",
+      "targetId": 1180,
+      "wordId": 9506,
+      "quantizedScore": 5089,
+      "rank": 37,
+      "evidenceSha256": "d91436ea4ae97de497e377de9bea3a8bfe8412a635659deeb0a4444ad5b985b6",
+      "targetManifestSha256": "abf967474c53d2c0381eb97a77a03963581e93b88df233c58e2ab9bfe52e413f"
+    },
+    {
+      "caseId": "editorial-80987c6c3e70e3e00747",
+      "targetId": 1282,
+      "wordId": 6390,
+      "quantizedScore": 5998,
+      "rank": 50,
+      "evidenceSha256": "a754dbee1210373340210d8264c85c4456012701a1592a64fb73e3f73ab3d44c",
+      "targetManifestSha256": "8a9026a6e6ea3460072c50aec62a97b7b783036336131084d1be9cfd09435073"
+    },
+    {
+      "caseId": "editorial-8708f66504f3ee656341",
+      "targetId": 1996,
+      "wordId": 8429,
+      "quantizedScore": 6102,
+      "rank": 58,
+      "evidenceSha256": "40878216f6e335cd05c53311fe3c00045d24a7299226a4bff16ca488c0fcd5b7",
+      "targetManifestSha256": "e334438299420769807274778bd637c54592692e2349c18eb5902dcca1201e87"
+    },
+    {
+      "caseId": "editorial-df5fbd1a85dc2afff53c",
+      "targetId": 1781,
+      "wordId": 3402,
+      "quantizedScore": 5071,
+      "rank": 48,
+      "evidenceSha256": "32867af765e9021a68c258189280665a1ce6b4ac66b5fc8b9b8263e402ac36e1",
+      "targetManifestSha256": "619591f676f54af86ae325cc74a399a8c1b3b3b7335ee1e0e9243713721e1298"
+    },
+    {
+      "caseId": "editorial-c68bd864b4574377c5d2",
+      "targetId": 1919,
+      "wordId": 4077,
+      "quantizedScore": 6400,
+      "rank": 54,
+      "evidenceSha256": "9d886b15228c98b83c821e43a5bc169093320324bd545879a6e6b4b516eae443",
+      "targetManifestSha256": "2c1a51c261f6dba40065e1b10b26dfc219d743aaf308fdf7382507f7658b2952"
+    },
+    {
+      "caseId": "editorial-a3c0d1355a27eb27bb56",
+      "targetId": 1920,
+      "wordId": 10486,
+      "quantizedScore": 5397,
+      "rank": 61,
+      "evidenceSha256": "e4780ca530b5e8d8b88f6d444a294c695a41a7a9a422810121e81904f1b0804d",
+      "targetManifestSha256": "ea9618f1251f3cc8e87526c205571fc7621ff5594c05e510ab66f982d06ffa0f"
+    },
+    {
+      "caseId": "editorial-f7b41dfba0f70bf993ed",
+      "targetId": 1369,
+      "wordId": 38494,
+      "quantizedScore": 5551,
+      "rank": 62,
+      "evidenceSha256": "43e438cdbbbf9004637e24344748d7424b8d44e1c0fd568bdb0407bc9ccdbedf",
+      "targetManifestSha256": "a247a34fdf64f43d662816b38cf668c787dbcd0951988838e7dd9c293ffd09a6"
+    },
+    {
+      "caseId": "editorial-94dfc783927491632540",
+      "targetId": 800,
+      "wordId": 13904,
+      "quantizedScore": 5759,
+      "rank": 9,
+      "evidenceSha256": "dc98086466f8db3a3dfa0a4fe68b7b781375f0422625fa18f9d7fdc18e43bf7b",
+      "targetManifestSha256": "12ae0499c5efec5b5f9c7de6f6be250737a186dd62c90c2d0f1374db2f3bcbfa"
+    },
+    {
+      "caseId": "editorial-e035bdb9370e27f67a47",
+      "targetId": 1832,
+      "wordId": 35372,
+      "quantizedScore": 5219,
+      "rank": 57,
+      "evidenceSha256": "80e2a44f4c307896cf22fd2a87ac15968de0927df5d652f5b4078582f97a5172",
+      "targetManifestSha256": "7c9a4b2fb260e4c5b414f6d982f6935c1b8ae4e98c2736d550459942e768dcd1"
+    },
+    {
+      "caseId": "editorial-d3725d0fa1c96ee97427",
+      "targetId": 1212,
+      "wordId": 5300,
+      "quantizedScore": 5338,
+      "rank": 18,
+      "evidenceSha256": "32b261a0cbc473b386432b1a4a093a902c118572b3b26389fc024c77ffb9dd72",
+      "targetManifestSha256": "6d41a8ddc454993f3ca8d431544710cb8b7c14875a90dcde26047ccdd8dba2c0"
+    },
+    {
+      "caseId": "editorial-904ed528b9d0fb721353",
+      "targetId": 1280,
+      "wordId": 1074,
+      "quantizedScore": 4680,
+      "rank": 26,
+      "evidenceSha256": "f81a46ae09a90c045d2f6c9555d496e19a43bef3cc30a65560c42dafba369e7c",
+      "targetManifestSha256": "c1f158f148b0f2f300afb824140f220dae71b2e7f59288d383cd994c7828c0aa"
+    },
+    {
+      "caseId": "editorial-deb95353889628589e23",
+      "targetId": 1074,
+      "wordId": 2540,
+      "quantizedScore": 4394,
+      "rank": 61,
+      "evidenceSha256": "897ff531a401cca57ce4bb1aa602c85c92f58644c418f3c077a6b0276ce52771",
+      "targetManifestSha256": "bcc86c5675eecd2150faa0616444efc61b5f9ee0efa1cb99b6989c938f5d406e"
+    },
+    {
+      "caseId": "editorial-2f8eae2a4f9e9a6187de",
+      "targetId": 295,
+      "wordId": 588,
+      "quantizedScore": 4634,
+      "rank": 60,
+      "evidenceSha256": "38ca2573eba232ee35037f88e58f8c35f0bf1c4e1b8e705c419e9c23e19f6554",
+      "targetManifestSha256": "ab92170343c6d55f7c00ee15b57b8ebb4060ab615612c5565b97742aadbea3ca"
+    },
+    {
+      "caseId": "editorial-83401ea2cc1e46bd4746",
+      "targetId": 124,
+      "wordId": 28972,
+      "quantizedScore": 4563,
+      "rank": 21,
+      "evidenceSha256": "b3a2903f13a41857f977a35fe64db130530173aa4798daea44349ab1153ae00f",
+      "targetManifestSha256": "e780b85a06eaefa6e1ca1f8521036a44281b5b161cfa00cc29a937900f858d0c"
+    },
+    {
+      "caseId": "editorial-e16152bbd3b1e14a0fc6",
+      "targetId": 281,
+      "wordId": 13681,
+      "quantizedScore": 4867,
+      "rank": 45,
+      "evidenceSha256": "ab56538636f997dea87dc8b817d87abd7f90ed3e0aae3dab1b468bd239cb9076",
+      "targetManifestSha256": "bf13648ea1ed2211000675a3ead9ad0b797512858e3122564f6e26d918e50814"
+    },
+    {
+      "caseId": "editorial-1034f0daea4c0e5c9702",
+      "targetId": 845,
+      "wordId": 2700,
+      "quantizedScore": 4511,
+      "rank": 57,
+      "evidenceSha256": "b8b15a51fe3ea666c6f134b4303a28f84d0fcbbee576186aebaea151b9a6332f",
+      "targetManifestSha256": "4efeb283e7bae1921d0f7e27d93adb7c4aee8cd72422c5f6c6376a23a1ae9f0c"
+    },
+    {
+      "caseId": "editorial-10ae11506e2cee37fc3d",
+      "targetId": 1200,
+      "wordId": 10834,
+      "quantizedScore": 4291,
+      "rank": 58,
+      "evidenceSha256": "5f34bf36c92645dc474a5bbceb0c0c1ca6313c64712417455f9d93ffcdd42da8",
+      "targetManifestSha256": "34a5118cbcf5ff16ec87c9ff775f3aaa7dacf216b9659eb81f460b8dcc9bba59"
+    },
+    {
+      "caseId": "editorial-e091c9d20681a25b6a34",
+      "targetId": 1930,
+      "wordId": 1353,
+      "quantizedScore": 4995,
+      "rank": 64,
+      "evidenceSha256": "b26f62e11a350f22ef78f4e4422869b1c117fa82cb7bd2306112d38092e9ad5f",
+      "targetManifestSha256": "cc4d936d3b41ed4d57149c33f7b4e77c0663d81f44722944742badcf5b85a1ae"
+    },
+    {
+      "caseId": "editorial-a905f0377ff653d9e394",
+      "targetId": 121,
+      "wordId": 130,
+      "quantizedScore": 4778,
+      "rank": 62,
+      "evidenceSha256": "c1ac61a662b35bb3c61ea22e3b06ca086772f7ab1d5abb8694859b062f7fe95e",
+      "targetManifestSha256": "5b4594088e267bbf8438bb9892c4281df57f534a371f3950aa157e2e9dae6a1f"
+    },
+    {
+      "caseId": "editorial-9816bc699ecd8410927f",
+      "targetId": 2265,
+      "wordId": 227,
+      "quantizedScore": 5051,
+      "rank": 38,
+      "evidenceSha256": "3478d68bfe2e2f1174839c0146952ef4ff1f5956a4abb0edfdd7a2e838c462ab",
+      "targetManifestSha256": "363ead44faabf59e6585f84ac68bbb898580f401e8ca0f967b7c73adbe17c932"
+    },
+    {
+      "caseId": "editorial-d0a40ce8c75dd3531da0",
+      "targetId": 2269,
+      "wordId": 12444,
+      "quantizedScore": 5059,
+      "rank": 58,
+      "evidenceSha256": "a476b148fd5c104649a2c9bea538e0a3f7a81860d5bb666e8f41f57bdef989d8",
+      "targetManifestSha256": "acf325a1a486ccdfbd9b830ff1b8b7344ea6e203a364da0e38cf6d2aec6870c4"
+    },
+    {
+      "caseId": "editorial-eb46aca3735da686fd48",
+      "targetId": 2381,
+      "wordId": 20683,
+      "quantizedScore": 5213,
+      "rank": 46,
+      "evidenceSha256": "1c6db8d2ce833bdd4dfe94b4a3cad9203819e39004329c306098732fa9c71976",
+      "targetManifestSha256": "5f8e58d84d736d858434a394fe66706cac77fca4374bf4f6583f1b898cf12a64"
+    },
+    {
+      "caseId": "editorial-43d1d8ddb274216f8be7",
+      "targetId": 2433,
+      "wordId": 402,
+      "quantizedScore": 5679,
+      "rank": 52,
+      "evidenceSha256": "cfcd8e048fc716602b04643a34d8db2c9ce2d2d1afd129db1037944eedfff7d1",
+      "targetManifestSha256": "19030a628909942c1eea11baaad9c2f2a2d8892eab5bbfba20ea6bc75d541c70"
+    },
+    {
+      "caseId": "editorial-49610c1a72e945492e5c",
+      "targetId": 2435,
+      "wordId": 5267,
+      "quantizedScore": 5671,
+      "rank": 52,
+      "evidenceSha256": "83535c4481c07dfc9df2c4af818e75368f96b159f70dbfbdc6e3ce96c2d8437b",
+      "targetManifestSha256": "5503ff27969675bff3362df9c13ee50d80b50f14bed005b139d6882af5c765ed"
+    },
+    {
+      "caseId": "editorial-58d2b8cb35e1a0c9ec4e",
+      "targetId": 2437,
+      "wordId": 23396,
+      "quantizedScore": 5661,
+      "rank": 64,
+      "evidenceSha256": "7a52bfde7674264860729f2cf780924f535f4e59309cef20c3def96846b3aacf",
+      "targetManifestSha256": "d82c6ade0533b2a77785be457c9731f3a2866ad4f22b0ad713f0e647c40f9e2e"
+    },
+    {
+      "caseId": "editorial-17715e02d67c477ecf94",
+      "targetId": 2455,
+      "wordId": 3549,
+      "quantizedScore": 5408,
+      "rank": 48,
+      "evidenceSha256": "9d15f816ce36031c5aa8626fbc0ac0a10e1c7d6c595e9e98a25868e2b2a429ba",
+      "targetManifestSha256": "b5494a43ac96152641e8f9a7113d86fb1e5731b05abf0ca67b1c341ae7d35410"
+    },
+    {
+      "caseId": "editorial-aa9a2b8dfa3661087a67",
+      "targetId": 2479,
+      "wordId": 31292,
+      "quantizedScore": 5711,
+      "rank": 64,
+      "evidenceSha256": "506c4e35a26f5f10c4f0731b1f087b471d8197ec6612dd374b68c7681157625c",
+      "targetManifestSha256": "47366ffc0d4c8128566f966f478d0f0d070d13aef0c231fa5ac29f3fc893166f"
+    },
+    {
+      "caseId": "editorial-65886d75970003f398bb",
+      "targetId": 2498,
+      "wordId": 5729,
+      "quantizedScore": 5504,
+      "rank": 48,
+      "evidenceSha256": "95003574b96883938fcc619f1a4cbe126713687cdd7195354fbcf5f72291b1d9",
+      "targetManifestSha256": "daada918e842d8ba3c6c49fc7007712fcf02c8fc4a7526412c7d4ac881013c48"
+    },
+    {
+      "caseId": "editorial-08dfc81b7e700a05baa3",
+      "targetId": 2548,
+      "wordId": 15736,
+      "quantizedScore": 5410,
+      "rank": 44,
+      "evidenceSha256": "a4d6b28530cec511ebda1ac90c6763c09a0264bb479c9fe5289cce6afcaf583e",
+      "targetManifestSha256": "9114a38149f7a085fe150695c27e6b8e17cdc2dc6c721ea7616c22286c309dbe"
+    },
+    {
+      "caseId": "editorial-e139d73a5e4b6572ebcc",
+      "targetId": 2635,
+      "wordId": 6969,
+      "quantizedScore": 4544,
+      "rank": 48,
+      "evidenceSha256": "3660e1f0c8fb76bbe14682429c7f16276e92a3a167b31525a2a4948656f69abf",
+      "targetManifestSha256": "edee3d9a0deeafddac9995a5e3aacabc35e833911bc6c84be10543f1a479ecdd"
+    },
+    {
+      "caseId": "editorial-08d97e19889ef05c6792",
+      "targetId": 2680,
+      "wordId": 1369,
+      "quantizedScore": 6061,
+      "rank": 44,
+      "evidenceSha256": "014e9c629def0dc905e62f714210523bbaa6155f7d0e91295dbc60ffb708089c",
+      "targetManifestSha256": "799a281f733114a1f0c78ff54461f5e72598df04e5f805e1fbf60226e1580ea6"
+    },
+    {
+      "caseId": "editorial-4e2a9b528c07c52fb1a5",
+      "targetId": 2740,
+      "wordId": 12527,
+      "quantizedScore": 5314,
+      "rank": 41,
+      "evidenceSha256": "2ed8af9b2b877778495319d9ad989770b818327ee92ac2423283a1b658aa333d",
+      "targetManifestSha256": "b665b9bad4f70ff8cfb4ca80d327f6d6a19e8df7a7170125826df2164b88e7df"
+    },
+    {
+      "caseId": "editorial-b7b7c4d8255029041dd1",
+      "targetId": 2770,
+      "wordId": 3631,
+      "quantizedScore": 4974,
+      "rank": 46,
+      "evidenceSha256": "2e708e4d637e867a3dec516a109c7216908ec3fd9f0e77d0fb103316fea75703",
+      "targetManifestSha256": "edf141baa5da11750d1713fd6cbbe87193bd5b3f8b65d8306e568a01205c4ed5"
+    },
+    {
+      "caseId": "editorial-c0d995a2160c04af2bad",
+      "targetId": 2902,
+      "wordId": 19459,
+      "quantizedScore": 5434,
+      "rank": 28,
+      "evidenceSha256": "cd45a195b67086c07264738baa7304d5330acaaa91b8f6beec846f27a1c4d807",
+      "targetManifestSha256": "eeb78b52691bf95c49daf4909c2a1ec6db0434b768d1ad14492ae22b91458a05"
+    },
+    {
+      "caseId": "editorial-5a77853cab4725deded8",
+      "targetId": 2954,
+      "wordId": 2663,
+      "quantizedScore": 5302,
+      "rank": 62,
+      "evidenceSha256": "32ad85dcf4bc8624bb79cb6c366c7b397962c2dc64a89fd8a68fe7ac244f07ce",
+      "targetManifestSha256": "a0580525277c2d3475c1312404610ee6adbb9bc6a4ea348ffd37bca95d5b840e"
+    },
+    {
+      "caseId": "editorial-7d70e15d0bd11e489294",
+      "targetId": 2961,
+      "wordId": 9815,
+      "quantizedScore": 6043,
+      "rank": 57,
+      "evidenceSha256": "200f5fac0d6b3191ad01b97ebe932c9e627a67569221f2191e90356f10f7cde8",
+      "targetManifestSha256": "c7d6cfe31b73ab6ad18e1552d9eb5435b7827294077a71e1c66e48e1124c2bcd"
+    },
+    {
+      "caseId": "editorial-804001a852e364500284",
+      "targetId": 2989,
+      "wordId": 12557,
+      "quantizedScore": 6289,
+      "rank": 31,
+      "evidenceSha256": "2ee2c1887f61eece001169b5cef061c140532a689c6d88429d649ed80cf27c8d",
+      "targetManifestSha256": "0bfec77a609e320f9d01d407161e1c72c26f5903d50d70d2a86a459be679a45e"
+    },
+    {
+      "caseId": "editorial-78102411f1fa0987d533",
+      "targetId": 3008,
+      "wordId": 17565,
+      "quantizedScore": 5314,
+      "rank": 58,
+      "evidenceSha256": "ff3440b7a646123bf3ef11f5b9ab9551ddf5a2368897c380235c20f328d04822",
+      "targetManifestSha256": "e636561972bec413b84e0a3e606adcdd36fa3f1aecfdb79770ccc6d5146a4e56"
+    },
+    {
+      "caseId": "editorial-cd3c0871cef5a003facc",
+      "targetId": 3020,
+      "wordId": 70130,
+      "quantizedScore": 5785,
+      "rank": 61,
+      "evidenceSha256": "806209a84d98d4740b4ca4e892a0958ea8349262f5aa5b7d8a302dd850da5b3f",
+      "targetManifestSha256": "6b835b2c7d6fa0d4027b4e1a31e9185324d954ea7c7ce676a052fe176ab3e7b0"
+    },
+    {
+      "caseId": "editorial-3e16b790d8778ac56db1",
+      "targetId": 3034,
+      "wordId": 547,
+      "quantizedScore": 5382,
+      "rank": 36,
+      "evidenceSha256": "422ebec55a093ae01da740ac4a4c7eb55a1ed1cb5f21728d5da68cba482a8cd5",
+      "targetManifestSha256": "8b52b50931ef8b47b5d0f501e411d5b9217ff228840a2f9fe6dfe266c6a0ef5a"
+    },
+    {
+      "caseId": "editorial-733e1f8b819d1192cc6a",
+      "targetId": 3073,
+      "wordId": 2066,
+      "quantizedScore": 6119,
+      "rank": 29,
+      "evidenceSha256": "7116a1d99bb925cee33ea9338746ea8a47a1a7bbc5d10c6ef76cc089d5f41ec5",
+      "targetManifestSha256": "97a3b9a258629edfb00dd56e9e70ca7bc8ec05ded43daea9f51fddbc29082c02"
+    },
+    {
+      "caseId": "editorial-2f57c1d9c77275dc31cb",
+      "targetId": 3090,
+      "wordId": 7109,
+      "quantizedScore": 4632,
+      "rank": 58,
+      "evidenceSha256": "61e2f26fe0f50d6df8b1102b4ed4774ab2fc3d5d8fd024b3f99e2fc0b82ba1bf",
+      "targetManifestSha256": "d9172bb5caaac389752b4d656e64fd8c32150bd8b4b2b133f65e96e12efaef7d"
+    },
+    {
+      "caseId": "editorial-ad213df28839157ac348",
+      "targetId": 3192,
+      "wordId": 9285,
+      "quantizedScore": 4420,
+      "rank": 64,
+      "evidenceSha256": "a7c5d343f0445ed18288abaa575dd4ae1610ea44055094df188953e447fab7c0",
+      "targetManifestSha256": "a2d2d87155bb7367a3e2b30653ae15f447525102596f46e55394219fe2ace83d"
+    },
+    {
+      "caseId": "editorial-f363216083168af07170",
+      "targetId": 3235,
+      "wordId": 10888,
+      "quantizedScore": 5010,
+      "rank": 39,
+      "evidenceSha256": "83ad257fc8bac55d2779ef8148b80067412f3ca3419ce60d4c7dedd56ca7e357",
+      "targetManifestSha256": "744399af839af9dd37563ec8b81433192a327dd0f014d95139e45b1e15ec415f"
+    },
+    {
+      "caseId": "editorial-d20d93f13abd0d7a2b89",
+      "targetId": 2515,
+      "wordId": 18223,
+      "quantizedScore": 5319,
+      "rank": 30,
+      "evidenceSha256": "40d4df40011f42bee9eff1d67f3d99ccb769ff468fc4863c631126c554c62983",
+      "targetManifestSha256": "b1dc0222d2386e07d431ca837fbe430da299dcf1ed472030f80fcc1896667143"
+    },
+    {
+      "caseId": "editorial-0adb4b810d3ad5d863c6",
+      "targetId": 2522,
+      "wordId": 35664,
+      "quantizedScore": 4507,
+      "rank": 64,
+      "evidenceSha256": "76d7a047197f5a823209484257e7c597fdc3937eee0a686c9ede964ca2d3e710",
+      "targetManifestSha256": "acca7e245a0a436ebbbc2e00c1d65848b24bb99a8c4bb28d4dfc83161d5a2fee"
+    },
+    {
+      "caseId": "editorial-e95c4472623a2dbcbc2a",
+      "targetId": 2569,
+      "wordId": 79233,
+      "quantizedScore": 4780,
+      "rank": 55,
+      "evidenceSha256": "41edddb77204f05a9fbaef40986bb07d2802ac098303fc1561837b49d5c0657b",
+      "targetManifestSha256": "bc88cecbc2cbc493f9c339ef4c1ca382c04771783f21d1b243c64d038acd3644"
+    },
+    {
+      "caseId": "editorial-c3167d478fa1d6cf7587",
+      "targetId": 2598,
+      "wordId": 7154,
+      "quantizedScore": 6892,
+      "rank": 35,
+      "evidenceSha256": "9f9edce0ce07cf1bae09bb890a1a04649765fbdcdd2657d1cfcc29e7d3030e3e",
+      "targetManifestSha256": "03b0ddbfd06f3fa7f529f23e78a83227ba47ad0622ff90c442ae6013c4ad7e86"
+    },
+    {
+      "caseId": "editorial-02ddcb022c6eda6e1350",
+      "targetId": 2798,
+      "wordId": 4248,
+      "quantizedScore": 4879,
+      "rank": 48,
+      "evidenceSha256": "b40d2f6b3160a4f7b44fa42882d3fc60ff2e3ae22da370b5c028fa5d59c9100e",
+      "targetManifestSha256": "833c67274cd52fab99623dc476f3f82eccf33315616009debfd29f4974326570"
+    },
+    {
+      "caseId": "editorial-9261068662cb4c43f899",
+      "targetId": 2810,
+      "wordId": 58194,
+      "quantizedScore": 5763,
+      "rank": 56,
+      "evidenceSha256": "0cc02b10be7ea46b3e86680ecd70a04ca31a56117a84fe99461e93725f6194b6",
+      "targetManifestSha256": "e7b96ab31c8eb4bf65ced43fac5ec2ed09302e3413f80667e0cccad906800280"
+    },
+    {
+      "caseId": "editorial-0d97eee88579ad6e3e2a",
+      "targetId": 2811,
+      "wordId": 5924,
+      "quantizedScore": 4610,
+      "rank": 56,
+      "evidenceSha256": "85812b1a0e34a59c0e0a9646b8b823bcc0488361143aeb83ccfaefdaa29b39d5",
+      "targetManifestSha256": "92b52762f4468412e079e7913c26cb21f25b307a57c346965349c5a669b11c67"
+    },
+    {
+      "caseId": "editorial-ef4529ec667172b6bd9f",
+      "targetId": 2851,
+      "wordId": 14033,
+      "quantizedScore": 5385,
+      "rank": 52,
+      "evidenceSha256": "ff386e4b3d18032b79c67a9858254236d942183c614c10f3256795a862f71703",
+      "targetManifestSha256": "ec53f2de9352cd1324155d6a8d3418407a102a98a3004b02ce086b1308396d8e"
+    },
+    {
+      "caseId": "editorial-f3b170dee2d45cbae47b",
+      "targetId": 2953,
+      "wordId": 24877,
+      "quantizedScore": 5820,
+      "rank": 55,
+      "evidenceSha256": "039e1afd9ab2385cd69f2c85f9c16e60d3022d53c0f286866391fcdc5e39183c",
+      "targetManifestSha256": "6c5f45b133d925734b7d1e9a2753e050b801582c8a2ce03cf019eed3ea9166ce"
+    },
+    {
+      "caseId": "editorial-1cfac7d5fe6e14caf915",
+      "targetId": 2976,
+      "wordId": 24729,
+      "quantizedScore": 4367,
+      "rank": 52,
+      "evidenceSha256": "2b7940cafd5e7afeac6c60eb31a543b2943f612383fc06fa047e9ac5b408bc25",
+      "targetManifestSha256": "862ced9517d3fc21ac5f42f6f37c42dd6a2883e7e2b4fc7ee3a899d7184702fd"
+    },
+    {
+      "caseId": "editorial-713f9439af280d1f3e64",
+      "targetId": 3000,
+      "wordId": 1571,
+      "quantizedScore": 5940,
+      "rank": 55,
+      "evidenceSha256": "a125aee25527dbd2620bc4916cac63e35fa7ef0c0f14662916d4fc8a55cec314",
+      "targetManifestSha256": "b66e427cffc83f96a8a197eb03f1821a5e11e50913b45179abe1ef6cfebf19bd"
+    },
+    {
+      "caseId": "editorial-f61e19884fdbdac72e85",
+      "targetId": 3044,
+      "wordId": 191456,
+      "quantizedScore": 5537,
+      "rank": 65,
+      "evidenceSha256": "0c0d53de7884b2484b4cf2d100084a0d2cf3944526c7187c00ff48ef149a32b0",
+      "targetManifestSha256": "459a741dfd5e33be8172b58f64ac34ebd94c72882dfe645ab4735a3b13fc8e1e"
+    },
+    {
+      "caseId": "editorial-10fe4f066d7d2b9f44ef",
+      "targetId": 3115,
+      "wordId": 20210,
+      "quantizedScore": 5584,
+      "rank": 59,
+      "evidenceSha256": "36c0f4227432d75f1a13c5eceea8218d37699881fd1fabc04563c834cd1ad457",
+      "targetManifestSha256": "11ffd07b242bdac46d96be6e599ec8b501d4d7b2eb9c4249a89ed8d8fd59288f"
+    },
+    {
+      "caseId": "editorial-3d428810201406da55f6",
+      "targetId": 3254,
+      "wordId": 26258,
+      "quantizedScore": 5219,
+      "rank": 56,
+      "evidenceSha256": "608812d92f5c0f74fc78fac07f4ee9eb3d7d18e86ca75d1024050730faf45e69",
+      "targetManifestSha256": "6da239f02fd189d9653a51da4f86a23dbb60b88ffbe0201336c930104ca8e80a"
+    },
+    {
+      "caseId": "editorial-f4cc6e47e31707868ae7",
+      "targetId": 2880,
+      "wordId": 3664,
+      "quantizedScore": 5681,
+      "rank": 24,
+      "evidenceSha256": "b333eb084e43cf4aaf797637155e3e133008de09c77dd6eeb0ef7b387d35a3fa",
+      "targetManifestSha256": "1bb73e791310f0aa6b3de985656f1c3a2a3a3446cf49a8b33ea9cd2d2f2be4b3"
+    },
+    {
+      "caseId": "editorial-2013ea83bccdfcb6e90d",
+      "targetId": 2406,
+      "wordId": 28334,
+      "quantizedScore": 6322,
+      "rank": 35,
+      "evidenceSha256": "59d6f6544410fa524512b5e3667a3e36c59bd24427d0ed9e7e651b796dcd1bcb",
+      "targetManifestSha256": "6a7a75c660d252e42c571113e18f1e88b4dd0a3bfc73b6adf02a6332c557fcb5"
+    },
+    {
+      "caseId": "editorial-88df438b3955e2d51fda",
+      "targetId": 2373,
+      "wordId": 2074,
+      "quantizedScore": 5523,
+      "rank": 37,
+      "evidenceSha256": "0a3a6f7c0ec9c6de0615865833a5cc4c98aa644a5b7c5bab7595f2f07c61b7c8",
+      "targetManifestSha256": "29191f51d7a6e5095d45fb4b424bab4762e8d0fe80edbfec03277b7829cd2c4d"
+    },
+    {
+      "caseId": "editorial-9b3c8271ef10d222b67f",
+      "targetId": 2457,
+      "wordId": 31276,
+      "quantizedScore": 5345,
+      "rank": 50,
+      "evidenceSha256": "0dc58862ef9710a6a9db1de21ede2c3e6b27bff76cc0f6fc76af35c7e3860629",
+      "targetManifestSha256": "c178432ae4787c3f6552646c131fe9d5f0e28b63f427c772845d7f8e651d6c6f"
+    },
+    {
+      "caseId": "editorial-553ea644f6a287416326",
+      "targetId": 2579,
+      "wordId": 41677,
+      "quantizedScore": 6419,
+      "rank": 51,
+      "evidenceSha256": "37aa448e86b1f76f7274025efa48db8bb0cd68056ea6945aeab3b195cfd129a9",
+      "targetManifestSha256": "1c08fadcd8e9e6b4ca838f6a31e8dd6822c4b0d987b715afc4d20a8dc8fdc300"
+    },
+    {
+      "caseId": "editorial-e807722ec8ffb2041d80",
+      "targetId": 2624,
+      "wordId": 742,
+      "quantizedScore": 5190,
+      "rank": 48,
+      "evidenceSha256": "fe89dc6241b7c9406fad9e6b8870e83ca6740058f13ec8cb3779d3dc7a17fa24",
+      "targetManifestSha256": "20847da88da84633bad66dbf7933ce3e9fd45c0c142e395ee9d585d6baf63b9c"
+    },
+    {
+      "caseId": "editorial-ba26afc817f4a5c9bc73",
+      "targetId": 2663,
+      "wordId": 3111,
+      "quantizedScore": 5337,
+      "rank": 65,
+      "evidenceSha256": "a0c862c490395017ba0730e27bc1cc2c94b5b75fa39ba4c8fe5572638281bed4",
+      "targetManifestSha256": "3a2c917f1a00d59d021f8743c59959d8c2d5e9742a17eb99fb5fccb3fc0f0786"
+    },
+    {
+      "caseId": "editorial-a7526575e12d678e1646",
+      "targetId": 2777,
+      "wordId": 1460,
+      "quantizedScore": 5110,
+      "rank": 61,
+      "evidenceSha256": "bdf3da2010e1b81bdd6aadf35eb5b836d3d0051b4740be949223147bcacd5328",
+      "targetManifestSha256": "efc4056d2508951f7e676e5c3bef3b9747a3570400592b01219b756c55cd0832"
+    },
+    {
+      "caseId": "editorial-032960f28e8d6d6920c3",
+      "targetId": 2897,
+      "wordId": 14500,
+      "quantizedScore": 6237,
+      "rank": 58,
+      "evidenceSha256": "55044ae736c06238d8283e8d803c38fa20d726a556fd1ae56cc9439dc59c69e5",
+      "targetManifestSha256": "28e1282665c31dcc006b507b8f16e7e54ba59d72cb82a0fb5fe3cd5b5e4e1d49"
+    },
+    {
+      "caseId": "editorial-4a22c50f7a4aaa29dbea",
+      "targetId": 2992,
+      "wordId": 8895,
+      "quantizedScore": 4907,
+      "rank": 60,
+      "evidenceSha256": "007ec5e9645c09577c07aaa0208ffffead3e4d3034ef36a8ee1d704edd77405a",
+      "targetManifestSha256": "a616e3d99ab1314e2a978e5d6477c9b079adb6ff4bdcce38c0badcf6dad2f598"
+    },
+    {
+      "caseId": "editorial-9bd255481a3123db5b2e",
+      "targetId": 3244,
+      "wordId": 6034,
+      "quantizedScore": 5210,
+      "rank": 56,
+      "evidenceSha256": "cea561453b94ad8fc1f2dc9cb57ef65b1452586ad71f8de236bb2c88c09ab8be",
+      "targetManifestSha256": "9e544b9bfd35b1b84e8af6b13f09e844ff7c19e70c798c180a8956a58d79137f"
+    },
+    {
+      "caseId": "editorial-da1a87e9138913d6ac32",
+      "targetId": 3361,
+      "wordId": 3372,
+      "quantizedScore": 6241,
+      "rank": 64,
+      "evidenceSha256": "a5fe4ffa82cfba803b26a232f7a6f1b427d478619ec228de3b4a2b9a1accfaf2",
+      "targetManifestSha256": "7a52b919babba96cb2dec62e5fe0af655bcfc92cc34114b3d6409e5300726f9a"
+    },
+    {
+      "caseId": "editorial-64a0e99701ce07373d86",
+      "targetId": 3372,
+      "wordId": 11640,
+      "quantizedScore": 6530,
+      "rank": 59,
+      "evidenceSha256": "0b427fc8e798952a1b12fe3e19f1b4341ed85be457797f7a9f664104d518b764",
+      "targetManifestSha256": "2d3515e70de276974946a8f89b538746abe1ae204bd8747224c5c7106583f9c9"
+    },
+    {
+      "caseId": "editorial-bc09e00828191aa20270",
+      "targetId": 3438,
+      "wordId": 63652,
+      "quantizedScore": 6733,
+      "rank": 25,
+      "evidenceSha256": "4611fb8d0e9a79b89414abe8171bc5b47d288c015593913bacb38ef6d37ed271",
+      "targetManifestSha256": "a0b264eb1caa5b9da24cef1ebfd32c7a2c381c5f756003fda25ba98fa30f5696"
+    },
+    {
+      "caseId": "editorial-a4c08ac848a47f11f2ff",
+      "targetId": 3465,
+      "wordId": 35970,
+      "quantizedScore": 5215,
+      "rank": 54,
+      "evidenceSha256": "72c7f147a4dd3dcc7f52040ba7a1f38ddf9b50850af09ad499d9045ef8714304",
+      "targetManifestSha256": "5890c73b48cc087e5e1a03729a0a8d61aafd2c3fb573df7a5c691fae2a2ce823"
+    },
+    {
+      "caseId": "editorial-85e0d656e646db31c07a",
+      "targetId": 3600,
+      "wordId": 42444,
+      "quantizedScore": 4947,
+      "rank": 56,
+      "evidenceSha256": "ce10d8e4da45113912474eb44178af485d151c5806df96749b189576b6d7cf62",
+      "targetManifestSha256": "0a5c3fe0a4e28cda483a887add8ab2f2a8da22347ddf7c75b369852571f097ad"
+    },
+    {
+      "caseId": "editorial-a9fe18f544cbb43eb261",
+      "targetId": 3619,
+      "wordId": 6635,
+      "quantizedScore": 5756,
+      "rank": 43,
+      "evidenceSha256": "0696ab7ff1821793982d803b38442ad8b92f402d4282198114227f53d23e731a",
+      "targetManifestSha256": "6b9314b6088bb0ad9a0339b1859c21e1f77df7d2df632861432ddc4df8be1c71"
+    },
+    {
+      "caseId": "editorial-a3ba7b9ddb97e0a1e4aa",
+      "targetId": 3837,
+      "wordId": 10025,
+      "quantizedScore": 6012,
+      "rank": 46,
+      "evidenceSha256": "b696800509b6c1788ed0522fa99d476806ae0690c5c3a25d243b21d67188fbdd",
+      "targetManifestSha256": "e1b4118b81667bc276c6cd6b4adda270d0224ef85a6107fd9b21feb1fcdde9a8"
+    },
+    {
+      "caseId": "editorial-a3a1d7f055d7035eab26",
+      "targetId": 3940,
+      "wordId": 68558,
+      "quantizedScore": 5379,
+      "rank": 46,
+      "evidenceSha256": "5fb773db00483b18c16ba5259797c153167bdcb69e701ffdc717b087c3f27a5a",
+      "targetManifestSha256": "c0ac14e44cb5a3aa0972da0cba0e280b40900e4948ba778a7fb04d647ade7b2c"
+    },
+    {
+      "caseId": "editorial-16fd290d75c811d4d91c",
+      "targetId": 4074,
+      "wordId": 1988,
+      "quantizedScore": 6017,
+      "rank": 29,
+      "evidenceSha256": "98b0b33bd3253162c2d1e11cef3e543c84f7310b9abfa93d0c735977fe992e20",
+      "targetManifestSha256": "0f615f576837a790580b872c682b0bd2066a408ea4584c3c78a234aa4f401202"
+    },
+    {
+      "caseId": "editorial-3fd55d763b5df5e0465a",
+      "targetId": 4120,
+      "wordId": 5658,
+      "quantizedScore": 4118,
+      "rank": 62,
+      "evidenceSha256": "695aecf6b8c5076a0d2f6d706dad7411ed02ea9d6ef3879ac7c70ba7469555d6",
+      "targetManifestSha256": "6cbf80e8a7b769b3bf4ba921363816ecf31b53951b00cd13d4f3f06ea2bfc140"
+    },
+    {
+      "caseId": "editorial-77504f1da1a1bef883fc",
+      "targetId": 4236,
+      "wordId": 10627,
+      "quantizedScore": 5617,
+      "rank": 57,
+      "evidenceSha256": "ed4caf2658d9588d6d9c643c6d7e79658efa90d3930180b8bcc043689e7e6ee1",
+      "targetManifestSha256": "37c289110dac9c002f782c2d262e0c7f2aa3161d48d74471bb2b27269cac346c"
+    },
+    {
+      "caseId": "editorial-dff428268a5b73ba90d1",
+      "targetId": 4265,
+      "wordId": 61005,
+      "quantizedScore": 5604,
+      "rank": 44,
+      "evidenceSha256": "6e45e39a221798b0e53482fe67d76753ff2f0944d0c3e0bf860a3725f2242895",
+      "targetManifestSha256": "5c94463e81989823fb609df9d5252c5b7b67b5ff6d4eb11573926071fbeabbc7"
+    },
+    {
+      "caseId": "editorial-229f6b04d2aaa5539d33",
+      "targetId": 2431,
+      "wordId": 35303,
+      "quantizedScore": 5084,
+      "rank": 45,
+      "evidenceSha256": "b485810296aaa47710055d40df656f33ae2225f23c30483258670046f55a1caa",
+      "targetManifestSha256": "6231eefc7bf5fbf98f382348d6a1561fecfce7d18498d580eaa396f39fafc29a"
+    },
+    {
+      "caseId": "editorial-2d50122c40761a3d964d",
+      "targetId": 2909,
+      "wordId": 16071,
+      "quantizedScore": 5230,
+      "rank": 36,
+      "evidenceSha256": "afa12619d5dca0dede0895079dacf48384e8b2bd66101da8ba730bef378ca82a",
+      "targetManifestSha256": "f651a07502db8ebe61bf06a1f93f5e8cf37ced8bd09107a12ad6c4e7b9800622"
+    },
+    {
+      "caseId": "editorial-e8aef08cb94344798f04",
+      "targetId": 2957,
+      "wordId": 9309,
+      "quantizedScore": 4590,
+      "rank": 49,
+      "evidenceSha256": "4054e25fbf15ac43ca1d1c747805184e4c8339b439bbd160fbd54c875918f62e",
+      "targetManifestSha256": "3a2c4aeda077c4f05081e73308c238983d38c31b38408afa55d80fa6c045145c"
+    },
+    {
+      "caseId": "editorial-5c84acd9873a263fd015",
+      "targetId": 2973,
+      "wordId": 965,
+      "quantizedScore": 5028,
+      "rank": 63,
+      "evidenceSha256": "86f9a5c1a7395d132e620b762b1244e3a6a8e40fe990530a3cc8fbdc1885163c",
+      "targetManifestSha256": "407e910e46d9ef5cb40f41ea91f7c481697f85f62d20828198715049ab3869ba"
+    },
+    {
+      "caseId": "editorial-bb8dfbde0398237bc2f0",
+      "targetId": 3494,
+      "wordId": 6812,
+      "quantizedScore": 5120,
+      "rank": 42,
+      "evidenceSha256": "b2fcb303feffd90c8c6d9a5ad4d194154f287ec292d316ddeff418f8d9e1637c",
+      "targetManifestSha256": "636b08592dfd6f243c739ad0ff478072fdd7a88ab4715932040972f3fec77276"
+    },
+    {
+      "caseId": "editorial-74b02a68af3d80d813ad",
+      "targetId": 3579,
+      "wordId": 6635,
+      "quantizedScore": 5394,
+      "rank": 54,
+      "evidenceSha256": "d3a67275339d6a0c42a5d2a15ed4765fdc4e4353d2b1c40bbccb384e43d5971a",
+      "targetManifestSha256": "d2aacdc7a2d6151ed2438aa00b101c2bedf2c6803a027d449ce8aaf5247af9cb"
+    },
+    {
+      "caseId": "editorial-de8b20dc5162f14cfda3",
+      "targetId": 3595,
+      "wordId": 421,
+      "quantizedScore": 5947,
+      "rank": 16,
+      "evidenceSha256": "509abae1a318059194a6fc97ebb55a0feda5f53d49e7db194ca9ec38a2c43578",
+      "targetManifestSha256": "59c7b9ac7e6a2625e1142a185c792f8483aa51e934e0718f829739ac3b5b89e3"
+    },
+    {
+      "caseId": "editorial-f1afd04ec23db13ae0c2",
+      "targetId": 4049,
+      "wordId": 18897,
+      "quantizedScore": 5547,
+      "rank": 33,
+      "evidenceSha256": "f88109d426572fa3541b46f3bba2dd9de4079aef4d6faf117c27ac2e9f01ec5a",
+      "targetManifestSha256": "1a04ee2f04ec4f6631725f26332f055ee23f04c571570fa205367902e89f4c74"
+    },
+    {
+      "caseId": "editorial-3841d84a7b77161b967b",
+      "targetId": 2341,
+      "wordId": 1344,
+      "quantizedScore": 5779,
+      "rank": 14,
+      "evidenceSha256": "0244364b0ffebac7041c10de35865f1362216f32bf946d24bcc37ca4632324a3",
+      "targetManifestSha256": "3de430bab8adacd116a3702bcc9b251810b6e4ef9d1d23cd654f8368d183a8f2"
+    },
+    {
+      "caseId": "editorial-b52aca4ca05d8cbc6d8a",
+      "targetId": 2447,
+      "wordId": 34406,
+      "quantizedScore": 4436,
+      "rank": 63,
+      "evidenceSha256": "a9db8fe0589d22d8c21f202d01eef3af59447feb56c2fa88fa98c57474a49eb9",
+      "targetManifestSha256": "d0b0717593c5075ee142e6b8b5fd07fa4dd4ac0a9e576989cff78449e2822c1b"
+    },
+    {
+      "caseId": "editorial-17595c20c3b657167226",
+      "targetId": 2453,
+      "wordId": 24818,
+      "quantizedScore": 5496,
+      "rank": 56,
+      "evidenceSha256": "c8a384faf19b98c21e138258f22edc2d3b9ef88b328836108cd642caf7be5c7c",
+      "targetManifestSha256": "7ac872ece51bcaa327fbe33705750ee87d076ff43b3fd94c8dd096aa001226a3"
+    },
+    {
+      "caseId": "editorial-2b9058fdb9ca7f8da695",
+      "targetId": 2469,
+      "wordId": 62413,
+      "quantizedScore": 6978,
+      "rank": 18,
+      "evidenceSha256": "a41d30bc465e3496fb32084166d33b60b74f9b012003a4a827d4133cc06c1dc8",
+      "targetManifestSha256": "1dc690a6708574272aa836d47555f361b293ad302609c0faaf61774808fcfa2d"
+    },
+    {
+      "caseId": "editorial-53eb1b7f00e6dc0a2bbe",
+      "targetId": 2485,
+      "wordId": 43660,
+      "quantizedScore": 5151,
+      "rank": 41,
+      "evidenceSha256": "7ab295a3c70178306f3686d52ec1fb4952326d508682370d3bf21e5d4c1918da",
+      "targetManifestSha256": "356bd57c9d49825a1752f5c82f838c2d797e0a328a7caf5b4938e91dee713049"
+    },
+    {
+      "caseId": "editorial-d9be76f037e019539fda",
+      "targetId": 2497,
+      "wordId": 7327,
+      "quantizedScore": 5767,
+      "rank": 19,
+      "evidenceSha256": "59d351e1ff1f2aa96e4f1d1b6b54f5b7d2643126b155fe052db6b183d876b80a",
+      "targetManifestSha256": "326c2c1c228593a3f471df1b99dffb21597b6a7ae0e557a630fa0a5657b7bdfb"
+    },
+    {
+      "caseId": "editorial-f89f864cabd1289bdac0",
+      "targetId": 2528,
+      "wordId": 3260,
+      "quantizedScore": 6630,
+      "rank": 5,
+      "evidenceSha256": "edce4b116370e7d2fbac98e5e815847e41e476767cbec780846d061fa73d93c3",
+      "targetManifestSha256": "a25e8214a2fc596c9adf3936e5d75ab4a292b3da3a3d53ae48c5212de4d455f0"
+    },
+    {
+      "caseId": "editorial-31b1ec22b41e0f468249",
+      "targetId": 2543,
+      "wordId": 19921,
+      "quantizedScore": 5912,
+      "rank": 50,
+      "evidenceSha256": "1122a82be61247ec39157db18bf9d43305845c7dbd7d4279598f2cb5ab3dc3fa",
+      "targetManifestSha256": "f3e3dfe11e64bbb98e491cd143bd76d12e5bde52879ef253bfc4fa8b86f1babb"
+    },
+    {
+      "caseId": "editorial-0839f963ace5b784e33b",
+      "targetId": 2544,
+      "wordId": 99621,
+      "quantizedScore": 5192,
+      "rank": 62,
+      "evidenceSha256": "b4b538ede488647575dc3af3d426d56edcdf8df45d6f919831d2fff36e98a24d",
+      "targetManifestSha256": "395960a0ade61b918e873c4d58f241f2ef12e443a8683307988ca6dfd0fd531f"
+    },
+    {
+      "caseId": "editorial-0115b45052342d8eacab",
+      "targetId": 2653,
+      "wordId": 7903,
+      "quantizedScore": 5434,
+      "rank": 62,
+      "evidenceSha256": "0523a9930a85ef3a37b90eaa4498e68276ac48a8ceae5e5726ea015bd2d53b31",
+      "targetManifestSha256": "743cf0e4ca9615f7106680e27ea9ff43a1fd743876b992560419b97095fc377b"
+    },
+    {
+      "caseId": "editorial-26cb223c628785f50192",
+      "targetId": 2830,
+      "wordId": 35029,
+      "quantizedScore": 5736,
+      "rank": 26,
+      "evidenceSha256": "2ab2e76519282b4c6310d3a511692902c5d990521cb09261b87bc1620eaed25f",
+      "targetManifestSha256": "b6aa3ee009e0a4177ee9f4dafd81eef1ac9b49261ac7966452ffaac5531f47c9"
+    },
+    {
+      "caseId": "editorial-c3e30286b52c9988517e",
+      "targetId": 2838,
+      "wordId": 9507,
+      "quantizedScore": 5033,
+      "rank": 63,
+      "evidenceSha256": "7f87521ec5ffa990ce89cbb6284a851bf9b60749df6173dc9124712c8f41507b",
+      "targetManifestSha256": "3787b239fb5c95f6ead567bc696f603ba36b77acf4e958925f41b183259b46af"
+    },
+    {
+      "caseId": "editorial-cfb17262d07fd74fd241",
+      "targetId": 2861,
+      "wordId": 1677,
+      "quantizedScore": 5674,
+      "rank": 50,
+      "evidenceSha256": "df47e6ad6ba7758b673499d7e0c018a57838d77784267dbdfe7615f5010d0c56",
+      "targetManifestSha256": "76ed5c9ca7ffbb27f23f5223f84556dfc000082fbab4758ea1481ba97300736a"
+    },
+    {
+      "caseId": "editorial-c2b5d0b47f79bd2ddd83",
+      "targetId": 3007,
+      "wordId": 119948,
+      "quantizedScore": 4585,
+      "rank": 60,
+      "evidenceSha256": "d38c7a82474904018cd5775e34ce312b53f9569d59a9b5f4e4b87a467496fefd",
+      "targetManifestSha256": "02077ea949fe6dda11ca0d9e8f890566554df1262d24e56ec30ba5545ffc446f"
+    },
+    {
+      "caseId": "editorial-911ff57a4dde623e2613",
+      "targetId": 3162,
+      "wordId": 57221,
+      "quantizedScore": 5988,
+      "rank": 23,
+      "evidenceSha256": "effeda80ae37344633deb973886e02330ef383a3b1830f41104fb1011b1f30d7",
+      "targetManifestSha256": "3f52df0564c2a4fe4c292fce47bf242a8d05090d83efc833672973f49993d52e"
+    },
+    {
+      "caseId": "editorial-0df18ce68fd1873cab3a",
+      "targetId": 3170,
+      "wordId": 2943,
+      "quantizedScore": 5033,
+      "rank": 61,
+      "evidenceSha256": "5d445abde6c16a54e8923b7a380a62c4e7e43497f3713d1c794a7144040d3b1e",
+      "targetManifestSha256": "94dfb0377068b862d03e8db3d1b6ff388983b644851f2e7e43704c9bd8c76098"
+    },
+    {
+      "caseId": "editorial-c5758959734a037bd6c7",
+      "targetId": 3246,
+      "wordId": 26640,
+      "quantizedScore": 5624,
+      "rank": 48,
+      "evidenceSha256": "3df32ab53165ab18cd1451c9b0279c435dcf28da545c06281cd5c367dbb2efbb",
+      "targetManifestSha256": "92d131c779e5fc675dfd09a71f9a459d6ff9623ef29217f628cb9affe724f081"
+    },
+    {
+      "caseId": "editorial-c9cd3b99b44b9eccdb18",
+      "targetId": 3251,
+      "wordId": 24705,
+      "quantizedScore": 5996,
+      "rank": 47,
+      "evidenceSha256": "3c9021dc1d4f53806d031769da4a120dd861d5bc5b70d2f72bb748308b4f4a08",
+      "targetManifestSha256": "b32ea446e2b32ed56af26f4048541dd90df30c50a32a9d47405817b3a2fdc1e9"
+    },
+    {
+      "caseId": "editorial-398dc62e1c133daf9783",
+      "targetId": 3270,
+      "wordId": 2077,
+      "quantizedScore": 5555,
+      "rank": 51,
+      "evidenceSha256": "5c6271db9e35f20dee80f0c824416efe670eba561b72a6a62655a22f22dbcac2",
+      "targetManifestSha256": "1f1bd7e78c363b67d0142a9f14e2dfd0a6ab40ccab0715c3fb1785ed5d302b60"
+    },
+    {
+      "caseId": "editorial-fb23ea456631cadadc48",
+      "targetId": 3449,
+      "wordId": 20245,
+      "quantizedScore": 5350,
+      "rank": 55,
+      "evidenceSha256": "5ba1eb3a52faf23871bec78debb7898268cb7985526fa2f7e0cab2478fea089d",
+      "targetManifestSha256": "ea9241486fbb99129b2c71f1d10ef84da68cbb58cddbb9a3c4b990696d6d1054"
+    },
+    {
+      "caseId": "editorial-97198ab4ab5719992820",
+      "targetId": 3481,
+      "wordId": 4533,
+      "quantizedScore": 5324,
+      "rank": 26,
+      "evidenceSha256": "83d73643353f2ae2152b3e19ea70b54efde9f6eea876fb84a546511aaf092d4e",
+      "targetManifestSha256": "9c221c7366f4030d720514ca8d4f31dbee35cebe49d706ac228d1d644007e2f6"
+    },
+    {
+      "caseId": "editorial-ee9337ce6be6bcf23f85",
+      "targetId": 3555,
+      "wordId": 22418,
+      "quantizedScore": 5275,
+      "rank": 38,
+      "evidenceSha256": "5afbc09010fa610a36c7dccd782ae6c93076cdc7ceb8f307226e3b5a090b8882",
+      "targetManifestSha256": "adb3ed5ea564b31ac595192ed72de09380aef0d7c4eb4637830094e76553f98a"
+    },
+    {
+      "caseId": "editorial-d221fa6be517f98cda02",
+      "targetId": 3562,
+      "wordId": 906,
+      "quantizedScore": 5186,
+      "rank": 59,
+      "evidenceSha256": "d67aae5d898d43160971ba6ff3fe279f27ab1bf6daa5fbddf337a0e81e9417a2",
+      "targetManifestSha256": "41c77a597f2ede6577f0575180dea57782971a25a37cf7101af70adfa6957d92"
+    },
+    {
+      "caseId": "editorial-9c4b62ed6d229d6b9d2b",
+      "targetId": 3581,
+      "wordId": 6048,
+      "quantizedScore": 5608,
+      "rank": 39,
+      "evidenceSha256": "8cce253c64d71dc28522e6a7dfd6bd46cb9478157b59d6f46a2ec70691b8af7c",
+      "targetManifestSha256": "89535c6cf6cfd92d38ab4b6496ee0d2ad8a4ba8f13bf8fbcc263be09f0dd42d6"
+    },
+    {
+      "caseId": "editorial-6034c2dfc6d1a089215a",
+      "targetId": 3609,
+      "wordId": 11043,
+      "quantizedScore": 6629,
+      "rank": 4,
+      "evidenceSha256": "946a672cbea4aab0f555497fb187f3cbe7a0920023d4c4c2f62e0ebaef0022a9",
+      "targetManifestSha256": "53ce13d667d0d93dc3b75bdb3130c3d2d156e30858ddddc5baa0b568b7f42fdd"
+    },
+    {
+      "caseId": "editorial-9200d426b89c39b52fd5",
+      "targetId": 3830,
+      "wordId": 57585,
+      "quantizedScore": 4880,
+      "rank": 40,
+      "evidenceSha256": "4a05ee8ef0897b0b68e4fae6cb723a448622c214638b953edc408f430cbf07a0",
+      "targetManifestSha256": "51d50c82b15265bee2cbb28378e542d10aa8573c9cc07e0c6589734fa6503476"
+    },
+    {
+      "caseId": "editorial-89c0b1039e57784539ed",
+      "targetId": 4130,
+      "wordId": 12895,
+      "quantizedScore": 5478,
+      "rank": 38,
+      "evidenceSha256": "537e41aa347a2334324ec3b8db9d24b5181a326030fa043d5c3e0c0e2a989c28",
+      "targetManifestSha256": "b41e8acf07863173576eeabae0c9ad60144c70dc5909d926867162b347358f1c"
+    },
+    {
+      "caseId": "editorial-aaa70c5780710610f254",
+      "targetId": 4279,
+      "wordId": 1954,
+      "quantizedScore": 6706,
+      "rank": 28,
+      "evidenceSha256": "59e6189f2c32654f161efdcb5791aee68a4c3d51f76dec0561e3c0be14b4e5bb",
+      "targetManifestSha256": "bdfce927b62178fe61e63a0231df4f3dac535719f101816a5bc4050d9dd3e14a"
+    },
+    {
+      "caseId": "editorial-3f4a3bb7d0d6229f5016",
+      "targetId": 4302,
+      "wordId": 4947,
+      "quantizedScore": 6345,
+      "rank": 27,
+      "evidenceSha256": "252cf5fa8996465cfb30f104733054c3e8eee67a4a88788449ec6d48b9b5faac",
+      "targetManifestSha256": "6708587809cf4c8d5e4b492c4cc627dcc42763c9a190d1acf05c95e2746ae148"
+    },
+    {
+      "caseId": "editorial-d5373cb4132f5ffd5429",
+      "targetId": 2345,
+      "wordId": 1475,
+      "quantizedScore": 5693,
+      "rank": 63,
+      "evidenceSha256": "666c99c9800056e9aa7054fda799c9638bc3cbaf94702ffd80f799568c60a246",
+      "targetManifestSha256": "9a236d85a1138a2ce8ba77db62c158253eef189a798bb7e767b63bc2df5b2514"
+    },
+    {
+      "caseId": "editorial-446ba203f14829091461",
+      "targetId": 2443,
+      "wordId": 6471,
+      "quantizedScore": 6226,
+      "rank": 42,
+      "evidenceSha256": "41c29bf702bd35695e94d07674588795bbc629ca5325505f16bebcd603d9a683",
+      "targetManifestSha256": "63178101b79e623cf4bedf7208301b94da772a384c19f27b7c4f0f48c3ce5b78"
+    },
+    {
+      "caseId": "editorial-e5d5c045c111e471ad57",
+      "targetId": 2786,
+      "wordId": 463,
+      "quantizedScore": 4682,
+      "rank": 51,
+      "evidenceSha256": "3e59b29bc3123dd340fc07dce33d529349ba646c482bccdf15fbd11dee3d76dc",
+      "targetManifestSha256": "15b1fb9bb39fb09497391921fdf0f3350ec28d9488942963dbc0feb9e95416e2"
+    },
+    {
+      "caseId": "editorial-76bba58245d66edc302c",
+      "targetId": 2843,
+      "wordId": 14451,
+      "quantizedScore": 4557,
+      "rank": 51,
+      "evidenceSha256": "e443d60e2fae034509e44c74ab03b2c261580c456b140329edb72dde924d1d0b",
+      "targetManifestSha256": "7378544e5c28f7f58c42fab4101a464a39686f48e6d5787202950a6e29d4165d"
+    },
+    {
+      "caseId": "editorial-713d8667457e0c9c45d3",
+      "targetId": 2896,
+      "wordId": 83448,
+      "quantizedScore": 4996,
+      "rank": 61,
+      "evidenceSha256": "1f21d489570662f6cca803a5b36df343bd836dfe0a5e3399749f14cabbeb466c",
+      "targetManifestSha256": "bdd7c83352c996c683421f7d66fa87e904d36fd5d367a77264d21d1889e11630"
+    },
+    {
+      "caseId": "editorial-f288c2ffb6f21cff18d3",
+      "targetId": 3056,
+      "wordId": 36091,
+      "quantizedScore": 4946,
+      "rank": 36,
+      "evidenceSha256": "9d4b13c02c8ce6fbb02650a7bbff21a1df09521d844900d4fb00c5fa0eef96f0",
+      "targetManifestSha256": "ae70d5dde5f1c302e2a8932ea401c6f55617e17726f3b5225e41e9313dd66224"
+    },
+    {
+      "caseId": "editorial-7d95bdc44321ccef97f8",
+      "targetId": 3260,
+      "wordId": 199511,
+      "quantizedScore": 5454,
+      "rank": 20,
+      "evidenceSha256": "2ef4c7097860a5dc067698b02ccd6c4f1991e28d4196f94769a62fccb14c9a80",
+      "targetManifestSha256": "6feddc1b0be862b2e68e9b751e80a50370670f0f10e4b22f08afffd56acf3a6e"
+    },
+    {
+      "caseId": "editorial-1e4f32474391c7d48cd3",
+      "targetId": 3577,
+      "wordId": 18482,
+      "quantizedScore": 5126,
+      "rank": 28,
+      "evidenceSha256": "3a3cdc0e0c539549ac4ec091243718228328cf501feaf32e2142c097aacfa4f0",
+      "targetManifestSha256": "38d59c6b781fca282bc610c3c71660f7cc04ffea1fb9658cf16cbbcd0f23c36e"
+    },
+    {
+      "caseId": "editorial-d3b662830ec9ac5d0232",
+      "targetId": 4160,
+      "wordId": 20405,
+      "quantizedScore": 4237,
+      "rank": 55,
+      "evidenceSha256": "7bb90165f23b2cfb77cc09f892788be448412b6c692420471cf49b320deb355b",
+      "targetManifestSha256": "34e62436b7ce18667b36c0cf9d13aed267bc67e8b14ec62755d44e097e4b4134"
+    },
+    {
+      "caseId": "editorial-81dcfa59df6bcb34e7d3",
+      "targetId": 4358,
+      "wordId": 44105,
+      "quantizedScore": 5877,
+      "rank": 63,
+      "evidenceSha256": "8b852f77e6bd23247731dfb4c14ac0e48af3876b26d8fd97381aa308605316e7",
+      "targetManifestSha256": "ad350083a63e2283f298df330fa29a7c40f1465a2b748a91073d9ba17ed9d6d7"
+    },
+    {
+      "caseId": "editorial-cd223dd4a436c9f7f56e",
+      "targetId": 2471,
+      "wordId": 5667,
+      "quantizedScore": 5319,
+      "rank": 45,
+      "evidenceSha256": "affc6e6388f6e3ea6a3a46303c8649b3e7410eb0ae5a178e0ed9d081cb3e5759",
+      "targetManifestSha256": "13c4561b9daece3fc1e0a36ce4fc6c72b81ca340ed3b2d1080121e8c77f3cf8c"
+    },
+    {
+      "caseId": "editorial-e8f36c0692c92bd2ec82",
+      "targetId": 2490,
+      "wordId": 16024,
+      "quantizedScore": 4429,
+      "rank": 46,
+      "evidenceSha256": "f55797b256b61ae807c934f4179f6bea5de1df491c6cdb3034f172ea6737469b",
+      "targetManifestSha256": "1bdd3b9d2c705036effd68d2a8f558688781b1b30b9e24558a128d847b377e96"
+    },
+    {
+      "caseId": "editorial-3cb1c0ac5837cd38d8be",
+      "targetId": 2588,
+      "wordId": 5658,
+      "quantizedScore": 5287,
+      "rank": 41,
+      "evidenceSha256": "4ee24ee57b5376058001a40643fa82ba958c71b55aaf3fef3172009bdb4acbfd",
+      "targetManifestSha256": "366d0b41d05d9d9e483c49b5496d7d04849298d7785362d9fa2c2c6a118f29ad"
+    },
+    {
+      "caseId": "editorial-e0640b79601ddad4ad37",
+      "targetId": 2633,
+      "wordId": 20361,
+      "quantizedScore": 7084,
+      "rank": 24,
+      "evidenceSha256": "60e4489448f6201d824b469457946796920708d3e20f12891718c77efc81f08f",
+      "targetManifestSha256": "9ca6735a0969cd86e6cbbc8e324386aa6c643d75a28ecf96d7d4ab19665627cd"
+    },
+    {
+      "caseId": "editorial-d10ca91f2398b42e11f5",
+      "targetId": 2716,
+      "wordId": 68,
+      "quantizedScore": 5338,
+      "rank": 30,
+      "evidenceSha256": "ad60ada847d46fd60bd2940971537d4a58324d0ebbdbc03e9663ba93b8541229",
+      "targetManifestSha256": "be54fe43c3cab2e9454c996218777d3a354afe4cfb5cee28050f5d54c4daf581"
+    },
+    {
+      "caseId": "editorial-e00f5aefc097c714c300",
+      "targetId": 2874,
+      "wordId": 1381,
+      "quantizedScore": 5737,
+      "rank": 56,
+      "evidenceSha256": "469484d2f7450d2af8e4c083137a63e9f6de87b1ecc7eb76b19e6b7fd8e8293d",
+      "targetManifestSha256": "1a8d4b23affb1f072ed4b04db63a4b61198ea4e255897cd4a4f0b6210f6c85c8"
+    },
+    {
+      "caseId": "editorial-b04d8fdc1ce3a762ba73",
+      "targetId": 2894,
+      "wordId": 5322,
+      "quantizedScore": 5160,
+      "rank": 59,
+      "evidenceSha256": "cbaf99d0f76af68cfb1d80242341e09984b9bd23510f4f2b806371a1120adc91",
+      "targetManifestSha256": "2e859192b28bf74663eb651cd4c1a31383c5592a404a4c51a2172524db865f56"
+    },
+    {
+      "caseId": "editorial-1a1acf1fa74fe3518c96",
+      "targetId": 2898,
+      "wordId": 14522,
+      "quantizedScore": 5713,
+      "rank": 44,
+      "evidenceSha256": "9681e6febacba954e07ed12bda24e1e6838ee15c7e4572393a28fc6ead6c9032",
+      "targetManifestSha256": "d6a99ea67d94b20e9ab16655441cba3ae46d85472be2715d668e984a939d1454"
+    },
+    {
+      "caseId": "editorial-a84d6263ee3253603b44",
+      "targetId": 3470,
+      "wordId": 6802,
+      "quantizedScore": 5655,
+      "rank": 65,
+      "evidenceSha256": "20cb7eea4ea6fee7885562857e84eb5061041edc62d6f0b1f7b507645aa2fb6c",
+      "targetManifestSha256": "98984fc331b28dbc564e5d2c8bcd41521c74d29a5ff9548d44fdd34d1dcbfb62"
+    },
+    {
+      "caseId": "editorial-d9514857b94a32404d31",
+      "targetId": 3174,
+      "wordId": 799,
+      "quantizedScore": 6217,
+      "rank": 56,
+      "evidenceSha256": "b42e3a98c83287901b4299b4a18890bc1fc3400d614a5d7b90611eab99f9cc36",
+      "targetManifestSha256": "e4bb7cc47d93f83334790f488cdd1ba0bed4a4ea4a3d3ecbff8558b435d3e642"
+    },
+    {
+      "caseId": "editorial-9c7e30acf4bcc15fd716",
+      "targetId": 3435,
+      "wordId": 4083,
+      "quantizedScore": 5967,
+      "rank": 45,
+      "evidenceSha256": "285655664dc9abe046a997cac3ee16ed2ff808bc55bab67e2132a0076c934da0",
+      "targetManifestSha256": "2c14aeb6abef209e3c8b29adfc8c9a5dc5f06c24e21d9fe936db4cfcfd886e54"
+    },
+    {
+      "caseId": "editorial-acf359b7a295260008b7",
+      "targetId": 3455,
+      "wordId": 3562,
+      "quantizedScore": 5000,
+      "rank": 44,
+      "evidenceSha256": "3781753a36ab158c924682ee40f1178467c9784e685fefd3a984bcc145a7bdf5",
+      "targetManifestSha256": "de61809cba550c8a2cb19d13621c0601dcea0f8d017701c172af0b9c0dace507"
+    },
+    {
+      "caseId": "editorial-37e9cc5f602dd43278e6",
+      "targetId": 3777,
+      "wordId": 23861,
+      "quantizedScore": 5121,
+      "rank": 24,
+      "evidenceSha256": "b38e49484d8c8120255278216eca0a13cd1797a7cfeff5289008b0b5c4863ae1",
+      "targetManifestSha256": "dfe3fcbb768d5586e00fe6bf482978d8befd443a53c1f5486309781e815ef05c"
+    },
+    {
+      "caseId": "editorial-b7b765899c065724606c",
+      "targetId": 3947,
+      "wordId": 2734,
+      "quantizedScore": 5741,
+      "rank": 42,
+      "evidenceSha256": "6f14873586ec55f3067b635bff660eaacd0a3ba9508fdaa5bfa0b7eb45c28747",
+      "targetManifestSha256": "94bc0fcf56e554fc527963c1f0b6bd8cc4c1344db671089d621256bbb9a6d20d"
+    },
+    {
+      "caseId": "editorial-e46678bc148ad0dc01c2",
+      "targetId": 3975,
+      "wordId": 3693,
+      "quantizedScore": 5067,
+      "rank": 57,
+      "evidenceSha256": "9bcba72163e1fc5678f39ee9cbe21a0d13bfe02184a0ad6af0878f1a95d129e5",
+      "targetManifestSha256": "c091088c9ea5fd88f2633f27efeeeab8302c3806414f0533466ba315e97a4bce"
+    },
+    {
+      "caseId": "editorial-513520359648cc6b85cf",
+      "targetId": 3989,
+      "wordId": 8111,
+      "quantizedScore": 4851,
+      "rank": 62,
+      "evidenceSha256": "1db7820cbd9107f1afdaeecf8f1e336c6fb1c5c32e785b1c3c5821e307f5049b",
+      "targetManifestSha256": "c87806bb7722c5f9a6912268736564add4e2f7fa5dbbd8835914532998bd8ade"
+    },
+    {
+      "caseId": "editorial-3ed90e1e30e870d2497e",
+      "targetId": 4075,
+      "wordId": 23422,
+      "quantizedScore": 5271,
+      "rank": 40,
+      "evidenceSha256": "1355c871df3c50c709c765c1473b229405e05bbc5fb5f5087a1ad619e4495ce6",
+      "targetManifestSha256": "a4b4aafa729607124e204644f8ded31e39dfb82e6102ef0f0cf7914d991a2bcf"
+    },
+    {
+      "caseId": "editorial-a0e21991c21fabd15154",
+      "targetId": 4184,
+      "wordId": 934,
+      "quantizedScore": 5387,
+      "rank": 41,
+      "evidenceSha256": "51ba5cf3aef2810559ca034f7431ff24a7d349eef7a100fca497df151cb95d80",
+      "targetManifestSha256": "84fea1371f3aa32161f1403d17910524db12ac375ec4c751e58ebe41d2bbfbc4"
+    },
+    {
+      "caseId": "editorial-5c728e601e280556c0fb",
+      "targetId": 4287,
+      "wordId": 27242,
+      "quantizedScore": 5427,
+      "rank": 39,
+      "evidenceSha256": "bbcc26a4590341fc1a36c1f8f2eb5d6b24df28dff3be504d187aae1f3fbd8bbb",
+      "targetManifestSha256": "ac9e73088d92131edbfa9dcd972a8371461a6b7f714681a32646c2bfba708dd8"
+    },
+    {
+      "caseId": "editorial-834a7341f01eb30be62d",
+      "targetId": 4346,
+      "wordId": 66299,
+      "quantizedScore": 5746,
+      "rank": 43,
+      "evidenceSha256": "8d0a1b08f139b9c9271f5fc102c88ba0722f072287052771ab948919fa6655ab",
+      "targetManifestSha256": "c8554516bf05d8ebdfe5afb1470b6bcea0a8419092d6a009866591d19e204f4b"
+    },
+    {
+      "caseId": "editorial-7dbb4c1b18331ad4c3a6",
+      "targetId": 2575,
+      "wordId": 20683,
+      "quantizedScore": 6021,
+      "rank": 37,
+      "evidenceSha256": "bcb5c953d9ff1ac47eafc2da1ee57fb38f725bd0a6ebfb823508eeb2c4d466b4",
+      "targetManifestSha256": "114cfca2f84f879084df2d1713aadafa11d4bff90926d70b1ab770d839c874f3"
+    },
+    {
+      "caseId": "editorial-4da9c57857ab31c78b80",
+      "targetId": 2396,
+      "wordId": 8556,
+      "quantizedScore": 5177,
+      "rank": 30,
+      "evidenceSha256": "3e53bad381e7aedf6aa7240c3c630407f70e24bb0b124776d00e3f4762fd8572",
+      "targetManifestSha256": "be4e2d62f9d18ca744225fc9f36dd682947a6238db9806056d88f976403d41fa"
+    },
+    {
+      "caseId": "editorial-b7b06ca4b55f7d7b2377",
+      "targetId": 2405,
+      "wordId": 5799,
+      "quantizedScore": 4911,
+      "rank": 48,
+      "evidenceSha256": "7f926769e6784bc2ff54064fc300474de12f1abdec334b7584143a15bc63640a",
+      "targetManifestSha256": "1e5b3c8331342614d5441bc1cbab55f70183dc8c95340413fc5c0b9bf0b0cbae"
+    },
+    {
+      "caseId": "editorial-d755a803c9e30c60abd7",
+      "targetId": 2480,
+      "wordId": 12580,
+      "quantizedScore": 4565,
+      "rank": 64,
+      "evidenceSha256": "94ca36d3e4cbcd14db056ef16a10019d86a1b3c38b5a699710105f3bbe0592f0",
+      "targetManifestSha256": "9f3b719771e6554a27786fc78d85b08aba4787972ed56bef0255cd15a1aab0ae"
+    },
+    {
+      "caseId": "editorial-dd122eaa2a305eaa1972",
+      "targetId": 2692,
+      "wordId": 9112,
+      "quantizedScore": 5563,
+      "rank": 63,
+      "evidenceSha256": "6e7222db5d30393a80eef73e8c0ea57176c13f80ca5d765da4ae53eb9c4b6fc6",
+      "targetManifestSha256": "e6098868778914faee42abf5daad3300e82aafee1cc035ee212d91ba7a55f440"
+    },
+    {
+      "caseId": "editorial-47546ce9dad11d4dad54",
+      "targetId": 2697,
+      "wordId": 3223,
+      "quantizedScore": 4989,
+      "rank": 63,
+      "evidenceSha256": "f121c662dc5b4ad44a6f9bcb9524f960b798bfb930e12d11c215f17a02653532",
+      "targetManifestSha256": "0f5dadf06fa3b7211a2063631d7741bcd29f4d48fc9d8959567e02e345cb8400"
+    },
+    {
+      "caseId": "editorial-0d5243392942a47e0f6b",
+      "targetId": 3132,
+      "wordId": 5851,
+      "quantizedScore": 5212,
+      "rank": 57,
+      "evidenceSha256": "d418540cfc68a8f015eb3bd5e163f8fe2376d93bef3cc9d6ca8a68b47c6aedc3",
+      "targetManifestSha256": "61204fdc0d78693546324a362faa54fc152dd71c4126860b522bd4440cac759a"
+    },
+    {
+      "caseId": "editorial-476ad035fb9fcc9f8784",
+      "targetId": 3188,
+      "wordId": 41494,
+      "quantizedScore": 6591,
+      "rank": 11,
+      "evidenceSha256": "40d5d4ef70a01dc2fffca480747ba5d34a21a50c1ef451cab5f091faadc81aac",
+      "targetManifestSha256": "8f857a4a1335062e1f5319a44ed66e9c3c1d2b56c37d98870c93815aab045699"
+    },
+    {
+      "caseId": "editorial-8274335c52e46cb60f47",
+      "targetId": 3402,
+      "wordId": 36039,
+      "quantizedScore": 5115,
+      "rank": 31,
+      "evidenceSha256": "410977249a182dedc8834960d38832827a2a2e2440532d82e9216ca685408fbc",
+      "targetManifestSha256": "2e5b99d0a10b9f1e1d0e9de82678a67301e273c0939e1bbb5080ae43d3955a1d"
+    },
+    {
+      "caseId": "editorial-3a8584187ff7a8ff91c9",
+      "targetId": 3407,
+      "wordId": 73463,
+      "quantizedScore": 4747,
+      "rank": 56,
+      "evidenceSha256": "a914456094ee3c449911a6394e90b6d1c7d659d6922bebb6116a846e2e7dca9a",
+      "targetManifestSha256": "d07c609c0506cd8f4fcc22c8cadf22ca8ca95f383312ed10b6a67900ee88da11"
+    },
+    {
+      "caseId": "editorial-3ef4daa3753dd9905758",
+      "targetId": 3420,
+      "wordId": 10007,
+      "quantizedScore": 5469,
+      "rank": 37,
+      "evidenceSha256": "aa0e4f7b24afc3a26fcea06e848d316620da8893d166717dceacf9a2b185c9f0",
+      "targetManifestSha256": "10842878f74a9ed03ff7f74f2f54e88170c242825bc468258da712b65e18120d"
+    },
+    {
+      "caseId": "editorial-690663e7004eda6c402f",
+      "targetId": 3758,
+      "wordId": 21514,
+      "quantizedScore": 4877,
+      "rank": 27,
+      "evidenceSha256": "0648634c31c41fa07826af3da1bcde83d8d9dbd2908c7741d1a25b2748dde382",
+      "targetManifestSha256": "d9c21ef202d70115b8d2135ff9683223daa65a7fa629b783d22c021a7379a5b1"
+    },
+    {
+      "caseId": "editorial-dd51906b8c5527c468e0",
+      "targetId": 4083,
+      "wordId": 1892,
+      "quantizedScore": 5662,
+      "rank": 24,
+      "evidenceSha256": "7adf20ad78a59c11324405e3c4d3feebeaeb37e7485a5d2ab4e599f2cdb71cdf",
+      "targetManifestSha256": "657be763746678f3a324854296a36c33445ebc58aad5548a2c2035dedc8aa418"
+    },
+    {
+      "caseId": "editorial-c49f5089399de06ec4b7",
+      "targetId": 4237,
+      "wordId": 11255,
+      "quantizedScore": 4984,
+      "rank": 60,
+      "evidenceSha256": "51a074df0d90b9ceddd7b2ae9d62c76e5a97b2ad70167a1ae3632f5d981da0a9",
+      "targetManifestSha256": "b6ddde675c5b4a50701428839a29c22b4500fc9977af36671c4e91733b6aa79f"
+    },
+    {
+      "caseId": "editorial-fa4a9c4f619a5817e2f6",
+      "targetId": 3305,
+      "wordId": 29129,
+      "quantizedScore": 4702,
+      "rank": 36,
+      "evidenceSha256": "d042a173982421a374d121c167539bcab3c32c1dfa28198a6d471c55d76703cb",
+      "targetManifestSha256": "414c42dcc69a42ed633c0ad5dc887f8596405542172332e08ba04a3c464c0873"
+    },
+    {
+      "caseId": "editorial-841439c1a09d82c28c52",
+      "targetId": 2912,
+      "wordId": 188834,
+      "quantizedScore": 6307,
+      "rank": 62,
+      "evidenceSha256": "433120bd40f5c9a2d7e4d66921c89340702b3f951057b8b32dc29e8f255a3c45",
+      "targetManifestSha256": "b77daa994234e1823072a784c892240c88eb024c6aca5734c04149f3bee289f1"
+    },
+    {
+      "caseId": "editorial-4b6ac3989b0c847a6600",
+      "targetId": 4021,
+      "wordId": 6780,
+      "quantizedScore": 6659,
+      "rank": 60,
+      "evidenceSha256": "7b3927d3dbc80a415e45b4c734ee3f64ff1d57b5f66db40675aa31f54592a8dc",
+      "targetManifestSha256": "9120b4286ced5a16a1f6bbb8c225af8d6d5b1ad3043b1cd60aa3eafa7ec5264c"
+    },
+    {
+      "caseId": "editorial-de1e76640500504ca413",
+      "targetId": 4025,
+      "wordId": 24761,
+      "quantizedScore": 7052,
+      "rank": 19,
+      "evidenceSha256": "52156d9ad32e8c3be7a08ba1860a84d1eb9b211ea0ed3ca3d65bb3f159075e73",
+      "targetManifestSha256": "656c1bd0ab7a1cfc865dcdc3de3ca40b5f1a22d6bfc7d732562f283f20191d01"
+    },
+    {
+      "caseId": "editorial-e19e00eae687982f2f17",
+      "targetId": 4201,
+      "wordId": 13750,
+      "quantizedScore": 6614,
+      "rank": 18,
+      "evidenceSha256": "bc989d93294ff7ee6873a3bbef084d81207c9d75662036bda030463643ac2250",
+      "targetManifestSha256": "82a832d1a6c8dfcaf19ee3237322dcb8cc4bd062f7f49259c477db5c82970600"
+    },
+    {
+      "caseId": "editorial-6a81f3dacdb9e770276b",
+      "targetId": 4227,
+      "wordId": 10219,
+      "quantizedScore": 6353,
+      "rank": 24,
+      "evidenceSha256": "2bc925238bd78fd0f827912b169a706eae57a4048cfcbd4b12003dea10d7f195",
+      "targetManifestSha256": "2eafb066fbffca38bf256eb14e26c42d32949acc76161de589d400eb880352ba"
+    },
+    {
+      "caseId": "editorial-d0e08bb638721a6c3b8e",
+      "targetId": 4255,
+      "wordId": 5690,
+      "quantizedScore": 6058,
+      "rank": 31,
+      "evidenceSha256": "474e4a347033479d4bf2748e367609476c3b4111cdc6c06a4ceecd3bae187e52",
+      "targetManifestSha256": "484efd5697a9fccb07d7f2fada4e912ca62756754a6c807d9b056ab6e31956d9"
+    },
+    {
+      "caseId": "editorial-5f76950fd6a20ca0ced1",
+      "targetId": 4296,
+      "wordId": 21459,
+      "quantizedScore": 6403,
+      "rank": 61,
+      "evidenceSha256": "23780a8840a595d29e9f5f0cdf698643bcce161f9ae86ca7d87f71162c7c482d",
+      "targetManifestSha256": "bb85a5ad5de8d1ad34d5c090d7b7f13ac48938d000f5af83fc938dd1c503937f"
+    },
+    {
+      "caseId": "editorial-d556c413c5baebd78773",
+      "targetId": 4131,
+      "wordId": 10026,
+      "quantizedScore": 5885,
+      "rank": 5,
+      "evidenceSha256": "4e49d69512e6b18933dc58fa7de6acd5800c8b18420a0c65189cee6b3f082032",
+      "targetManifestSha256": "6fe44eb4dad32ac5947f13daac8bcccf857faf994eef962bd6354d64554b2dbb"
+    },
+    {
+      "caseId": "editorial-a6fada5a4da8e6f7f507",
+      "targetId": 4222,
+      "wordId": 5462,
+      "quantizedScore": 7625,
+      "rank": 3,
+      "evidenceSha256": "26ae15e64d2586a505b8ab70c2d3aa88f22620980d2de4bcf512a7665465d954",
+      "targetManifestSha256": "4d8b445364e1355d3a9fad9c87ce593ff69214753ffc760f8c1092059716ef81"
+    },
+    {
+      "caseId": "editorial-3188685158ceda7c0916",
+      "targetId": 4247,
+      "wordId": 87662,
+      "quantizedScore": 5225,
+      "rank": 48,
+      "evidenceSha256": "10ffe0ccaa6c531ab0ea36526a0d321bfec1294e4e1f25e0da34ba776ceb5094",
+      "targetManifestSha256": "35a1727a7d4d57f5bf55175b685c8321d5159c27524f2592a563918fe4c0e11c"
+    },
+    {
+      "caseId": "editorial-b498e06d0629a79ecfcb",
+      "targetId": 2734,
+      "wordId": 23434,
+      "quantizedScore": 4987,
+      "rank": 55,
+      "evidenceSha256": "9e702085de6c1412a0abe865e3a4c0068dccaba0a7db942e7d07c85c5c97990e",
+      "targetManifestSha256": "a56f1ebe841fff20e348cb58ccad60685a153048a45ee36a5a4376c20fb871dd"
+    },
+    {
+      "caseId": "editorial-52c1692e8f3b11fc0be5",
+      "targetId": 3789,
+      "wordId": 60857,
+      "quantizedScore": 5204,
+      "rank": 63,
+      "evidenceSha256": "df251440ecbc59202c1529e71486e19898dc249769ecbd0559f867e47890c9e6",
+      "targetManifestSha256": "5372c6d72a11fabe3e847a128178a2811c6e2895f834d550add7c5a028b7fe49"
+    },
+    {
+      "caseId": "editorial-7bdeda7d3faecba0e774",
+      "targetId": 2317,
+      "wordId": 2954,
+      "quantizedScore": 4959,
+      "rank": 45,
+      "evidenceSha256": "c01c019bd8a44fd60acb5ce8763f7a61896bd8274de4a84c571cb93a65800e70",
+      "targetManifestSha256": "2a67ea073fb7a2eacf341acd920ce5f85a2ce7cb229b403c0bcd0c1d57b71397"
+    },
+    {
+      "caseId": "editorial-d066b8655cdfac45d0f5",
+      "targetId": 2339,
+      "wordId": 7246,
+      "quantizedScore": 4990,
+      "rank": 49,
+      "evidenceSha256": "6393faf2b84612d457abf3d4792e5ad0e2e4de972844a479024dceb689ce7242",
+      "targetManifestSha256": "141376caf2658dab5fe4874317a34d247477eb69e45f5c6bfae7bd811b11a0d9"
+    },
+    {
+      "caseId": "editorial-0313b00aed0956c9658e",
+      "targetId": 2523,
+      "wordId": 1477,
+      "quantizedScore": 5461,
+      "rank": 34,
+      "evidenceSha256": "a93689b98f0218bd5e6eb9c6eea32017f10dd6aa363e8075f5cfeca979c6542b",
+      "targetManifestSha256": "7baed89645c7ecf60d78c091a64b3b7ab2a70eff4df1eb68dbd8c02e5e3edb20"
+    },
+    {
+      "caseId": "editorial-164eea5841f26b74453c",
+      "targetId": 2571,
+      "wordId": 727,
+      "quantizedScore": 5373,
+      "rank": 46,
+      "evidenceSha256": "df544e93e7d7b14d05fedc8d465deb50c07c529cbde3ff51b9810fbe5bd7bd9c",
+      "targetManifestSha256": "4e83fe401ccad587b6b1808e1c4442ca8b3e30c7be8cb81530af3eb2f48a73b0"
+    },
+    {
+      "caseId": "editorial-6e1609c83b135ddcd2a6",
+      "targetId": 2632,
+      "wordId": 227,
+      "quantizedScore": 4506,
+      "rank": 65,
+      "evidenceSha256": "dd36b96c6adecf1e7cf04cb4459361891a24f6bb81f1018f4ddd5ac254fac75e",
+      "targetManifestSha256": "808494b1fb7efad3d0400e60bcc79d1cde048a794ba91651c8cdb633a594c068"
+    },
+    {
+      "caseId": "editorial-77625221edaa7cb1fe0a",
+      "targetId": 2886,
+      "wordId": 1303,
+      "quantizedScore": 6309,
+      "rank": 16,
+      "evidenceSha256": "8e905fcb824ddf996faf47ca8c2ee220ada6f7f6e0349a07f668ffebd924689c",
+      "targetManifestSha256": "586669a7a16cb52362e1c445f8df834db7d32dd928dad448a0879a0c34f1bb4d"
+    },
+    {
+      "caseId": "editorial-92dff6242609acee489c",
+      "targetId": 3223,
+      "wordId": 4931,
+      "quantizedScore": 7953,
+      "rank": 12,
+      "evidenceSha256": "f30ca745cddeee77fc43ff5d22f9f640d588babc82b76843feba248e75a75eed",
+      "targetManifestSha256": "1c19eb739e9192bf6ff2598b5853daf77c58704b9c3a4897e7e9e7d81cc63528"
+    },
+    {
+      "caseId": "editorial-de2254b96303b5833b7a",
+      "targetId": 3215,
+      "wordId": 5249,
+      "quantizedScore": 5415,
+      "rank": 58,
+      "evidenceSha256": "568aa6bf77be432b6117e8837b6cf76b1494c990a3d1dd27526bac84dac0db64",
+      "targetManifestSha256": "97ea987346def82a608342283f47a8edc31aaeed10575c692ee3bb796cf4ed91"
+    },
+    {
+      "caseId": "editorial-e47ea70d0db69f4ad9eb",
+      "targetId": 3214,
+      "wordId": 24350,
+      "quantizedScore": 4495,
+      "rank": 48,
+      "evidenceSha256": "2a82d3d720d9b61c81008f729b56429d781a116510dd11fe4f3498bb7a607330",
+      "targetManifestSha256": "55e32dd83a6d7badfb0eec1397ecaf6d3233b0fedb09a92a90d7cd11463644f2"
+    },
+    {
+      "caseId": "editorial-9fe5d0bc6d290af5cd18",
+      "targetId": 3552,
+      "wordId": 42523,
+      "quantizedScore": 5945,
+      "rank": 43,
+      "evidenceSha256": "2d4078c6f0ce59c391bc6778811fa0941590ed659f298a1f6844053a8f1722f6",
+      "targetManifestSha256": "1617e1cf08d8a0faadb3295408fd2644a0469cd7d9f09b320c4b2d4f5817485a"
+    },
+    {
+      "caseId": "editorial-59c2a64520ae76d0ede9",
+      "targetId": 3724,
+      "wordId": 9451,
+      "quantizedScore": 6831,
+      "rank": 8,
+      "evidenceSha256": "71cca5cac95ffb418c430ed566124639374ab86ed7bd4aee56e5ff1768f8b690",
+      "targetManifestSha256": "1822c7283a812f0d3b4df07a43ce5f0d3b1dc79cf472fef48b60faac6cf4e38a"
+    },
+    {
+      "caseId": "editorial-9b714bcca3028fe8661c",
+      "targetId": 3768,
+      "wordId": 41384,
+      "quantizedScore": 4397,
+      "rank": 47,
+      "evidenceSha256": "55feafec5073feb4a2d5d3c26a6c8ba6457885344e80575e06e1b5746559ab30",
+      "targetManifestSha256": "7c7dcca10c0cc5556ec3bedda790d7cb84b3acb9fb4364d7e024d11cf5155b6a"
+    },
+    {
+      "caseId": "editorial-bff32c82faa4866754b9",
+      "targetId": 3986,
+      "wordId": 10392,
+      "quantizedScore": 6099,
+      "rank": 11,
+      "evidenceSha256": "a1a147934a3860dd14c8487d88deda8b09ab5f16c911831a15be1655e06f8a02",
+      "targetManifestSha256": "b03baa05cf3d0752471115547763d27333ec7a911bd93924275ffcf720d9a961"
+    },
+    {
+      "caseId": "editorial-cc57b3ac33efd835f97e",
+      "targetId": 4133,
+      "wordId": 26920,
+      "quantizedScore": 5637,
+      "rank": 55,
+      "evidenceSha256": "7fae456a73826f399cac199ace70354d04ad9d2fe2277b994ba6ae8bb0dc16c5",
+      "targetManifestSha256": "cd9002ee0feb72180aa132d00b13aecb1992e7c5d6a88c7f279f368057714da2"
+    },
+    {
+      "caseId": "editorial-2416eedcc84ac9b60276",
+      "targetId": 3776,
+      "wordId": 17590,
+      "quantizedScore": 6580,
+      "rank": 26,
+      "evidenceSha256": "1025ca7825a61b379e562d8b0a3aeae7a220acc824438b45f87d86ee30a048e6",
+      "targetManifestSha256": "300c4d9ef7c48906599b443dbda4638eee94381eafbe1c70af386f469dc18c3b"
+    },
+    {
+      "caseId": "editorial-33e5bccb1fc1681e0387",
+      "targetId": 2302,
+      "wordId": 41123,
+      "quantizedScore": 4883,
+      "rank": 46,
+      "evidenceSha256": "3ec102765cb855ad36d8013e903d56ba6b5b1ff8faa6eec309f0b2b6f7181416",
+      "targetManifestSha256": "d7b0061424f862acb3a7456839a4ccf68234286f014c7917c62345d75e9118fc"
+    },
+    {
+      "caseId": "editorial-59c9938c2db982828d15",
+      "targetId": 2309,
+      "wordId": 14253,
+      "quantizedScore": 5204,
+      "rank": 61,
+      "evidenceSha256": "71372aca3e9df988ef6317d23f43a1347c6622ae0e5847c963cf8dfbf1b3167f",
+      "targetManifestSha256": "26f9327fc616892cf99e8282d143459ea34a410c0f445ce6988e53b76254a941"
+    },
+    {
+      "caseId": "editorial-d2000603d8bcdba83410",
+      "targetId": 2444,
+      "wordId": 13384,
+      "quantizedScore": 5692,
+      "rank": 64,
+      "evidenceSha256": "083e9903f4a29117fbd718e7f4347281f429c953892bf31e42647e96f1b43f30",
+      "targetManifestSha256": "901ecc0f804ec22c48f9a3cfac6e9488835734ca124cf4c259f63f3162fc8444"
+    },
+    {
+      "caseId": "editorial-726354e21a01d62e9d31",
+      "targetId": 2466,
+      "wordId": 16121,
+      "quantizedScore": 5760,
+      "rank": 49,
+      "evidenceSha256": "204b8c01308203e60c1d37c7f41c967d5370928eae9f456a0a47acefa7405097",
+      "targetManifestSha256": "988bd7a4e40b292009d2f2fc94a95e7f3623aeb774cfd131c51aa33c5b70612e"
+    },
+    {
+      "caseId": "editorial-bc245d44575a502b6137",
+      "targetId": 2502,
+      "wordId": 1353,
+      "quantizedScore": 5852,
+      "rank": 23,
+      "evidenceSha256": "f0e994581a5c1ff8ba39835fc2a82e46898a118a576cea723d598287d4327ff3",
+      "targetManifestSha256": "7536a4355decf81fc2800e035200894cab18542e544b1128fbd674c3c7fd5108"
+    },
+    {
+      "caseId": "editorial-3d0cf9202eff4c130213",
+      "targetId": 2642,
+      "wordId": 3724,
+      "quantizedScore": 6046,
+      "rank": 23,
+      "evidenceSha256": "857cd146b059431c452deb146995f7a717b3188de9e978a2d06f027ed95e321d",
+      "targetManifestSha256": "d540c212f91d114ac84695094d33cc48b8a4e3f074916df891dba1851871ef0b"
+    },
+    {
+      "caseId": "editorial-714a472dfa7c62271602",
+      "targetId": 2801,
+      "wordId": 23367,
+      "quantizedScore": 5878,
+      "rank": 20,
+      "evidenceSha256": "710c6e915b3f7cd0cd59c0631b343f17742170d4c707c3fb6c94d768711b26ba",
+      "targetManifestSha256": "efd5637373b12327b288adb8a4ed009f365f526e79b354ab0f7cd00a9c60bf32"
+    },
+    {
+      "caseId": "editorial-f4955b62af7e1e28f006",
+      "targetId": 2920,
+      "wordId": 17175,
+      "quantizedScore": 4859,
+      "rank": 58,
+      "evidenceSha256": "adf60fd7d2dc726bc128762362255c5c194cd3ca8169dee4c746b707c9037991",
+      "targetManifestSha256": "0a53f0e80a4698de0dcd2edf8fc6182fd42e7245477ec99528ba1009169924b9"
+    },
+    {
+      "caseId": "editorial-c5ee8d3ebeb4a7f6b807",
+      "targetId": 3203,
+      "wordId": 10486,
+      "quantizedScore": 4350,
+      "rank": 65,
+      "evidenceSha256": "ca75d66d2315fe275cf643fd8e49fef1105c7b2cccd710c665731f75c9a943cf",
+      "targetManifestSha256": "6172848db7182d5686cbfa49adefa5ff1947ef5feff9e0848d9fe2a6196c4ce2"
+    },
+    {
+      "caseId": "editorial-2f5f9a92511ccd036806",
+      "targetId": 3397,
+      "wordId": 2737,
+      "quantizedScore": 4645,
+      "rank": 55,
+      "evidenceSha256": "7f45f5246bc1755023d02e10c26fc1ed2a9038b0e2689786c52d941abccdc5a2",
+      "targetManifestSha256": "a01eb57ee9eb19e995cdc959463ed059c650b1dbe820fee6f06650caf0377cfb"
+    },
+    {
+      "caseId": "editorial-d36eb9bde9129f5f23b7",
+      "targetId": 3414,
+      "wordId": 5648,
+      "quantizedScore": 5638,
+      "rank": 43,
+      "evidenceSha256": "78b0ca23e1d91d084455b5cdecd6754c0bb7540d21b02ffafd9f3cbe6a9441a6",
+      "targetManifestSha256": "25be2527d6d5a0121ef3361dbfdeabaae91e4939ea98ec25231f81fd0885616f"
+    },
+    {
+      "caseId": "editorial-10bb72bea7077776a91f",
+      "targetId": 3446,
+      "wordId": 1317,
+      "quantizedScore": 4208,
+      "rank": 59,
+      "evidenceSha256": "7b0817947adb9a6c810995f2ad3332c748480b14982bae5a5edd2923bca922ae",
+      "targetManifestSha256": "4b70815e700d4295f069dc5896a77add0fd1ffcdd65c279223b91f046771f771"
+    },
+    {
+      "caseId": "editorial-26a6a5135312c4c22bdc",
+      "targetId": 3565,
+      "wordId": 10589,
+      "quantizedScore": 4564,
+      "rank": 26,
+      "evidenceSha256": "7ef8cc3619fe54d71deb3549116f04f4a064af935997d63ad9aeb768b506a12d",
+      "targetManifestSha256": "2f0f4a6338385aac620dd86a53aefc40fbe1e19a31d073966ca433c63dd6a079"
+    },
+    {
+      "caseId": "editorial-f569e43b3fee56d05b43",
+      "targetId": 3818,
+      "wordId": 47215,
+      "quantizedScore": 4331,
+      "rank": 49,
+      "evidenceSha256": "6532ccc31e8dc3404e6be471fa2006974794246ec85ae1a64dc480ab70fee623",
+      "targetManifestSha256": "a8fd20742d36063d05c7cee4c4559bc391e6759dc0b49803e55ff54de082b108"
+    },
+    {
+      "caseId": "editorial-dcc2b681a19928f62090",
+      "targetId": 3934,
+      "wordId": 1836,
+      "quantizedScore": 5112,
+      "rank": 53,
+      "evidenceSha256": "7bdb981f96ce5ca2d74cdb739d665bae0bbacbc408d9ce93e601e3f4705a5bbe",
+      "targetManifestSha256": "866dfcbb3c8f44f2b18801714c1d6ab8dcac775980c69c67fcbba057e428802c"
+    },
+    {
+      "caseId": "editorial-7724368a222148a6d1f9",
+      "targetId": 4012,
+      "wordId": 727,
+      "quantizedScore": 4468,
+      "rank": 49,
+      "evidenceSha256": "e359b1f57ac48db621f6d7d2de8fb497a796ff3c2760296f906c09dfd7c7af47",
+      "targetManifestSha256": "e95112f0647173b6fd61dc33d66cb552f5948a5be374eb2d7e19f647768bf013"
+    },
+    {
+      "caseId": "editorial-9bfe888e65a20a61854b",
+      "targetId": 4047,
+      "wordId": 140187,
+      "quantizedScore": 5731,
+      "rank": 38,
+      "evidenceSha256": "7edbe91416d0f262fc983ede8dcffef1703b74682e1f5ffeb0f5522e9e7bee78",
+      "targetManifestSha256": "f3b766106417bb121163f34db203e29b582d66ad755b9921f0db0dbd27004009"
+    },
+    {
+      "caseId": "editorial-98e0be12ea7479fa991b",
+      "targetId": 4226,
+      "wordId": 683,
+      "quantizedScore": 5315,
+      "rank": 53,
+      "evidenceSha256": "ebd572c12342be61aab85f8fc5491974e77b2afad58f0a34dc933c0d45bd767b",
+      "targetManifestSha256": "fa74cd18da66b3bd4cd75fc916ed6bf034efedb0300823f0fdd86b44ee766e40"
+    },
+    {
+      "caseId": "editorial-cde3a394b6801e86911d",
+      "targetId": 3417,
+      "wordId": 7331,
+      "quantizedScore": 5419,
+      "rank": 64,
+      "evidenceSha256": "4e7c430b94ae14e95e222522e5ed77e72788e3c687cfd07cf867a3ca382ec4d6",
+      "targetManifestSha256": "bafef54c44a998bc8842f299647a1f1f5c43a59c606856fb6ed5a44ba9c35f1d"
+    },
+    {
+      "caseId": "editorial-4d9bf5b5fb030c5bcc16",
+      "targetId": 4073,
+      "wordId": 1797,
+      "quantizedScore": 5733,
+      "rank": 37,
+      "evidenceSha256": "1ac6e7cd4f8a36e0d21920e486d510420072c2b53f4d11a64ca81a1d3a2ca1c4",
+      "targetManifestSha256": "21a7b8285c9f610a99aea18c2522d147c8698abf16ee05006525d6f5ca318b28"
+    },
+    {
+      "caseId": "editorial-1142722b1496654b7624",
+      "targetId": 3646,
+      "wordId": 1817,
+      "quantizedScore": 6341,
+      "rank": 20,
+      "evidenceSha256": "5aa55f464119c652290cb948c39aae0c71644aee899186cc82004e900befde2a",
+      "targetManifestSha256": "6167e7adfe3f5656cebc834bffd193b65a9ec37494a1552567e513ce2a6547c6"
+    },
+    {
+      "caseId": "editorial-df204a8c2ebd5008a5bb",
+      "targetId": 14425,
+      "wordId": 23294,
+      "quantizedScore": 4724,
+      "rank": 48,
+      "evidenceSha256": "1a3a50235503e670d3c692e9ff739a990818d4298610ce00ba2582518bfc2ded",
+      "targetManifestSha256": "a15aa98a77c6b7fe6e35c57b345a4a8fd1f5b5437234261f1713736e491fdd30"
+    },
+    {
+      "caseId": "editorial-c5eed9d9acbae06c2979",
+      "targetId": 25006,
+      "wordId": 55999,
+      "quantizedScore": 5314,
+      "rank": 53,
+      "evidenceSha256": "9e52a671255a992be0429326df282ace8967a677eee7df5936a79ba488a047ca",
+      "targetManifestSha256": "a1349159959ae9c7458d65f399c7ace71667be4edb4f2635c225b6bb77f5fdde"
+    },
+    {
+      "caseId": "editorial-f59a3a82d151fa982f7e",
+      "targetId": 13078,
+      "wordId": 22240,
+      "quantizedScore": 5207,
+      "rank": 62,
+      "evidenceSha256": "12e95713b635a79652a84dca2f10d3bbebb72d637ae87c2bc8f8879b78a8980c",
+      "targetManifestSha256": "ae4d34bfae651a8cae657bc432605403a1c54f241150577992b32ea3f067910a"
+    },
+    {
+      "caseId": "editorial-70321e86026c3ffb5db5",
+      "targetId": 14506,
+      "wordId": 6979,
+      "quantizedScore": 5621,
+      "rank": 47,
+      "evidenceSha256": "17ed9c5ffc3ce391a51831fa3ed3822f557db9227a5969af18d9c0f82327931d",
+      "targetManifestSha256": "933149de01e421642bae239f8d06786109a2d1a6318a5c4e171ad0326f70773f"
+    },
+    {
+      "caseId": "editorial-56fdecbcbd91089162c0",
+      "targetId": 9697,
+      "wordId": 35826,
+      "quantizedScore": 5472,
+      "rank": 39,
+      "evidenceSha256": "b6d6110f11b632251272d1cc18181d2316dbd517da879900e1bee7aae125edb0",
+      "targetManifestSha256": "13c62768e6cb42efc401ec1b30e65366fdf92374fa85c0675aa43ab1e0610d5a"
+    },
+    {
+      "caseId": "editorial-702dd64464a190d6130e",
+      "targetId": 27265,
+      "wordId": 10638,
+      "quantizedScore": 5380,
+      "rank": 48,
+      "evidenceSha256": "ab7b1791c2bd8549ba3bfcaa4e21607bc8e1b464923501c79238c01f7ce67b33",
+      "targetManifestSha256": "864582f5256e7c1af9bcbb77f54c9e4575600d927b1f89f26e0d3bb0a57a26f7"
+    },
+    {
+      "caseId": "editorial-65b4c8532e2a749dfdcf",
+      "targetId": 6270,
+      "wordId": 14192,
+      "quantizedScore": 5597,
+      "rank": 30,
+      "evidenceSha256": "bc81dc520b34b72cf381f6ee65dc6b0d83020240dde7d6452bea326d8b7065a4",
+      "targetManifestSha256": "6de7ca12de616e7163978c5feb51111fec3a79a7ab50667d302d5c30b5ef6750"
+    },
+    {
+      "caseId": "editorial-5ec9fadcce3f6047ad33",
+      "targetId": 5184,
+      "wordId": 57769,
+      "quantizedScore": 5486,
+      "rank": 47,
+      "evidenceSha256": "0d6ad8c627e394ecdcd84654658283490d502e59c3d9e12bc8b34361eb5a1c8e",
+      "targetManifestSha256": "1fa57e54bea7da65ce923dc793c721448d253c2723ce5cfa758d52be32c7ebae"
+    },
+    {
+      "caseId": "editorial-76483fdfe9f0ba57110d",
+      "targetId": 23556,
+      "wordId": 77777,
+      "quantizedScore": 5421,
+      "rank": 47,
+      "evidenceSha256": "cbf2eb3ddf3d4b99c45595d88ec7d9464fe583d2829b4228ccca44c87f48392b",
+      "targetManifestSha256": "fac5c9095daee732930b75b3e495ecbb37b20900284894b47527f0e1e7c5986f"
+    },
+    {
+      "caseId": "editorial-6d491de96d945b4867f8",
+      "targetId": 22744,
+      "wordId": 54318,
+      "quantizedScore": 5627,
+      "rank": 53,
+      "evidenceSha256": "f497c47dc942acea792ff29951e90d57cf07b5c5531ab8d4777215702923f8cf",
+      "targetManifestSha256": "728ff754ae808bec7d3ef43c9689d8e8ed8ce05b0b6424b240386553fd2758ab"
+    },
+    {
+      "caseId": "editorial-4c513daccca9039a0aa1",
+      "targetId": 23826,
+      "wordId": 34651,
+      "quantizedScore": 5706,
+      "rank": 25,
+      "evidenceSha256": "c75ec6cdb6a5957b94b275e0c5fe2057bd85ee7622a0d0926b79229b458d1983",
+      "targetManifestSha256": "668571c5adc89e3e4a2cedd1268000335d97a002093a272de213c1875135f0c3"
+    },
+    {
+      "caseId": "editorial-e125de6969bd1a439392",
+      "targetId": 28272,
+      "wordId": 34540,
+      "quantizedScore": 5491,
+      "rank": 51,
+      "evidenceSha256": "86f455fecbfbc54eff18cd6cbc73fe499bf478c21419f04ec71180669a14cbec",
+      "targetManifestSha256": "1088ec446c2e67c408bcfad118a10b5c84b1aca727ec518f5441ba2249ba04ff"
+    },
+    {
+      "caseId": "editorial-7fe78a4f5c25fec2f998",
+      "targetId": 20201,
+      "wordId": 21638,
+      "quantizedScore": 6272,
+      "rank": 42,
+      "evidenceSha256": "fc0c017acae538ed4a6ee3c9679a7886399211a84258bc57a59cc98a367ae442",
+      "targetManifestSha256": "01c7d3c94495e66df32e0437629b103ed8840217136bcc731fffff7d94a35b1c"
+    },
+    {
+      "caseId": "editorial-15a46ec061279007fff4",
+      "targetId": 5462,
+      "wordId": 29109,
+      "quantizedScore": 6200,
+      "rank": 50,
+      "evidenceSha256": "77e8f680c8350fb73edb83e55c5c3ff04dcca4e2cf00b921c4adce78ab7a5b0c",
+      "targetManifestSha256": "6d27d95a58f15dd2e9f0b74bfc317ca6a1f4e24d4323b0a8765c1cc48d85d6e9"
+    },
+    {
+      "caseId": "editorial-9a0ee969dd29a50d8207",
+      "targetId": 10644,
+      "wordId": 305892,
+      "quantizedScore": 6341,
+      "rank": 37,
+      "evidenceSha256": "95a2b85e1ccf7f8595ddc237876008ebad7ef411a03323c567afcf11a6a93eea",
+      "targetManifestSha256": "8bec9232c7f02ab6a7d00d3123de205cd2a87468493c8fbb08a3ae13c5ff22bd"
+    },
+    {
+      "caseId": "editorial-680a7ad5c0046c4fe8ad",
+      "targetId": 10238,
+      "wordId": 7993,
+      "quantizedScore": 5629,
+      "rank": 45,
+      "evidenceSha256": "b93b65004d8e12b1ac36d676e0d22e673d579df01dfdf92a2a77c530d91d3cee",
+      "targetManifestSha256": "2a4f6bae928b14e07bcd145dad1b75ef2cc77b3ac465d1c795995b0f0b8810d5"
+    },
+    {
+      "caseId": "editorial-9f3e5e0e717a86b5508f",
+      "targetId": 22755,
+      "wordId": 43835,
+      "quantizedScore": 4742,
+      "rank": 46,
+      "evidenceSha256": "42065562554edd6967642eb64c9b9868c0bff7840cdb8d788c65a05c5f808d8d",
+      "targetManifestSha256": "3105ed09bb7884c0ed65b4a37c820ba597397af1a13aee892b7442dbe191f54c"
+    },
+    {
+      "caseId": "editorial-fa7485749686112f3b99",
+      "targetId": 27022,
+      "wordId": 123793,
+      "quantizedScore": 5546,
+      "rank": 60,
+      "evidenceSha256": "1cbcc0c51e0f95855a33e999698ca7aa1abb28b1aa2c06f7b0b89426339b3d4c",
+      "targetManifestSha256": "ac41ae8a64fd5e01c813c04daa7ae3512e98ffc91c70593053ebd91cb3003c1f"
+    },
+    {
+      "caseId": "editorial-ed77d3c47418a5d8d361",
+      "targetId": 15494,
+      "wordId": 123793,
+      "quantizedScore": 4452,
+      "rank": 57,
+      "evidenceSha256": "86c4702e131399959d14db675e4354ef51447d109f485b097ce0a1400b1561f5",
+      "targetManifestSha256": "5ef94305e5cda051514045ba9c3a86c7580e5870137728e0d8adfcbe6db93339"
+    },
+    {
+      "caseId": "editorial-67950477f6a03e4d3fcc",
+      "targetId": 8478,
+      "wordId": 9418,
+      "quantizedScore": 5902,
+      "rank": 33,
+      "evidenceSha256": "dd5a8347307c183d4f647dc52e7a8bd483e5dce5ebc25171ae32fddb2f00b154",
+      "targetManifestSha256": "38be820a91f2cad2b143f74f466fa3190482852cdaffadad244a2fdd3bd299b8"
+    },
+    {
+      "caseId": "editorial-006cac0820e48245ce2a",
+      "targetId": 10575,
+      "wordId": 8043,
+      "quantizedScore": 4824,
+      "rank": 29,
+      "evidenceSha256": "f9bbd1f1a3ab54b89dfa3123709e6f46414db2f345231c14af3b75e6b0ec82d7",
+      "targetManifestSha256": "69b571d52ba98385b180739f70feb662526e2fc123152a82ab02ae23d094eafb"
+    },
+    {
+      "caseId": "editorial-9e1cfe78cf90ba1a7fda",
+      "targetId": 24454,
+      "wordId": 197717,
+      "quantizedScore": 4927,
+      "rank": 53,
+      "evidenceSha256": "10c22e8639521477e4b7fcd8ae1c74b97c4f963d722d0e73b04a79c7ab9b76da",
+      "targetManifestSha256": "cf2128d7fc7f07a88331d4aa8caa448d5d9508a093afe68854c4b091361ec7e1"
+    },
+    {
+      "caseId": "editorial-85416418b74968d64390",
+      "targetId": 46215,
+      "wordId": 248203,
+      "quantizedScore": 5127,
+      "rank": 47,
+      "evidenceSha256": "b993f832b65bb51f3955bf4081bb3a98fc18fefca83c9b5b4985789e87f1fd3e",
+      "targetManifestSha256": "bdd01831f5715dfbd6845df1cf556dae8a9ebffad16dc7b8401f23101cf074d5"
+    },
+    {
+      "caseId": "editorial-bfdf275a15e354cc3fb3",
+      "targetId": 4501,
+      "wordId": 2469,
+      "quantizedScore": 5599,
+      "rank": 55,
+      "evidenceSha256": "72636137d569a8c318205b7f1fc74099de3dd1299d0047b4abe1d7c069e96e7c",
+      "targetManifestSha256": "fcd8fa354fa87d76c71c861ee0161c8558076703ecd3586bc6846a6cd201ca20"
+    },
+    {
+      "caseId": "editorial-27b69f25c782a697e853",
+      "targetId": 4683,
+      "wordId": 39447,
+      "quantizedScore": 5085,
+      "rank": 58,
+      "evidenceSha256": "df31c05d25c6998fad0bfb090a8db90e9d8bc29747589ceed9832e957a60f405",
+      "targetManifestSha256": "c61648fe3dacd6c2f7b15c01956ec3d8266e488b93c41336afee313f1c2c6caa"
+    },
+    {
+      "caseId": "editorial-8d0073b0a856c2b4ecbd",
+      "targetId": 2015,
+      "wordId": 7807,
+      "quantizedScore": 4484,
+      "rank": 51,
+      "evidenceSha256": "36d4bbc4060b802f9f5c5b94d14c197e795ddceee5802755d828ed6b8787ac98",
+      "targetManifestSha256": "0e98ff9709df79ad70186a3dfc60c0c4cac4712ccd4b876ba01f397aecc1dbc5"
+    },
+    {
+      "caseId": "editorial-22ff2457134e6096c05f",
+      "targetId": 4605,
+      "wordId": 138025,
+      "quantizedScore": 4562,
+      "rank": 50,
+      "evidenceSha256": "608f6cb4ddc2012239d47731eedb4ae907acf51c0375ea59e7e297b99a9f43b5",
+      "targetManifestSha256": "b00a2307a292ba024f5ae3fffba9c3979cd2e5032ba01ae2d7eecd0a1a5df6d1"
+    },
+    {
+      "caseId": "editorial-61c6a9963d767e8f8622",
+      "targetId": 7998,
+      "wordId": 21274,
+      "quantizedScore": 4947,
+      "rank": 51,
+      "evidenceSha256": "11c568e8da173f0558d6b0f43c3b03ee19fbd01c68ec6ca0fcc1d497f5f5c53a",
+      "targetManifestSha256": "eb2e81e1d9458625f6d0b228d70d91a42394452f283c87c7086c766a5872e669"
+    },
+    {
+      "caseId": "editorial-9dd44940d210597a4a3e",
+      "targetId": 16171,
+      "wordId": 2469,
+      "quantizedScore": 5528,
+      "rank": 57,
+      "evidenceSha256": "d18e0fb648fb44accd9e58aedabc5867d376765462ef63a5b187e3eac900f53c",
+      "targetManifestSha256": "01daab5785c9cea450581371235ad4c078e9307f8240f8e4ac1fd22e4e0714d7"
+    },
+    {
+      "caseId": "editorial-5d83fd71a5e0aad3407a",
+      "targetId": 37520,
+      "wordId": 43531,
+      "quantizedScore": 4534,
+      "rank": 52,
+      "evidenceSha256": "fed35fc223a1b17b1ee45ee75e14aa2be7ab8f52cc0afa9c0d6f6a04ecae5ff7",
+      "targetManifestSha256": "3ed71e02b121b13bbc8712beba647ef00c3f36a73ea838d24e82b805f1d65420"
+    },
+    {
+      "caseId": "editorial-44ba16b2bf22ea7206c6",
+      "targetId": 9455,
+      "wordId": 56204,
+      "quantizedScore": 5209,
+      "rank": 58,
+      "evidenceSha256": "54c929088ef42403206410369540bdd9fdc51e95b621d3734f6e3983145fa4e5",
+      "targetManifestSha256": "22d5b90a683c51a642039f20c543809312305b2b256a7536642e9dde80af2e52"
+    }
+  ]
+}

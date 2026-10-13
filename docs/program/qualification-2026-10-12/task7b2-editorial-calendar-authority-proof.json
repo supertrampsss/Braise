@@ -1,0 +1,17 @@
+{
+  "createdAt": "2026-10-13T09:24:56.703Z",
+  "approved": 406,
+  "days": 365,
+  "start": "2027-01-05",
+  "end": "2028-01-04",
+  "workbenchSha256": "63451e5e2b0014bea7762ee76706dcded2640798d021d8ea0b391c79226ba73b",
+  "readyCatalogueSha256": "1d103c45482f026bc1eaf9d319502b46fd80033ceff271b192263d35f7bee6b8",
+  "calendarSha256": "f77f79844f86a2459c86d85fcac9c02e0af439d3589d8bc8e3c233f1f0eff4e1",
+  "runtimeAuthorityPin": "ecff16ede959fdd9dac5587b61bada2d534438e2916cdcf457fa847a4c84543d",
+  "rootReference": {
+    "sha256": "e08f4bcca2586ab52f7964f87012fd4685c46d2fe8cdebc04e5b350c91382161",
+    "bytes": 113761
+  },
+  "maximumTargetPackBytes": 7511040,
+  "totalTargetPackBytes": 2989366784
+}

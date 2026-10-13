@@ -2,10 +2,17 @@
 import { getLegacyPuzzle, getLegacyArchivePuzzle } from './legacy-puzzles';
 import { archiveDateStatus, parisDate } from './calendar';
 import type { Puzzle } from './game-types';
+import legacy from '@/data/legacy-v1.json';
+import future from '@/data/editorial-v2-runtime.json';
+import { dailyV2Date, DAILY_V2_START } from './daily-v2-contract';
 const ids = new Map<number, Promise<string>>();
 export function opaqueTargetId(index: number) {
   if (!ids.has(index)) ids.set(index, crypto.subtle.digest('SHA-256', new TextEncoder().encode(`braiz-encounter-v1:${index}`)).then(buffer => Array.from(new Uint8Array(buffer), byte => byte.toString(16).padStart(2, '0')).join('')));
   return ids.get(index)!;
+}
+export function legacyEncounterIdentityForWord(word: string) {
+  const index=legacy.targets.indexOf(word);
+  return index<0 ? undefined : opaqueTargetId(index);
 }
 export async function withTargetIdentity(puzzle: Puzzle) {
   const resolved = puzzle.mode === 'archive' ? getLegacyArchivePuzzle(puzzle.date) : getLegacyPuzzle(puzzle.mode, puzzle.seed, new Date(`${puzzle.date}T12:00:00Z`));
@@ -29,8 +36,15 @@ export async function discoverFree(body: unknown, now = new Date()) {
   const excluded = new Set<string>(value.excluded);
   for (const id of value.encountered as string[]) {
     let index: number;
-    if (/^free-\d{1,10}$/.test(id) && Number(id.slice(5)) <= 2147483647) index = getLegacyPuzzle('free', id.slice(5), now).legacyIndex;
-    else if (id.startsWith('daily-') && (archiveDateStatus(id.slice(6), now) === 'available' || id.slice(6) === parisDate(now))) index = getLegacyArchivePuzzle(id.slice(6), now).legacyIndex;
+    const date=dailyV2Date(id);
+    if(date && date<=parisDate(now)) {
+      const targetId=future.calendar.assignments.find(item=>item.date===date)?.targetId;
+      const word=future.entries.find(item=>item.targetId===targetId)?.word;
+      if(!word)throw new Error('Référence historique invalide.');
+      index=legacy.targets.indexOf(word);if(index<0)continue;
+    }
+    else if (/^free-\d{1,10}$/.test(id) && Number(id.slice(5)) <= 2147483647) index = getLegacyPuzzle('free', id.slice(5), now).legacyIndex;
+    else if (id.startsWith('daily-') && id.slice(6)<DAILY_V2_START && (archiveDateStatus(id.slice(6), now) === 'available' || id.slice(6) === parisDate(now))) index = getLegacyArchivePuzzle(id.slice(6), now).legacyIndex;
     else throw new Error('Référence historique invalide.');
     excluded.add(await opaqueTargetId(index));
   }

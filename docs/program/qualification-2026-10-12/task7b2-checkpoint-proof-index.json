@@ -1,0 +1,84 @@
+{
+  "scope": "audit log identities only, not reusable numerical attestations",
+  "createdAt": "2026-10-13T09:38:31.643Z",
+  "producerSourcesUnchanged": [
+    {
+      "file": "scripts/build-semantic-target-v2.mjs",
+      "sha256": "803d9fe04a97f132677c00d0defdf75cbba63d214b4518c77a1e3e91ec26ee18"
+    },
+    {
+      "file": "scripts/canonical-gzip.mjs",
+      "sha256": "bed5e0631aebbbc618864268671daf1987f8dfd0eae541c61dde0471caa56eb4"
+    },
+    {
+      "file": "scripts/editorial-evidence-v2.mjs",
+      "sha256": "7d118814999d8d011a6ee9a601a6dbcb1270c9e6335c980bc377e9e89265a0d6"
+    },
+    {
+      "file": "scripts/evict-semantic-target-v2.mjs",
+      "sha256": "13a08900048c25fa349c04bbed3403ba0ab05c762dfcabf4d3e1820f91c45aca"
+    },
+    {
+      "file": "scripts/qualify-semantic-batch-v2.mjs",
+      "sha256": "353d7cec5ad995f34c9177c4b32589054f90b223436b276fba40ab586a453cbf"
+    },
+    {
+      "file": "scripts/semantic-paths.mjs",
+      "sha256": "229f58b0915721b3a26bd38963d053bb575aa16c3a91781c86a70eaa819dbcff"
+    },
+    {
+      "file": "scripts/semantic-runtime-archive.mjs",
+      "sha256": "9324add55cc0f517c8eecd06de455f3c8b9fc60b5f306a05d3b57eac1b522ae4"
+    },
+    {
+      "file": "scripts/semantic-target-v2-common.mjs",
+      "sha256": "15704ab15eace5046dfc32933bb80c3429720139834035dcf7a8937992e2a00d"
+    },
+    {
+      "file": "scripts/verify-semantic-target-v2.mjs",
+      "sha256": "bd97797ded328f45cae8942e1fe05d6715a7ebd92b2bea7949345e303c220814"
+    }
+  ],
+  "proofs": [
+    {
+      "file": "work/qualification/replacements32-numeric.log",
+      "sha256": "098d09fedbff0bfce346861a7e991cbb40dad07de2a86f86a0c1a6bdcee7c542"
+    },
+    {
+      "file": "work/qualification/editorial-catalogue-build.log",
+      "sha256": "d9079a59dbccaaeff89a80af7909d5c3a777672dd225ca7657a063de63615011"
+    },
+    {
+      "file": "work/qualification/editorial-catalogue-full-verify.log",
+      "sha256": "7b6ca0a1d7278fd88dd706088e9410775c49395be60cd5f456ae3486eebb2e64"
+    },
+    {
+      "file": "work/task7b2-integration-tests.log",
+      "sha256": "5efad1be2f5c945a7ad59b529401d15dcf472de24876aa784e3c8754455887b9"
+    },
+    {
+      "file": "work/qualification/editorial-calendar-authority-proof.json",
+      "sha256": "43814cba96e56cd9125dfdb5e8db325faa10b6ae1d23904474a34a26e37757ef"
+    },
+    {
+      "file": "work/qualification/editorial-lineage-preservation.json",
+      "sha256": "503e4436704b2d9925ef7d1785cf83125186c7430b219b28fb45b4603682c928"
+    },
+    {
+      "file": "work/qualification/runtime-full-compiler-opaque-audit.json",
+      "sha256": "a2bb548614c8a8fb2fe1927e7a45b1a5b3119fd3883c39148a0e29da48c234c4"
+    },
+    {
+      "file": "work/qualification/range-full-opaque-local-results.json",
+      "sha256": "6d0cc0e498f312d02481d7c272ce04e58f460a005ed87b87f78f9cee8285c169"
+    },
+    {
+      "file": "work/qualification/daily-v2-real-route-final-results.json",
+      "sha256": "1c461418ccdc22f9a33d31ae642783cffe96614cad9a5bd8645284983d098872"
+    },
+    {
+      "file": "work/qualification/range-full-transfer-inventory.json",
+      "sha256": "2c875e1fa97b1590a2eb5e98dd6d93b0efc4ad1a3b42af573c3cb91d23ce002f"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import type { PuzzleRef } from "./game-contracts";
+import { DAILY_V2_START, isDailyV2Ref } from './daily-v2-contract';
 import type { IntruderAttempt } from "./intruder";
 import type { TwoBraisesGuess } from "./two-braises";
 import type { Profile, Puzzle, SavedGame, Win } from "./game-types";
@@ -154,7 +155,8 @@ type ProfileImportBundle = {
 
 type ProfileTransferEnvelope = {
   format: "braise-personal-profile";
-  exportVersion: typeof PROFILE_TRANSFER_VERSION;
+  exportVersion: 1 | 2;
+  semanticScope?: 'v1-and-pinned-daily-v2';
   profileSchemaVersion: typeof PROFILE_SCHEMA_VERSION;
   provenance: "personal-local";
   exportedAt: string;
@@ -360,15 +362,17 @@ function validImportedActivity(activity: ProfileActivity, now: Date) {
   if (Date.parse(activity.occurredAt) > now.getTime()) return false;
   if (activity.type === "guessAccepted" || activity.type === "puzzleWon") {
     const ref = activity.puzzleRef;
-    if (ref.id.length > 160 || ref.corpusVersion !== "fr-fasttext-30000-v1" || ref.rulesVersion !== "classic-v1" ||
+    const v2 = isDailyV2Ref(ref, now);
+    if (v2 && parisDate(new Date(activity.occurredAt)) < ref.calendar!.date) return false;
+    if (ref.id.length > 160 || !v2 && (ref.corpusVersion !== "fr-fasttext-30000-v1" || ref.rulesVersion !== "classic-v1") ||
         ref.variant !== "classic" || !["daily", "archive", "free", "challenge"].includes(ref.context)) return false;
     if (ref.context === "daily" || ref.context === "archive") {
-      if (!ref.id.startsWith("daily-") || !isIsoDate(ref.id.slice(6)) || !ref.calendar ||
-          ref.calendar.version !== "paris-daily-v1" || ref.calendar.date !== ref.id.slice(6)) return false;
+      if (!v2 && (!ref.id.startsWith("daily-") || !isIsoDate(ref.id.slice(6)) || ref.id.slice(6) >= DAILY_V2_START || !ref.calendar ||
+          ref.calendar.version !== "paris-daily-v1" || ref.calendar.date !== ref.id.slice(6))) return false;
     } else if (!/^free-\d+$/.test(ref.id) || ref.calendar !== null) return false;
     if (activity.type === "guessAccepted") return activity.id === `guess:${ref.id}:${activity.word}`;
     if (activity.id !== `win:${ref.id}` || activity.win.id !== ref.id || activity.win.completedAt !== activity.occurredAt) return false;
-    if (ref.id.startsWith("daily-") && activity.win.date !== ref.id.slice(6)) return false;
+    if (ref.id.startsWith("daily-") && activity.win.date !== ref.calendar?.date) return false;
     if (ref.context === "daily" && activity.win.mode !== "daily") return false;
     if (ref.context === "archive" && !["daily", "archive"].includes(activity.win.mode)) return false;
     if (["free", "challenge"].includes(ref.context) && !["free", "challenge"].includes(activity.win.mode)) return false;
@@ -909,9 +913,11 @@ export function createLocalProfileExport(snapshot: ProfileSnapshot, exportedAt =
     return canonicalRaw.get(activity.id) === raw ? [] : [[raw, activity] as const];
   })).values()].sort((first, second) => first.id.localeCompare(second.id) || first.occurredAt.localeCompare(second.occurredAt));
   if (activities.length + evidence.length > 50000) return { ok: false as const, reason: "La progression dépasse les 50 000 éléments acceptés par le format de transfert." };
+  const mixed = [...activities, ...evidence].some(activity => (activity.type === 'guessAccepted' || activity.type === 'puzzleWon') && isDailyV2Ref(activity.puzzleRef));
   const envelope: ProfileTransferEnvelope = {
     format: "braise-personal-profile",
-    exportVersion: PROFILE_TRANSFER_VERSION,
+    exportVersion: mixed ? 2 : 1,
+    ...(mixed ? { semanticScope: 'v1-and-pinned-daily-v2' as const } : {}),
     profileSchemaVersion: PROFILE_SCHEMA_VERSION,
     provenance: "personal-local",
     exportedAt: exportedAt.toISOString(),
@@ -932,11 +938,11 @@ function parseTransferEnvelope(text: string, now = new Date()) {
   if (encodedByteLength(text) > PROFILE_TRANSFER_MAX_BYTES) return { ok: false as const, status: "invalid" as const, reason: "Le fichier dépasse la taille maximale de 8 Mio." };
   let value: unknown;
   try { value = JSON.parse(text); } catch { return { ok: false as const, status: "invalid" as const, reason: "Le fichier JSON est illisible." }; }
-  if (isRecord(value) && value.format === "braise-personal-profile" && typeof value.exportVersion === "number" && value.exportVersion > PROFILE_TRANSFER_VERSION) {
+  if (isRecord(value) && value.format === "braise-personal-profile" && typeof value.exportVersion === "number" && (value.exportVersion > 2 || value.exportVersion === 2 && value.semanticScope !== 'v1-and-pinned-daily-v2')) {
     return { ok: false as const, status: "unsupported" as const, reason: "Cette sauvegarde utilise un format plus récent." };
   }
-  if (!isRecord(value) || !exactKeys(value, ["format", "exportVersion", "profileSchemaVersion", "provenance", "exportedAt", "sourceStatus", "scope", "summary", "base", "legacyRaw", "activities", "evidence"]) ||
-      value.format !== "braise-personal-profile" || value.exportVersion !== PROFILE_TRANSFER_VERSION || value.profileSchemaVersion !== PROFILE_SCHEMA_VERSION ||
+  if (!isRecord(value) || !exactKeys(value, ["format", "exportVersion", "profileSchemaVersion", "provenance", "exportedAt", "sourceStatus", "scope", "summary", "base", "legacyRaw", "activities", "evidence", ...(value.exportVersion === 2 ? ['semanticScope'] : [])]) ||
+      value.format !== "braise-personal-profile" || ![1,2].includes(value.exportVersion as number) || value.profileSchemaVersion !== PROFILE_SCHEMA_VERSION ||
       value.provenance !== "personal-local" || value.scope !== "profile-only" || !isIsoInstant(value.exportedAt) || Date.parse(value.exportedAt) > now.getTime() ||
       typeof value.sourceStatus !== "string" || !["ready", "migrated", "partial", "memory-only", "corrupt", "unsupported", "conflict"].includes(value.sourceStatus) ||
       !isRecord(value.summary) || !exactKeys(value.summary, ["guesses", "wins", "activities"]) || !Array.isArray(value.activities) || !Array.isArray(value.evidence)) {
@@ -947,6 +953,8 @@ function parseTransferEnvelope(text: string, now = new Date()) {
   }
   const bundle = parseImportBundle({ schemaVersion: PROFILE_SCHEMA_VERSION, transferVersion: PROFILE_TRANSFER_VERSION, type: "profileImport", base: value.base, legacyRaw: value.legacyRaw, activities: value.activities, evidence: value.evidence }, now);
   if (!bundle) return { ok: false as const, status: "invalid" as const, reason: "La sauvegarde contient des données incohérentes ou datées dans le futur." };
+  const mixed = [...bundle.activities,...bundle.evidence].some(activity => (activity.type === 'guessAccepted' || activity.type === 'puzzleWon') && isDailyV2Ref(activity.puzzleRef));
+  if (mixed !== (value.exportVersion === 2)) return { ok: false as const, status: 'invalid' as const, reason: 'La version déclarée ne correspond pas aux parties du profil.' };
   const summary = transferSummary(bundle.base, bundle.activities);
   if (!Number.isSafeInteger(value.summary.guesses) || !Number.isSafeInteger(value.summary.wins) || !Number.isSafeInteger(value.summary.activities) ||
       value.summary.guesses !== summary.guesses || value.summary.wins !== summary.wins || value.summary.activities !== summary.activities) {
