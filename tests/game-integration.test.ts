@@ -47,6 +47,28 @@ before(async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 });
 after(async () => { if (bundleDirectory) await rm(bundleDirectory, { recursive: true, force: true }); });
+
+test('P1 keeps exact ranks visible before top5000 and orders equal rounded temperatures by rank',async()=>{
+  const b=browser(); let guesses=0;
+  globalThis.fetch=async(_url,options)=>{
+    if(options?.method==='POST')return Response.json({word:++guesses===1?'maison':'arbre',temperature:20,rank:guesses===1?20000:8000,found:false,puzzleRef:puzzle.ref});
+    return Response.json(puzzle);
+  };
+  const tree=await mount();try{
+    for(const word of ['maison','arbre']){
+      await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:word}}));
+      await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
+    }
+    const words=tree.root.findAllByProps({className:'guess-word'});
+    assert.match(text(words[0]),/^arbre/);assert.match(text(words[1]),/^maison/);
+    assert.match(text(tree.root),/8\u202f000e/);assert.match(text(tree.root),/20\u202f000e/);
+    assert.doesNotMatch(text(tree.root).replaceAll('N°',''),/°|‰|Meilleure piste :|places/);
+    const fill=parseFloat(tree.root.findByProps({className:'proximity-meter'}).props.style['--proximity-position']);
+    assert.ok(fill>0&&fill<20);
+    const saved=JSON.parse(b.storage.getItem('braise.v1.game.'+puzzle.id)!);
+    assert.deepEqual(saved.guesses.map((g: {rank:number})=>g.rank),[20000,8000]);
+  }finally{await act(async()=>tree.unmount());}
+});
 const puzzle = { ...getLegacyPuzzle('free', '042').publicPuzzle, resetAt: '2099-01-01T00:00:00Z' };
 function text(node: ReactTestInstance): string { return node.children.map(child => typeof child === 'string' ? child : text(child)).join(''); }
 function button(tree: ReactTestRenderer, label: string) { const match = tree.root.findAll(node => node.type === 'button' && text(node) === label)[0]; assert.ok(match, label); return match; }
@@ -94,7 +116,7 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
     assert.doesNotMatch(text(tree.root), /Indice après 5 essais/);
     assert.equal(tree.root.findAllByProps({ className: 'hint-progress' }).length, 0);
     assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), null);
-    assert.match(text(tree.root), /Animer la flamme/);
+    assert.match(tree.root.find(node => node.type==='div' && String(node.props.className).startsWith('app-shell')).props.className, /motion-paused/);
     assert.equal(b.audioCalls(), 0, 'restored win with sound enabled must not create AudioContext');
     Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async () => { throw new Error('Clipboard denied'); } } } });
     await click(tree, 'Copier mon résultat');
@@ -147,12 +169,12 @@ test('selecting the historical Voyage in Explorer resumes its V1 trials when Wor
     gets.push(String(url));const edition=new URL(String(url),'https://braiz.test').searchParams.get('edition');return Response.json(edition==='classic-v1'?oldTarget:modernTarget);
   };
   const tree=await mount();try{
-    assert.match(text(tree.root),/Meilleure piste : maison/);
+    assert.match(text(tree.root.findAllByProps({className:'guess-word'})[0]),/^maison/);
     await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));
     const hub=tree.root.findAll(node=>typeof node.type==='function'&&node.props.onResume&&Array.isArray(node.props.plays))[0];
     const selected=(hub.props.plays as LocalPlay[]).find(play=>play.id===oldTarget.id)!;assert.equal(selected.edition,'classic-v1');
     await act(async()=>hub.props.onResume(selected));
-    assert.match(text(tree.root),/Meilleure piste : jardin/);assert.equal(b.win.location.searchParams.get('edition'),'classic-v1');assert.match(gets.at(-1)!,/edition=classic-v1/);
+    assert.match(text(tree.root.findAllByProps({className:'guess-word'})[0]),/^jardin/);assert.equal(b.win.location.searchParams.get('edition'),'classic-v1');assert.match(gets.at(-1)!,/edition=classic-v1/);
     assert.equal(b.storage.getItem('braise.v1.game.'+oldTarget.id),oldRaw);assert.equal(b.storage.getItem('braise.v1.game.'+id),newRaw);assert.equal(b.audioCalls(),0);
   }finally{await act(async()=>tree.unmount());}
 });
@@ -162,7 +184,7 @@ test('Game accepts only matching puzzle facts and preserves input edited during 
   globalThis.fetch = async (_url, options) => options?.method === 'POST' ? pending.promise : Response.json(puzzle);
   const tree = await mount();
   try {
-    assert.equal(tree.root.findByProps({ 'aria-label': 'Proposer ce mot' }).children[0], 'Proposer');
+    assert.equal(tree.root.findByProps({ 'aria-label': 'Envoyer' }).children[0], 'Envoyer');
     await act(async () => tree.root.findByProps({ id: 'guess' }).props.onChange({ target: { value: 'maison' } }));
     await act(async () => { void tree.root.findByProps({ className: 'guess-form' }).props.onSubmit({ preventDefault() {}, currentTarget: { contains() { return false; } } }); });
     assert.equal(tree.root.findByProps({ 'aria-label': 'Analyse en cours' }).props.disabled, true);

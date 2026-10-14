@@ -1,10 +1,10 @@
 import type { GameEffect, PuzzleRef } from "./game-contracts";
 import type { Guess } from "./game-types";
 
-export function createGameFeedback(previousBest: number | null, guess: Guess, puzzleRef: PuzzleRef): GameEffect {
+export function createGameFeedback(previousRank: number | null, guess: Guess, puzzleRef: PuzzleRef): GameEffect {
   const type = guess.found
     ? "puzzleWon"
-    : previousBest !== null && guess.temperature > previousBest
+    : previousRank !== null && guess.rank < previousRank
       ? "bestImproved"
       : "guessAccepted";
   return { id: `${puzzleRef.id}:${guess.order}:${type}`, type, puzzleRef };

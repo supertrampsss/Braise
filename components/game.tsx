@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { EXTRA_MODES_ENABLED } from "@/lib/release";
 import { clientId } from "@/lib/client-id";
-import FlameScene from "@/components/flame-scene";
+import { ProximityMeter } from "@/components/proximity-meter";
 import AdPlacement from "@/components/ad-placement";
 import { deviceBoardRevision, admitDeviceBoardMerge } from "@/lib/device-sync-admission";
 import { ProfilePanel } from "@/components/profile-panel";
@@ -18,7 +18,7 @@ import { CollectionPicker } from "@/components/collection-picker";
 import { EXPEDITIONS, type ExpeditionStatus } from "@/lib/expeditions";
 import { resumeExpedition } from "@/lib/expedition-resume";
 import { ExpeditionPicker } from "@/components/expedition-picker";
-import { warmth, type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
+import { type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
 import { classicDailyIdentity, classicFreeIdentity, classicEdition, type ClassicEdition } from "@/lib/word2vec-contract";
 import { EMPTY_GAME, EMPTY_PROFILE, readLocal, writeLocal, restoreLegacyGame } from "@/lib/legacy-storage";
@@ -38,8 +38,9 @@ import { ResumeHub, WinSummary } from "@/components/game-parts/play-hub";
 import { readLocalPlays, rememberPlayContext, resumeSuggestion, type LocalPlay, type PlayContext } from "@/lib/play-hub";
 import { readEncountered, rememberEncountered, collectDiscoveryHistory } from "@/lib/free-discovery";
 import { recordProductEvent, type ProductEventType, type ProductEventContext } from "@/lib/product-events";
-import { formatScoreFr } from "@/lib/format-fr";
-import { proximityProgress, countLabel } from "@/lib/game-copy";
+import { formatNumberFr } from "@/lib/format-fr";
+import { proximityFill, proximityColor, formatRankFr } from "@/lib/proximity-presentation";
+import { countLabel } from "@/lib/game-copy";
 import "@/components/game-parts/game-parts.css";
 
 type Modal = "tutorial" | "help" | "challenge" | "privacy" | "share" | null;
@@ -122,7 +123,6 @@ export default function Game() {
   const [loadError, setLoadError] = useState("");
   const [loadRetryable, setLoadRetryable] = useState(true);
   const [feedback, setFeedback] = useState<GameEffect | null>(null);
-  const [sort, setSort] = useState<"heat" | "recent">("heat");
   const [modal, setModal] = useState<Modal>(null);
   const [now, setNow] = useState(0);
   const [shareText, setShareText] = useState("");
@@ -155,12 +155,11 @@ export default function Game() {
   }, [view]);
 
   const profile = profileSnapshot?.profile ?? EMPTY_PROFILE;
-  const best = game.guesses.reduce<Guess | null>((winner, guess) => !winner || guess.temperature > winner.temperature ? guess : winner, null);
+  const best = game.guesses.reduce<Guess | null>((winner, guess) => !winner || guess.rank < winner.rank ? guess : winner, null);
   const solved = Boolean(game.guesses.some(g => g.found));
-  const temperature = best?.temperature ?? 0;
-  const heat = warmth(temperature);
+  const vocabularySize = puzzle?.vocabularySize;
   const latest = game.guesses[game.guesses.length - 1];
-  const ordered = [...game.guesses].sort((a, b) => sort === "heat" ? b.temperature - a.temperature || b.order - a.order : b.order - a.order);
+  const ordered = [...game.guesses].sort((a, b) => a.rank - b.rank || b.order - a.order);
   const today = now ? parisDate(new Date(now)) : "";
   // Freeze only the validation instant, not the facts: refresh for each profile/day change.
   // Reusing noon would incorrectly reject real facts recorded later that same day.
@@ -184,9 +183,9 @@ export default function Game() {
   const isAccepted = feedback?.type === "guessAccepted" && feedback.puzzleRef.id === puzzle?.id;
   const isCelebratingWin = feedback?.type === "puzzleWon" && feedback.puzzleRef.id === puzzle?.id;
   const feedbackAnnouncement = isRecord && latest
-    ? `Nouvelle meilleure piste : ${latest.word}, ${formatScoreFr(latest.temperature)} degrés.`
+    ? `Nouvelle meilleure piste : ${latest.word}, rang ${formatNumberFr(latest.rank)}.`
     : isAccepted && latest
-      ? `Proposition acceptée : ${latest.word}, ${formatScoreFr(latest.temperature)} degrés.`
+      ? `Proposition acceptée : ${latest.word}, rang ${formatNumberFr(latest.rank)}.`
       : "";
 
   function clearDeferredUi() {
@@ -528,7 +527,7 @@ export default function Game() {
       const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint: false, acceptedAt };
       const next = { ...game, guesses: [...game.guesses, guess], profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt), completedMode: mode } : {}) };
       setInput(current => inputAfterAcceptedGuess(current, false, inputRevisionRef.current, submittedRevision));
-      const nextFeedback = createGameFeedback(best?.temperature ?? null, guess, puzzle.ref);
+      const nextFeedback = createGameFeedback(best?.rank ?? null, guess, puzzle.ref);
       showFeedback(nextFeedback);
       // Future game documents must not project their unknown facts into profile/rewards either.
       if(gameWriteAllowed.current && canWriteGameDocument(undefined,puzzle.id)) {
@@ -586,7 +585,7 @@ export default function Game() {
     await copy(url.toString(), "Lien du défi copié. Envoyez-le à vos amis !");
   }
 
-  return <div className={`app-shell focused-interface foyer-interface reference-interface approved-interface ${flamePaused ? "motion-paused" : ""} cosmetic-${selectedCosmetic}`}>
+  return <div className={`app-shell focused-interface foyer-interface reference-interface approved-interface proximity-interface ${flamePaused ? "motion-paused" : ""} cosmetic-${selectedCosmetic}`}>
     <Toaster position="bottom-center" theme="dark" />
     <a className="skip-link" href="#braise-main">Aller au contenu</a>
     <AppNavigation active={surface === "profile" ? "profile" : surface === "modes" || surface === "voyage" ? "explore" : "play"} onNavigate={destination => navigate(destination === "play" ? "game" : destination === "explore" ? "modes" : "profile")} />
@@ -637,29 +636,20 @@ export default function Game() {
         <div className="play-column">
           <section id="game-board" ref={gameBoardRef} tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
             <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedbackAnnouncement}</p>
-            <div className="game-topline"><div><span className="game-kicker">{journey ? "VOTRE VOYAGE" : currentCollection ? "VOTRE COLLECTION" : mode === "daily" ? "LE MOT DU JOUR" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "À VOTRE RYTHME" : "LE DÉFI EST LANCÉ"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{journey ? journey.reward ? "Chapitre terminé" : `Parcours personnel · étape ${journey.completed + 1}/${journey.length}` : currentCollection ? "Collection personnelle · à votre rythme" : mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span></div>
-<h1 className="approved-game-title">{mode === "daily" ? "Devinez le mot secret du jour." : mode === "archive" ? "Retrouvez le mot de cette archive." : "Devinez le mot secret."}</h1>
-{surface === "game" && <FlameScene temperature={temperature} celebrating={isCelebratingWin} paused={flamePaused} solved={solved} revealMotion={isAccepted || isRecord || isCelebratingWin} />}
-            <div className={`foyer-reading ${best ? "" : "no-guess"}`} aria-live="polite">{best && <><strong>{formatScoreFr(temperature)}°</strong><span>Meilleure piste : {best.word}</span></>}</div>
-            <button className="foyer-motion" type="button" aria-pressed={flamePaused} onClick={toggleAnimations}>{flamePaused ? "Animer la flamme" : "Mettre la flamme en pause"}</button>
+            <div className="game-topline"><div><span className="game-kicker">{journey ? "VOTRE VOYAGE" : currentCollection ? "VOTRE COLLECTION" : mode === "daily" ? "Mot du jour" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "Libre" : "Défi"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{journey ? journey.reward ? "Chapitre terminé" : `Parcours personnel · étape ${journey.completed + 1}/${journey.length}` : currentCollection ? "Collection personnelle · à votre rythme" : mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span><span className="game-trials">{countLabel(game.guesses.length,"essai")}</span></div>
+<h1 className="sr-only">{mode === "daily" ? "Mot du jour" : "Mot à trouver"}</h1>
+{surface === "game" && <ProximityMeter rank={puzzle ? best?.rank ?? null : null} vocabularySize={vocabularySize} solved={solved} celebrating={isCelebratingWin} paused={flamePaused} revealMotion={isAccepted || isRecord || isCelebratingWin}/>}
 <div className="approved-play-surface">{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => retryPuzzleLoad(lastLoad.current,loadPuzzle,"game")}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{countLabel(game.guesses.length,"essai")}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}. Vous avez trouvé votre chemin.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Votre proposition</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Proposez un mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Proposer ce mot"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Proposer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
-              {best && <div className={`heat-summary ${isRecord ? "heat-record" : ""}`} style={{ "--heat-color": heat.color } as CSSProperties}>
-                <div><span>Meilleure piste</span><strong>{best.word}</strong></div>
-                <div className="heat-reading"><strong>{formatScoreFr(temperature)}°</strong></div>
-                <div className="heat-meter" aria-hidden="true"><span style={{ width: `${(best ? proximityProgress(best.rank) ?? 0 : 0) / 10}%` }} /></div>
-                {isRecord && <span className="compact-record">Nouvelle meilleure piste</span>}
-              </div>}
-              <div className="game-bottom"><span><Target size={16} /><b>{countLabel(game.guesses.length,"essai")}</b></span><span className="rank-info">{best ? <><Flame size={16} /><b>{best.rank <= 1000 ? `${proximityProgress(best.rank)}‰` : "Hors top 1 000"}</b></> : <><Sparkles size={16} />Tous les chemins sont ouverts</>}</span></div>
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{countLabel(game.guesses.length,"essai")}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Mot</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
             </>}
           </div></section>
 
           {game.pins.length > 0 && <section className="notebook-card"><div className="section-topline"><h2><Pin size={17} />Mon carnet</h2><span className="muted-count">{game.pins.length}/3</span></div><p>Gardez vos pistes pour rebondir.</p><div className="notebook-pins">{game.pins.map(word => <button key={word} disabled={busy || loading} onClick={() => { pin(word); if (game.pins.length === 1) inputRef.current?.focus(); }} aria-label={`Détacher ${word}`} title="Détacher cette piste">{word}<X size={13} /></button>)}{Array.from({ length: 3 - game.pins.length }, (_, i) => <span className="empty-pin" key={i}><Plus size={14} /></span>)}</div>{!game.pins.length && <span className="notebook-note">Épinglez un mot dans vos explorations.</span>}</section>}
-          <section className="history-panel"><div className="section-topline"><h2>Vos essais<span>{game.guesses.length}</span></h2><button className="sort-button" onClick={() => setSort(sort === "heat" ? "recent" : "heat")}>{sort === "heat" ? "Tri : proximité · passer aux récents" : "Tri : récent · passer à la proximité"}</button></div>
-            {ordered.length ? <div className="guess-list"><div className="list-labels"><span>ESSAI</span><span>VOTRE MOT</span><span>TEMPÉRATURE</span><span className="pin-label">PISTE</span></div>{ordered.map(g => <div key={g.word} className={`guess-row ${latest?.word === g.word ? "latest-guess" : ""} ${feedback && latest?.word === g.word ? "is-new-guess" : ""}`} style={{ "--row-color": warmth(g.temperature).color, "--row-fill": `${Math.max(0, Math.min(100, g.temperature))}%` } as CSSProperties}><span className="guess-index">{String(g.order).padStart(2, "0")}</span><div className="guess-word"><strong>{g.word}</strong>{latest?.word === g.word && <span className="latest-tag">DERNIER</span>}{g.found && <Check size={15} />}{g.hint && <Lightbulb size={13} aria-label="Indice" />}{g.word === best?.word && !g.found && <span className="best-tag">MEILLEUR</span>}</div><div className="guess-score"><div className="mini-heat"><i style={{ width: `${Math.max(2, g.temperature)}%` }} /></div><span>{formatScoreFr(g.temperature)}°{g.rank <= 1000 && <small className="approved-rank">{proximityProgress(g.rank)}‰</small>}</span></div><button aria-label={`${game.pins.includes(g.word) ? "Détacher" : "Épingler"} ${g.word}`} aria-pressed={game.pins.includes(g.word)} className={`pin-button ${game.pins.includes(g.word) ? "pinned" : ""}`} disabled={busy || loading} onClick={() => pin(g.word)}><Pin size={15} /></button></div>)}</div> : null}
-          </section>
+          {puzzle && ordered.length > 0 && <section className="history-panel"><h2 className="sr-only">Essais</h2>
+            {puzzle && ordered.length ? <div className="guess-list"><div className="list-labels"><span>Essai</span><span>Mot</span><span>Proximité</span><span className="sr-only">Piste</span></div>{ordered.map(g => <div key={g.word} className={`guess-row ${latest?.word === g.word ? "latest-guess" : ""} ${feedback && latest?.word === g.word ? "is-new-guess" : ""}`} style={{ "--row-color": proximityColor(g.rank) } as CSSProperties}><span className="guess-index">{String(g.order).padStart(2, "0")}</span><div className="guess-word"><strong>{g.word}</strong>{latest?.word === g.word && <span className="latest-tag">DERNIER</span>}{g.found && <Check size={15}/>}</div><div className="guess-score"><div className="mini-heat" aria-hidden="true"><i style={{ width: `${proximityFill(g.rank,vocabularySize)*100}%` }}/></div><span>{g.found ? "Trouvé" : formatRankFr(g.rank)}</span></div><button aria-label={`${game.pins.includes(g.word) ? "Détacher" : "Épingler"} ${g.word}`} aria-pressed={game.pins.includes(g.word)} className={`pin-button ${game.pins.includes(g.word) ? "pinned" : ""}`} disabled={busy || loading} onClick={() => pin(g.word)}><Pin size={15}/></button></div>)}</div> : null}
+          </section>}
         </div>
 
 
@@ -701,7 +691,7 @@ export default function Game() {
         tutorialReturnFocus.current={request:requestRef.current,navigation:navigationEpoch.current,owner};
         setModal(null);
       }}/>}
-      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Suivez une intuition.</h3><p>Proposez un mot français. Les noms, adjectifs et verbes à l’infinitif sont de bonnes pistes.</p></div></li><li><span>02</span><div><h3>Prenez la température.</h3><p>Plus le score est élevé, plus le sens est proche. 100° : c’est le mot secret. Le rang #1 est le plus proche.</p></div></li><li><span>03</span><div><h3>Changez de perspective.</h3><p>Explorez des associations et comparez vos pistes.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>J’ai compris, à moi de jouer</button></>}
+      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Envoyez un mot.</h3><p>Entrez un mot français : nom, adjectif ou verbe à l’infinitif.</p></div></li><li><span>02</span><div><h3>Comparez les rangs.</h3><p>Plus le rang est petit, plus le mot est proche. La barre garde votre meilleure progression.</p></div></li><li><span>03</span><div><h3>Trouvez le mot.</h3><p>Essayez d’autres associations. Les essais sont illimités.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>Jouer</button></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
       {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Les données linguistiques sont mises à disposition par <a href="https://fauconnier.github.io/#data" target="_blank" rel="noopener noreferrer">Jean-Philippe Fauconnier</a>, sous licence <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</p><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
       {modal === "share" && <><p role="status">La copie automatique n’a pas abouti. Sélectionnez le texte ci-dessous et copiez-le manuellement.</p><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}

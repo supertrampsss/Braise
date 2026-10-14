@@ -12,7 +12,7 @@ for(const [kind,Component] of [['duel',Duels],['server',ServerGame]] as const) t
  const guess={word:'arbre',temperature:12.25,rank:1234,ordinal:1,found:kind==='duel'?0:false,round:0};const original=JSON.stringify(guess);
  globalThis.fetch=async url=>{const path=String(url);if(path==='/api/session')return Response.json({guest:{id:'guest',name:'A'},csrf:'csrf'});if(path.includes('?id='))return Response.json(kind==='duel'?{id:'owned',state:'active',hostName:'A',opponentName:'B',role:'host',deadline:null,guesses:[guess]}:{game:{id:'owned',state:'active',revision:1},guesses:[guess]});return Response.json(kind==='duel'?{duels:[{id:'owned',state:'active'}]}:{games:[]});};
  let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Component));});
- try{if(kind==='duel')await act(async()=>tree.root.findAll(n=>n.type==='button'&&text(n).startsWith('Défi owned'))[0].props.onClick());assert.match(text(tree.root),/12,25°/);assert.match(text(tree.root),/1\u202f234/);assert.doesNotMatch(text(tree.root),/12\.3°/);assert.equal(JSON.stringify(guess),original);}finally{await act(async()=>tree.unmount());}
+ try{if(kind==='duel')await act(async()=>tree.root.findAll(n=>n.type==='button'&&text(n).startsWith('Défi owned'))[0].props.onClick());assert.match(text(tree.root),/12°/);assert.match(text(tree.root),/1\u202f234/);assert.doesNotMatch(text(tree.root),/12\.3°/);assert.equal(JSON.stringify(guess),original);}finally{await act(async()=>tree.unmount());}
 });
 
 for (const revision of [0, 1, 2]) test(`server real resumed revision ${revision} uses truthful singular/plural copy`, async () => {

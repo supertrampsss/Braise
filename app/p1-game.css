@@ -1,0 +1,75 @@
+/* P1: one proximity scale, exact ranks in the history and a detached flame. */
+.approved-interface.proximity-interface { background:#15171a; color:#f4f0eb; }
+body:has(.proximity-interface) .braiz-navigation { max-width:1240px; margin:auto; background:#15171a; }
+.approved-interface.proximity-interface .main-shell { max-width:1240px; padding:24px 32px 40px; }
+.approved-interface.proximity-interface .game-panel { border:1px solid #393c43; border-radius:16px; background:linear-gradient(180deg,#1c1e22,#181a1e); overflow:visible; }
+.approved-interface.proximity-interface .game-topline { justify-content:space-between; padding:18px 24px 0; color:#eeecea; }
+.approved-interface.proximity-interface .game-kicker { color:#eeecea; letter-spacing:0; font-size:14px; }
+.approved-interface.proximity-interface .game-topline .daily-pill { display:none; }
+.proximity-interface .game-trials { color:#ffa17b; font-size:14px; white-space:nowrap; }
+.proximity-interface .proximity-meter { margin:0 28px 26px; }
+.proximity-flame-slot { position:relative; height:124px; }
+.approved-interface.proximity-interface .play-view .proximity-flame { position:absolute; left:clamp(28px,var(--proximity-position),calc(100% - 28px)); bottom:24px; width:56px; height:84px; margin:0; transform:translateX(-50%); mix-blend-mode:screen; }
+.approved-interface.proximity-interface .play-view:has(.approved-play-surface:focus-within) .proximity-flame { height:84px; }
+.proximity-interface .proximity-flame img { mask-image:none; object-fit:contain; transform-origin:50% 95%; }
+.proximity-interface .proximity-flame .approved-flame-hot { mask-image:linear-gradient(to bottom,transparent calc(var(--reveal-top) - 10%),#000 calc(var(--reveal-top) + 10%)); }
+.proximity-interface .proximity-flame .approved-sparks { display:none; }
+.proximity-track { height:18px; background:#343841; border-radius:3px; overflow:hidden; mask-image:repeating-linear-gradient(90deg,#000 0 12px,transparent 12px 15px); }
+.proximity-track > i { width:100%; height:100%; display:block; background:linear-gradient(90deg,#7cad92 20%,#bdc76b 40%,#f2be59 60%,#ff8c63 80%); transition:clip-path .75s cubic-bezier(.2,.65,.3,1); }
+.proximity-milestones { position:relative; height:42px; margin-top:10px; font-size:12px; color:#e6e2df; }
+.proximity-milestones > span { position:absolute; transform:translateX(-50%); padding-top:13px; white-space:nowrap; }
+.proximity-milestones > span::before { content:''; position:absolute; top:0; left:50%; width:1px; height:8px; background:#aaaeb7; }
+.proximity-milestones > span:last-child { transform:translateX(-100%); }
+.proximity-milestones > span:last-child::before { left:auto; right:0; }
+.approved-interface.proximity-interface .approved-play-surface { color:#f4f0eb; background:none; padding:0 0 0; border-radius:0; }
+.approved-interface.proximity-interface .guess-area { padding:18px 24px; }
+.approved-interface.proximity-interface .guess-form { padding:0; display:grid; grid-template-columns:minmax(0,1fr) 150px; gap:14px; background:none; border:0; border-radius:0; box-shadow:none; }
+.approved-interface.proximity-interface .guess-form input { width:100%; min-height:58px; height:58px; padding:12px 18px; border:1px solid #60646e; border-radius:10px; color:#f4f0eb; background:#202329; font-size:18px; }
+.approved-interface.proximity-interface .guess-form input::placeholder { color:#b5b8c0; }
+.approved-interface.proximity-interface .guess-form:focus-within { outline:0; }
+.approved-interface.proximity-interface .guess-form input:focus-visible { outline:2px solid #ffae89; outline-offset:3px; }
+.approved-interface.proximity-interface .guess-button { height:58px; min-width:0; width:100%; border-radius:10px; padding:12px; background:#ff946a; color:#291d18; font-size:16px; font-weight:650; }
+.approved-interface.proximity-interface .guess-button:hover:not(:disabled) { background:#ffb18c; }
+.approved-interface.proximity-interface .guess-button:disabled { background:#b97257; color:#1a1715; }
+.approved-interface.proximity-interface .input-feedback { color:#d0cac5; padding-top:8px; min-height:20px; }
+.approved-interface.proximity-interface .input-feedback.error { color:#ffc5b4; }
+.approved-interface.proximity-interface .free-discovery-note { color:#c2c4cc; padding:0 24px; }
+.approved-interface.proximity-interface .history-panel { margin-top:24px; padding:18px 24px 24px; color:#f4f0eb; background:#1c1e22; border:1px solid #393c43; border-radius:16px; }
+.approved-interface.proximity-interface .section-topline h2 { color:#f4f0eb; font-size:17px; }
+.approved-interface.proximity-interface .list-labels,.approved-interface.proximity-interface .guess-row { grid-template-columns:30px minmax(0,1fr) minmax(220px,1.1fr) 44px; gap:12px; }
+.approved-interface.proximity-interface .list-labels { display:grid; color:#c2c4cc; font-size:12px; letter-spacing:0; }
+.approved-interface.proximity-interface .guess-row { background:none; border:0; border-top:1px solid #373a42; border-radius:0; margin:0; padding:18px 12px; }
+.approved-interface.proximity-interface .guess-row.latest-guess { background:#ffffff03; }
+.approved-interface.proximity-interface .guess-word strong { color:#f4f0eb; font-size:20px; }
+.approved-interface.proximity-interface .guess-index { color:#b2b4be; }
+.approved-interface.proximity-interface .latest-tag { color:#aaaeb6; font-size:10px; }
+.approved-interface.proximity-interface .guess-score { display:flex; gap:20px; }
+.approved-interface.proximity-interface .mini-heat { display:block; height:10px; min-width:50px; background:#373b44; }
+.approved-interface.proximity-interface .mini-heat > i { background:var(--row-color); transition:width .6s; }
+.approved-interface.proximity-interface .guess-score > span { color:var(--row-color); font-size:21px; min-width:85px; white-space:nowrap; }
+.approved-interface.proximity-interface .pin-button { color:#b6b5bc; }
+.approved-interface.proximity-interface .reset-note { margin-top:24px; }
+.approved-interface.proximity-interface .victory-box { color:#f4f0eb; }
+.approved-interface.proximity-interface .victory-box h2 { color:#ffac82; }
+@media(max-width:650px) {
+ .approved-interface.proximity-interface .main-shell { padding:14px 16px 30px; }
+ .approved-interface.proximity-interface .game-topline { padding:16px 14px 0; }
+ .proximity-interface .proximity-meter { margin:0 14px 12px; }
+ .proximity-flame-slot { height:116px; }
+ .proximity-track { height:14px; mask-image:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px); }
+ .proximity-milestones { font-size:11px; height:36px; }
+ .milestone-prefix { display:none; }
+ .approved-interface.proximity-interface .guess-area { padding:12px 14px; }
+ .approved-interface.proximity-interface .guess-form { grid-template-columns:minmax(0,1fr) 94px; gap:10px; }
+ .approved-interface.proximity-interface .guess-form input { font-size:16px; padding:10px 12px; min-height:50px; height:50px; }
+ .approved-interface.proximity-interface .guess-button { height:50px; font-size:14px; }
+ .approved-interface.proximity-interface .history-panel { padding:14px 12px; margin-top:18px; }
+ .approved-interface.proximity-interface .list-labels,.approved-interface.proximity-interface .guess-row { grid-template-columns:18px minmax(0,1fr) minmax(90px,1fr) 30px; gap:6px; padding-left:0; padding-right:0; }
+ .approved-interface.proximity-interface .guess-word strong { font-size:16px; }
+ .approved-interface.proximity-interface .guess-score { gap:8px; }
+ .approved-interface.proximity-interface .guess-score > span { font-size:15px; min-width:68px; }
+ .approved-interface.proximity-interface .mini-heat { height:6px; min-width:22px; }
+ .approved-interface.proximity-interface .latest-tag { display:none; }
+ .approved-interface.proximity-interface .guess-index { font-size:11px; }
+}
+@media(prefers-reduced-motion:reduce) { .proximity-track>i,.proximity-interface .mini-heat>i { transition:none; } }

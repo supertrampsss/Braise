@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./foyer.css";
 import "./approved-braiz.css";
+import "./p1-game.css";
 import { OfflineRegistration } from "@/components/offline-registration";
 import { PUBLIC_ORIGIN } from "@/lib/release";
 export const metadata: Metadata = {

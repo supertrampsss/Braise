@@ -2,7 +2,8 @@
 import type { LocalPlay } from '@/lib/play-hub';
 import { resumeSuggestion, gameSummary } from '@/lib/play-hub';
 import type { SavedGame } from '@/lib/game-types';
-import { formatDateFr, formatScoreFr } from '@/lib/format-fr';
+import { formatDateFr } from '@/lib/format-fr';
+import { formatRankFr, PROXIMITY_MILESTONES } from '@/lib/proximity-presentation';
 import { countLabel } from '@/lib/game-copy';
 import { EXTRA_MODES_ENABLED } from '@/lib/release';
 export function ResumeHub({plays,currentId,onResume,onDiscover}:{plays:LocalPlay[];currentId?:string;onResume:(play:LocalPlay)=>void;onDiscover:()=>void}) {
@@ -12,5 +13,5 @@ export function ResumeHub({plays,currentId,onResume,onDiscover}:{plays:LocalPlay
 }
 export function WinSummary({game}:{game:SavedGame}) {
   const summary=gameSummary(game);
-  return <section className="win-summary"><h3>Votre chemin</h3><p>{countLabel(summary.trials, "proposition personnelle", "propositions personnelles")} · {countLabel(summary.hints, "indice reçu", "indices reçus")}</p><ol>{summary.milestones.map(item=><li key={item.temperature}>Seuil de {item.temperature}° atteint à l’essai {item.guess!.order}{item.guess!.hint ? ' (indice)' : ''}.</li>)}</ol>{summary.bestPistes.length > 0 && <details><summary>Mes meilleures pistes avant la réponse</summary><ul>{summary.bestPistes.map(g=><li key={g.word}>{g.word} · {formatScoreFr(g.temperature)}°</li>)}</ul></details>}<p>Le partage contient uniquement les compteurs et la trajectoire en couleurs, sans réponse ni piste.</p></section>;
+  return <section className="win-summary"><h3>Votre chemin</h3><p>{countLabel(summary.trials, "proposition personnelle", "propositions personnelles")} · {countLabel(summary.hints, "indice reçu", "indices reçus")}</p><ol>{PROXIMITY_MILESTONES.filter(point=>point.rank>1).map(point=>({point,guess:game.guesses.find(g=>g.rank<=point.rank)})).filter(item=>item.guess).map(({point,guess})=><li key={point.rank}>Top {point.label} · essai {guess!.order}</li>)}</ol>{summary.bestPistes.length > 0 && <details><summary>Mes meilleures pistes avant la réponse</summary><ul>{summary.bestPistes.map(g=><li key={g.word}>{g.word} · {formatRankFr(g.rank)}</li>)}</ul></details>}<p>Le partage contient uniquement les compteurs et la trajectoire en couleurs, sans réponse ni piste.</p></section>;
 }

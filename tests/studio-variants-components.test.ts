@@ -69,11 +69,11 @@ test("Two braises actual response displays independent A/B scores and preserves 
   try {
     await input(tree, "two-guess", "arbre"); const submit = tree.root.findByType("form").props.onSubmit; await act(async () => { submit({ preventDefault() {} }); submit({ preventDefault() {} }); }); assert.equal(calls, 1);
     await input(tree, "two-guess", "forêt"); await act(async () => release(Response.json({ word: "arbre", values: [{ temperature: 100, rank: 1, found: true }, { temperature: 12.25, rank: 4321, found: false }] })));
-    assert.equal(tree.root.findByProps({ id: "two-guess" }).props.value, "forêt"); assert.match(text(tree.root), /Cible A : trouvée/); assert.match(text(tree.root), /Cible B : à découvrir/); assert.ok(text(tree.root).includes("12,25°")); assert.ok(text(tree.root).includes("100,00°"));
+    assert.equal(tree.root.findByProps({ id: "two-guess" }).props.value, "forêt"); assert.match(text(tree.root), /Cible A : trouvée/); assert.match(text(tree.root), /Cible B : à découvrir/); assert.ok(text(tree.root).includes("12°")); assert.ok(text(tree.root).includes("100°"));
     await act(async () => { tree.root.findByType("form").props.onSubmit({ preventDefault() {} }); });
     await act(async () => release(Response.json({ word: "forêt", values: [{ temperature: 10, rank: 300, found: false }, { temperature: 100, rank: 1, found: true }] })));
     assert.match(text(tree.root), /Cible A : trouvée/); assert.match(text(tree.root), /Cible B : trouvée/); assert.match(text(tree.root), /Les deux mots sont trouvés ! 2 essais/);
-    assert.ok(text(tree.root.findByProps({ "aria-label": "Cible A" })).includes("100,00°"));
+    assert.ok(text(tree.root.findByProps({ "aria-label": "Cible A" })).includes("100°"));
 
   } finally { await act(async () => tree.unmount()); }
 });
@@ -82,13 +82,13 @@ test("projection manual/polling uses sanitized API, stops when hidden and reject
   globalThis.fetch = async (url, opts) => { assert.equal(url, "/api/projection?id=owned"); calls++; signal = opts?.signal as AbortSignal; if (delay) return new Promise(resolve => release = resolve); return Response.json({ revision: 1, won: false, temperatures: [12.25], refreshedAt: Date.now() }); };
   let tree!: ReactTestRenderer; await act(async () => { tree = create(createElement(Streamer)); });
   try {
-    assert.equal(calls, 0); await click(tree, "Actualiser les températures"); assert.match(text(tree.root), /Vue à jour/); assert.match(text(tree.root), /12,25/);
+    assert.equal(calls, 0); await click(tree, "Actualiser les températures"); assert.match(text(tree.root), /Vue à jour/); assert.match(text(tree.root), /Essai 1 · 12°/);
     await act(async () => { for (const fn of timers.values()) fn(); }); assert.equal(calls, 1);
     await act(async () => tree.root.findByProps({ type: "checkbox" }).props.onChange({ target: { checked: true } })); delay = true;
     await act(async () => { for (const fn of timers.values()) fn(); }); assert.equal(calls, 2);
     await act(async () => { doc.hidden = true; listeners.get("visibilitychange")!(); }); assert.equal(timers.size, 0); assert.equal(signal!.aborted, true);
     await act(async () => release(Response.json({ revision: 99, won: true, temperatures: [100], refreshedAt: Date.now() }))); assert.ok(!text(tree.root).includes("Défi réussi"));
-    await act(async () => { doc.hidden = false; listeners.get("visibilitychange")!(); }); globalThis.fetch = async () => { throw new Error("Hors connexion"); }; await click(tree, "Actualiser les températures"); assert.match(text(tree.root), /Déconnecté/); assert.ok(!text(tree.root).includes("12,25"));
+    await act(async () => { doc.hidden = false; listeners.get("visibilitychange")!(); }); globalThis.fetch = async () => { throw new Error("Hors connexion"); }; await click(tree, "Actualiser les températures"); assert.match(text(tree.root), /Déconnecté/); assert.ok(!text(tree.root).includes("Essai 1 · 12°"));
   } finally { await act(async () => tree.unmount()); assert.equal(timers.size, 0); }
 });
 
