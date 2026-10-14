@@ -19,7 +19,7 @@ export default function Duels() {
   const [joining,setJoining]=useState(false),[session,setSession]=useState<Session>({guest:null});
   const [view,setView]=useState<DuelView|null>(null),[duels,setDuels]=useState<DuelList[]>([]);
   const [token,setToken]=useState(''),[inviteInput,setInviteInput]=useState(''),[link,setLink]=useState(''),[copied,setCopied]=useState(false);
-  const [round,setRound]=useState(0),[word,setWord]=useState(''),[guestName,setGuestName]=useState('');
+  const [round,setRound]=useState(0),[word,setWord]=useState(''),[guestName,setGuestName]=useState(''),[received,setReceived]=useState(false);
   const [busy,setBusy]=useState(true),[error,setError]=useState(''),[help,setHelp]=useState(false);
   const [now,setNow]=useState(0),[paused,setPaused]=useState(true),[feedback,setFeedback]=useState<Feedback|null>(null);
   const lock=useRef(false),inputRevision=useRef(0),navigationEpoch=useRef(0);
@@ -28,7 +28,7 @@ export default function Duels() {
   const feedbackTimer=useRef<ReturnType<typeof setTimeout>|null>(null),helpReturnFocus=useRef<HTMLButtonElement|null>(null);
   const invitation=useInvitation('duel',token,session.guest?.id);
   function clearFeedback() { if(feedbackTimer.current)clearTimeout(feedbackTimer.current);feedbackTimer.current=null;setFeedback(null); }
-  function clearInvitation() {setToken('');setInviteInput('');try{sessionStorage.removeItem('braiz.invitation.duel');}catch{}}
+  function clearInvitation() {setReceived(false);setToken('');setInviteInput('');try{sessionStorage.removeItem('braiz.invitation.duel');}catch{}}
   async function api(path:string,body?:unknown,csrf=session.csrf??'') {
     const epoch=navigationEpoch.current;
     const response=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json','X-Braise-CSRF':csrf},body:JSON.stringify(body)}:{cache:'no-store'});
@@ -37,7 +37,7 @@ export default function Duels() {
     if(!response.ok)throw new Error(data.error??'Service indisponible.');
     return data;
   }
-  function showView(data:DuelView) {setView(data);setDuels(items=>items.map(item=>item.id===data.id?{...item,state:data.state,abandoned:data.forfeiter?1:0}:item));}
+  function showView(data:DuelView) {setView(data);setDuels(items=>items.map(item=>item.id===data.id?{...item,state:data.state,hostName:data.hostName,opponentName:data.opponentName,deadline:data.deadline,abandoned:data.forfeiter?1:0}:item));}
   async function refreshCurrent() {if(view){showView(await api(`/api/duels?id=${view.id}`));pending.current=null;clearFeedback();await refresh();}}
   async function perform(action:()=>Promise<void>) {
     if(lock.current)return;const epoch=navigationEpoch.current;lock.current=true;setBusy(true);setError('');
@@ -82,7 +82,7 @@ export default function Duels() {
     setNow(Date.now());setPaused(readLocal<boolean>('animationsPaused',false));
     let value=new URLSearchParams(location.hash.slice(1)).get('invitation');
     try{value??=sessionStorage.getItem('braiz.invitation.duel');if(value&&/^[a-f0-9]{64}$/.test(value))sessionStorage.setItem('braiz.invitation.duel',value);}catch{}
-    if(value){setJoining(true);setToken(value);setInviteInput(`${location.origin}/duels#invitation=${value}`);history.replaceState(null,'',location.pathname);}
+    if(value){setReceived(true);setJoining(true);setToken(value);setInviteInput(`${location.origin}/duels#invitation=${value}`);history.replaceState(null,'',location.pathname);}
     queueMicrotask(()=>{if(active)void perform(async()=>{const data=await api('/api/session');setSession(data);if(data.guest)await refresh();});});
     const tick=setInterval(()=>setNow(Date.now()),1000);
     return()=>{active=false;navigationEpoch.current++;clearInterval(tick);if(feedbackTimer.current)clearTimeout(feedbackTimer.current);};
@@ -90,13 +90,15 @@ export default function Duels() {
   },[]);
   const outcome=view?duelOutcome(view):null;
   const playable=view&&(view.state==='active'||view.state==='finished');
+  const joinFields=<><label htmlFor="duel-token">Lien d’invitation</label><input id="duel-token" maxLength={512} value={inviteInput} disabled={busy} placeholder="Coller le lien" autoComplete="off" onChange={event=>updateInvitation(event.target.value)}/></>;
+  const joinForm=<form onSubmit={event=>{event.preventDefault();if(!invitation.canAccept())return;void perform(async()=>{showView(await api('/api/duels',{action:'accept',token:token.trim()}));clearInvitation();setLink('');setRound(0);pending.current=null;clearFeedback();await refresh();});}}>{received?<details className="duel-change-link"><summary>Changer de lien</summary>{joinFields}</details>:joinFields}<button className="primary-button" disabled={busy||!invitation.canAccept()}>Rejoindre le duel</button></form>;
   return <div className={`app-shell approved-interface proximity-interface duel-interface ${paused?'motion-paused':''}`}>
     <a className="skip-link" href="#duel-main">Aller au contenu</a>
     <AppNavigation active="duel" onHelp={returnFocus=>{helpReturnFocus.current=returnFocus;setHelp(true);}}/>
     <main className="main-shell" id="duel-main" tabIndex={-1}>
       <header className="duel-heading"><div><h1>Duel</h1>{view&&<p>{view.hostName}{view.opponentName&&<> <span>vs</span> {view.opponentName}</>}</p>}</div><div className="duel-header-actions">{view?.deadline&&<p className="duel-deadline">Fin le {dateLabel(view.deadline)}</p>}{playable&&<button className="secondary-button" disabled={busy} onClick={()=>void perform(refreshCurrent)}><RefreshCw size={16}/> Actualiser</button>}</div></header>
       {error&&<p className="duel-error" id="duel-error" role="alert">{error}</p>}
-      <InvitationStatus kind="duel" invitation={invitation} identity={session.guest?.id} busy={busy} onExit={clearInvitation} onResume={id=>void perform(async()=>{await openDuel(id);clearInvitation();})}/>
+      {invitation.state!=='ready'&&<InvitationStatus kind="duel" invitation={invitation} identity={session.guest?.id} busy={busy} onExit={clearInvitation} onResume={id=>void perform(async()=>{await openDuel(id);clearInvitation();})}/>}
       {!session.guest&&!joining&&<section className="duel-card duel-start"><Swords aria-hidden="true" size={34}/><p>3 manches · 30 essais par manche · 48 h</p><button className="primary-button" disabled={busy} onClick={()=>setJoining(true)}>Créer un duel</button></section>}
       {!session.guest&&joining&&(!token||invitation.state==='ready')&&<section className="duel-card duel-identity"><h2>{token?'Rejoindre le duel':'Créer un duel'}</h2><form onSubmit={event=>{event.preventDefault();if(token&&!invitation.canAccept())return;void perform(async()=>{const data=await api('/api/session',{name:guestName});setSession(data);if(token)await refresh();else await create(data.csrf);});}}><label htmlFor="duel-guest">Pseudonyme</label><input id="duel-guest" maxLength={24} value={guestName} placeholder="Pseudonyme" disabled={busy} onChange={event=>setGuestName(event.target.value)}/><button className="primary-button" disabled={busy||!guestName.trim()}>{token?'Continuer':'Créer le duel'}</button></form><a className="duel-identity-link" href="/espace">Retrouver mon identité</a></section>}
       {session.guest&&<>
@@ -105,9 +107,10 @@ export default function Duels() {
         {outcome&&<section className="duel-card duel-summary" aria-labelledby="duel-summary-title"><h2 id="duel-summary-title">{outcome.title}</h2><p className="duel-result-score">{outcome.note}</p>{!view!.forfeiter&&<ol>{view!.decisions!.map((decision,index)=><li key={index}><span>Manche {index+1}</span><strong>{decision===0?'Égalité':decision===(view!.role==='host'?-1:1)?'Remportée':'Perdue'}</strong></li>)}</ol>}<button className="primary-button" disabled={busy} onClick={()=>void perform(create)}>Revanche</button></section>}
         {playable&&<DuelBoard view={view} round={round} now={now} busy={busy} word={word} paused={paused} feedback={feedback} onWord={value=>{inputRevision.current++;setWord(value);setError('');}} onRound={changeRound} onSubmit={submit} onRefresh={()=>void perform(refreshCurrent)}/>}
         {view&&(view.state==='pending'||view.state==='active')&&<details className="duel-end"><summary>{view.state==='pending'?'Annuler l’invitation':'Abandonner le duel'}</summary><button className="secondary-button" disabled={busy} onClick={()=>void perform(async()=>{showView(await api('/api/duels',{action:view.state==='pending'?'cancel':'forfeit',id:view.id}));setLink('');clearFeedback();await refresh();})}>Confirmer</button></details>}
-        <section className="duel-card duel-dashboard"><div className="duel-dashboard-heading"><h2>Mes duels</h2><button className="primary-button" disabled={busy} onClick={()=>void perform(create)}>Créer un duel</button></div>{duels.length>0?<ul>{duels.map(duel=><li key={duel.id}><button className="duel-list-choice" data-duel-id={duel.id} aria-pressed={view?.id===duel.id} disabled={busy} onClick={()=>{if(view?.id!==duel.id)void perform(()=>openDuel(duel.id));}}><strong>{duel.hostName}{duel.opponentName?` vs ${duel.opponentName}`:" · invitation"}</strong><span>{duel.abandoned?'Abandonné':statuses[duel.state]}</span>{duel.deadline?<small>Fin le {dateLabel(duel.deadline)}</small>:duel.created_at?<small>Créé le {dateLabel(duel.created_at)}</small>:null}</button></li>)}</ul>:<p>Aucun duel pour le moment.</p>}
-          <details className="duel-join" open={token?true:undefined}><summary>Rejoindre un duel</summary><form onSubmit={event=>{event.preventDefault();if(!invitation.canAccept())return;void perform(async()=>{showView(await api('/api/duels',{action:'accept',token:token.trim()}));clearInvitation();setLink('');setRound(0);pending.current=null;clearFeedback();await refresh();});}}><label htmlFor="duel-token">Lien d’invitation</label><input id="duel-token" maxLength={512} value={inviteInput} disabled={busy} placeholder="Coller le lien" autoComplete="off" onChange={event=>updateInvitation(event.target.value)}/><button className="primary-button" disabled={busy||!invitation.canAccept()}>Accepter et démarrer les 48 heures</button></form></details>
-        </section>
+        {!received&&<section className="duel-card duel-dashboard"><div className="duel-dashboard-heading"><h2>Mes duels</h2><button className="primary-button" disabled={busy} onClick={()=>void perform(create)}>Créer un duel</button></div>{duels.length>0?<ul>{duels.map(duel=><li key={duel.id}><button className="duel-list-choice" data-duel-id={duel.id} aria-pressed={view?.id===duel.id} disabled={busy} onClick={()=>{if(view?.id!==duel.id)void perform(()=>openDuel(duel.id));}}><strong>{duel.hostName}{duel.opponentName?` vs ${duel.opponentName}`:" · invitation"}</strong><span>{duel.abandoned?'Abandonné':statuses[duel.state]}</span>{duel.deadline?<small>Fin le {dateLabel(duel.deadline)}</small>:duel.created_at?<small>Créé le {dateLabel(duel.created_at)}</small>:null}</button></li>)}</ul>:<p>Aucun duel pour le moment.</p>}
+          <details className="duel-join"><summary>Rejoindre un duel</summary>{joinForm}</details>
+        </section>}
+        {received&&<section className="duel-card duel-received" hidden={["owner","accepted"].includes(invitation.state)}><h2>Rejoindre le duel</h2><p>3 manches · 30 essais par manche · 48 h</p>{joinForm}<button className="secondary-button" disabled={busy} onClick={clearInvitation}>Annuler</button></section>}
       </>}
       {busy&&<p className="duel-loading" role="status">Chargement…</p>}
     </main>

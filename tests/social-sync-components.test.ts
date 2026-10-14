@@ -14,7 +14,7 @@ function text(node:ReactTestInstance):string{return node.children.map(c=>typeof 
 function buttons(tree:ReactTestRenderer,label:string){return tree.root.findAll(n=>n.type==='button'&&text(n)===label);}
 async function click(tree:ReactTestRenderer,label:string){const button=buttons(tree,label)[0];assert.ok(button,`button ${label}: ${text(tree.root)}`);assert.ok(!button.props.disabled,`${label} enabled`);await act(async()=>button.props.onClick());}
 async function input(tree:ReactTestRenderer,id:string,value:string){await act(async()=>tree.root.findByProps({id}).props.onChange({target:{value}}));}
-function form(tree:ReactTestRenderer,id:string){return tree.root.findByProps({id}).parent!;}
+function form(tree:ReactTestRenderer,id:string){let node=tree.root.findByProps({id}).parent;while(node&&node.type!=='form')node=node.parent;assert.ok(node);return node;}
 const token='a'.repeat(64),otherToken='b'.repeat(64);
 // Protocol tests keep the menu closed; pointer and keyboard navigation are checked in the real browser.
 function browser(storage=new Memory(),invite=token){Object.assign(globalThis,{requestAnimationFrame:()=>0,cancelAnimationFrame(){},window:{matchMedia(){return {matches:true,addEventListener(){},removeEventListener(){}};},addEventListener(){},removeEventListener(){}},document:{addEventListener(){},removeEventListener(){}},localStorage:storage,sessionStorage:new Memory(),location:{hash:invite?'#invitation='+invite:'',pathname:'/duels',origin:'https://braiz.io'},history:{replaceState(){}}});}
@@ -38,7 +38,7 @@ test('real upload button reconciles latest pending memory preferences and concur
 
 for(const [kind,Component,guestInput,tokenInput,accept,resume] of [
  ['circle',Circles,'circle-guest','circle-token','Rejoindre explicitement','Reprendre mon cercle'],
- ['duel',Duels,'duel-guest','duel-token','Accepter et démarrer les 48 heures','Reprendre mon duel'],
+ ['duel',Duels,'duel-guest','duel-token','Rejoindre le duel','Reprendre mon duel'],
 ] as const){
  test(`${kind}: unavailable and pending inspections cannot create a guest or accept; exit retains normal entry`,async()=>{
   for(const identified of [false,true])for(const state of ['expired','revoked','full','unknown','excluded','unrecognized']){

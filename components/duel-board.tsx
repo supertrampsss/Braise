@@ -21,7 +21,7 @@ export function DuelBoard({view,round,now,busy,word,paused,feedback,onWord,onRou
       </button>;})}
     </div>
     <section className={`game-panel ${current.won?'is-won':''} ${live?.improved?'is-record':''}`} aria-label={`Plateau de la manche ${round+1}`}>
-      <div className="game-topline"><span className="game-kicker">Manche {round+1}</span><span className="game-trials">{current.guesses.length}/{DUEL_ATTEMPTS} essais</span></div>
+      <div className="game-topline"><span className="sr-only">Manche {round+1}</span><span className="game-trials">{current.guesses.length}/{DUEL_ATTEMPTS} essais</span></div>
       <p className="sr-only" role="status" aria-live="polite">{live?.announcement??''}</p>
       <ProximityMeter rank={current.best?.rank??null} vocabularySize={DUEL_VOCABULARY_SIZE} solved={current.won} celebrating={Boolean(live?.found)} paused={paused} revealMotion={Boolean(live?.improved||live?.found)}/>
       <div className="approved-play-surface">

@@ -34,6 +34,10 @@
 .duel-rounds small { font-size:11px; color:#bfc4ce; }
 .duel-rounds svg { color:#83b493; flex-shrink:0; }
 .duel-interface .duel-play .game-panel { padding:0; }
+.duel-interface .duel-play .game-topline { justify-content:flex-end; }
+.duel-received > .secondary-button { margin-top:16px; }
+.duel-change-link { font-size:13px; color:#bfc4ce; }
+.duel-change-link > summary { cursor:pointer; padding:12px 0; }
 .duel-interface .duel-round-end { padding:8px 24px 26px; text-align:center; }
 .duel-round-end h2 { margin:0 0 18px; color:#ffac86; font-size:23px; }
 .duel-round-end p { color:#c9cbd2; }
