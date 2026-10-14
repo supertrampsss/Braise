@@ -1,5 +1,5 @@
 const number = new Intl.NumberFormat("fr-FR");
-const score = new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const score = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
 const date = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "Europe/Paris" });
 const dateTime = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Paris" });
 

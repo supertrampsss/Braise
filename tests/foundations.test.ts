@@ -14,8 +14,9 @@ function storage() {
   const values = new Map<string, string>();
   return { values, getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); }, removeItem: (key: string) => { values.delete(key); } };
 }
-test("French formatting uses comma, Paris dates and explicit unknowns without score conversion", () => {
-  assert.equal(formatScoreFr(12.345), "12,35"); assert.equal(formatScoreFr(100), "100,00");
+test("French formatting uses integer degrees, Paris dates and explicit unknowns without score conversion", () => {
+  assert.equal(formatScoreFr(12.345), "12"); assert.equal(formatScoreFr(35.79), "36");
+  assert.equal(formatScoreFr(-9.9), "-10"); assert.equal(formatScoreFr(100), "100");
   assert.equal(formatNumberFr(1234).replace(/\s/g, " "), "1 234");
   for (const unknown of [null, undefined, NaN, Infinity]) assert.equal(formatScoreFr(unknown), "Non disponible");
   assert.equal(formatDateFr("2026-10-12"), "12 octobre 2026");
