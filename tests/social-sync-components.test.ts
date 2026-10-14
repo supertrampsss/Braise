@@ -17,7 +17,7 @@ async function input(tree:ReactTestRenderer,id:string,value:string){await act(as
 function form(tree:ReactTestRenderer,id:string){return tree.root.findByProps({id}).parent!;}
 const token='a'.repeat(64),otherToken='b'.repeat(64);
 // Protocol tests keep the menu closed; pointer and keyboard navigation are checked in the real browser.
-function browser(storage=new Memory(),invite=token){Object.assign(globalThis,{document:{addEventListener(){},removeEventListener(){}},localStorage:storage,sessionStorage:new Memory(),location:{hash:invite?'#invitation='+invite:'',pathname:'/duels',origin:'https://braiz.io'},history:{replaceState(){}}});}
+function browser(storage=new Memory(),invite=token){Object.assign(globalThis,{requestAnimationFrame:()=>0,cancelAnimationFrame(){},window:{matchMedia(){return {matches:true,addEventListener(){},removeEventListener(){}};},addEventListener(){},removeEventListener(){}},document:{addEventListener(){},removeEventListener(){}},localStorage:storage,sessionStorage:new Memory(),location:{hash:invite?'#invitation='+invite:'',pathname:'/duels',origin:'https://braiz.io'},history:{replaceState(){}}});}
 
 test('real upload button reconciles latest pending memory preferences and concurrent disk facts without local writes',async()=>{
  const storage=new Memory();browser(storage,'');let snapshot=loadLocalProfile(storage);let release!:(r:Response)=>void;let wait=false;let sent='';

@@ -22,7 +22,7 @@ export function useInvitation(kind:Kind,token:string,identity?:string){
 }
 export function InvitationStatus({kind,invitation,identity,busy,onResume,onExit}:{kind:Kind;invitation:ReturnType<typeof useInvitation>;identity?:string;busy:boolean;onResume:(id:string)=>void;onExit:()=>void}){
  const {state,value,error}=invitation;if(state==='none')return null;
- return <section className="collection-picker laboratory-card" aria-label="Invitation reçue"><h2>{value?.name??(kind==='circle'?'Invitation à un cercle':'Invitation à un duel')}</h2><p role="status">{labels[state]}</p>{state==='ready'&&value?.expiresAt&&<p>Valable jusqu’au {new Date(value.expiresAt).toLocaleString('fr-FR',{timeZone:'Europe/Paris'})} (Paris).</p>}{error&&<p role="alert">{error}</p>}
+ return <section className="collection-picker laboratory-card" aria-label="Invitation reçue"><h2>{value?.name??(kind==='circle'?'Invitation à un cercle':'Invitation à un duel')}</h2><p role="status">{kind==='duel'&&state==='invalid'?'Lien d’invitation invalide.':labels[state]}</p>{state==='ready'&&value?.expiresAt&&<p>Valable jusqu’au {new Date(value.expiresAt).toLocaleString('fr-FR',{timeZone:'Europe/Paris'})} (Paris).</p>}{error&&<p role="alert">{error}</p>}
  {['accepted','owner'].includes(state)&&value?.destination&&<button className="primary-button" disabled={busy} onClick={()=>onResume(value.destination!.id)}>{kind==='circle'?'Reprendre mon cercle':'Reprendre mon duel'}</button>}
  {state==='error'&&<button className="text-action" disabled={busy} onClick={invitation.retry}>Réessayer la vérification</button>}
  {!identity&&<p><a href="/espace">Retrouver mon identité</a> conserve cette invitation dans cet onglet.</p>}

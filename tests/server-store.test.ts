@@ -30,6 +30,14 @@ function database() {
   const d1 = { prepare, async batch(statements: Array<ReturnType<typeof prepare>>) { sqlite.exec("BEGIN"); try { const results = []; for (const statement of statements) results.push(await statement.run()); sqlite.exec("COMMIT"); return results; } catch (error) { sqlite.exec("ROLLBACK"); throw error; } } } as unknown as D1Database;
   return { sqlite, store: new ServerStore(d1), circles: new CircleStore(d1), duels: new DuelStore(d1), studio: new StudioStore(d1) };
 }
+test("duel list shows actual participant names only to its participants and exposes no targets or guesses",async()=>{
+  const {sqlite,store,duels}=database();const now=Date.now(),tokens=[randomToken(),randomToken(),randomToken()];
+  try{for(const [index,name] of ['Alex','Sam','Tiers'].entries())await store.createGuest(name,tokens[index],'csrf',now);
+    const [a,b,c]=await Promise.all(tokens.map(token=>store.session(token,now+1)));assert.ok(a&&b&&c);
+    const invite=randomToken();await duels.create(a,'named-duel',invite,[0,1,2],now+2);await duels.accept(b,invite,now+3);
+    const owned=await duels.list(a.guest_id),opponent=await duels.list(b.guest_id);assert.equal(owned.length,1);assert.equal(owned[0].hostName,'Alex');assert.equal(owned[0].opponentName,'Sam');assert.equal(owned[0].created_at,now+2);assert.equal(opponent[0].hostName,'Alex');assert.deepEqual(await duels.list(c.guest_id),[]);assert.ok(!('targets' in owned[0]));assert.ok(!('guesses' in owned[0]));
+  }finally{sqlite.close();}
+});
 test("completed duels free the active quota and concurrent retries remain neutral", async () => {
   const { sqlite, store, duels } = database(); const ta = randomToken(), tb = randomToken();
   await store.createGuest("A", ta, "csrf", 100); await store.createGuest("B", tb, "csrf", 100);
