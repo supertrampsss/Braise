@@ -1,0 +1,49 @@
+/* Approved large flame and shared receipts for classic boards and Duel. */
+.approved-interface.proximity-interface .proximity-meter { margin:0 24px 18px; }
+.proximity-interface .proximity-flame-slot { height:224px; display:flex; justify-content:center; align-items:flex-end; }
+.approved-interface.proximity-interface .play-view .proximity-flame { position:relative; left:auto; bottom:auto; transform:none; width:156px; height:208px; margin:0; overflow:visible; mix-blend-mode:normal; background:none; }
+.approved-interface.proximity-interface .play-view:has(.approved-play-surface:focus-within) .proximity-flame { height:208px; }
+.fillable-flame { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 8px 12px #fb773824); }
+.proximity-flame[data-renderer=fillable-svg]::before,.proximity-flame[data-renderer=fillable-svg]::after { display:none; }
+.flame-fill-mask { transition:none; }
+.proximity-flame[data-reveal-motion=true]:not([data-paused=true]) .flame-fill-mask { transition:transform .45s cubic-bezier(.2,.65,.3,1); }
+.flame-core { transform-origin:90px 240px; animation:flame-core-breathe 2.6s ease-in-out infinite alternate; }
+.proximity-flame[data-paused=true] .flame-core,.proximity-flame[data-visible=false] .flame-core { animation-play-state:paused; }
+@keyframes flame-core-breathe { from { opacity:.32; transform:scaleX(.96); } to { opacity:.5; transform:scaleX(1.04); } }
+.proximity-percentage { display:block; margin:6px 0 28px; color:#f4f0eb; font-size:27px; font-weight:650; line-height:1.2; text-align:center; font-variant-numeric:tabular-nums; }
+.proximity-interface .proximity-track { height:14px; border-radius:8px; mask-image:none; background:#343841; }
+.proximity-track > i { background:linear-gradient(90deg,#ff805b,#ffa86d); transition:none; }
+.game-panel.is-record .proximity-track > i { transition:clip-path .45s cubic-bezier(.2,.65,.3,1); }
+.proximity-interface .proximity-milestones { font-size:12px; height:35px; margin-top:8px; }
+.proximity-interface .milestone-prefix { display:inline; }
+.approved-interface.proximity-interface .guess-area { padding-top:24px; }
+.approved-interface.proximity-interface .guess-row { border:1px solid #393c43; border-radius:10px; background:#1a1d21; margin:8px 0; padding:16px; }
+.approved-interface.proximity-interface .guess-word strong { font-size:18px; font-weight:550; }
+.approved-interface.proximity-interface .list-labels > span:first-child { font-size:12px; }
+.approved-interface.proximity-interface .list-labels > span:first-child::after { content:none; }
+.approved-interface.proximity-interface .guess-score > span { font-size:18px; }
+.approved-interface.proximity-interface .guess-row.is-new-guess { animation:accepted-row-land .45s ease-out; }
+@keyframes accepted-row-land { from { border-color:#ff946a; box-shadow:0 0 12px #ff946a30; } to { border-color:#393c43; box-shadow:0 0 0 transparent; } }
+.accepted-guess-flights { pointer-events:none; }
+.accepted-guess-chip { position:fixed; z-index:20; display:inline-block; max-width:min(270px,calc(100vw - 16px)); padding:6px 12px; border:1px solid #ff946a; border-radius:10px; background:#241e1e; color:#ffd2bb; box-shadow:0 0 10px #ff946a38; font-size:14px; line-height:20px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; pointer-events:none; opacity:0; }
+.motion-paused .guess-row.is-new-guess { animation:none!important; }
+.motion-paused .accepted-guess-flights { display:none; }
+.approved-interface.proximity-interface .play-view .victory-box .proximity-flame { width:156px; height:208px; margin:0 auto 14px; }
+@media(max-width:650px) {
+ .approved-interface.proximity-interface .proximity-meter { margin:0 14px 10px; }
+ .proximity-interface .proximity-flame-slot { height:214px; }
+ .proximity-percentage { margin-bottom:26px; font-size:25px; }
+ .proximity-interface .proximity-track { height:12px; }
+ .proximity-interface .proximity-milestones { font-size:11px; }
+ .approved-interface.proximity-interface .guess-area { padding-top:20px; }
+ .approved-interface.proximity-interface .guess-row { padding:14px 10px; }
+ .approved-interface.proximity-interface .guess-word strong { font-size:16px; }
+ .approved-interface.proximity-interface .guess-score > span { font-size:15px; }
+ .accepted-guess-chip { font-size:13px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .flame-core { animation:none; }
+ .proximity-flame[data-reveal-motion=true] .flame-fill-mask,.game-panel.is-record .proximity-track > i { transition:none; }
+ .approved-interface.proximity-interface .guess-row.is-new-guess { animation:none; }
+ .accepted-guess-flights { display:none; }
+}

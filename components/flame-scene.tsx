@@ -1,61 +1,40 @@
 "use client";
+import {useEffect,useId,useRef,useState,type CSSProperties} from 'react';
+import {flameLevel} from '@/lib/flame-presentation';
+import {formatRankFr} from '@/lib/proximity-presentation';
 
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
-import { flameLevel } from "@/lib/flame-presentation";
-import { formatRankFr } from "@/lib/proximity-presentation";
+const silhouette='M91 8C115 42 128 61 124 89C134 82 140 67 142 58C166 89 175 122 172 153C169 198 145 230 92 233C44 236 13 211 9 169C4 131 22 107 37 88C35 115 42 128 49 132C52 112 45 91 58 68C73 44 93 32 91 8Z';
 
-/** Exact approved artwork. No domain state, requests, rewards or corpus access. */
-export default function FlameScene({ level: proximity, rank, celebrating, paused, solved = false, revealMotion = false }: {
-  level: number; rank: number | null;
-  celebrating: boolean; paused: boolean; solved?: boolean; revealMotion?: boolean;
+/** Shared fillable flame. Only accepted best proximity changes its level. */
+export default function FlameScene({level:proximity,rank,celebrating,paused,solved=false,revealMotion=false}:{
+  level:number;rank:number|null;celebrating:boolean;paused:boolean;solved?:boolean;revealMotion?:boolean;
 }) {
-  const host = useRef<HTMLDivElement>(null);
-  const turbulence = useRef<SVGFETurbulenceElement>(null);
-  const filterId = `braiz-flow-${useId().replace(/:/g, "")}`;
-  const [visible, setVisible] = useState(true);
-  useEffect(() => {
-    const element = host.current;
-    if (!element) return;
-    let inView = true;
-    const sync = () => setVisible(inView && !document.hidden);
-    const observer = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver(([entry]) => {
-      inView = entry.isIntersecting; sync();
-    });
-    observer?.observe(element);
-    document.addEventListener("visibilitychange", sync);
-    sync();
-    return () => { observer?.disconnect(); document.removeEventListener("visibilitychange", sync); };
-  }, []);
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-    let last = 0;
-    const draw = (now: number) => {
-      if (paused || !visible || reduced.matches) return;
-      if (now - last >= 1000 / 30) {
-        last = now;
-        const phase = now / 4200;
-        turbulence.current?.setAttribute("baseFrequency", `${.015 + Math.sin(phase) * .0015} ${.035 + Math.cos(phase) * .003}`);
-      }
-      frame = requestAnimationFrame(draw);
-    };
-    const sync = () => { cancelAnimationFrame(frame); if (!paused && visible && !reduced.matches) frame = requestAnimationFrame(draw); };
-    reduced.addEventListener("change", sync);
-    sync();
-    return () => { cancelAnimationFrame(frame); reduced.removeEventListener("change", sync); };
-  }, [paused, visible]);
-  const level = flameLevel(proximity, solved);
-  return <div ref={host} className="foyer-scene approved-flame proximity-flame" role="img"
-    aria-label={solved ? 'Mot trouvé' : rank === null ? 'Proximité : aucun essai' : `Proximité : ${formatRankFr(rank)}`}
-    data-paused={paused} data-visible={visible} data-solved={solved} data-reveal-motion={revealMotion} data-celebrating={celebrating && solved}
-    data-renderer="approved-art" style={{ "--reveal-top": `${(1 - level) * 100}%` } as CSSProperties}>
-    <svg className="approved-flame-defs" aria-hidden="true"><defs><filter id={filterId} x="-5%" y="-5%" width="110%" height="110%"><feTurbulence ref={turbulence} type="fractalNoise" baseFrequency=".015 .035" numOctaves="2" seed="4" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
-    {/* eslint-disable-next-line @next/next/no-img-element -- Approved native artwork is layered with the same SVG filter; preserve its rendering and pause/performance contract. */}
-    <img src="/art/braiz-p1-flame.png" alt="" className="approved-flame-cold" aria-hidden="true" />
-    {/* eslint-disable-next-line @next/next/no-img-element -- Approved native artwork is layered with the same SVG filter; preserve its rendering and pause/performance contract. */}
-    <img src="/art/braiz-p1-flame.png" alt="" className="approved-flame-hot" style={{ filter:`url(#${filterId})` }} aria-hidden="true" />
-    <span className="approved-sparks" aria-hidden="true"><i/><i/><i/><i/><i/><i/></span>
+  const host=useRef<HTMLDivElement>(null),id='braiz-fill-'+useId().replace(/:/g,'');
+  const [visible,setVisible]=useState(true);
+  useEffect(()=>{
+    let inView=true;const sync=()=>setVisible(inView&&!document.hidden);
+    const observer=typeof IntersectionObserver==='undefined'?null:new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;sync();});
+    if(host.current)observer?.observe(host.current);
+    document.addEventListener('visibilitychange',sync);sync();
+    return()=>{observer?.disconnect();document.removeEventListener('visibilitychange',sync);};
+  },[]);
+  const level=flameLevel(proximity,solved);
+  return <div ref={host} className="foyer-scene approved-flame proximity-flame" role="img" aria-label={solved?'Mot trouvé':rank===null?'Proximité : aucun essai':`Proximité : ${formatRankFr(rank)}`}
+    data-paused={paused} data-visible={visible} data-solved={solved} data-reveal-motion={revealMotion} data-celebrating={celebrating&&solved} data-renderer="fillable-svg" style={{'--flame-level':level} as CSSProperties}>
+    <svg className="fillable-flame" viewBox="0 0 180 240" aria-hidden="true">
+      <defs>
+        <clipPath id={id+'-shape'}><path d={silhouette}/></clipPath>
+        <linearGradient id={id+'-heat'} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#ff7049"/><stop offset=".66" stopColor="#ff8c4b"/><stop offset="1" stopColor="#ffdb63"/></linearGradient>
+        <linearGradient id={id+'-edge'} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#ef7046"/><stop offset="1" stopColor="#ffb668"/></linearGradient>
+        <mask id={id+'-level'} maskUnits="userSpaceOnUse" x="-20" y="-20" width="220" height="280">
+          <g className="flame-fill-mask" style={{transform:`translateY(${(1-level)*240}px)`}}><path d="M-20 0Q0-8 20 0T60 0T100 0T140 0T180 0T220 0V260H-20Z" fill="white"/></g>
+        </mask>
+      </defs>
+      <path d={silhouette} fill="#211b19" stroke={'url(#'+id+'-edge)'} strokeWidth="1.5" opacity=".8"/>
+      <g clipPath={'url(#'+id+'-shape)'} mask={'url(#'+id+'-level)'}>
+        <rect width="180" height="240" fill={'url(#'+id+'-heat)'}/>
+        <path className="flame-core" d="M93 101C99 133 130 141 133 171C137 204 119 230 92 235C57 229 41 209 49 179C51 166 65 153 66 139C69 160 83 166 81 186C96 166 93 139 93 101Z" fill="#ffdf77" opacity=".42"/>
+      </g>
+    </svg>
   </div>;
 }
-
-

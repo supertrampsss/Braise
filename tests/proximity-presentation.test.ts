@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { proximityFill, PROXIMITY_MILESTONES, formatRankFr } from '../lib/proximity-presentation';
+import { proximityFill, proximityPercent, PROXIMITY_MILESTONES, formatRankFr } from '../lib/proximity-presentation';
 import { createGameFeedback } from '../lib/game-feedback';
 import { getLegacyPuzzle } from '../lib/legacy-puzzles';
 
@@ -29,4 +29,12 @@ test('a closer exact rank triggers a record even if rounded temperatures are ide
   const guess={word:'arbre',temperature:12.25,rank:790,order:2,found:false};
   assert.equal(createGameFeedback(800,guess,ref).type,'bestImproved');
   assert.equal(createGameFeedback(780,guess,ref).type,'guessAccepted');
+});
+
+test('the percentage follows the gauge milestones, reserves 100 for the answer, and validates ranks',()=>{
+  assert.equal(proximityPercent(null,undefined),0);
+  assert.equal(proximityPercent(61,155562),64);
+  for(const point of PROXIMITY_MILESTONES)assert.equal(proximityPercent(point.rank,155562),point.position*100);
+  assert(proximityPercent(2,155562)<100);
+  assert.throws(()=>proximityPercent(1,undefined),RangeError);
 });

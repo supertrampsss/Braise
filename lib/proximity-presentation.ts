@@ -8,7 +8,7 @@ export const PROXIMITY_MILESTONES = [
   { rank: 1, position: 1, label: 'Trouvé' },
 ] as const;
 
-/** Visual spacing only. API ranks stay exact; no score or percentage is displayed. */
+/** Visual spacing only. API ranks stay exact; percentage means gauge fill. */
 export function proximityFill(rank: number | null | undefined, vocabularySize: number | undefined): number {
   if (rank == null) return 0;
   if (!Number.isSafeInteger(rank) || rank < 1 || !Number.isSafeInteger(vocabularySize) || vocabularySize! < rank) {
@@ -32,4 +32,9 @@ export function proximityColor(rank: number): string {
 
 export function formatRankFr(rank: number): string {
   return `${formatNumberFr(rank)}${rank === 1 ? 'er' : 'e'}`;
+}
+
+export function proximityPercent(rank: number | null | undefined, vocabularySize: number | undefined): number {
+  const fill=proximityFill(rank,vocabularySize);
+  return rank === 1 ? 100 : Math.min(99, Math.round(fill * 100));
 }

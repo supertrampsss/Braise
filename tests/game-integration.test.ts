@@ -76,7 +76,7 @@ const deferred = <T,>() => { let resolve!: (value: T) => void; const promise = n
 function browser(storage = new SyncMemory(), href = 'https://braiz.test/?libre=042') {
   const listeners = new Map<string, () => void>(), frames: Array<() => void> = []; let audioCalls = 0;
   const doc = { activeElement: null as unknown, body: {}, visibilityState: 'visible', addEventListener() {}, removeEventListener() {}, getElementById() { return null; } };
-  const win = { localStorage: storage, setTimeout, clearTimeout, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, location: new URL(href), scrollTo() {}, addEventListener(key: string, callback: () => void) { listeners.set(key, callback); }, removeEventListener(key: string) { listeners.delete(key); }, history: { replaceState(_state: unknown, _title: unknown, url: string | URL) { win.location = new URL(url); Object.assign(globalThis, { location: win.location }); }, pushState(_state: unknown, _title: unknown, url: string | URL) { this.replaceState(_state, _title, url); } } };
+  const win = { matchMedia(){return {matches:true,addEventListener(){},removeEventListener(){}};}, localStorage: storage, setTimeout, clearTimeout, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, location: new URL(href), scrollTo() {}, addEventListener(key: string, callback: () => void) { listeners.set(key, callback); }, removeEventListener(key: string) { listeners.delete(key); }, history: { replaceState(_state: unknown, _title: unknown, url: string | URL) { win.location = new URL(url); Object.assign(globalThis, { location: win.location }); }, pushState(_state: unknown, _title: unknown, url: string | URL) { this.replaceState(_state, _title, url); } } };
   Object.assign(globalThis, { window: win, document: doc, location: win.location, localStorage: storage, requestAnimationFrame: (fn: () => void) => frames.push(fn), cancelAnimationFrame() {}, AudioContext: class { constructor() { audioCalls++; } } });
   return { storage, listeners, frames, doc, win, audioCalls: () => audioCalls };
 }
@@ -115,7 +115,7 @@ test('an unavailable free discovery exposes the error and leaves existing saves 
 
 test('rules are reachable from the shared menu on another mode without creating an identity',async()=>{
   const b=browser(undefined,'https://braiz.test/?regles=1'),calls:string[]=[];globalThis.fetch=async url=>{calls.push(String(url));return Response.json(puzzle);};
-  const tree=await mount();try{assert.match(text(tree.root),/Comparez les rangs/);assert.equal(b.win.location.searchParams.get('regles'),null);assert.ok(calls.every(path=>path.startsWith('/api/game?')));}finally{await act(async()=>tree.unmount());}
+  const tree=await mount();try{assert.match(text(tree.root),/Suivez la progression/);assert.equal(b.win.location.searchParams.get('regles'),null);assert.ok(calls.every(path=>path.startsWith('/api/game?')));}finally{await act(async()=>tree.unmount());}
 });
 
 
@@ -147,14 +147,14 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
   globalThis.fetch = async () => Response.json(puzzle);
   const tree = await mount();
   try {
-    assert.match(text(tree.root), /1 essai, aucun indice/);
+    assert.match(text(tree.root), /1 essai · 0 indices/);
     assert.doesNotMatch(text(tree.root), /Indice après 5 essais/);
     assert.equal(tree.root.findAllByProps({ className: 'hint-progress' }).length, 0);
     assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), null);
     assert.match(tree.root.find(node => node.type==='div' && String(node.props.className).startsWith('app-shell')).props.className, /motion-paused/);
     assert.equal(b.audioCalls(), 0, 'restored win with sound enabled must not create AudioContext');
     Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async () => { throw new Error('Clipboard denied'); } } } });
-    await click(tree, 'Copier mon résultat');
+    await click(tree, 'Partager');
     const payload = tree.root.findByProps({ 'aria-label': 'Texte à copier' }).props.value;
     assert.match(text(tree.root), /copie automatique n’a pas abouti/);
     assert.match(payload, /Trouvé en 1 essai · sans indice/);
@@ -163,7 +163,7 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
     await click(tree, 'Fermer');
     let copied = '';
     Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async (value: string) => { copied = value; } } } });
-    await click(tree, 'Copier mon résultat');
+    await click(tree, 'Partager');
     assert.equal(copied, payload);
     assert.equal(JSON.parse(b.storage.getItem(PRODUCT_EVENTS_KEY)!).events[0].type, 'shareCopied');
     assert.equal(tree.root.findAllByProps({ 'aria-label': 'Texte à copier' }).length, 0);
@@ -185,7 +185,7 @@ test('Game restores a Word2Vec victory silently and rejects a mismatched edition
   const storage=new SyncMemory(),won:SavedGame={startedAt:Date.parse('2026-10-13T12:00:00Z'),pins:[],hints:0,guesses:[{word:'maison',temperature:100,rank:1,found:true,order:1}]};
   const raw=JSON.stringify(word2vecDocument(id,won));storage.setItem('braise.v1.game.'+id,raw);
   let b=browser(storage,'https://braiz.test/?libre=042&edition=word2vec-v1');globalThis.fetch=async()=>Response.json(target);
-  let tree=await mount();try{assert.match(text(tree.root),/1 essai, aucun indice/);assert.equal(b.audioCalls(),0);assert.equal(storage.getItem(PRODUCT_EVENTS_KEY),null);assert.equal(storage.getItem('braise.v1.game.'+id),raw);}finally{await act(async()=>tree.unmount());}
+  let tree=await mount();try{assert.match(text(tree.root),/1 essai · 0 indices/);assert.equal(b.audioCalls(),0);assert.equal(storage.getItem(PRODUCT_EVENTS_KEY),null);assert.equal(storage.getItem('braise.v1.game.'+id),raw);}finally{await act(async()=>tree.unmount());}
   b=browser(storage,'https://braiz.test/?libre=042&edition=classic-v1');globalThis.fetch=async()=>Response.json(target);tree=await mount();
   try{assert.match(text(tree.root),/version de cette partie/);assert.equal(tree.root.findAllByProps({id:'guess'}).length,0);assert.equal(storage.getItem('braise.v1.game.'+id),raw);}finally{await act(async()=>tree.unmount());}
 });
@@ -371,13 +371,13 @@ for(const kind of ['voyage','collection'] as const) test(`solo ${kind} names its
   }finally{await act(async()=>tree.unmount());}
 });
 
-test('a terminal win suggests another actual unfinished save and clearly identifies it',async()=>{
+test('a terminal win keeps continuation available without duplicated explanatory prose',async()=>{
   const b=browser();
   b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
   b.storage.setItem('braise.v1.game.free-043',JSON.stringify({startedAt:2,hints:0,pins:['maison'],guesses:[{word:'maison',order:1,rank:20,temperature:12,found:false}]}));
   globalThis.fetch=async()=>Response.json(puzzle);
   const tree=await mount();
-  try{assert.match(text(tree.root),/Une autre partie commencée vous attend : Partie libre/);assert.doesNotMatch(text(tree.root),/Cette partie commencée attend votre prochain mot/);assert.ok(button(tree,'Continuer à jouer'));}
+  try{assert.doesNotMatch(text(tree.root),/Une autre partie commencée vous attend/);assert.doesNotMatch(text(tree.root),/Cette partie commencée attend votre prochain mot/);assert.ok(button(tree,'Continuer à jouer'));}
   finally{await act(async()=>tree.unmount());}
 });
 
@@ -569,5 +569,41 @@ test('Parties resumes the current saved game without reloading it or changing it
     assert.equal(requests,1);assert.equal(b.storage.getItem('braise.v1.game.'+puzzle.id),raw);
     assert.match(text(tree.root.findAllByProps({className:'guess-word'})[0]),/^arbre/);
     assert.ok(tree.root.findAllByProps({'aria-label':'Détacher arbre'}).every(node=>!node.props.disabled));
+  }finally{await act(async()=>tree.unmount());}
+});
+
+test('three hint actions preserve typed input, save real hint metadata, and stop the fourth including after reload',async()=>{
+  const b=browser();let posts=0;
+  globalThis.fetch=async(_url,options)=>{
+    if(options?.method==='POST'){
+      const body=JSON.parse(String(options.body));assert.equal(body.action,'hint');assert.equal(body.hintLevel,posts);
+      const rank=[350,80,12][posts++];return Response.json({word:'indice'+posts,rank,temperature:40,found:false,puzzleRef:puzzle.ref});
+    }
+    return Response.json(puzzle);
+  };
+  let tree=await mount();
+  try{
+    await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:'ma saisie'}}));
+    for(let i=0;i<3;i++){
+      await act(async()=>tree.root.findByProps({className:'classic-hint-button'}).props.onClick({preventDefault(){},currentTarget:{contains(){return false;}}}));
+      assert.equal(tree.root.findByProps({id:'guess'}).props.value,'ma saisie');
+    }
+    assert.equal(posts,3);assert.equal(tree.root.findByProps({className:'classic-hint-button'}).props.disabled,true);
+    await act(async()=>tree.root.findByProps({className:'classic-hint-button'}).props.onClick({preventDefault(){},currentTarget:{contains(){return false;}}}));assert.equal(posts,3);
+    const saved=JSON.parse(b.storage.getItem('braise.v1.game.'+puzzle.id)!);assert.equal(saved.hints,3);assert(saved.guesses.every((g:{hint:boolean})=>g.hint));
+    assert.equal(tree.root.findAllByProps({className:'pin-button'}).length,0);
+  }finally{await act(async()=>tree.unmount());}
+  tree=await mount();try{assert.equal(tree.root.findByProps({className:'classic-hint-button'}).props.disabled,true);assert.equal(posts,3);}finally{await act(async()=>tree.unmount());}
+});
+test('a failed hint consumes nothing and an accepted stale hint cannot enter a newly loaded board',async()=>{
+  const b=browser();let failure=true;const pending=deferred<Response>();
+  globalThis.fetch=async(_url,options)=>options?.method==='POST'?(failure?Response.json({error:'Indisponible.'},{status:503}):pending.promise):Response.json(puzzle);
+  const tree=await mount();try{
+    const event={preventDefault(){},currentTarget:{contains(){return false;}}};
+    await act(async()=>tree.root.findByProps({className:'classic-hint-button'}).props.onClick(event));assert.equal(b.storage.getItem('braise.v1.game.'+puzzle.id),null);
+    failure=false;await act(async()=>{void tree.root.findByProps({className:'classic-hint-button'}).props.onClick(event);});
+    await menu(tree,'Mot du jour');
+    await act(async()=>pending.resolve(Response.json({word:'hint',temperature:40,rank:80,found:false,puzzleRef:puzzle.ref})));
+    assert.equal(b.storage.getItem('braise.v1.game.'+puzzle.id),null);
   }finally{await act(async()=>tree.unmount());}
 });

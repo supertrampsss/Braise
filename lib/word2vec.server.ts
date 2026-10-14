@@ -2,6 +2,7 @@
 import { env } from "cloudflare:workers";
 import index from "@/data/word2vec-index.json";
 import type { WordEvaluation } from "./game-contracts";
+import { betterHintId } from './classic-hints';
 
 export const word2vecMetadata = { corpusVersion: index.corpusVersion, vocabularySize: index.vocabularySize };
 export const word2vecTargets = index.targets.map(target => target.word);
@@ -134,6 +135,15 @@ export async function evaluateWord2vec(targetWord: string, input: string): Promi
   const { scores, ranks } = await column(target);
   const found = id === target.wordId;
   return { word: index.words[id], temperature: found ? 100 : scores[id] / 100, rank: ranks[id], found };
+}
+
+export async function word2vecHint(targetWord: string, level: number, guesses: string[]): Promise<WordEvaluation | null> {
+  const target = targets.get(normalize(targetWord));
+  if (!target) throw new Word2vecStorageError('object_missing', 'Word2Vec secret is not available');
+  const { scores, ranks } = await column(target);
+  const used = new Set(guesses.flatMap(word => { const id = words.get(normalize(word)); return id === undefined ? [] : [id]; }));
+  const id = betterHintId(ranks, used, level);
+  return id === null ? null : { word:index.words[id], temperature:scores[id]/100, rank:ranks[id], found:false };
 }
 
 // The only injection is the same transport seam used by the historical reader.

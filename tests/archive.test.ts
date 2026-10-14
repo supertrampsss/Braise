@@ -93,8 +93,9 @@ test("archive API validates the date and version before scoring guesses or hints
   assert.deepEqual(await guessResponse.json(), { ...expectedGuess, puzzleRef: puzzle.ref });
   const guesses = ["justice", "musique", "sport", "livre", "enfant"];
   const hintResponse = await post({ ...base, action: "hint", hintLevel: 0, guesses });
-  assert.equal(hintResponse.status, 410);
-  assert.equal(Object.hasOwn(await hintResponse.json(), "temperature"), false);
+  assert.equal(hintResponse.status, 200);
+  const hint=await hintResponse.json() as {word:string;rank:number;found:boolean};assert.equal(hint.found,false);assert(!guesses.includes(hint.word));
+  const bestRank=Math.min(...await Promise.all(guesses.map(async word=>(await evaluateWord(getArchivePuzzle(puzzle.date).targetIndex,findWord(word)!)).rank)));assert(hint.rank<bestRank);
   assert.equal((await post({ ...base, puzzleRef: undefined, action: "guess", word: "livre" })).status, 409);
   for (const puzzleRef of [
     { ...puzzle.ref, context: "daily" },

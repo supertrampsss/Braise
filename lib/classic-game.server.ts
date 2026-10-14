@@ -4,7 +4,7 @@ import { parisDate } from './calendar';
 import { openDailyV2, type DailyV2Authority, type DailyV2Runtime } from './daily-v2.server';
 import authority from '@/data/editorial-v2-runtime.json';
 import { DAILY_V2_QUALIFICATION_PIN } from './daily-v2-pin';
-import { evaluateWord, findWord, getArchivePuzzle, getPuzzle, legacyTargetWord } from './semantic';
+import { betterClassicHint, evaluateWord, findWord, getArchivePuzzle, getPuzzle, legacyTargetWord } from './semantic';
 import { encounterIdentityForWord, legacyEncounterIdentityForWord, withTargetIdentity } from './free-discovery.server';
 import type { Mode } from './game-types';
 import { WORD2VEC_START, classicEdition } from './word2vec-contract';
@@ -21,13 +21,14 @@ export async function resolveClassicGame(mode: Mode, seed: string, date: string 
   }
   if (edition==='classic-v2' && (mode === 'daily' || mode === 'archive') && day >= DAILY_V2_START) {
     const value = await openDailyV2(authority as DailyV2Authority,DAILY_V2_QUALIFICATION_PIN,runtime,day,mode,now,signal);
-    return { ...value, targetIdentity:await legacyEncounterIdentityForWord(value.targetWord),requiresVersion:true };
+    return { ...value, targetIdentity:await legacyEncounterIdentityForWord(value.targetWord),requiresVersion:true,hint:async(_level:number,_guesses:string[],_bestWord?:string)=>null };
   }
   if(edition==='classic-v2')throw new ClassicEditionConflict();
   const value = mode === 'archive' ? getArchivePuzzle(day,now) : getPuzzle(mode,seed,now);
   const publicPuzzle = await withTargetIdentity(value.publicPuzzle);
   return { publicPuzzle,targetWord:legacyTargetWord(value.targetIndex),targetIdentity:publicPuzzle.targetIdentity,requiresVersion:false,
     async evaluate(word: string) { const id=findWord(word);return id===undefined?null:evaluateWord(value.targetIndex,id); },
+    hint:(level:number,guesses:string[],_bestWord?:string)=>betterClassicHint(value.targetIndex,level,guesses),
     close() {},
   };
 }

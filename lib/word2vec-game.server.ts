@@ -1,7 +1,7 @@
 import { nextParisMidnight } from './calendar';
 import { WORD2VEC_START, word2vecRef } from './word2vec-contract';
 import { getLegacyPuzzle } from './legacy-puzzles';
-import { evaluateWord2vec, word2vecTargets, word2vecLegacyTargets, word2vecMetadata } from './word2vec.server';
+import { evaluateWord2vec, word2vecHint, word2vecTargets, word2vecLegacyTargets, word2vecMetadata } from './word2vec.server';
 import type { Mode, Puzzle } from './game-types';
 export function dailyWord2vecTarget(date:string){
   if(date===WORD2VEC_START)return 'assiette';
@@ -16,5 +16,5 @@ export async function openWord2vec(mode:Mode,seed:string,date:string,now:Date){
   await evaluateWord2vec(targetWord,targetWord);
   const id=daily?`daily-w2v-${date}`:`free-w2v-${seed}`;
   const publicPuzzle:Puzzle={id,mode,seed:daily?date:seed,date,number:daily?Math.floor((Date.parse(date+'T00:00:00Z')-Date.parse('2026-09-07T00:00:00Z'))/86400000)+1:legacy!.legacyIndex+1,vocabularySize:word2vecMetadata.vocabularySize,resetAt:nextParisMidnight(now),ref:word2vecRef(id,mode)};
-  return {publicPuzzle,targetWord,requiresVersion:true,evaluate:(word:string)=>evaluateWord2vec(targetWord,word),close(){}};
+  return {publicPuzzle,targetWord,requiresVersion:true,evaluate:(word:string)=>evaluateWord2vec(targetWord,word),hint:(level:number,guesses:string[],_bestWord?:string)=>word2vecHint(targetWord,level,guesses),close(){}};
 }

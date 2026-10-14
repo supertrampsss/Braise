@@ -2,11 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { flameLevel } from "../lib/flame-presentation";
 
-test("approved flame has an ember at zero and only a recognized win fully reveals it", () => {
-  assert.equal(flameLevel(0, false), .08);
+test("fillable flame uses the actual gauge fill and only a recognized win fully reveals it", () => {
+  assert.equal(flameLevel(0, false), 0);
   assert.ok(flameLevel(1, false) < 1);
   assert.equal(flameLevel(1, true), 1);
-  assert.equal(flameLevel(Number.NaN, false), .08);
+  assert.equal(flameLevel(Number.NaN, false), 0);
 });
 
 test("accepted best proximity reveals bottom-up without reaching full before a win", () => {

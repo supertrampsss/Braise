@@ -1,6 +1,6 @@
 /* Direct destinations in one menu; archive calendar and saved games. */
 .braiz-navigation .braiz-navigation-menu { margin-left:auto; }
-.braiz-menu-trigger { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:44px; padding:10px 14px; border:1px solid #51545d; border-radius:10px; background:#1c1e22; color:#f4f0eb; font:inherit; font-size:14px; }
+.braiz-menu-trigger { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; padding:10px; border:1px solid #51545d; border-radius:10px; background:#1c1e22; color:#f4f0eb; font:inherit; }
 .braiz-menu-trigger:hover,.braiz-menu-trigger[data-state=open] { border-color:#ff946a; }
 .braiz-primary-menu { width:252px; max-width:calc(100vw - 24px); padding:8px; border:1px solid #454850; border-radius:14px; background:#1c1e22; color:#f4f0eb; box-shadow:0 14px 40px #0007; }
 .braiz-primary-menu nav { margin:0; }

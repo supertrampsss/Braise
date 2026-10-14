@@ -34,7 +34,7 @@ export function AppNavigation({active='play',modeName,backHref='/',onNavigate,on
     <a href={modeName ? navigationBackHref(backHref) : '/'} className="braiz-navigation-brand" aria-label="BRAIZ, accueil" onClick={event=>choose('play',event)}>BRAIZ<span aria-hidden="true">.</span></a>
     {modeName && <span className="braiz-mode-name">{modeName}</span>}
     <div className="braiz-navigation-menu"><DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild><button ref={trigger} className="braiz-menu-trigger" aria-label="Ouvrir le menu">Menu<Menu size={20} aria-hidden="true"/></button></DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild><button ref={trigger} className="braiz-menu-trigger" aria-label="Ouvrir le menu"><Menu size={20} aria-hidden="true"/></button></DropdownMenuTrigger>
       <DropdownMenuContent className="braiz-primary-menu" align="end" sideOffset={8} onCloseAutoFocus={event=>{
         if(navigationChosen.current) { event.preventDefault(); navigationChosen.current=false; }
       }}>

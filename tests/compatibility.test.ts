@@ -105,10 +105,9 @@ test("calendar references remain checked and retired hints add no semantic resul
   assert.equal(samePuzzleRef({ ...daily.ref, calendar: { ...daily.ref.calendar, date: "2000-01-01" } }, daily.ref), false);
   const { publicPuzzle: free } = getPuzzle("free", "1234");
   const response = await post({ mode: "free", seed: "1234", puzzleId: free.id, puzzleRef: free.ref, action: "hint", hintLevel: 0, guesses: ["justice", "musique", "sport", "livre", "enfant"] });
-  assert.equal(response.status, 410);
-  const retired = await response.json() as Record<string, unknown>;
-  assert.equal(Object.hasOwn(retired, "temperature"), false);
-  assert.equal(Object.hasOwn(retired, "word"), false);
+  assert.equal(response.status, 200);
+  const hint = await response.json() as EvaluationResponse;
+  assert.equal(hint.found,false);assert.deepEqual(hint,{...await evaluateWord(getPuzzle('free','1234').targetIndex,findWord(hint.word)!),puzzleRef:free.ref});
   for (const invalidSeed of ["2147483648", "00000000000", "-1", "1.0", ""]) {
     assert.equal((await GET(new Request("https://braise.test/api/game?mode=free&seed=" + invalidSeed))).status, 400);
   }

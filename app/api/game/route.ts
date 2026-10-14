@@ -10,6 +10,7 @@ import { DailyV2Unavailable } from '@/lib/daily-v2.server';
 import type { RangeBucket } from '@/lib/semantic-v2-range-r2';
 import { SemanticStorageError } from "@/lib/semantic-storage";
 import type { Mode } from "@/lib/game-types";
+import { MAX_CLASSIC_HINTS } from '@/lib/classic-hints';
 
 const headers = { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" };
 const reply = (body: unknown, status = 200) => Response.json(body, { status, headers });
@@ -95,7 +96,9 @@ export async function POST(request: Request) {
       return reply({ error: "La version de cette partie ne correspond plus. Rechargez le jeu pour reprendre." }, 409);
     }
     if (body.action === "hint") {
-      return reply({ error: "Les indices automatiques ont été retirés." }, 410);
+      if (!Number.isInteger(body.hintLevel) || body.hintLevel < 0 || body.hintLevel >= MAX_CLASSIC_HINTS || !Array.isArray(body.guesses) || body.guesses.length > 3000 || body.guesses.some((word:unknown)=>typeof word !== 'string' || word.length > 50) || body.bestWord !== undefined && (typeof body.bestWord !== 'string' || !body.guesses.includes(body.bestWord))) return reply({error:'Indice indisponible.'},400);
+      const value = await resolved.hint(body.hintLevel, body.guesses, body.bestWord);
+      return value ? reply({...value,puzzleRef:publicPuzzle.ref}) : reply({error:'Aucun indice disponible.'},409);
     }
     if (body.action !== "guess" || typeof body.word !== "string" || body.word.length > 50 || !/^[\p{L}]+(?:['-][\p{L}]+)*$/u.test(normalizeWord(body.word))) return reply({ error: "Proposez un seul mot français, sans chiffre ni espace." }, 400);
     const evaluation = await resolved.evaluate(body.word);

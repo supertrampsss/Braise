@@ -41,7 +41,7 @@
 .duel-interface .duel-round-end { padding:8px 24px 26px; text-align:center; }
 .duel-round-end h2 { margin:0 0 18px; color:#ffac86; font-size:23px; }
 .duel-round-end p { color:#c9cbd2; }
-.approved-interface.proximity-interface.duel-interface .list-labels,.approved-interface.proximity-interface.duel-interface .guess-row { grid-template-columns:30px minmax(0,1fr) minmax(220px,1.1fr); }
+.approved-interface.proximity-interface.duel-interface .list-labels,.approved-interface.proximity-interface.duel-interface .guess-row { grid-template-columns:minmax(0,1fr) minmax(220px,1.1fr); }
 .duel-interface .guess-word { min-width:0; overflow-wrap:anywhere; }
 .duel-interface .guess-row .guess-score { min-width:0; }
 .duel-interface .duel-end { margin:18px 0 32px; color:#babec8; font-size:13px; }
@@ -75,7 +75,7 @@
  .duel-interface .duel-rounds { gap:8px; margin-bottom:16px; }
  .duel-rounds > button { flex-wrap:wrap; gap:5px; padding:10px 5px; font-size:13px; }
  .duel-rounds small { width:100%; }
- .approved-interface.proximity-interface.duel-interface .list-labels,.approved-interface.proximity-interface.duel-interface .guess-row { grid-template-columns:18px minmax(0,1fr) minmax(106px,1.1fr); }
+ .approved-interface.proximity-interface.duel-interface .list-labels,.approved-interface.proximity-interface.duel-interface .guess-row { grid-template-columns:minmax(0,1fr) minmax(106px,1.1fr); }
  .duel-interface .guess-score { gap:7px; }
  .duel-interface .guess-score > span { min-width:58px; font-size:14px; }
  .duel-interface .duel-round-end { padding:6px 14px 22px; }

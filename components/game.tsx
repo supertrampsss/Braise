@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
-import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
+import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Share2, Target, Users, X } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { EXTRA_MODES_ENABLED } from "@/lib/release";
 import { clientId } from "@/lib/client-id";
 import { ProximityMeter } from "@/components/proximity-meter";
+import FlameScene from '@/components/flame-scene';
+import {AcceptedGuessFlight} from '@/components/accepted-guess-flight';
+import { MAX_CLASSIC_HINTS } from '@/lib/classic-hints';
 import AdPlacement from "@/components/ad-placement";
 import { deviceBoardRevision, admitDeviceBoardMerge } from "@/lib/device-sync-admission";
 import { ProfilePanel } from "@/components/profile-panel";
@@ -487,21 +490,22 @@ export default function Game() {
     navigate("game");
     if(await loadPuzzle("archive", archiveDraft)) diagnostic("gameOpened","archive");
   }
-  async function submit(event: FormEvent) {
+  async function submit(event: FormEvent, hint = false) {
     event.preventDefault();
     if (!puzzle || loading || discoveryBusy || submitting.current || solved) return;
+    if (hint && (game.hints >= MAX_CLASSIC_HINTS || best?.rank === 2)) return;
     const word = input.trim().toLocaleLowerCase("fr");
     const submittedRevision = inputRevisionRef.current;
     const focusOwner = document.activeElement;
     const shouldReturnFocus = focusOwner === inputRef.current || event.currentTarget.contains(focusOwner);
     if (focusFrameRef.current !== null) cancelAnimationFrame(focusFrameRef.current);
     focusFrameRef.current = null;
-    if (!word) { inputRef.current?.focus(); return; }
-    if (game.guesses.some(g => g.word === word)) { setError(`« ${word} » est déjà dans vos essais.`); inputRef.current?.select(); return; }
+    if (!hint && !word) { inputRef.current?.focus(); return; }
+    if (!hint && game.guesses.some(g => g.word === word)) { setError(`« ${word} » est déjà dans vos essais.`); inputRef.current?.select(); return; }
     submitting.current = true; setBusy(true); setError("");
     const request = requestRef.current;
     try {
-      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: "guess" }) });
+      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: hint ? 'hint' : 'guess', ...(hint ? {hintLevel:game.hints,guesses:game.guesses.map(g=>g.word),bestWord:best?.word} : {}) }) });
       const data = await response.json() as EvaluationResponse & { error?: string };
       if (request !== requestRef.current) return;
       if (!response.ok) {
@@ -510,11 +514,12 @@ export default function Game() {
         throw new Error(data.error || "Impossible d’analyser ce mot.");
       }
       if (!samePuzzleRef(data.puzzleRef, puzzle.ref)) throw new Error("La réponse ne correspond pas à cette partie. Rechargez le jeu.");
+      if (hint && (data.found || data.rank >= (best?.rank ?? puzzle.vocabularySize) || game.hints >= MAX_CLASSIC_HINTS)) throw new Error('Aucun indice disponible.');
       if (game.guesses.some(g => g.word === data.word)) { setError(`« ${data.word} » est déjà dans vos essais.`); return; }
       const acceptedAt = new Date().toISOString();
-      const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint: false, acceptedAt };
-      const next = { ...game, guesses: [...game.guesses, guess], profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt), completedMode: mode } : {}) };
-      setInput(current => inputAfterAcceptedGuess(current, false, inputRevisionRef.current, submittedRevision));
+      const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint, acceptedAt };
+      const next = { ...game, guesses: [...game.guesses, guess], hints:game.hints + Number(hint), profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt), completedMode: mode } : {}) };
+      setInput(current => inputAfterAcceptedGuess(current, hint, inputRevisionRef.current, submittedRevision));
       const nextFeedback = createGameFeedback(best?.rank ?? null, guess, puzzle.ref);
       showFeedback(nextFeedback);
       // Future game documents must not project their unknown facts into profile/rewards either.
@@ -525,11 +530,9 @@ export default function Game() {
       }
       saveGame(next);
       diagnostic("guessAccepted");
+      if (hint) diagnostic('hintUsed');
       if(game.guesses.length === 0) diagnostic("firstGuessAccepted");
       if(data.found) diagnostic("puzzleWon");
-      if (data.found && !profile.wins.some(w => w.id === puzzle.id)) {
-        toast.success("La braise est allumée. Bien joué !", { duration: 4000 });
-      }
       if (profile.sound && nextFeedback.type !== "guessAccepted") playTone(data.found);
       if (shouldReturnFocus) {
         focusFrameRef.current = requestAnimationFrame(() => {
@@ -543,16 +546,12 @@ export default function Game() {
     finally { if (request === requestRef.current) { submitting.current = false; setBusy(false); } }
   }
 
-  function pin(word: string) {
-    if (!game.pins.includes(word) && game.pins.length >= 3) { toast("Votre carnet accueille 3 pistes. Détachez-en une pour continuer."); return; }
-    saveGame({ ...game, pins: game.pins.includes(word) ? game.pins.filter(w => w !== word) : [...game.pins, word] });
-  }
   async function copy(text: string, feedback: string) {
     try { await navigator.clipboard.writeText(text); diagnostic("shareCopied"); toast.success(feedback); }
     catch { setShareText(text); setModal("share"); }
   }
   function resultText() {
-    const journey = game.guesses.filter(g => !g.hint).filter((_, i, all) => i % Math.max(1, Math.ceil(all.length / 8)) === 0).slice(0, 8).map(g => g.found ? "🟩" : g.temperature >= 55 ? "🟥" : g.temperature >= 35 ? "🟧" : g.temperature >= 18 ? "🟨" : "🟦").join("");
+    const journey = game.guesses.filter(g => !g.hint).filter((_, i, all) => i % Math.max(1, Math.ceil(all.length / 8)) === 0).slice(0, 8).map(g => g.found ? "🟩" : g.rank <= 100 ? "🟥" : g.rank <= 1000 ? "🟧" : g.rank <= 5000 ? "🟨" : "🟦").join("");
     const url = new URL(window.location.origin);
     url.searchParams.delete("defi"); url.searchParams.delete("archive"); if(puzzle) url.searchParams.set("edition",puzzle.ref.rulesVersion);
     if (mode === "archive" && puzzle) url.searchParams.set("archive", puzzle.date);
@@ -607,20 +606,30 @@ export default function Game() {
       <div className="play-layout">
         <div className="play-column">
           <section id="game-board" ref={gameBoardRef} tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
+            <AcceptedGuessFlight key={puzzle?.id??'loading'} receipt={feedback&&latest?{id:feedback.id,word:latest.word,rank:latest.rank,found:latest.found}:null} inputId="guess" paused={flamePaused||surface!=='game'||modal!==null}/>
             <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedbackAnnouncement}</p>
             <div className="game-topline"><div><span className="game-kicker">{journey ? "VOTRE VOYAGE" : currentCollection ? "VOTRE COLLECTION" : mode === "daily" ? "Mot du jour" : mode === "archive" ? "ARCHIVE" : mode === "free" ? "Libre" : "Défi"}</span><span className="edition">{puzzle ? `N° ${String(puzzle.number).padStart(3, "0")}` : "…"}</span></div><span className="daily-pill">{mode === "daily" || mode === "archive" ? <><Clock3 size={13} />{puzzle ? new Date(`${puzzle.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", ...(mode === "archive" ? { year: "numeric" as const } : {}), timeZone: "UTC" }) : mode === "archive" ? "Archive" : "Aujourd’hui"}</> : <><InfinityIcon size={15} />{journey ? journey.reward ? "Chapitre terminé" : `Parcours personnel · étape ${journey.completed + 1}/${journey.length}` : currentCollection ? "Collection personnelle · à votre rythme" : mode === "challenge" ? "Même mot, même défi" : "Sans limite de temps"}</>}</span><span className="game-trials">{countLabel(game.guesses.length,"essai")}</span></div>
 <h1 className="sr-only">{mode === "daily" ? "Mot du jour" : "Mot à trouver"}</h1>
-{surface === "game" && <ProximityMeter rank={puzzle ? best?.rank ?? null : null} vocabularySize={vocabularySize} solved={solved} celebrating={isCelebratingWin} paused={flamePaused} revealMotion={isAccepted || isRecord || isCelebratingWin}/>}
+{surface === "game" && !solved && <ProximityMeter rank={puzzle ? best?.rank ?? null : null} vocabularySize={vocabularySize} solved={solved} celebrating={isCelebratingWin} paused={flamePaused} revealMotion={isAccepted || isRecord || isCelebratingWin}/>}
 <div className="approved-play-surface">{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => retryPuzzleLoad(lastLoad.current,loadPuzzle,"game")}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{countLabel(game.guesses.length,"essai")}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Mot</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || discoveryBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
+              {solved ? <div className="victory-box">
+                <FlameScene level={1} rank={1} solved celebrating={isCelebratingWin} paused={flamePaused} revealMotion={isCelebratingWin}/>
+                <span className="victory-eyebrow">Trouvé</span>
+                <h2 ref={victoryRef} tabIndex={-1} data-flight-word={best?.word} aria-label={`Mot trouvé : ${best?.word}`}>{best?.word}</h2>
+                <p>{countLabel(game.guesses.length,'essai')} · {countLabel(game.hints,'indice')}</p>
+                <div className="victory-actions">
+                  <button className="primary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? 'Chargement…' : journey ? journey.completed + 1 < journey.length ? 'Épreuve suivante' : 'Terminer le chapitre' : discoveryBusy ? 'Recherche…' : 'Continuer à jouer'}</button>
+                  <button className="secondary-button" onClick={shareResult}><Share2 size={17}/>Partager</button>
+                </div>
+                <details onToggle={event=>{if(event.currentTarget.open) diagnostic('summaryOpened');}}><summary>Voir les essais</summary><WinSummary game={game}/></details>
+              </div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Mot</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || discoveryBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><button type="button" className="classic-hint-button" aria-label={`Indice, ${MAX_CLASSIC_HINTS-game.hints} disponible${MAX_CLASSIC_HINTS-game.hints === 1 ? "" : "s"}`} disabled={!puzzle || busy || loading || discoveryBusy || journeyBusy || game.hints >= MAX_CLASSIC_HINTS || best?.rank === 2} onClick={event=>void submit(event,true)}><Lightbulb size={16}/>Indice · {MAX_CLASSIC_HINTS-game.hints}/{MAX_CLASSIC_HINTS}</button><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
             </>}
           </div></section>
 
-          {game.pins.length > 0 && <section className="notebook-card"><div className="section-topline"><h2><Pin size={17} />Mon carnet</h2><span className="muted-count">{game.pins.length}/3</span></div><p>Gardez vos pistes pour rebondir.</p><div className="notebook-pins">{game.pins.map(word => <button key={word} disabled={busy || loading} onClick={() => { pin(word); if (game.pins.length === 1) inputRef.current?.focus(); }} aria-label={`Détacher ${word}`} title="Détacher cette piste">{word}<X size={13} /></button>)}{Array.from({ length: 3 - game.pins.length }, (_, i) => <span className="empty-pin" key={i}><Plus size={14} /></span>)}</div>{!game.pins.length && <span className="notebook-note">Épinglez un mot dans vos explorations.</span>}</section>}
           {puzzle && ordered.length > 0 && <section className="history-panel"><h2 className="sr-only">Essais</h2>
-            {puzzle && ordered.length ? <div className="guess-list"><div className="list-labels"><span>Essai</span><span>Mot</span><span>Proximité</span><span className="sr-only">Piste</span></div>{ordered.map(g => <div key={g.word} className={`guess-row ${latest?.word === g.word ? "latest-guess" : ""} ${feedback && latest?.word === g.word ? "is-new-guess" : ""}`} style={{ "--row-color": proximityColor(g.rank) } as CSSProperties}><span className="guess-index">{String(g.order).padStart(2, "0")}</span><div className="guess-word"><strong>{g.word}</strong>{latest?.word === g.word && <span className="latest-tag">DERNIER</span>}{g.found && <Check size={15}/>}</div><div className="guess-score"><div className="mini-heat" aria-hidden="true"><i style={{ width: `${proximityFill(g.rank,vocabularySize)*100}%` }}/></div><span>{g.found ? "Trouvé" : formatRankFr(g.rank)}</span></div><button aria-label={`${game.pins.includes(g.word) ? "Détacher" : "Épingler"} ${g.word}`} aria-pressed={game.pins.includes(g.word)} className={`pin-button ${game.pins.includes(g.word) ? "pinned" : ""}`} disabled={busy || loading} onClick={() => pin(g.word)}><Pin size={15}/></button></div>)}</div> : null}
+            {puzzle && ordered.length ? <div className="guess-list"><div className="list-labels"><span>Mot</span><span>Proximité</span></div>{ordered.map(g => <div key={g.word} data-flight-word={g.word} className={`guess-row ${latest?.word === g.word ? "latest-guess" : ""} ${feedback && latest?.word === g.word ? "is-new-guess" : ""}`} style={{ "--row-color": proximityColor(g.rank) } as CSSProperties}><div className="guess-word"><strong>{g.word}</strong>{latest?.word === g.word && <span className="latest-tag">DERNIER</span>}{g.hint && <span className="hint-tag">Indice</span>}{g.found && <Check size={15}/>}</div><div className="guess-score"><div className="mini-heat" aria-hidden="true"><i style={{ width: `${proximityFill(g.rank,vocabularySize)*100}%` }}/></div><span>{g.found ? "Trouvé" : formatRankFr(g.rank)}</span></div></div>)}</div> : null}
           </section>}
         </div>
 
@@ -656,14 +665,14 @@ export default function Game() {
         }
         return;
       }
-      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Règles" : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "Trouvez le mot secret." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
+      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Règles" : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "Partager" : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "Trouvez le mot secret." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
       {modal === "tutorial" && <PlayTutorial onClose={()=>{
         const owner=document.activeElement;
         if(surface!=="game") navigate("game",false);
         tutorialReturnFocus.current={request:requestRef.current,navigation:navigationEpoch.current,owner};
         setModal(null);
       }}/>}
-      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Envoyez un mot.</h3><p>Entrez un mot français : nom, adjectif ou verbe à l’infinitif.</p></div></li><li><span>02</span><div><h3>Comparez les rangs.</h3><p>Plus le rang est petit, plus le mot est proche. La barre garde votre meilleure progression.</p></div></li><li><span>03</span><div><h3>Trouvez le mot.</h3><p>Essayez d’autres associations. Les essais sont illimités.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>Jouer</button><button className="secondary-button full-width" onClick={()=>setModal("tutorial")}>Essayer le tutoriel</button></>}
+      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Envoyez un mot.</h3><p>Entrez un mot français : nom, adjectif ou verbe à l’infinitif.</p></div></li><li><span>02</span><div><h3>Suivez la progression.</h3><p>La flamme et le pourcentage gardent votre meilleure progression. Les essais sont classés du plus proche au moins proche.</p></div></li><li><span>03</span><div><h3>Trouvez le mot.</h3><p>Les essais sont illimités. Vous disposez de trois indices : chacun donne un mot mieux placé.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>Jouer</button><button className="secondary-button full-width" onClick={()=>setModal("tutorial")}>Essayer le tutoriel</button></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
       {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Les données linguistiques sont mises à disposition par <a href="https://fauconnier.github.io/#data" target="_blank" rel="noopener noreferrer">Jean-Philippe Fauconnier</a>, sous licence <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</p><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
       {modal === "share" && <><p role="status">La copie automatique n’a pas abouti. Sélectionnez le texte ci-dessous et copiez-le manuellement.</p><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}

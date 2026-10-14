@@ -36,7 +36,7 @@ body:has(.proximity-interface) .braiz-navigation { max-width:1240px; margin:auto
 .approved-interface.proximity-interface .free-discovery-note { color:#c2c4cc; padding:0 24px; }
 .approved-interface.proximity-interface .history-panel { margin-top:24px; padding:18px 24px 24px; color:#f4f0eb; background:#1c1e22; border:1px solid #393c43; border-radius:16px; }
 .approved-interface.proximity-interface .section-topline h2 { color:#f4f0eb; font-size:17px; }
-.approved-interface.proximity-interface .list-labels,.approved-interface.proximity-interface .guess-row { grid-template-columns:30px minmax(0,1fr) minmax(220px,1.1fr) 44px; gap:12px; }
+.approved-interface.proximity-interface .list-labels,.approved-interface.proximity-interface .guess-row { grid-template-columns:minmax(0,1fr) minmax(220px,1.1fr); gap:12px; }
 .approved-interface.proximity-interface .list-labels { display:grid; color:#c2c4cc; font-size:12px; letter-spacing:0; }
 .approved-interface.proximity-interface .guess-row { background:none; border:0; border-top:1px solid #373a42; border-radius:0; margin:0; padding:18px 12px; }
 .approved-interface.proximity-interface .guess-row.latest-guess { background:#ffffff03; }
@@ -47,10 +47,25 @@ body:has(.proximity-interface) .braiz-navigation { max-width:1240px; margin:auto
 .approved-interface.proximity-interface .mini-heat { display:block; height:10px; min-width:50px; background:#373b44; }
 .approved-interface.proximity-interface .mini-heat > i { background:var(--row-color); transition:width .6s; }
 .approved-interface.proximity-interface .guess-score > span { color:var(--row-color); font-size:21px; min-width:85px; white-space:nowrap; }
-.approved-interface.proximity-interface .pin-button { color:#b6b5bc; }
+.classic-hint-button { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-top:12px; padding:8px 12px; background:transparent; border:1px solid #626771; border-radius:8px; color:#f4f0eb; font:inherit; font-size:14px; }
+.classic-hint-button:hover:not(:disabled) { border-color:#ffa17b; color:#ffa17b; }
+.classic-hint-button:disabled { opacity:.45; }
+.classic-hint-button:focus-visible { outline:2px solid #ffae89; outline-offset:3px; }
+.hint-tag { font-size:11px; color:#b5bac4; }
 .approved-interface.proximity-interface .reset-note { margin-top:24px; }
-.approved-interface.proximity-interface .victory-box { color:#f4f0eb; }
-.approved-interface.proximity-interface .victory-box h2 { color:#ffac82; }
+.approved-interface.proximity-interface .victory-box { display:flex; flex-direction:column; align-items:center; width:100%; max-width:620px; margin:0 auto; padding:24px 24px 32px; color:#f4f0eb; text-align:center; }
+.approved-interface.proximity-interface .game-panel.is-won .game-trials { display:none; }
+.approved-interface.proximity-interface .play-view .victory-box .proximity-flame { position:relative; left:auto; bottom:auto; transform:none; width:130px; height:172px; margin:0 auto 12px; }
+.approved-interface.proximity-interface .victory-box .victory-eyebrow { color:#ffac82; font-size:15px; }
+.approved-interface.proximity-interface .victory-box h2 { color:#f4f0eb; font-size:clamp(28px,5vw,48px); letter-spacing:.04em; margin:12px 0; overflow-wrap:anywhere; max-width:100%; }
+.approved-interface.proximity-interface .victory-box > p { color:#ccd0d7; margin:0 0 24px; }
+.approved-interface.proximity-interface .victory-actions { display:flex; flex-direction:row; gap:12px; width:100%; margin:0 0 20px; }
+.approved-interface.proximity-interface .victory-actions button { display:flex; align-items:center; justify-content:center; gap:8px; min-height:50px; white-space:normal; flex:1; padding:12px 16px; border-radius:10px; font-size:15px; }
+.approved-interface.proximity-interface .victory-actions .primary-button { color:#291d18; background:#ff946a; }
+.approved-interface.proximity-interface .victory-actions .secondary-button { color:#f4f0eb; border:1px solid #626771; background:transparent; }
+.approved-interface.proximity-interface .victory-box details { width:100%; color:#ccd0d7; }
+.approved-interface.proximity-interface .victory-box summary { cursor:pointer; font-size:14px; }
+.approved-interface.proximity-interface .victory-box .win-summary { margin-top:16px; text-align:left; }
 @media(max-width:650px) {
  .approved-interface.proximity-interface .main-shell { padding:14px 16px 30px; }
  .approved-interface.proximity-interface .game-topline { padding:16px 14px 0; }
@@ -64,12 +79,15 @@ body:has(.proximity-interface) .braiz-navigation { max-width:1240px; margin:auto
  .approved-interface.proximity-interface .guess-form input { font-size:16px; padding:10px 12px; min-height:50px; height:50px; }
  .approved-interface.proximity-interface .guess-button { height:50px; font-size:14px; }
  .approved-interface.proximity-interface .history-panel { padding:14px 12px; margin-top:18px; }
- .approved-interface.proximity-interface .list-labels,.approved-interface.proximity-interface .guess-row { grid-template-columns:18px minmax(0,1fr) minmax(90px,1fr) 30px; gap:6px; padding-left:0; padding-right:0; }
+ .approved-interface.proximity-interface .list-labels,.approved-interface.proximity-interface .guess-row { grid-template-columns:minmax(0,1fr) minmax(90px,1fr); gap:6px; padding-left:0; padding-right:0; }
  .approved-interface.proximity-interface .guess-word strong { font-size:16px; }
  .approved-interface.proximity-interface .guess-score { gap:8px; }
  .approved-interface.proximity-interface .guess-score > span { font-size:15px; min-width:68px; }
  .approved-interface.proximity-interface .mini-heat { height:6px; min-width:22px; }
  .approved-interface.proximity-interface .latest-tag { display:none; }
  .approved-interface.proximity-interface .guess-index { font-size:11px; }
+ .approved-interface.proximity-interface .victory-box { padding:20px 14px 26px; }
+ .approved-interface.proximity-interface .victory-actions { flex-direction:column; }
+ .approved-interface.proximity-interface .victory-actions button { font-size:14px; }
 }
 @media(prefers-reduced-motion:reduce) { .proximity-track>i,.proximity-interface .mini-heat>i { transition:none; } }

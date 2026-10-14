@@ -36,14 +36,17 @@ test('classic cutover is Paris midnight, immutable across archives, with exact h
   const archive=await resolveClassicGame('archive','','2026-10-13',new Date('2026-10-14T12:00:00Z'),{});
   assert.equal(archive.targetWord,first.targetWord);assert.equal(archive.publicPuzzle.id,first.publicPuzzle.id);first.close();archive.close();
 });
-test('API serves the new edition and rejects unknown, missing/forged refs, hints and broken assets',async t=>{
+test('API serves the new edition and rejects unknown, missing/forged refs, malformed hints and broken assets',async t=>{
   t.mock.timers.enable({apis:['Date'],now});setWord2vecObjectLoaderForTests(asset);
   const response=await GET(new Request('https://braiz.test/api/game'));assert.equal(response.status,200);
   const puzzle=await response.json() as {id:string;ref:PuzzleRef};assert.equal(puzzle.id,'daily-w2v-2026-10-13');
   const post=(extra:Record<string,unknown>)=>POST(new Request('https://braiz.test/api/game',{method:'POST',body:JSON.stringify({mode:'daily',puzzleId:puzzle.id,puzzleRef:puzzle.ref,action:'guess',word:'assiette',...extra})}));
   assert.equal((await post({})).status,200);assert.equal((await post({word:'zzzbraizinconnu'})).status,422);
   assert.equal((await post({puzzleRef:undefined})).status,409);assert.equal((await post({puzzleRef:{...puzzle.ref,rulesVersion:'classic-v1'}})).status,409);
-  assert.equal((await post({action:'hint'})).status,410);
+  assert.equal((await post({action:'hint'})).status,400);
+  const hintReply=await post({action:'hint',hintLevel:0,guesses:['bol']});assert.equal(hintReply.status,200);
+  const hinted=await hintReply.json() as {word:string;rank:number;found:boolean};assert(!hinted.found);assert.notEqual(hinted.word,'assiette');
+  assert.equal((await post({action:'hint',hintLevel:3,guesses:[]})).status,400);
   assert.equal((await GET(new Request('https://braiz.test/api/game?mode=archive&date=2026-10-12&edition=word2vec-v1'))).status,409);
   assert.equal((await GET(new Request('https://braiz.test/api/game?mode=free&seed=42&edition=classic-v2'))).status,409);
   const tutorial=await GET(new Request('https://braiz.test/api/game?tutorial=1'));assert.equal(tutorial.status,200);const example=await tutorial.json() as {ref:PuzzleRef;seed:string};assert.equal(example.ref.rulesVersion,'word2vec-v1');

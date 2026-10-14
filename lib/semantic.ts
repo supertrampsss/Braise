@@ -3,6 +3,7 @@ import dataset from "@/data/semantic-v1-index.json";
 import type { Mode } from "./game-types";
 import { getLegacyArchivePuzzle, getLegacyPuzzle, resolveLegacyTargetIndexes } from "./legacy-puzzles";
 import { targetSegment } from "./semantic-storage";
+import { betterHintId } from './classic-hints';
 export { parisDate, nextParisMidnight } from "./calendar";
 
 const words: string[] = dataset.words;
@@ -50,5 +51,12 @@ export async function nextHint(targetIndex: number, hintLevel: number, guesses: 
   return candidate === undefined ? null : evaluateWord(targetIndex, candidate);
 }
 export const datasetMetadata = dataset.meta;
+// Keep the frozen nextHint oracle above intact; this is the current classic UI policy.
+export async function betterClassicHint(targetIndex: number, level: number, guesses: string[]) {
+  const { ranks } = await targetSegment(targetIndex);
+  const used = new Set(guesses.flatMap(word => { const id = findWord(word); return id === undefined ? [] : [id]; }));
+  const id = betterHintId(ranks, used, level);
+  return id === null ? null : evaluateWord(targetIndex, id);
+}
 // Server-only canonical identity for cross-edition tutorial comparison.
 export function legacyTargetWord(targetIndex: number) { return targets[targetIndex].word; }

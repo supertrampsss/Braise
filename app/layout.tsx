@@ -4,6 +4,7 @@ import "./foyer.css";
 import "./approved-braiz.css";
 import "./p1-game.css";
 import "./parties.css";
+import "./fillable-game.css";
 import { OfflineRegistration } from "@/components/offline-registration";
 import { PUBLIC_ORIGIN } from "@/lib/release";
 export const metadata: Metadata = {
