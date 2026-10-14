@@ -9,7 +9,7 @@ const outdir = "work/tests-foundations";
 await mkdir(outdir, { recursive: true });
 const outputs = names.map(name => `${outdir}/${name}.test.mjs`);
 try {
-  await build({ entryPoints: names.map(name => `tests/${name}.test.ts`), outdir, outExtension: { ".js": ".mjs" }, bundle: true, platform: "node", format: "esm", target: "node22", external: ["react", "react/jsx-runtime", "react-dom/server", "lucide-react"], alias: { "cloudflare:workers": "./tests/support/cloudflare-workers.ts" }, logLevel: "warning" });
+  await build({ entryPoints: names.map(name => `tests/${name}.test.ts`), outdir, outExtension: { ".js": ".mjs" }, bundle: true, platform: "node", format: "esm", target: "node22", external: ["react", "react/jsx-runtime", "react-dom/server", "lucide-react", "radix-ui"], alias: { "cloudflare:workers": "./tests/support/cloudflare-workers.ts" }, logLevel: "warning" });
   const result = spawnSync(process.execPath, ["--test", "--test-concurrency=1", ...outputs], { stdio: "inherit" });
   process.exitCode = result.status ?? 1;
 } finally { await Promise.all(outputs.map(file => rm(file, { force: true }))); }

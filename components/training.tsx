@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { AppNavigation } from "./app-navigation";
+import { AppNavigation } from "./training-navigation";
 import { formatNumberFr, formatScoreFr } from "../lib/training-format-fr";
 import { decodeTrainingPack, emptyTrainingProgress, OUTSIDE_PACK, readTrainingProgress, saveTrainingProgress, TRAINING_INFO, TRAINING_STORAGE_KEY, trainingScore, trainingWorkerRequest, type OfflineTrainingStatus, type TrainingPack, type TrainingProgress } from "../lib/training";
 

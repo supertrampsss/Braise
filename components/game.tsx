@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
-import { Menu, CalendarDays, Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { EXTRA_MODES_ENABLED } from "@/lib/release";
@@ -34,7 +32,8 @@ import { classicPuzzleMatchesLoad, failedPuzzleUrl, admittedPuzzleUrl, requested
 import { AppNavigation } from "@/components/app-navigation";
 import { ArchiveCalendar } from "@/components/game-parts/archive-calendar";
 import { PlayTutorial } from "@/components/game-parts/play-tutorial";
-import { ResumeHub, WinSummary } from "@/components/game-parts/play-hub";
+import { WinSummary } from "@/components/game-parts/play-hub";
+import { PartiesPanel } from "@/components/game-parts/parties-panel";
 import { readLocalPlays, rememberPlayContext, resumeSuggestion, type LocalPlay, type PlayContext } from "@/lib/play-hub";
 import { readEncountered, rememberEncountered, collectDiscoveryHistory } from "@/lib/free-discovery";
 import { recordProductEvent, type ProductEventType, type ProductEventContext } from "@/lib/product-events";
@@ -176,7 +175,6 @@ export default function Game() {
   const nextCollectionIndex=currentCollection ? collectionProgress(profile.wins,currentCollection).next : -1;
   const selectedCosmetic = ritual?.selectedCosmetic ?? "classic";
   const archiveMax = now ? latestArchiveDate(new Date(now)) : LEGACY_ARCHIVE_START_DATE;
-  const tabMode = mode === "archive" ? "daily" : mode;
   const countdown = puzzle && now ? Math.max(0, new Date(puzzle.resetAt).getTime() - now) : 0;
   const countdownLabel = `${String(Math.floor(countdown / 3600000)).padStart(2, "0")}:${String(Math.floor(countdown / 60000) % 60).padStart(2, "0")}:${String(Math.floor(countdown / 1000) % 60).padStart(2, "0")}`;
   const isRecord = feedback?.type === "bestImproved" && feedback.puzzleRef.id === puzzle?.id;
@@ -346,7 +344,7 @@ export default function Game() {
       if(!data.puzzle) { setDiscoveryNote("Vous avez rencontré tous les mots disponibles en libre sur cet appareil. Vous pouvez les rejouer."); return; }
       navigate("game");
       const loaded=await loadPuzzle("free",data.puzzle.seed);
-      if(loaded) { setDiscoveryExhausted(data.exhausted);setDiscoveryNote(replay ? "Vos parties commencées restent dans Explorer." : "Un nouveau mot à découvrir. Vos parties commencées restent dans Explorer."); diagnostic("nextActivityOpened","free"); }
+      if(loaded) { setDiscoveryExhausted(data.exhausted);diagnostic("nextActivityOpened","free"); }
     } catch(cause) { if(generation === requestRef.current && epoch === navigationEpoch.current) setDiscoveryNote(cause instanceof Error ? cause.message : "Connexion impossible."); }
     finally { discoveryPending.current=false;setDiscoveryBusy(false); }
   }
@@ -497,6 +495,7 @@ export default function Game() {
     const message = archiveDateError(archiveDraft, now ? new Date(now) : new Date());
     setArchiveError(message);
     if (message || busy) return;
+    navigate("game");
     if(await loadPuzzle("archive", archiveDraft)) diagnostic("gameOpened","archive");
   }
   async function submit(event: FormEvent) {
@@ -588,50 +587,30 @@ export default function Game() {
   return <div className={`app-shell focused-interface foyer-interface reference-interface approved-interface proximity-interface ${flamePaused ? "motion-paused" : ""} cosmetic-${selectedCosmetic}`}>
     <Toaster position="bottom-center" theme="dark" />
     <a className="skip-link" href="#braise-main">Aller au contenu</a>
-    <AppNavigation active={surface === "profile" ? "profile" : surface === "modes" || surface === "voyage" ? "explore" : "play"} onNavigate={destination => navigate(destination === "play" ? "game" : destination === "explore" ? "modes" : "profile")} />
-    <header className="site-header reference-header">
-      <button aria-label="Accueil" className="brand" onClick={() => navigate("game")}>BRAIZ</button>
-      <div className="reference-header-actions"><button className="icon-button" aria-label="Comment jouer" onClick={event => { modalReturnFocus.current = event.currentTarget; setModal("help"); diagnostic("helpOpened"); }}><CircleHelp size={23}/></button><DropdownMenu>
-        <DropdownMenuTrigger asChild><button className="icon-button" aria-label="Ouvrir le menu"><Menu size={23}/></button></DropdownMenuTrigger>
-        <DropdownMenuContent className="braise-navigation" align="end" sideOffset={10}>
-          <DropdownMenuLabel>Changer de partie</DropdownMenuLabel>
-          <DropdownMenuGroup>
-            <DropdownMenuItem disabled={busy || loading} onSelect={() => { navigate("game"); setView("play"); void changeMode("daily"); }}><span>Mot du jour<small>Le même mot pour tous, jusqu’à minuit.</small></span></DropdownMenuItem>
-            <DropdownMenuItem disabled={busy || loading} onSelect={() => { navigate("game"); setView("play"); void changeMode("free"); }}>Partie libre</DropdownMenuItem>
-            <DropdownMenuItem disabled={busy || loading} onSelect={() => { navigate("game"); setView("play"); revealArchives(); }}>Archives</DropdownMenuItem>
-            {EXTRA_MODES_ENABLED && <DropdownMenuItem onSelect={() => navigate("modes")}>Autres modes</DropdownMenuItem>}
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator/>
-          <DropdownMenuItem onSelect={() => navigate("profile")}>Profil</DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => { navigate(surface); setModal("help"); }}>Comment jouer</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu></div>
-    </header>
+    <AppNavigation active={surface === "profile" ? "profile" : surface === "modes" || surface === "voyage" ? "explore" : "play"} onNavigate={destination => navigate(destination === "play" ? "game" : destination === "explore" ? "modes" : "profile")} onHelp={returnFocus=>{modalReturnFocus.current=returnFocus;setModal("help");diagnostic("helpOpened");}} />
 
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
-      {surface === "modes" && <section aria-label="Explorer"><ResumeHub plays={localPlays} currentId={puzzle?.id} onResume={play=>void resumePlay(play)} onDiscover={()=>void discover()} /><div className="play-hub"><a className="secondary-button" href="/entrainement">Entraînement guidé · 3 parcours et pack hors ligne</a><button className="secondary-button" onClick={()=>{ navigate("game");revealArchives(); }}>Explorer les archives</button><button className="secondary-button" onClick={event=>{modalReturnFocus.current=event.currentTarget;setModal("tutorial");diagnostic("helpOpened");}}>Essayer le tutoriel</button>{discoveryNote && <p role="status">{discoveryNote}</p>}{discoveryExhausted && <button className="secondary-button" onClick={()=>void discover(true)}>Rejouer une cible</button>}</div></section>}
-      {EXTRA_MODES_ENABLED && surface === "modes" && <section className="reference-modes" aria-label="Autres modes"><button className="reference-mode selected" onClick={() => {setView("play");navigate("game");void changeMode("daily");}}><span><strong>Le mot du jour</strong><small>Un mot à découvrir chaque jour</small></span></button><button className="reference-mode" onClick={() => {setView("explore");navigate("voyage");}}><span><strong>Voyage</strong><small>Des chapitres à votre rythme</small></span></button><a className="reference-mode" href="/duels"><span><strong>Entre amis</strong><small>Un défi, chacun son tour</small></span></a></section>}
-      {EXTRA_MODES_ENABLED && surface === "modes" && <nav className="play-hub" aria-label="Parcours avancés"><a className="secondary-button" href="/espace">Mes parties en ligne</a><a className="secondary-button" href="/cercles">Mes cercles</a><a className="secondary-button" href="/studio">Studio · créer et partager</a><a className="secondary-button" href="/laboratoire">Laboratoire · L’intrus et Deux braises</a><a className="secondary-button" href="/integration">Intégration du jeu</a></nav>}
+      {surface === "modes" && <>
+        <PartiesPanel plays={localPlays} disabled={busy || loading || journeyBusy || discoveryBusy} discovering={discoveryBusy} archivesOpen={archiveOpen} onDaily={()=>{navigate("game");void changeMode("daily");}} onDiscover={()=>void discover()} onArchives={revealArchives} onResume={play=>void resumePlay(play)}>
+        {discoveryNote && <p className="parties-notice" role="status">{discoveryNote}</p>}
+        {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
+        {archiveOpen && <section className="parties-archives" id="parties-archives" aria-labelledby="archives-heading">
+          <header><h2 id="archives-heading">Archives</h2><button className="archive-close" aria-label="Fermer les archives" onClick={()=>{setArchiveOpen(false);setArchiveError("");requestAnimationFrame(()=>document.getElementById('archives-choice')?.focus());}}><X size={18}/></button></header>
+          <form className="archive-form" onSubmit={openArchive}>
+            <label htmlFor="archive-date">Date</label><input id="archive-date" type="date" min={LEGACY_ARCHIVE_START_DATE} max={archiveMax} value={archiveDraft} onChange={event=>{setArchiveDraft(event.target.value);setArchiveError("");}} aria-invalid={Boolean(archiveError)} aria-describedby={archiveError ? "archive-error" : undefined} disabled={busy || loading}/>
+            <button className="secondary-button" disabled={busy || loading}>Jouer</button>
+            {archiveError && <p id="archive-error" className="archive-error" role="alert">{archiveError}</p>}
+          </form>
+          <ArchiveCalendar max={archiveMax} selected={archiveDraft} plays={localPlays} disabled={busy || loading} onOpen={date=>{setArchiveDraft(date);navigate("game");void loadPuzzle("archive",date).then(loaded=>{if(loaded) diagnostic("gameOpened","archive");});}}/>
+        </section>}
+        </PartiesPanel>
+      </>}
       {surface === "profile" && (profileSnapshot && now ? <ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onDeviceSync={receiveDeviceSync} deviceSyncGuard={deviceSyncGuard} onBack={() => navigate("game")} /> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
 
       <div hidden={surface !== "game"} className={`play-view ${journey ? "voyage-play" : ""}`}>
       {currentCollection && <div className="voyage-game-heading"><button className="text-action" onClick={()=>navigate("voyage")}>Collections</button><h1>{currentCollection.title}</h1><p>Énigme {currentCollection.seeds.indexOf(puzzle?.seed ?? "")+1} sur {currentCollection.seeds.length}</p></div>}
       {journey && !journey.reward && <div className="voyage-game-heading"><button className="text-action" onClick={() => { navigate("voyage"); setView("explore"); }}>Voyage</button><h1>{EXPEDITIONS.find(item => item.id === journey.id)?.title}</h1><p>Épreuve {journey.completed + 1} sur {journey.length}</p><progress value={journey.completed + (solved ? 1 : 0)} max={journey.length} aria-label="Progression du chapitre"/></div>}
-      <Tabs value={tabMode} onValueChange={changeMode} className="mode-tabs"><TabsList aria-label="Mode de jeu" className="mode-list"><TabsTrigger value="daily" disabled={busy}><Flame />Quotidien</TabsTrigger><TabsTrigger value="free" disabled={busy}><InfinityIcon />Libre</TabsTrigger>{EXTRA_MODES_ENABLED && <TabsTrigger value="challenge" disabled={busy}><Users />{journey ? "Voyage" : currentCollection ? "Collection" : "Entre amis"}</TabsTrigger>}</TabsList>
-
-      <TabsContent value={tabMode} className="game-tab-content">
-      <section className={`archive-access ${archiveOpen || mode === "archive" ? "is-open" : ""}`} aria-label="Archives des mots quotidiens">
-        {!archiveOpen && mode !== "archive" ? <button className="archive-reveal" type="button" onClick={revealArchives} disabled={busy}><CalendarDays size={18} /><span><strong>Archives</strong><small>Rejouer un ancien mot</small></span></button> : <form className="archive-form" onSubmit={openArchive}>
-          <label htmlFor="archive-date">Date du mot</label>
-          <input id="archive-date" type="date" min={LEGACY_ARCHIVE_START_DATE} max={archiveMax} value={archiveDraft} onChange={event => { setArchiveDraft(event.target.value); setArchiveError(""); }} aria-invalid={Boolean(archiveError)} aria-describedby={archiveError ? "archive-error" : undefined} disabled={busy || loading} />
-          <button className="secondary-button" type="submit" disabled={busy || loading}>Ouvrir</button>
-          {mode === "archive" ? <button className="archive-today" type="button" onClick={() => loadPuzzle("daily")} disabled={busy || loading}>Revenir au mot du jour</button> : <button className="archive-close" type="button" aria-label="Fermer les archives" onClick={() => { setArchiveOpen(false); setArchiveError(""); }}><X size={18} /></button>}
-          {archiveError && <p id="archive-error" className="archive-error">{archiveError}</p>}
-          {mode === "archive" && <p className="archive-rule">Une archive enrichit votre progression, sans prolonger votre série quotidienne.</p>}
-        </form>}
-        {archiveOpen && <ArchiveCalendar max={archiveMax} selected={archiveDraft} plays={localPlays} disabled={busy || loading} onOpen={date=>{setArchiveDraft(date);void loadPuzzle("archive",date).then(loaded=>{if(loaded) diagnostic("gameOpened","archive");});}} />}
-        <span className="archive-status" role="status" aria-live="polite" aria-atomic="true">{archiveStatus}</span>
-      </section>
+      <div className="game-tab-content">
       <div className="play-layout">
         <div className="play-column">
           <section id="game-board" ref={gameBoardRef} tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
@@ -656,9 +635,9 @@ export default function Game() {
       </div>
 
       <div className="reset-note" hidden={Boolean(journey)}><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : mode === "archive" ? <>Cette archive reste disponible<button disabled={busy} onClick={() => loadPuzzle("daily")}>Revenir au mot du jour </button></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => void discover()}>Découvrir un autre mot </button></>}</span></div>
-      </TabsContent></Tabs>
       </div>
-      {EXTRA_MODES_ENABLED && <section className="explore-view reference-voyage" hidden={surface !== "voyage"} aria-labelledby="explore-heading">
+      </div>
+      {EXTRA_MODES_ENABLED && surface === "voyage" && <section className="explore-view reference-voyage" aria-labelledby="explore-heading">
         <button className="reference-back" onClick={() => navigate("modes")}>Tous les modes</button>
         <section className="explore-group" aria-label="Voyage">
       <ExpeditionPicker disabled={busy || loading || journeyBusy} journey={journey} currentStageSolved={Boolean(journey?.seed && journey.seed === puzzle?.seed && solved)} error={journeyError} onContinue={id => void openJourney(id,"gameResumed")} />
@@ -672,7 +651,7 @@ export default function Game() {
       </section>}
       {(storageWarning || profileSnapshot && ["partial", "corrupt", "unsupported", "conflict", "memory-only"].includes(profileSnapshot.status)) && <p className="storage-warning" role="status" aria-live="polite" aria-atomic="true">{profileSnapshot?.status === "unsupported" ? "Cette sauvegarde provient d’une version plus récente de BRAIZ. Elle n’a pas été modifiée." : profileSnapshot?.status === "corrupt" ? "La sauvegarde locale est illisible. Les données existantes ont été conservées sans être remplacées." : profileSnapshot?.status === "conflict" ? "Deux anciennes sauvegardes différentes ont été détectées. Elles ont été conservées sans fusion automatique." : profileSnapshot?.status === "partial" ? "Une partie de votre ancienne sauvegarde n’a pas pu être reprise. Les éléments valides restent disponibles." : "La sauvegarde est indisponible dans ce navigateur. Vous pouvez continuer à jouer, mais votre progression risque d’être perdue en quittant ou en rechargeant cette page."}</p>}
       <AdPlacement />
-      <footer className="site-footer"><button className="footer-brand" type="button" onClick={() => navigate("game")}>braiz.</button><div><button onClick={() => setModal("privacy")}>Confidentialité</button><button onClick={() => setModal("help")}>Les règles</button></div></footer>
+      <footer className="site-footer"><button className="footer-brand" type="button" onClick={() => navigate("game")}>braiz.</button><div><button onClick={() => setModal("privacy")}>Confidentialité</button></div></footer>
     </main>
 
     <Dialog open={modal !== null} onOpenChange={open => !open && setModal(null)}><DialogContent className="braise-dialog" onCloseAutoFocus={event => {
@@ -684,14 +663,14 @@ export default function Game() {
         }
         return;
       }
-      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Un mot. Et le déclic." : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "La règle tient en trois petites étapes." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
+      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Règles" : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "À vous de partager." : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "Trouvez le mot secret." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
       {modal === "tutorial" && <PlayTutorial onClose={()=>{
         const owner=document.activeElement;
         if(surface!=="game") navigate("game",false);
         tutorialReturnFocus.current={request:requestRef.current,navigation:navigationEpoch.current,owner};
         setModal(null);
       }}/>}
-      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Envoyez un mot.</h3><p>Entrez un mot français : nom, adjectif ou verbe à l’infinitif.</p></div></li><li><span>02</span><div><h3>Comparez les rangs.</h3><p>Plus le rang est petit, plus le mot est proche. La barre garde votre meilleure progression.</p></div></li><li><span>03</span><div><h3>Trouvez le mot.</h3><p>Essayez d’autres associations. Les essais sont illimités.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>Jouer</button></>}
+      {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Envoyez un mot.</h3><p>Entrez un mot français : nom, adjectif ou verbe à l’infinitif.</p></div></li><li><span>02</span><div><h3>Comparez les rangs.</h3><p>Plus le rang est petit, plus le mot est proche. La barre garde votre meilleure progression.</p></div></li><li><span>03</span><div><h3>Trouvez le mot.</h3><p>Essayez d’autres associations. Les essais sont illimités.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>Jouer</button><button className="secondary-button full-width" onClick={()=>setModal("tutorial")}>Essayer le tutoriel</button></>}
       {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
       {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Les données linguistiques sont mises à disposition par <a href="https://fauconnier.github.io/#data" target="_blank" rel="noopener noreferrer">Jean-Philippe Fauconnier</a>, sous licence <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</p><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Le code AdSense est chargé pour vérifier le site. Aucun emplacement publicitaire ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
       {modal === "share" && <><p role="status">La copie automatique n’a pas abouti. Sélectionnez le texte ci-dessous et copiez-le manuellement.</p><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}

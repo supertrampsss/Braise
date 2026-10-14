@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { AppNavigation } from "../components/app-navigation";
+import { AppNavigation, APP_NAVIGATION, navigationBackHref } from "../components/app-navigation";
 import { ACTION_LABELS, formatDateFr, formatNumberFr, formatScoreFr } from "../lib/format-fr";
 import { clearProductDiagnostics, exportProductDiagnostics, PRODUCT_EVENTS_CAP, PRODUCT_EVENTS_KEY, readProductEvents, recordProductEvent } from "../lib/product-events";
 import { DISTRIBUTION } from "../lib/distribution";
@@ -24,16 +24,15 @@ test("French formatting uses integer degrees, Paris dates and explicit unknowns 
   assert.equal(formatDateFr(null), "Date inconnue"); assert.equal(ACTION_LABELS.propose, "Proposer");
   assert.equal(formatDateFr("2026-02-30"), "Date inconnue");
 });
-test("navigation exposes meaningful links, active text state and a safe way back", () => {
-  const html = renderToStaticMarkup(createElement(AppNavigation, { active: "explore", modeName: "Intégration", backHref: "https://evil.test" }));
-  assert.match(html, /aria-label="Navigation principale"/);
-  assert.match(html, /href="\/\?surface=explore" aria-current="page"/);
-  assert.match(html, /href="\/\?surface=profile"/);
-  assert.match(html, /href="\/">Revenir au jeu/); assert.doesNotMatch(html, /evil.test/);
-  for (const backHref of ["//evil.test", "/\\evil.test", "/\t/evil.test"]) {
-    assert.doesNotMatch(renderToStaticMarkup(createElement(AppNavigation, { modeName: "Mode", backHref })), /evil.test/);
-  }
+test("navigation has one collapsed menu, three destinations and only internal return paths", () => {
+  const html=renderToStaticMarkup(createElement(AppNavigation,{active:'explore',modeName:'Intégration',backHref:'https://evil.test'}));
+  assert.match(html,/aria-label="Ouvrir le menu"/);assert.match(html,/data-state="closed"/);
+  assert.doesNotMatch(html,/<nav|evil.test/);
+  assert.deepEqual(APP_NAVIGATION.map(item=>[item.label,item.href]),[['Jouer','/'],['Parties','/?surface=explore'],['Profil','/?surface=profile']]);
+  for(const href of ['https://evil.test','//evil.test','/\\evil.test','/\t/evil.test'])assert.equal(navigationBackHref(href),'/');
+  assert.equal(navigationBackHref('/?libre=042'),'/?libre=042');
 });
+
 test("local ledger caps real events, exports no user text and never transmits", () => {
   const store = storage(); const at = new Date("2026-10-12T10:00:00.000Z");
   for (let index = 0; index < 105; index++) assert.equal(recordProductEvent(store, "guessAccepted", "daily", new Date(at.getTime() + index)), true);
