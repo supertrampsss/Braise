@@ -81,7 +81,42 @@ function browser(storage = new SyncMemory(), href = 'https://braiz.test/?libre=0
   return { storage, listeners, frames, doc, win, audioCalls: () => audioCalls };
 }
 async function mount(strict = false) { let tree!: ReactTestRenderer; await act(async () => { tree = create(strict ? createElement(StrictMode, null, createElement(Game)) : createElement(Game), { createNodeMock: () => ({ focus() {}, select() {}, isConnected: true }) }); }); return tree; }
+async function menu(tree:ReactTestRenderer,label:string) { const item=tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)===label);assert.ok(item);await act(async()=>item.props.onClick({button:0,preventDefault(){}})); }
 async function click(tree: ReactTestRenderer, label: string) { await act(async () => button(tree, label).props.onClick({ currentTarget: {} })); }
+
+test('Mot du jour opens the daily board from a free game and preserves both saved histories',async()=>{
+  const b=browser(undefined,'https://braiz.test/?libre=042');
+  const daily={...getLegacyPuzzle('daily').publicPuzzle,resetAt:'2099-01-01T00:00:00Z'};
+  const saved=(word:string)=>JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word,temperature:12,rank:1234,found:false,order:1}]});
+  const freeRaw=saved('arbre'),dailyRaw=saved('maison');b.storage.setItem('braise.v1.game.'+puzzle.id,freeRaw);b.storage.setItem('braise.v1.game.'+daily.id,dailyRaw);
+  const calls:string[]=[];globalThis.fetch=async url=>{calls.push(String(url));return Response.json(String(url).includes('mode=daily')?daily:puzzle);};
+  const tree=await mount();try{
+    await menu(tree,'Archives');assert.equal(b.win.location.searchParams.get('surface'),'archives');assert.equal(calls.length,1);
+    await menu(tree,'Mot du jour');assert.equal(b.win.location.searchParams.get('surface'),null);assert.equal(b.win.location.searchParams.get('libre'),null);assert.match(calls.at(-1)!,/mode=daily/);
+    assert.match(text(tree.root.findAllByProps({className:'guess-word'})[0]),/^maison/);assert.equal(b.storage.getItem('braise.v1.game.'+puzzle.id),freeRaw);assert.equal(b.storage.getItem('braise.v1.game.'+daily.id),dailyRaw);
+    await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:'institut'}}));
+    await menu(tree,'Archives');await menu(tree,'Mot du jour');assert.equal(calls.length,2);assert.equal(tree.root.findByProps({id:'guess'}).props.value,'institut');
+  }finally{await act(async()=>tree.unmount());}
+});
+
+test('a native free-mode link discovers a real target directly and canonicalizes its URL',async()=>{
+  const b=browser(undefined,'https://braiz.test/?mode=free'),calls:Array<{url:string;method:string}>=[];
+  globalThis.fetch=async(url,options)=>{calls.push({url:String(url),method:options?.method??'GET'});return Response.json(options?.method==='POST'?{encountered:[],exhausted:false,puzzle:{...puzzle,targetIdentity:puzzle.id}}:puzzle);};
+  const tree=await mount(true);try{
+    assert.deepEqual(calls.map(call=>call.method),['POST','GET']);assert.ok(calls.every(call=>!call.url.includes('mode=daily')));assert.equal(b.win.location.searchParams.get('mode'),null);assert.equal(b.win.location.searchParams.get('libre'),'042');assert.equal(tree.root.findByProps({id:'guess'}).props.disabled,false);assert.equal(loadLocalProfile(b.storage).profile.guesses,0);
+  }finally{await act(async()=>tree.unmount());}
+});
+
+test('an unavailable free discovery exposes the error and leaves existing saves intact',async()=>{
+  const b=browser(undefined,'https://braiz.test/?mode=free'),raw='{"preserved":true}';b.storage.setItem('other-save',raw);
+  globalThis.fetch=async()=>Response.json({error:'Découverte indisponible.'},{status:503});
+  const tree=await mount();try{assert.match(text(tree.root),/Découverte indisponible/);assert.equal(tree.root.findByProps({id:'guess'}).props.disabled,false);assert.equal(b.storage.getItem('other-save'),raw);assert.equal(b.storage.getItem('braise.v1.game.'+puzzle.id),null);}finally{await act(async()=>tree.unmount());}
+});
+
+test('rules are reachable from the shared menu on another mode without creating an identity',async()=>{
+  const b=browser(undefined,'https://braiz.test/?regles=1'),calls:string[]=[];globalThis.fetch=async url=>{calls.push(String(url));return Response.json(puzzle);};
+  const tree=await mount();try{assert.match(text(tree.root),/Comparez les rangs/);assert.equal(b.win.location.searchParams.get('regles'),null);assert.ok(calls.every(path=>path.startsWith('/api/game?')));}finally{await act(async()=>tree.unmount());}
+});
 
 
 test('Game Strict Mode admits one browser restoration and current popstate handlers retain navigation epochs', async () => {
@@ -90,12 +125,11 @@ test('Game Strict Mode admits one browser restoration and current popstate handl
   const tree = await mount(true);
   try {
     assert.equal(requests, 1);
-    await act(async () => tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));
-    await click(tree,'Archives');
+    await act(async () => tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button:0,preventDefault(){}}));
     await act(async () => tree.root.findByProps({ id: 'archive-date' }).props.onChange({ target: { value: '2026-10-11' } }));
     await act(async () => { void tree.root.findByProps({ className: 'archive-form' }).props.onSubmit({ preventDefault() {} }); });
     const navigation = tree.root.findByProps({ 'aria-label': 'Navigation principale' });
-    await act(async () => navigation.findAllByType('a')[2].props.onClick({ button: 0, preventDefault() {} }));
+    await act(async () => navigation.findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({ button: 0, preventDefault() {} }));
     await act(async () => delayed.resolve(Response.json({ ...puzzle, id: 'daily-2026-10-11', mode: 'archive', date: '2026-10-11' })));
     assert.equal(b.win.location.searchParams.get('surface'), 'profile');
     assert.equal(b.win.location.searchParams.get('archive'), null);
@@ -134,7 +168,7 @@ test('Game restores wins silently, removes terminal hint lock copy, and exposes 
     assert.equal(JSON.parse(b.storage.getItem(PRODUCT_EVENTS_KEY)!).events[0].type, 'shareCopied');
     assert.equal(tree.root.findAllByProps({ 'aria-label': 'Texte à copier' }).length, 0);
     const navigation = tree.root.findByProps({ 'aria-label': 'Navigation principale' });
-    await act(async () => navigation.findAllByType('a')[2].props.onClick({ button: 0, preventDefault() {} }));
+    await act(async () => navigation.findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({ button: 0, preventDefault() {} }));
     const profile = tree.root.findAll(node => typeof node.type === 'function' && node.props.snapshot && node.props.onDeviceSync)[0];
     assert.equal(profile.props.snapshot.profile.sound, true, 'fixture explicitly enables sound');
     const imported = JSON.parse(b.storage.getItem(`braise.v1.game.${puzzle.id}`)!); imported.pins=['secret-answer'];
@@ -171,7 +205,7 @@ test('selecting the historical Voyage in Explorer resumes its V1 trials when Wor
   };
   const tree=await mount();try{
     assert.match(text(tree.root.findAllByProps({className:'guess-word'})[0]),/^maison/);
-    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button:0,preventDefault(){}}));
     const hub=tree.root.findAll(node=>typeof node.type==='function'&&node.props.onResume&&Array.isArray(node.props.plays))[0];
     const selected=(hub.props.plays as LocalPlay[]).find(play=>play.id===oldTarget.id)!;assert.equal(selected.edition,'classic-v1');
     await act(async()=>hub.props.onResume(selected));
@@ -257,7 +291,7 @@ test('collection and shared links restore browser facts, update on external chan
   } finally { await act(async () => tree.unmount()); assert.equal(b.listeners.size, 0); }
 });
 
-test('Parties offers three real choices and one menu without advanced clutter or account creation', async () => {
+test('Archives opens its calendar directly with one menu, no duplicate choices and no account creation', async () => {
   const b = browser(undefined, 'https://braiz.test/?surface=explore'); const calls: string[] = [];
   globalThis.fetch = async url => { calls.push(String(url)); return Response.json(puzzle); };
   const tree = await mount();
@@ -265,10 +299,13 @@ test('Parties offers three real choices and one menu without advanced clutter or
     assert.equal(tree.root.findAllByProps({'aria-label':'Ouvrir le menu'}).length,1);
     assert.equal(tree.root.findAllByProps({'aria-label':'Comment jouer'}).length,0);
     assert.equal(tree.root.findAllByType('header').length,1);
-    const choices=tree.root.findByProps({'aria-label':'Choisir une partie'}).findAllByType('button');
-    assert.deepEqual(choices.map(node=>node.props['aria-label']),['Mot du jour','Partie libre','Archives']);
+    const choices=tree.root.findAllByProps({'aria-label':'Choisir une partie'});
+    assert.equal(choices.length,0);
     assert.equal(tree.root.findAllByProps({'aria-label':'Parcours avancés'}).length,0);
-    assert.ok(!tree.root.findAllByType('a').some(node=>['/espace','/cercles','/studio','/laboratoire','/integration','/entrainement','/duels'].includes(node.props.href)));
+    assert.ok(!tree.root.findAllByType('a').some(node=>['/espace','/cercles','/studio','/laboratoire','/integration','/entrainement'].includes(node.props.href)));
+    assert.equal(tree.root.findByProps({id:'parties-heading'}).children[0],'Archives');
+    assert.equal(tree.root.findAllByProps({id:'archive-date'}).length,1);
+    assert.deepEqual(tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').map(node=>text(node)),['Mot du jour','Partie libre','Archives','Duel','Profil']);
     assert.ok(calls.every(path => path.startsWith('/api/game?')));
     assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), null);
   } finally { await act(async () => tree.unmount()); }
@@ -289,7 +326,7 @@ test('weekly projection admits fresh same-day facts after noon and between clock
     await act(async () => tree.root.findByProps({ id: 'guess' }).props.onChange({ target: { value: 'maison' } }));
     await act(async () => tree.root.findByProps({ className: 'guess-form' }).props.onSubmit({ preventDefault() {}, currentTarget: { contains() { return false; } } }));
     const navigation = tree.root.findByProps({ 'aria-label': 'Navigation principale' });
-    await act(async () => navigation.findAllByType('a')[2].props.onClick({ button: 0, preventDefault() {} }));
+    await act(async () => navigation.findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({ button: 0, preventDefault() {} }));
     const profile = tree.root.findAll(node => typeof node.type === 'function' && node.props.snapshot && node.props.ritual)[0];
     assert.equal(profile.props.ritual.objectives.find((objective: { id: string }) => objective.id === 'explore-15').value, 1);
   } finally { await act(async () => tree.unmount()); Object.assign(globalThis, { Date: OriginalDate }); }
@@ -376,10 +413,10 @@ test('a completed chapter keeps its terminal badge after Jouer and Accueil witho
     const audio = b.audioCalls(), requestCount = puzzleRequests.length;
     assert.equal(audio, 1, 'one newly accepted win, never replayed by terminal navigation');
     const navigation = () => tree.root.findByProps({'aria-label': 'Navigation principale'});
-    await act(async () => navigation().findAllByType('a')[0].props.onClick({button: 0, preventDefault() {}}));
+    await act(async () => tree.root.findByProps({'aria-label':'BRAIZ, accueil'}).props.onClick({button:0,preventDefault(){}}));
     assert.equal(tree.root.findByProps({className: 'play-view voyage-play'}).props.hidden, false);
     assert.equal(text(tree.root.findByProps({className: 'daily-pill'})), 'Chapitre terminé');
-    await act(async () => navigation().findAllByType('a')[1].props.onClick({button: 0, preventDefault() {}}));
+    await act(async () => navigation().findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button: 0, preventDefault() {}}));
     await act(async () => tree.root.findByProps({'aria-label':'BRAIZ, accueil'}).props.onClick({button:0,preventDefault(){}}));
     assert.equal(text(tree.root.findByProps({className: 'daily-pill'})), 'Chapitre terminé');
     assert.equal(text(tree.root.findByProps({className: 'game-kicker'})), 'VOTRE VOYAGE');
@@ -401,7 +438,7 @@ test('a completed chapter keeps its terminal badge after Jouer and Accueil witho
 const importInstant = new Date('2026-10-13T10:00:00Z');
 async function importThroughGame(tree: ReactTestRenderer, file: string) {
   const navigation = tree.root.findByProps({'aria-label': 'Navigation principale'});
-  await act(async () => navigation.findAllByType('a')[2].props.onClick({button: 0, preventDefault() {}}));
+  await act(async () => navigation.findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({button: 0, preventDefault() {}}));
   const input = tree.root.findByProps({type: 'file'});
   await act(async () => input.props.onChange({currentTarget: {files: [{name: 'profil.json', size: Buffer.byteLength(file), text: async () => file}], value: ''}}));
   assert.ok(tree.root.findAll(n => n.type === 'button' && text(n) === 'Confirmer l’import').length, tree.root.findAll(n => n.type === 'section' && n.props.className === 'profile-transfer').map(text).join(' '));
@@ -432,9 +469,9 @@ for (const complete of [true, false]) test(`real profile-only import reaches dis
     await importThroughGame(tree, legacyProfileFile(imported));
     const snapshot = loadLocalProfile(b.storage); assert.equal(snapshot.profile.wins.length, imported.length);
     assert.ok(imported.every(id => b.storage.getItem(`braise.v1.game.${id}`) === null), 'profile import never creates their full saves');
-    await act(async () => tree.root.findByProps({'aria-label': 'Navigation principale'}).findAllByType('a')[1].props.onClick({button: 0, preventDefault() {}}));
+    await act(async () => tree.root.findByProps({'aria-label': 'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button: 0, preventDefault() {}}));
     const diagnosticBefore = b.storage.getItem(PRODUCT_EVENTS_KEY);
-    await click(tree, 'Partie libre');
+    await menu(tree,'Partie libre');
     await act(async () => replyReady.promise);
     assert.ok(imported.every(id => bodies[0].encountered.includes(id)), 'Game submits identities from the actual imported snapshot');
     if (complete) {assert.match(text(tree.root), /Vous avez rencontré tous les mots disponibles en libre/);assert.doesNotMatch(text(tree.root), /Cible non rencontrée/);assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY), diagnosticBefore);}
@@ -476,7 +513,7 @@ test('real nonterminal profile import and transferred evidence retain leading ze
   const b = browser(), bodies: Array<{encountered: string[]; excluded: string[]; replay: boolean}> = [], ready = deferred<void>();
   globalThis.fetch = discoveryFetch(bodies,importInstant,()=>ready.resolve());const tree = await mount();
   try {await importThroughGame(tree,JSON.stringify(file));const actual = loadLocalProfile(b.storage);assert.ok(actual.activities.length);assert.ok(actual.transferEvidence.length);assert.equal(actual.profile.wins.length,0);
-    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));await click(tree,'Partie libre');await act(async()=>ready.promise);
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button:0,preventDefault(){}}));await menu(tree,'Partie libre');await act(async()=>ready.promise);
     assert.ok(bodies[0].encountered.includes('free-00042'));assert.ok(bodies[0].encountered.includes('daily-2026-10-12'));assert.equal(bodies[0].encountered.filter(id=>id==='free-00042').length,1);assert.equal(b.storage.getItem('braise.v1.game.free-00042'),null);assert.equal(b.storage.getItem('braise.v1.game.daily-2026-10-12'),null);assert.deepEqual(loadLocalProfile(b.storage).profile,actual.profile);
   }finally{await act(async()=>tree.unmount());}
 });
@@ -489,11 +526,11 @@ test('an accepted memory-only fact reaches actual Game discovery even when no ga
   const tree = await mount();try{
     await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:'arbre'}}));await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
     assert.equal(storage.getItem('braise.v1.game.free-00042'),null);assert.equal(loadLocalProfile(storage).profile.guesses,0);
-    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[2].props.onClick({button:0,preventDefault(){}}));const panel=tree.root.findAll(n=>typeof n.type==='function'&&n.props.snapshot&&n.props.onDeviceSync)[0];assert.equal(panel.props.snapshot.profile.guesses,1);assert.ok(panel.props.snapshot.pendingActivities.some((fact:{type:string;puzzleRef?:{id:string}})=>fact.type==='guessAccepted'&&fact.puzzleRef?.id==='free-00042'));
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({button:0,preventDefault(){}}));const panel=tree.root.findAll(n=>typeof n.type==='function'&&n.props.snapshot&&n.props.onDeviceSync)[0];assert.equal(panel.props.snapshot.profile.guesses,1);assert.ok(panel.props.snapshot.pendingActivities.some((fact:{type:string;puzzleRef?:{id:string}})=>fact.type==='guessAccepted'&&fact.puzzleRef?.id==='free-00042'));
     const pendingFacts=panel.props.snapshot.pendingActivities;
-    storage.refuse=false;await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));await click(tree,'Partie libre');await act(async()=>ready.promise);
+    storage.refuse=false;await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button:0,preventDefault(){}}));await menu(tree,'Partie libre');await act(async()=>ready.promise);
     assert.ok(bodies[0].encountered.includes('free-00042'));assert.equal(loadLocalProfile(storage).profile.guesses,0,'reading pending identities never persists or repeats credit');
-    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[2].props.onClick({button:0,preventDefault(){}}));const retained=tree.root.findAll(n=>typeof n.type==='function'&&n.props.snapshot&&n.props.onDeviceSync)[0].props.snapshot;assert.equal(retained.profile.guesses,1);assert.deepEqual(retained.pendingActivities,pendingFacts);assert.equal(b.audioCalls(),0);
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({button:0,preventDefault(){}}));const retained=tree.root.findAll(n=>typeof n.type==='function'&&n.props.snapshot&&n.props.onDeviceSync)[0].props.snapshot;assert.equal(retained.profile.guesses,1);assert.deepEqual(retained.pendingActivities,pendingFacts);assert.equal(b.audioCalls(),0);
   }finally{await act(async()=>tree.unmount());}
 });
 
@@ -507,7 +544,7 @@ for (const common of [true,false]) test(`real mixed profile import leaves ${comm
   const source=new SyncMemory(), snapshot=recordLocalGameProgress(target,nonterminalGame(now.toISOString()),source), exported=createLocalProfileExport(snapshot,now);assert.ok(exported.ok);
   const b=browser(), bodies:Array<{encountered:string[];excluded:string[];replay:boolean}>=[], ready=deferred<Awaited<ReturnType<typeof discoverFree>>>();globalThis.fetch=discoveryFetch(bodies,now,value=>ready.resolve(value));const tree=await mount();
   try {await importThroughGame(tree,exported.text);assert.equal(b.storage.getItem(`braise.v1.game.${target.id}`),null);const before=loadLocalProfile(b.storage).profile;
-    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));await click(tree,'Partie libre');let result!:Awaited<ReturnType<typeof discoverFree>>;await act(async()=>{result=await ready.promise;});
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button:0,preventDefault(){}}));await menu(tree,'Partie libre');let result!:Awaited<ReturnType<typeof discoverFree>>;await act(async()=>{result=await ready.promise;});
     assert.ok(bodies[0].encountered.includes(target.id));assert.ok(!bodies[0].encountered.includes(`free-${assignment.targetId}`));assert.equal(result.remaining,common?119:120,'only a canonically common V2 word excludes an additional V1 target');assert.deepEqual(loadLocalProfile(b.storage).profile,before);assert.equal(b.audioCalls(),0);
   }finally{await act(async()=>tree.unmount());Object.assign(globalThis,{Date:OriginalDate});}
 });
@@ -525,7 +562,7 @@ test('Parties resumes the current saved game without reloading it or changing it
   const raw=JSON.stringify(saved);b.storage.setItem('braise.v1.game.'+puzzle.id,raw);
   globalThis.fetch=async()=>{requests++;return Response.json(puzzle);};
   const tree=await mount();try{
-    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a')[1].props.onClick({button:0,preventDefault(){}}));
+    await act(async()=>tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)==='Archives')!.props.onClick({button:0,preventDefault(){}}));
     assert.match(text(tree.root.findByProps({className:'parties-resume'})),/arbre/);
     await click(tree,'Reprendre Partie libre');
     assert.equal(b.win.location.searchParams.get('surface'),null);

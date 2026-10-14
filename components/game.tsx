@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
-import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
+import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, LockKeyhole, Pin, Plus, Share2, Sparkles, Target, Users, X } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
@@ -126,10 +126,8 @@ export default function Game() {
   const [now, setNow] = useState(0);
   const [shareText, setShareText] = useState("");
   const [storageWarning, setStorageWarning] = useState(false);
-  const [archiveOpen, setArchiveOpen] = useState(false);
   const [archiveDraft, setArchiveDraft] = useState("");
   const [archiveError, setArchiveError] = useState("");
-  const [archiveStatus, setArchiveStatus] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const modalReturnFocus = useRef<HTMLElement | null>(null);
   const tutorialReturnFocus = useRef<(TutorialReturnIntent & {owner:Element|null}) | null>(null);
@@ -236,8 +234,7 @@ export default function Game() {
     consumedFeedbackRef.current.clear();
     inputRevisionRef.current += 1;
     setMode(nextMode); setGame(EMPTY_GAME); setPuzzle(null); setLoadRetryable(true);
-    if (nextMode === "archive") { setArchiveOpen(true); setArchiveDraft(locator); setArchiveStatus("Chargement de l’archive…"); }
-    else { setArchiveOpen(false); setArchiveStatus(""); }
+    if (nextMode === "archive") setArchiveDraft(locator);
     setLoading(true); setLoadError(""); setError(""); setInput(""); setFeedback(null);
     setBusy(false); submitting.current = false;
     try {
@@ -261,9 +258,8 @@ export default function Game() {
         if(!rememberPlayContext(localStorage,data.id,context)) setStorageWarning(true);
       } catch { setStorageWarning(true); }
       refreshPlays();
-      setArchiveOpen(nextMode === "archive");
       setArchiveError("");
-      setArchiveStatus(nextMode === "archive" ? `Archive du ${new Date(`${data.date}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })} chargée.` : "");
+
       if (gameWriteAllowed.current && restored.profileV2StartIndex !== undefined) {
         const reconciled = recordAdmittedGameProgress(data, restored, undefined, profileSnapshot ?? undefined);
         if(reconciled) setProfileSnapshot(reconciled);
@@ -274,7 +270,7 @@ export default function Game() {
       if(admittedDescriptor.destination) {setSurface(admittedDescriptor.destination);setView(admittedDescriptor.destination === "game" ? "play" : "explore");}
       if (nextMode === "free") writeLocal("freeSeed", data.seed);
       },(cause,failedDescriptor)=>{
-        setLoadError(cause instanceof Error ? cause.message : "Connexion impossible.");setArchiveStatus("");
+        setLoadError(cause instanceof Error ? cause.message : "Connexion impossible.");
         // A current failure owns the same destination as a success, so its retry is visible.
         if(failedDescriptor.destination) {
           window.history.replaceState(null,"",failedPuzzleUrl(new URL(window.location.href),failedDescriptor));
@@ -284,7 +280,7 @@ export default function Game() {
       if(admitted===null && request===requestRef.current) setLoadError("Le chargement a été interrompu. Réessayez pour reprendre cette partie.");
       return admitted!==null && admitted!==false;
     } catch (err) {
-      if (request === requestRef.current && loadEpoch===navigationEpoch.current) { setLoadError(err instanceof Error ? err.message : "Connexion impossible."); setArchiveStatus(""); }
+      if (request === requestRef.current && loadEpoch===navigationEpoch.current) { setLoadError(err instanceof Error ? err.message : "Connexion impossible.");  }
       return false;
     } finally { if (request === requestRef.current) setLoading(false); }
   }
@@ -328,6 +324,7 @@ export default function Game() {
 
   async function discover(replay = false) {
     if (busy || discoveryPending.current) return;
+    navigate("game");
     discoveryPending.current=true;
     const generation = requestRef.current, epoch = navigationEpoch.current;
     setDiscoveryBusy(true); setDiscoveryNote("");
@@ -342,7 +339,6 @@ export default function Game() {
       if(!rememberEncountered(localStorage,data.encountered)) setStorageWarning(true);
       setDiscoveryExhausted(data.exhausted);
       if(!data.puzzle) { setDiscoveryNote("Vous avez rencontré tous les mots disponibles en libre sur cet appareil. Vous pouvez les rejouer."); return; }
-      navigate("game");
       const loaded=await loadPuzzle("free",data.puzzle.seed);
       if(loaded) { setDiscoveryExhausted(data.exhausted);diagnostic("nextActivityOpened","free"); }
     } catch(cause) { if(generation === requestRef.current && epoch === navigationEpoch.current) setDiscoveryNote(cause instanceof Error ? cause.message : "Connexion impossible."); }
@@ -390,6 +386,7 @@ export default function Game() {
     else if(archive!==null) { if(puzzle?.id!==classicDailyIdentity(archive,edition) || mode!=="archive") void loadPuzzle("archive",archive,undefined,undefined,undefined,undefined,edition); }
     else if(challenge && /^\d{1,10}$/.test(challenge)) { if(puzzle?.id!==classicFreeIdentity(challenge,edition) || mode!=="challenge") void loadPuzzle("challenge",challenge,undefined,undefined,EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined,undefined,edition); }
     else if(free && /^\d{1,10}$/.test(free)) { if(puzzle?.id!==classicFreeIdentity(free,edition) || mode!=="free") void loadPuzzle("free",free,undefined,undefined,undefined,undefined,edition); }
+    else if(params.get('mode')==='free') void discover();
     else if(mode!=="daily"||puzzle?.ref.rulesVersion!==edition&&edition!==undefined) void loadPuzzle("daily",'',undefined,undefined,undefined,undefined,edition);
   }; });
 
@@ -406,7 +403,9 @@ export default function Game() {
     else if (archive !== null) void loadPuzzle("archive", archive,undefined,undefined,undefined,undefined,edition);
     else if (!voyage && challenge && /^\d{1,10}$/.test(challenge)) void loadPuzzle("challenge", challenge, undefined, undefined, EXTRA_MODES_ENABLED ? params.get("collection") ?? undefined : undefined,undefined,edition);
     else if (free && /^\d{1,10}$/.test(free)) void loadPuzzle("free", free,undefined,undefined,undefined,undefined,edition);
+    else if (params.get('mode')==='free') { setLoading(false); void discover(); }
     else void loadPuzzle("daily",'',undefined,undefined,undefined,undefined,edition);
+    if(params.get('regles')==='1') { setModal('help'); const url=new URL(window.location.href);url.searchParams.delete('regles');window.history.replaceState(null,'',url); }
     if (requestedSurface !== "game") { setSurface(requestedSurface === "voyage" && !EXTRA_MODES_ENABLED ? "modes" : requestedSurface); setView("explore"); }
     refreshPlays();
     setNow(Date.now());
@@ -474,21 +473,11 @@ export default function Game() {
     if (!next.persisted) setStorageWarning(true);
     toast.success(`${COSMETICS.find(cosmetic => cosmetic.id === value)?.name ?? "Style"} équipé.`);
   }
-  async function changeMode(value: string) {
-    if (busy) return;
-    if (value === "challenge") { setModal("challenge"); return; }
-    const url = new URL(window.location.href); url.searchParams.delete("defi"); window.history.replaceState(null, "", url);
-    if(value === "free") {
-      const seed=readLocal<unknown>("freeSeed", "");
-      if(typeof seed === "string" && /^\d{1,10}$/.test(seed) && Number(seed)<=2147483647) { if(await loadPuzzle("free",seed)) diagnostic("gameResumed","free"); }
-      else await discover();
-    } else if(await loadPuzzle(value as Mode)) diagnostic("gameOpened",value as Mode);
-  }
   function revealArchives() {
     const latest = latestArchiveDate(now ? new Date(now) : new Date());
     setArchiveDraft(current => current || latest);
     setArchiveError("");
-    setArchiveOpen(true);
+    navigate("modes");
   }
   async function openArchive(event: FormEvent) {
     event.preventDefault();
@@ -500,7 +489,7 @@ export default function Game() {
   }
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (!puzzle || loading || submitting.current || solved) return;
+    if (!puzzle || loading || discoveryBusy || submitting.current || solved) return;
     const word = input.trim().toLocaleLowerCase("fr");
     const submittedRevision = inputRevisionRef.current;
     const focusOwner = document.activeElement;
@@ -587,22 +576,24 @@ export default function Game() {
   return <div className={`app-shell focused-interface foyer-interface reference-interface approved-interface proximity-interface ${flamePaused ? "motion-paused" : ""} cosmetic-${selectedCosmetic}`}>
     <Toaster position="bottom-center" theme="dark" />
     <a className="skip-link" href="#braise-main">Aller au contenu</a>
-    <AppNavigation active={surface === "profile" ? "profile" : surface === "modes" || surface === "voyage" ? "explore" : "play"} onNavigate={destination => navigate(destination === "play" ? "game" : destination === "explore" ? "modes" : "profile")} onHelp={returnFocus=>{modalReturnFocus.current=returnFocus;setModal("help");diagnostic("helpOpened");}} />
+    <AppNavigation active={surface === "profile" ? "profile" : surface === "modes" ? "archives" : surface === "game" && !journey && !currentCollection && (mode === "daily" || mode === "free") ? mode : "play"} onNavigate={destination => {
+      if(destination==='archives') revealArchives();
+      else if(destination==='profile') navigate('profile');
+      else if(destination==='free') void discover();
+      else { navigate('game'); if(destination==='daily' && (mode!=='daily' || !puzzle || journey || currentCollection)) void loadPuzzle('daily').then(loaded=>{if(loaded) diagnostic('gameOpened','daily');}); }
+    }} onHelp={returnFocus=>{modalReturnFocus.current=returnFocus;setModal("help");diagnostic("helpOpened");}} />
 
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
       {surface === "modes" && <>
-        <PartiesPanel plays={localPlays} disabled={busy || loading || journeyBusy || discoveryBusy} discovering={discoveryBusy} archivesOpen={archiveOpen} onDaily={()=>{navigate("game");void changeMode("daily");}} onDiscover={()=>void discover()} onArchives={revealArchives} onResume={play=>void resumePlay(play)}>
-        {discoveryNote && <p className="parties-notice" role="status">{discoveryNote}</p>}
-        {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-        {archiveOpen && <section className="parties-archives" id="parties-archives" aria-labelledby="archives-heading">
-          <header><h2 id="archives-heading">Archives</h2><button className="archive-close" aria-label="Fermer les archives" onClick={()=>{setArchiveOpen(false);setArchiveError("");requestAnimationFrame(()=>document.getElementById('archives-choice')?.focus());}}><X size={18}/></button></header>
+        <PartiesPanel plays={localPlays} disabled={busy || loading || journeyBusy || discoveryBusy} onResume={play=>void resumePlay(play)}>
+        <section className="parties-archives" id="parties-archives" aria-label="Choisir une archive">
           <form className="archive-form" onSubmit={openArchive}>
             <label htmlFor="archive-date">Date</label><input id="archive-date" type="date" min={LEGACY_ARCHIVE_START_DATE} max={archiveMax} value={archiveDraft} onChange={event=>{setArchiveDraft(event.target.value);setArchiveError("");}} aria-invalid={Boolean(archiveError)} aria-describedby={archiveError ? "archive-error" : undefined} disabled={busy || loading}/>
             <button className="secondary-button" disabled={busy || loading}>Jouer</button>
             {archiveError && <p id="archive-error" className="archive-error" role="alert">{archiveError}</p>}
           </form>
           <ArchiveCalendar max={archiveMax} selected={archiveDraft} plays={localPlays} disabled={busy || loading} onOpen={date=>{setArchiveDraft(date);navigate("game");void loadPuzzle("archive",date).then(loaded=>{if(loaded) diagnostic("gameOpened","archive");});}}/>
-        </section>}
+        </section>
         </PartiesPanel>
       </>}
       {surface === "profile" && (profileSnapshot && now ? <ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onDeviceSync={receiveDeviceSync} deviceSyncGuard={deviceSyncGuard} onBack={() => navigate("game")} /> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
@@ -611,6 +602,8 @@ export default function Game() {
       {currentCollection && <div className="voyage-game-heading"><button className="text-action" onClick={()=>navigate("voyage")}>Collections</button><h1>{currentCollection.title}</h1><p>Énigme {currentCollection.seeds.indexOf(puzzle?.seed ?? "")+1} sur {currentCollection.seeds.length}</p></div>}
       {journey && !journey.reward && <div className="voyage-game-heading"><button className="text-action" onClick={() => { navigate("voyage"); setView("explore"); }}>Voyage</button><h1>{EXPEDITIONS.find(item => item.id === journey.id)?.title}</h1><p>Épreuve {journey.completed + 1} sur {journey.length}</p><progress value={journey.completed + (solved ? 1 : 0)} max={journey.length} aria-label="Progression du chapitre"/></div>}
       <div className="game-tab-content">
+        {discoveryBusy && <p className="parties-notice" role="status">Recherche d’un mot…</p>}
+        {discoveryNote && <p className="parties-notice" role="status">{discoveryNote}</p>}
       <div className="play-layout">
         <div className="play-column">
           <section id="game-board" ref={gameBoardRef} tabIndex={-1} className={`game-panel ${isAccepted ? "is-accepted" : ""} ${isRecord ? "is-record" : ""} ${solved ? "is-won" : ""} ${isCelebratingWin ? "is-celebrating" : ""}`} aria-label="Plateau de jeu">
@@ -621,7 +614,7 @@ export default function Game() {
 <div className="approved-play-surface">{loadError ? <div className="load-error" role="alert"><CircleHelp size={34} /><h2>{mode === "archive" ? "Archive indisponible." : "Une petite pause imprévue."}</h2><p>{loadError}</p>{loadRetryable && <button className="primary-button" onClick={() => retryPuzzleLoad(lastLoad.current,loadPuzzle,"game")}>Réessayer</button>}{mode === "archive" && <button className="text-action" onClick={() => loadPuzzle("daily")}>Revenir au mot du jour</button>}</div> : <>
               {discoveryNote && <p className="free-discovery-note" role="status">{discoveryNote}</p>}
               {discoveryExhausted && <button className="secondary-button" disabled={discoveryBusy} onClick={()=>void discover(true)}>Rejouer une cible</button>}
-              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{countLabel(game.guesses.length,"essai")}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Mot</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
+              {solved ? <div className="victory-box"><span className="victory-eyebrow">Bien joué.</span><h2 ref={victoryRef} tabIndex={-1} aria-label={`Bravo, le mot était ${best?.word}`}>{best?.word}</h2><p>{countLabel(game.guesses.length,"essai")}, {game.hints ? `${game.hints} indice${game.hints > 1 ? "s" : ""}` : "aucun indice"}.</p><details onToggle={event=>{if(event.currentTarget.open) diagnostic("summaryOpened");}}><summary>Voir le bilan de mon chemin</summary><WinSummary game={game}/></details>{!journey && !currentCollection && suggestedPlay && <p>Une autre partie commencée vous attend : {suggestedPlay.label}. Choisissez Continuer à jouer pour la reprendre.</p>}<div className="victory-actions"><button className="primary-button" onClick={shareResult}><Share2 size={17} />Partager ma réussite</button><button className="secondary-button" onClick={() => void copy(resultText(), "Résultat copié, sans révéler le mot.")}>Copier mon résultat</button><button className="secondary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? "Chargement…" : journey ? journey.completed + 1 < journey.length ? "Épreuve suivante" : "Terminer le chapitre" : discoveryBusy ? "Recherche…" : "Continuer à jouer"}</button></div>{isCelebratingWin && <span className="xp-award"><Sparkles size={14} />Mot trouvé</span>}</div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Mot</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || discoveryBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
             </>}
           </div></section>
 

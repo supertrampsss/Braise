@@ -17,16 +17,17 @@ export function classicPuzzleMatchesLoad(puzzle: Puzzle, load: PuzzleLoad) {
   return puzzle.vocabularySize===30000&&samePuzzleRef(puzzle.ref,{contractVersion:1,id:puzzle.id,corpusVersion:LEGACY_VERSIONS.corpus,rulesVersion:LEGACY_VERSIONS.rules,context:load.mode,variant:'classic',calendar:daily?{version:LEGACY_VERSIONS.calendar,date:puzzle.date}:null});
 }
 export function requestedGameSurface(url: URL): GameSurface {
-  return url.searchParams.get('surface')==='profile' ? 'profile' : url.searchParams.get('surface')==='explore' ? 'modes' : url.searchParams.get('surface')==='voyage' ? 'voyage' : 'game';
+  return url.searchParams.get('surface')==='profile' ? 'profile' : ['explore','archives'].includes(url.searchParams.get('surface')??'') ? 'modes' : url.searchParams.get('surface')==='voyage' ? 'voyage' : 'game';
 }
 export function surfaceUrl(current: URL, destination: GameSurface) {
   const url=new URL(current);
   if(destination==='game') url.searchParams.delete('surface');
-  else url.searchParams.set('surface',destination==='profile'?'profile':destination==='voyage'?'voyage':'explore');
+  else url.searchParams.set('surface',destination==='profile'?'profile':destination==='voyage'?'voyage':'archives');
   return url;
 }
 export function admittedPuzzleUrl(current: URL, load: PuzzleLoad, puzzle: Pick<Puzzle,'seed'|'date'> & {ref?:Puzzle['ref']}) {
   const url=load.destination ? surfaceUrl(current,load.destination) : new URL(current);
+  url.searchParams.delete('mode');
   const values:Record<string,string|undefined>={edition:puzzle.ref?.rulesVersion??load.edition,voyage:load.expedition?.id,libre:load.mode==='free'?puzzle.seed:undefined,collection:load.collection,defi:load.mode==='challenge'?puzzle.seed:undefined,archive:load.mode==='archive'?puzzle.date:undefined};
   for(const [key,value] of Object.entries(values)) {if(value!==undefined) url.searchParams.set(key,value);else url.searchParams.delete(key);}
   return url;

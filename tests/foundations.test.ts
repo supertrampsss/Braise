@@ -24,11 +24,11 @@ test("French formatting uses integer degrees, Paris dates and explicit unknowns 
   assert.equal(formatDateFr(null), "Date inconnue"); assert.equal(ACTION_LABELS.propose, "Proposer");
   assert.equal(formatDateFr("2026-02-30"), "Date inconnue");
 });
-test("navigation has one collapsed menu, three destinations and only internal return paths", () => {
+test("navigation has one collapsed menu, direct game destinations and only internal return paths", () => {
   const html=renderToStaticMarkup(createElement(AppNavigation,{active:'explore',modeName:'Intégration',backHref:'https://evil.test'}));
   assert.match(html,/aria-label="Ouvrir le menu"/);assert.match(html,/data-state="closed"/);
   assert.doesNotMatch(html,/<nav|evil.test/);
-  assert.deepEqual(APP_NAVIGATION.map(item=>[item.label,item.href]),[['Jouer','/'],['Parties','/?surface=explore'],['Profil','/?surface=profile']]);
+  assert.deepEqual(APP_NAVIGATION.map(item=>[item.label,item.href]),[['Mot du jour','/'],['Partie libre','/?mode=free'],['Archives','/?surface=archives'],['Duel','/duels'],['Profil','/?surface=profile']]);
   for(const href of ['https://evil.test','//evil.test','/\\evil.test','/\t/evil.test'])assert.equal(navigationBackHref(href),'/');
   assert.equal(navigationBackHref('/?libre=042'),'/?libre=042');
 });

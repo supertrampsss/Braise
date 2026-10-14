@@ -1,4 +1,4 @@
-/* One navigation in the menu; one page to choose or resume a game. */
+/* Direct destinations in one menu; archive calendar and saved games. */
 .braiz-navigation .braiz-navigation-menu { margin-left:auto; }
 .braiz-menu-trigger { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:44px; padding:10px 14px; border:1px solid #51545d; border-radius:10px; background:#1c1e22; color:#f4f0eb; font:inherit; font-size:14px; }
 .braiz-menu-trigger:hover,.braiz-menu-trigger[data-state=open] { border-color:#ff946a; }
@@ -11,18 +11,8 @@
 .braiz-menu-trigger:focus-visible { outline:2px solid #ffae89; outline-offset:3px; }
 .approved-interface.proximity-interface .main-shell.surface-modes { max-width:1040px; padding-top:24px; }
 .parties-page h1 { margin:0 0 28px; font-size:32px; line-height:1.2; letter-spacing:-.02em; color:#f4f0eb; }
-.parties-choices { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-.parties-choice { display:grid; grid-template-columns:1fr 24px; gap:20px 8px; min-height:180px; padding:24px; border:1px solid #42454d; border-radius:16px; background:#1c1e22; color:#f4f0eb; text-align:left; }
-.parties-choice > svg:first-child { width:28px; height:28px; color:#ffac86; }
-.parties-choice > span { grid-column:1; }
-.parties-choice > svg:last-child { grid-column:2; grid-row:2; align-self:center; width:20px; height:20px; color:#b4b8c2; }
-.parties-choice strong { display:block; font-size:21px; font-weight:600; }
-.parties-choice small { display:block; margin-top:8px; color:#bfc2ca; font-size:14px; line-height:1.5; }
-.parties-choice.daily-choice { border-color:#aa6d51; background:linear-gradient(135deg,#2b2421,#1c1e22); }
-.parties-choice:hover:not(:disabled),.parties-choice[aria-expanded=true] { border-color:#ffac86; background:#282a30; }
-.parties-choice:disabled { opacity:.65; cursor:wait; }
 .parties-resume { margin-top:36px; }
-.parties-resume h2,.parties-archives h2 { margin:0 0 18px; font-size:21px; font-weight:600; color:#f4f0eb; }
+.parties-resume h2 { margin:0 0 18px; font-size:21px; font-weight:600; color:#f4f0eb; }
 .parties-resume ul { display:grid; gap:12px; list-style:none; padding:0; margin:0; }
 .parties-resume li { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 24px; border:1px solid #393c43; border-radius:14px; background:#1c1e22; }
 .parties-resume li > div { min-width:0; }
@@ -32,27 +22,20 @@
 .parties-resume button { flex-shrink:0; min-height:44px; padding:10px 14px; border:1px solid #646974; border-radius:9px; background:transparent; color:#f4f0eb; font-size:14px; }
 .parties-resume button:hover:not(:disabled) { border-color:#ffac86; color:#ffac86; }
 .parties-notice { padding:16px 0; color:#d6d7dd; line-height:1.5; }
-.parties-archives { margin-top:28px; padding:24px; border:1px solid #42454d; border-radius:16px; background:#1c1e22; }
-.parties-archives > header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
-.parties-archives h2 { margin:0; }
+.parties-archives { margin-top:0; padding:24px; border:1px solid #42454d; border-radius:16px; background:#1c1e22; }
 .parties-archives .archive-form { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:12px; align-items:center; padding:0; margin:0; border:0; background:transparent; }
 .parties-archives .archive-form input { min-width:0; width:100%; min-height:44px; background:#24272d; color:#f4f0eb; border:1px solid #636772; border-radius:8px; padding:10px; color-scheme:dark; }
 .parties-archives .archive-calendar { background:transparent; color:#f4f0eb; padding:0; }
+.parties-archives .archive-calendar select { background:#24272d; color:#f4f0eb; color-scheme:dark; }
+.calendar-status-symbol { display:none; }
 .parties-archives :is(button,select) { min-height:44px; border:1px solid #636772; border-radius:8px; background:#24272d; color:#f4f0eb; }
 .parties-archives .calendar-days button,.parties-archives .calendar-filtered-list button { background:#24272d; color:#f4f0eb; border-color:#4c515c; }
 .parties-archives [aria-pressed=true] { outline:2px solid #ffac86; background:#392a22!important; }
 .parties-archives .archive-error { grid-column:1/-1; color:#ffc5b4; }
 .parties-archives .archive-status { color:#c4c7d1; }
-.parties-archives .archive-close { width:44px; flex-shrink:0; }
 .approved-interface.proximity-interface .reset-note { color:#bfc2ca; }
 @media(max-width:650px) {
  .parties-page h1 { font-size:28px; margin-bottom:20px; }
- .parties-choices { grid-template-columns:1fr; gap:12px; }
- .parties-choice { grid-template-columns:32px minmax(0,1fr) 20px; align-items:center; gap:14px; padding:20px; min-height:104px; }
- .parties-choice > span { grid-column:2; }
- .parties-choice > svg:last-child { grid-column:3; grid-row:1; }
- .parties-choice strong { font-size:19px; }
- .parties-choice small { font-size:14px; margin-top:5px; }
  .parties-resume { margin-top:28px; }
  .parties-resume li { padding:16px; gap:12px; }
  .parties-resume button { padding:10px; font-size:13px; }
@@ -61,4 +44,11 @@
  .parties-archives .archive-form label { grid-column:1/-1; }
  .parties-archives .calendar-toolbar { gap:8px; }
  .parties-archives .calendar-toolbar button { padding:8px 12px; }
+}
+@media(max-width:480px) {
+ .parties-archives .calendar-status-label { display:none; }
+ .parties-archives .calendar-status-symbol { display:block; font-size:12px; line-height:1; }
+ .parties-archives .calendar-days button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-height:48px; }
+ .parties-archives .archive-calendar > label { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+ .parties-archives .archive-calendar select { min-width:0; max-width:100%; }
 }
