@@ -27,7 +27,7 @@ export default function FlameScene({level:proximity,rank,celebrating,paused,solv
         <linearGradient id={id+'-heat'} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#ff7049"/><stop offset=".66" stopColor="#ff8c4b"/><stop offset="1" stopColor="#ffdb63"/></linearGradient>
         <linearGradient id={id+'-edge'} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#ef7046"/><stop offset="1" stopColor="#ffb668"/></linearGradient>
         <mask id={id+'-level'} maskUnits="userSpaceOnUse" x="-20" y="-20" width="220" height="280">
-          <g className="flame-fill-mask" style={{transform:`translateY(${(1-level)*240}px)`}}><path d="M-20 0Q0-8 20 0T60 0T100 0T140 0T180 0T220 0V260H-20Z" fill="white"/></g>
+          <g className="flame-fill-mask" style={{transform:`translateY(${(1-level)*240}px)`}}><path className="flame-surface" d="M-100 0Q-80-7-60 0T-20 0T20 0T60 0T100 0T140 0T180 0T220 0T260 0T300 0V260H-100Z" fill="white"/></g>
         </mask>
       </defs>
       <path d={silhouette} fill="#211b19" stroke={'url(#'+id+'-edge)'} strokeWidth="1.5" opacity=".8"/>

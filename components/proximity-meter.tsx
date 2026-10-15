@@ -7,7 +7,7 @@ export function ProximityMeter({ rank, vocabularySize, solved, celebrating, paus
   celebrating: boolean; paused: boolean; revealMotion: boolean;
 }) {
   const fill = proximityFill(rank, vocabularySize);
-  return <div className="proximity-meter" style={{ '--proximity-position': `${fill * 100}%` } as CSSProperties}>
+  return <div className="proximity-meter" data-paused={paused} style={{ '--proximity-position': `${fill * 100}%` } as CSSProperties}>
     <div className="proximity-flame-slot">
       <FlameScene level={fill} rank={rank} celebrating={celebrating} paused={paused} solved={solved} revealMotion={revealMotion}/>
     </div>
