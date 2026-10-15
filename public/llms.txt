@@ -1,0 +1,22 @@
+# BRAIZ
+
+> BRAIZ est un jeu de mots sémantique gratuit en français. Trouvez un mot secret à partir de la proximité de sens de vos propositions.
+
+## Jouer
+
+- [Mot du jour](https://braiz.io/): défi quotidien commun à tous, essais illimités, trois indices au maximum.
+- [Partie libre](https://braiz.io/partie-libre): règles du mode libre et accès à une nouvelle partie.
+- [Archives](https://braiz.io/archives): accès aux défis quotidiens passés, sans publier leur solution.
+- [Duel](https://braiz.io/duels): deux personnes, trois manches, 30 essais par manche, sans indice, 48 heures après acceptation.
+
+## Guides
+
+- [Jeu de mots sémantique](https://braiz.io/jeu-de-mots-semantique): principe du jeu et choix des modes.
+- [Comment jouer](https://braiz.io/comment-jouer): propositions, progression, sauvegardes et indices.
+- [Proximité](https://braiz.io/proximite): classement exact et remplissage de la flamme. Le pourcentage est une jauge de progression, pas une probabilité.
+- [À propos](https://braiz.io/a-propos): modèles linguistiques, sources, licences et limites.
+- [Confidentialité](https://braiz.io/confidentialite): données locales, modes connectés et synchronisation facultative.
+
+## Périmètre
+
+Le domaine canonique est https://braiz.io. Ce fichier décrit les pages publiques ; il ne constitue pas une permission d’accès aux comptes, invitations, API ou données privées. Les solutions quotidiennes et les mots des parties privées ne sont pas publiés dans ces guides. Les règles peuvent différer entre éditions historiques. La page Proximité décrit l’échelle visuelle actuelle.

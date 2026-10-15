@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><linearGradient id="heat" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff7049"/><stop offset=".66" stop-color="#ff8c4b"/><stop offset="1" stop-color="#ffdb63"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="#141719"/>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#f4f0eb">
+    <text x="76" y="140" font-size="88" font-weight="800" letter-spacing="2">BR<tspan fill="#ff946a">A</tspan>IZ</text>
+    <text x="76" y="276" font-size="57" font-weight="650">Le jeu de mots</text>
+    <text x="76" y="348" font-size="57" font-weight="650">sémantique.</text>
+    <text x="78" y="426" font-size="27" fill="#c6cbd3">Un mot secret à trouver chaque jour.</text>
+    <text x="78" y="548" font-size="28" fill="#ffb58f">braiz.io</text>
+  </g>
+  <g transform="translate(810 130) scale(1.65)">
+    <path d="M91 8C115 42 128 61 124 89C134 82 140 67 142 58C166 89 175 122 172 153C169 198 145 230 92 233C44 236 13 211 9 169C4 131 22 107 37 88C35 115 42 128 49 132C52 112 45 91 58 68C73 44 93 32 91 8Z" fill="url(#heat)"/>
+    <path d="M93 101C99 133 130 141 133 171C137 204 119 230 92 235C57 229 41 209 49 179C51 166 65 153 66 139C69 160 83 166 81 186C96 166 93 139 93 101Z" fill="#ffe29b" opacity=".58"/>
+  </g>
+</svg>

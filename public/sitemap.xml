@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://braiz.io/</loc>
-    <lastmod>2026-09-14</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://braiz.io/</loc></url>
+  <url><loc>https://braiz.io/jeu-de-mots-semantique</loc></url>
+  <url><loc>https://braiz.io/comment-jouer</loc></url>
+  <url><loc>https://braiz.io/proximite</loc></url>
+  <url><loc>https://braiz.io/partie-libre</loc></url>
+  <url><loc>https://braiz.io/archives</loc></url>
+  <url><loc>https://braiz.io/duels</loc></url>
+  <url><loc>https://braiz.io/a-propos</loc></url>
+  <url><loc>https://braiz.io/confidentialite</loc></url>
 </urlset>

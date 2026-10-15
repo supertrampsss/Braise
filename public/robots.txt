@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /semantic-data.json
 
 Sitemap: https://braiz.io/sitemap.xml

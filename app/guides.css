@@ -1,0 +1,22 @@
+.guide-shell { min-height:100svh; }
+.site-footer > div > a { color:#b5bbc5; font-size:12px; min-height:44px; display:inline-flex; align-items:center; text-underline-offset:4px; }
+.guide-main { max-width:800px; margin:32px auto 64px; padding:0 24px; color:#d3d6dc; font-size:17px; line-height:1.75; }
+.guide-main h1 { color:#f4f0eb; font-size:clamp(30px,5vw,46px); line-height:1.16; letter-spacing:-.025em; margin:24px 0; }
+.guide-main h2,.home-guide h2 { color:#f4f0eb; font-size:24px; line-height:1.35; margin:40px 0 16px; }
+.guide-main h3,.home-guide h3 { color:#f4f0eb; font-size:18px; line-height:1.5; margin:24px 0 8px; }
+.guide-main p,.home-guide p { margin:12px 0; }
+.guide-intro { font-size:20px; color:#e2e3e7; }
+.guide-main a,.home-guide a,.guide-footer a { color:#ffb58f; text-underline-offset:4px; }
+.guide-breadcrumb { font-size:14px; color:#b5bbc5; }
+.guide-action { display:inline-flex; margin:16px 0 12px; padding:12px 20px; border-radius:10px; background:#ff946a; color:#171719!important; font-weight:650; text-decoration:none; min-height:48px; align-items:center; }
+.guide-links { display:flex; flex-wrap:wrap; gap:8px 24px; border-top:1px solid #363a42; padding-top:22px; margin-top:40px; }
+.guide-links a,.guide-footer a { display:inline-flex; min-height:44px; align-items:center; }
+.guide-faq { margin-top:40px; }
+.guide-sources { font-size:15px; }
+.guide-footer { max-width:800px; margin:0 auto; padding:24px; display:flex; flex-wrap:wrap; gap:12px 28px; color:#b5bbc5; }
+.home-guide { max-width:800px; margin:48px auto; padding:24px; font-size:16px; line-height:1.75; color:#bdc3cd; }
+.home-guide > h2 { margin-top:0; font-size:22px; }
+.home-guide .guide-links { margin-top:20px; }
+.guide-main a:focus-visible,.home-guide a:focus-visible,.guide-footer a:focus-visible { outline:2px solid #ffb58f; outline-offset:5px; border-radius:3px; }
+.guide-main,.home-guide { overflow-wrap:anywhere; }
+@media(max-width:480px) { .guide-main { padding:0 18px; font-size:16px; } .guide-intro { font-size:18px; } .home-guide { padding:18px; margin-top:32px; } }
