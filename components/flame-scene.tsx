@@ -3,7 +3,7 @@ import {useEffect,useId,useRef,useState,type CSSProperties} from 'react';
 import {flameLevel} from '@/lib/flame-presentation';
 import {formatRankFr} from '@/lib/proximity-presentation';
 
-const silhouette='M91 8C115 42 128 61 124 89C134 82 140 67 142 58C166 89 175 122 172 153C169 198 145 230 92 233C44 236 13 211 9 169C4 131 22 107 37 88C35 115 42 128 49 132C52 112 45 91 58 68C73 44 93 32 91 8Z';
+const flameArt='/art/braiz-natural-flame-v1.webp';
 
 /** Shared fillable flame. Only accepted best proximity changes its level. */
 export default function FlameScene({level:proximity,rank,celebrating,paused,solved=false,revealMotion=false}:{
@@ -23,17 +23,14 @@ export default function FlameScene({level:proximity,rank,celebrating,paused,solv
     data-paused={paused} data-visible={visible} data-solved={solved} data-reveal-motion={revealMotion} data-celebrating={celebrating&&solved} data-renderer="fillable-svg" style={{'--flame-level':level} as CSSProperties}>
     <svg className="fillable-flame" viewBox="0 0 180 240" aria-hidden="true">
       <defs>
-        <clipPath id={id+'-shape'}><path d={silhouette}/></clipPath>
-        <linearGradient id={id+'-heat'} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#ff7049"/><stop offset=".66" stopColor="#ff8c4b"/><stop offset="1" stopColor="#ffdb63"/></linearGradient>
-        <linearGradient id={id+'-edge'} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#ef7046"/><stop offset="1" stopColor="#ffb668"/></linearGradient>
+        <linearGradient id={id+'-surface'} gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="14"><stop stopColor="white" stopOpacity="0"/><stop offset="1" stopColor="white"/></linearGradient>
         <mask id={id+'-level'} maskUnits="userSpaceOnUse" x="-20" y="-20" width="220" height="280">
-          <g className="flame-fill-mask" style={{transform:`translateY(${(1-level)*240}px)`}}><path className="flame-surface" d="M-100 0Q-80-7-60 0T-20 0T20 0T60 0T100 0T140 0T180 0T220 0T260 0T300 0V260H-100Z" fill="white"/></g>
+          <g className="flame-fill-mask" style={{transform:`translateY(${(1-level)*240}px)`}}><path className="flame-surface" d="M-100 0Q-80-7-60 0T-20 0T20 0T60 0T100 0T140 0T180 0T220 0T260 0T300 0V260H-100Z" fill={'url(#'+id+'-surface)'}/></g>
         </mask>
       </defs>
-      <path d={silhouette} fill="#211b19" stroke={'url(#'+id+'-edge)'} strokeWidth="1.5" opacity=".8"/>
-      <g clipPath={'url(#'+id+'-shape)'} mask={'url(#'+id+'-level)'}>
-        <rect width="180" height="240" fill={'url(#'+id+'-heat)'}/>
-        <path className="flame-core" d="M93 101C99 133 130 141 133 171C137 204 119 230 92 235C57 229 41 209 49 179C51 166 65 153 66 139C69 160 83 166 81 186C96 166 93 139 93 101Z" fill="#ffdf77" opacity=".42"/>
+      <image className="flame-ghost" href={flameArt} x="-34" y="-6" width="246" height="255" preserveAspectRatio="none"/>
+      <g mask={solved?undefined:'url(#'+id+'-level)'}>
+        <image className="flame-core" href={flameArt} x="-34" y="-6" width="246" height="255" preserveAspectRatio="none"/>
       </g>
     </svg>
   </div>;
