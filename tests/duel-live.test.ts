@@ -29,6 +29,12 @@ test('automatic refresh updates accepted facts without clearing the field or rep
  }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
 });
 
+test('a confirmed409 conflict can be retried after polling while network retries retain their identity',async(t)=>{
+ t.mock.timers.enable({apis:['setInterval','setTimeout']});browser();let data={...base},writes=0;
+ const calls=mockApi(()=>data,async()=>{writes++;if(writes===1){data={...base,guesses:[...base.guesses,{round:0,word:'route',ordinal:2,rank:50,temperature:1,found:0}]};return Response.json({error:'Manche modifiée.'},{status:409});}return Response.json({...data,guesses:[...data.guesses,{round:0,word:'voyage',ordinal:3,rank:40,temperature:1,found:0}]});});
+ const tree=await mount();try{await act(async()=>tree.root.findByProps({id:'duel-word'}).props.onChange({target:{value:'voyage'}}));await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){}}));await act(async()=>t.mock.timers.tick(8000));assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'voyage');await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){}}));const mutations=calls.filter(call=>call.body);assert.deepEqual(mutations.map(call=>call.body?.revision),[1,2]);assert.notEqual(mutations[0].body?.requestId,mutations[1].body?.requestId);}finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
+});
+
 test('a stale background response cannot remove a guess accepted by a later mutation',async(t)=>{
  t.mock.timers.enable({apis:['setInterval','setTimeout']});browser();let release!:(response:Response)=>void;
  const fresh={...base,guesses:[...base.guesses,{round:0,word:'route',ordinal:2,rank:50,temperature:1,found:0}]};

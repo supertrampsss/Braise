@@ -17,6 +17,7 @@ type Feedback={round:number;ordinal:number;improved:boolean;found:boolean;announ
 function dateLabel(value:number) { return new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Paris'}).format(value); }
 const statuses:Record<string,string>={active:'En cours',pending:'Invitation envoyée',expired:'Invitation expirée',cancelled:'Invitation annulée',finished:'Terminé',forfeit:'Abandonné'};
 function duelNames(duel:{hostName:string;opponentName:string|null;role?:string}){return duel.role==='opponent'?duel.opponentName+' vs '+duel.hostName:duel.hostName+(duel.opponentName?' vs '+duel.opponentName:' · invitation');}
+class DuelApiError extends Error {constructor(message:string,readonly status:number){super(message);}}
 
 export default function Duels() {
   const [joining,setJoining]=useState(false),[session,setSession]=useState<Session>({guest:null});
@@ -39,7 +40,7 @@ export default function Duels() {
     const response=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json','X-Braise-CSRF':csrf},body:JSON.stringify(body),signal}:{cache:'no-store',signal});
     const data=await response.json() as DuelView&Session&{duels:DuelList[];error?:string};
     if(epoch!==navigationEpoch.current)throw new Error('Vue quittée.');
-    if(!response.ok)throw new Error(data.error??'Service indisponible.');
+    if(!response.ok)throw new DuelApiError(data.error??'Service indisponible.',response.status);
     return data;
   }
   function showView(data:DuelView) {factsRevision.current++;setView(data);setDuels(items=>items.map(item=>item.id===data.id?{...item,state:data.state,hostName:data.hostName,opponentName:data.opponentName,role:data.role,result:duelOutcome(data)?.title,deadline:data.deadline,abandoned:data.forfeiter?1:0,score:data.score,canAcceptRematch:data.canAcceptRematch}:item));}
@@ -75,7 +76,10 @@ export default function Duels() {
     void perform(async()=>{
       const old=pending.current;
       const request=old&&old.id===view.id&&old.round===round&&old.word===word.trim()?old:{id:view.id,round,revision:before.guesses.length,requestId:crypto.randomUUID(),word:word.trim()};
-      pending.current=request;const data=await api('/api/duels',{action:'guess',...request});showView(data);pending.current=null;
+      pending.current=request;let data:DuelView;
+      try{data=await api('/api/duels',{action:'guess',...request});}
+      catch(cause){if(cause instanceof DuelApiError&&cause.status===409)pending.current=null;throw cause;}
+      showView(data);pending.current=null;
       const accepted=data.guesses.find(guess=>guess.round===request.round&&guess.ordinal===request.revision+1);
       if(accepted&&accepted.ordinal>before.guesses.length){
         clearFeedback();setFeedback({round:request.round,ordinal:accepted.ordinal,improved:!before.best||accepted.rank<before.best.rank,found:accepted.found===1,announcement:`${accepted.word}, ${accepted.found===1?'mot trouvé':formatRankFr(accepted.rank)}.`});

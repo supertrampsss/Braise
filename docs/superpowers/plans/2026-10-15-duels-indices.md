@@ -32,30 +32,31 @@
 **Files:** lib/classic-hints.ts ; tests/classic-hints.test.ts ; lib/site-content.ts.
 **Interfaces:** betterHintId conserve sa signature ; les lecteurs V1 actuels et Word2Vec l’appellent sans migration de sauvegarde.
 
-- [ ] Ajouter un test avec 155562 rangs et un meilleur essai au rang 100000 : chaque indice reste entre 60 % et le rang précédent, jamais dans le Top 100. Ajouter un lexique éligible seulement trop proche : résultat null.
-- [ ] Exécuter le test ciblé et constater son échec avec la politique 350/80/12.
-- [ ] Remplacer les seuils fixes par la plage relative, vérifier trois gains successifs et rangs 1/2/3.
-- [ ] Exécuter les tests ciblés du moteur et enregistrer le résultat.
+- [x] Ajouter un test avec 155562 rangs et un meilleur essai au rang 100000 : chaque indice reste entre 60 % et le rang précédent, jamais dans le Top 100. Ajouter un lexique éligible seulement trop proche : résultat null.
+- [x] Exécuter le test ciblé et constater son échec avec la politique 350/80/12.
+- [x] Remplacer les seuils fixes par la plage relative, vérifier trois gains successifs et rangs 1/2/3.
+- [x] Exécuter les tests ciblés du moteur et enregistrer le résultat.
 
 ## Task 2 — Données et équité du duel
 
 **Files:** drizzle/0008_duel_word2vec.sql ; db/schema.ts ; lib/duel-store.ts ; lib/duel-rules.ts ; lib/duel-engine.server.ts ; lib/duel-presentation.ts ; app/api/duels/route.ts ; tests/duel-complete.test.ts.
 **Interfaces:** nouvelles vues vocabularySize, opponentGuesses et rounds (own/opponent/revealed/answer/decision), score partiel et invitation de revanche. Les champs guesses/decisions/role restent compatibles.
 
-- [ ] Tester la projection avant/après double clôture, expiration, abandon, accès tiers, absence d’essais et conservation des faits historiques.
-- [ ] Ajouter les tables Word2Vec et revanches sans réécrire les anciennes tables ; migration et test SQLite.
-- [ ] Versionner la sélection/évaluation des nouvelles cibles avec Word2Vec, préserver duel-v1, sélectionner trois cibles distinctes et différentes du duel parent.
-- [ ] Ajouter les invitations adressées, acceptation explicite et contrôle d’identité/quota/session côté serveur.
-- [ ] Vérifier les cas d’accès et les moteurs via les tests serveur, puis la suite complète.
+- [x] Tester la projection avant/après double clôture, expiration, abandon, accès tiers, absence d’essais et conservation des faits historiques.
+- [x] Ajouter les tables Word2Vec et revanches sans réécrire les anciennes tables ; migration et test SQLite.
+- [x] Versionner la sélection/évaluation des nouvelles cibles avec Word2Vec, préserver duel-v1, sélectionner trois cibles distinctes et différentes du duel parent.
+- [x] Ajouter les invitations adressées, acceptation explicite et contrôle d’identité/quota/session côté serveur.
+- [x] Vérifier les cas d’accès et les moteurs via les tests serveur, puis la suite complète.
 
 ## Task 3 — Interface, synchronisation et livraison
 
 **Files:** components/duels.tsx ; components/duel-board.tsx ; components/duel-review.tsx ; app/duels/duel.css ; lib/site-content.ts ; tests/duel-components.test.ts ; tests/duel-presentation.test.ts.
 **Interfaces:** les écrans lisent uniquement la projection publique du Task 2. Les réponses de fond ne produisent aucun reçu volant, son, focus ou confetti.
 
-- [ ] Ajouter les tests d’affichage de la solution, des mots adverses et du motif de résultat ; partage sans solutions ; actualisation sans saisie perdue ni navigation réouverte.
-- [ ] Afficher les deux progressions et le score partiel, les trois bilans, l’historique consultable, la revanche adressée et le partage sans spoiler ; conserver la grosse flamme.
-- [ ] Actualiser par requêtes bornées pendant la visibilité, à la reprise de focus et après une mutation ; arrêter au démontage et préserver les saisies/identités de requêtes.
-- [ ] Mettre à jour les explications publiques et les règles pour la révélation après clôture.
-- [ ] Exécuter TypeScript, suite complète et construction ; demander une revue indépendante conformément au skill d’exécution ; corriger tout défaut important.
-- [ ] Vérifier les deux joueurs en navigateur local et le serveur publié, capturer les écrans, publier sur le Site existant et joindre un bilan de livraison concis.
+- [x] Ajouter les tests d’affichage de la solution, des mots adverses et du motif de résultat ; partage sans solutions ; actualisation sans saisie perdue ni navigation réouverte.
+- [x] Afficher les deux progressions et le score partiel, les trois bilans, l’historique consultable, la revanche adressée et le partage sans spoiler ; conserver la grosse flamme.
+- [x] Actualiser par requêtes bornées pendant la visibilité, à la reprise de focus et après une mutation ; arrêter au démontage et préserver les saisies/identités de requêtes.
+- [x] Mettre à jour les explications publiques et les règles pour la révélation après clôture.
+- [x] Exécuter TypeScript, suite complète et construction ; demander une revue indépendante conformément au skill d’exécution ; corriger tout défaut important.
+- [x] Vérifier les deux joueurs en navigateur local et le serveur publié, capturer les écrans, publier sur le Site existant et joindre un bilan de livraison concis.
+
