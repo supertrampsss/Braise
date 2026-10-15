@@ -2,7 +2,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {betterHintId} from '../lib/classic-hints';
-import {evaluateWord2vec,word2vecHint,setWord2vecObjectLoaderForTests} from '../lib/word2vec.server';
+import {evaluateWord2vec,word2vecHint,word2vecLegacyTargets,setWord2vecObjectLoaderForTests} from '../lib/word2vec.server';
+import classicLexicon from '../data/semantic-v1-index.json';
 import {parseWord2vecDocument,word2vecDocument} from '../lib/word2vec-storage';
 import {word2vecRef} from '../lib/word2vec-contract';
 
@@ -28,6 +29,7 @@ test('three Word2Vec hints are exact corpus words, increasingly closer, and neve
         assert.deepEqual(hint,await evaluateWord2vec(target,hint.word));used.push(hint.word);best=hint.rank;
       }
     }
+    const target=word2vecLegacyTargets[39],hint=await word2vecHint(target,0,['maison']);assert(hint);assert.notEqual(hint.word,'crespy');assert(classicLexicon.words.includes(hint.word));assert(hint.rank<(await evaluateWord2vec(target,'maison'))!.rank);
   }finally{setWord2vecObjectLoaderForTests(null);}
 });
 

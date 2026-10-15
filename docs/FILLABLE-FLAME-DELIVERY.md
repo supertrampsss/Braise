@@ -22,6 +22,8 @@ Le corpus et les réponses numériques ne sont pas modifiés. Les identités de 
 
 Les effets respectent la réduction des animations, la pause choisie par la personne et la visibilité de la flamme. Les reçus et l’animation ne sont jamais enregistrés dans une sauvegarde.
 
+La vérification en ligne a révélé un indice rare (`crespy`, 115 794e entrée du lexique source). Les indices Word2Vec sont donc limités aux mots présents dans le lexique français courant déjà embarqué, avec leurs scores et rangs Word2Vec réels. Ce filtre lexical global ne constitue pas une sélection éditoriale de voisins. Il ne retire aucun mot du champ de saisie, ne réordonne aucun rang et ne change aucune association du moteur. Un test couvre le cas découvert.
+
 Les maquettes et les trois séquences Imagegen sont des propositions illustratives statiques ; leurs valeurs ne sont pas des résultats réels. La version du site calcule et anime les seules réponses réellement acceptées.
 
 ## Vérification

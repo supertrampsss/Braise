@@ -1,6 +1,7 @@
 // Server-only: this complete vocabulary must never enter a client bundle.
 import { env } from "cloudflare:workers";
 import index from "@/data/word2vec-index.json";
+import classicLexicon from '@/data/semantic-v1-index.json';
 import type { WordEvaluation } from "./game-contracts";
 import { betterHintId } from './classic-hints';
 
@@ -21,6 +22,8 @@ const normalize = (input: string) => input.trim().toLocaleLowerCase("fr").normal
 const words = new Map<string, number>();
 for (let id = 0; id < index.words.length; id++) if (!words.has(index.words[id])) words.set(index.words[id], id);
 const targets = new Map(index.targets.map(target => [target.word, target]));
+// Global lexical eligibility only; no annotated neighbours or score adjustments.
+const hintLexicon = new Set(classicLexicon.words);
 const CACHE_BUDGET_BYTES = 4 * 1024 * 1024;
 const MAX_LOADS = 4;
 const cache = new Map<string, Column>();
@@ -142,7 +145,7 @@ export async function word2vecHint(targetWord: string, level: number, guesses: s
   if (!target) throw new Word2vecStorageError('object_missing', 'Word2Vec secret is not available');
   const { scores, ranks } = await column(target);
   const used = new Set(guesses.flatMap(word => { const id = words.get(normalize(word)); return id === undefined ? [] : [id]; }));
-  const id = betterHintId(ranks, used, level);
+  const id = betterHintId(ranks, used, level, id=>hintLexicon.has(index.words[id]));
   return id === null ? null : { word:index.words[id], temperature:scores[id]/100, rank:ranks[id], found:false };
 }
 
