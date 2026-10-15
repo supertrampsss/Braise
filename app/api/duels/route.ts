@@ -1,7 +1,8 @@
 import { env } from "cloudflare:workers";
 import { authenticate, serverHeaders, unavailable } from "@/lib/server-runtime";
 import { DuelStore } from "@/lib/duel-store";
-import { evaluateWord, findWord, getPuzzle } from "@/lib/semantic";
+import {duelTargetWord,evaluateDuelWord,newDuelTargets} from '@/lib/duel-engine.server';
+import {DUEL_WORD2VEC_RULES} from '@/lib/duel-presentation';
 import { creationLimited } from "@/lib/server-limits";
 const reply = (data: unknown, status = 200) => Response.json(data, { status, headers: serverHeaders });
 const uuid = (value: unknown): value is string => typeof value === "string" && /^[a-f0-9-]{36}$/.test(value);
@@ -27,20 +28,31 @@ export async function POST(request: Request) {
       return duel ? reply(await store.view(session.guest_id, duel.id)) : reply({ error: "Invitation indisponible, déjà acceptée ou expirée." }, 409);
     }
     if (!uuid(body.id)) return reply({ error: "Identifiant invalide." }, 400);
+    if(body.action==='accept-rematch'){
+      const duel=await store.acceptRematch(session,body.id);
+      return duel?reply(await store.view(session.guest_id,duel.id)):reply({error:'Cette revanche n’est plus disponible.'},409);
+    }
+    if(body.action==='rematch'&&uuid(body.parentId)&&token(body.token)){
+      if(creationLimited(request))return reply({error:'Trop de demandes.'},429);
+      const parent=await store.get(session.guest_id,body.parentId);
+      if(!parent)return reply({error:'Duel inaccessible.'},404);
+      if((await store.view(session.guest_id,parent.id))?.state!=='finished')return reply({error:'Le duel n’est pas terminé.'},409);
+      const targets=await newDuelTargets([0,1,2].map(round=>duelTargetWord(parent,round)));
+      const duel=await store.rematch(session,parent.id,body.id,body.token,targets);
+      return duel?reply(await store.view(session.guest_id,duel.id)):reply({error:'Revanche indisponible. Dix invitations ou duels actifs maximum.'},409);
+    }
     if (body.action === "create" && token(body.token)) {
       if (creationLimited(request)) return reply({ error: "Trop de demandes." }, 429);
-      const targets = new Set<number>();
-      // Distinct target identities, not merely different seeds.
-      for (let attempt = 0; targets.size < 3 && attempt < 200; attempt++) targets.add(getPuzzle("challenge", String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647)).targetIndex);
-      const duel = await store.create(session, body.id, body.token, [...targets]);
+      const targets=await newDuelTargets();
+      const duel = await store.create(session, body.id, body.token, targets,Date.now(),{rules:DUEL_WORD2VEC_RULES});
       return duel ? reply(await store.view(session.guest_id, duel.id)) : reply({ error: "Création impossible. Dix invitations ou duels actifs maximum." }, 409);
     }
     const duel = await store.get(session.guest_id, body.id); if (!duel) return reply({ error: "Duel inaccessible." }, 404);
     if (body.action === "cancel" || body.action === "forfeit") { await store.end(session, body.id, body.action === "forfeit"); return reply(await store.view(session.guest_id, body.id)); }
     if (body.action !== "guess" || !uuid(body.requestId) || !Number.isInteger(body.round) || body.round < 0 || body.round > 2 || !Number.isInteger(body.revision) || body.revision < 0 || body.revision > 30 || typeof body.word !== "string" || body.word.length > 50) return reply({ error: "Proposition invalide." }, 400);
-    const index = findWord(body.word); if (index === undefined) return reply({ error: "Mot absent du dictionnaire." }, 422);
-    if (duel.rules !== "duel-v1") return reply({ error: "Version non prise en charge." }, 409);
-    const result = await evaluateWord((JSON.parse(duel.targets) as number[])[body.round], index);
+    if (!['duel-v1',DUEL_WORD2VEC_RULES].includes(duel.rules)) return reply({ error: "Version non prise en charge." }, 409);
+    const result = await evaluateDuelWord(duel,body.round,body.word);
+    if(!result)return reply({error:'Mot absent du dictionnaire.'},422);
     const outcome = await store.submit(session, body.id, body.round, body.revision, body.requestId, result);
     return outcome === "conflict" ? reply({ error: "Manche close ou modifiée. Actualisez avant de réessayer." }, 409) : reply(await store.view(session.guest_id, body.id));
   } catch { return unavailable(); }

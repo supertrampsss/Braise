@@ -6,7 +6,7 @@ export function roundFacts(guesses: readonly DuelGuess[], guest: string, round: 
 }
 export function compareRound(a: ReturnType<typeof roundFacts>, b: ReturnType<typeof roundFacts>): -1 | 0 | 1 {
   if (a.found !== b.found) return a.found ? -1 : 1;
-  const left = a.found ? a.attempts : a.bestRank ?? 30001;
-  const right = b.found ? b.attempts : b.bestRank ?? 30001;
+  const left = a.found ? a.attempts : a.bestRank ?? Infinity;
+  const right = b.found ? b.attempts : b.bestRank ?? Infinity;
   return left === right ? 0 : left < right ? -1 : 1;
 }

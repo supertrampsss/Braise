@@ -84,3 +84,50 @@
  .duel-dashboard-heading .primary-button { padding:10px; font-size:12px; }
  .duel-link-row { grid-template-columns:minmax(0,1fr); }
 }
+.duel-live-score { color:#ffac86; font-size:28px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.duel-live-progress { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 20px; }
+.duel-player-progress { padding:16px; border:1px solid #454a54; border-radius:12px; background:#1c1e22; min-width:0; }
+.duel-player-progress > div:first-child { display:flex; justify-content:space-between; align-items:center; gap:12px; color:#f4f0eb; }
+.duel-player-progress strong { min-width:0; overflow-wrap:anywhere; font-size:15px; }
+.duel-player-progress > div > span { color:#ffac86; font-size:20px; font-weight:600; }
+.duel-player-track { height:7px; background:#343841; border-radius:6px; margin:14px 0 10px; overflow:hidden; }
+.duel-player-track i { display:block; height:100%; background:#ff946a; border-radius:inherit; }
+.is-opponent .duel-player-track i { background:#d0b582; }
+.duel-player-progress p { display:flex; justify-content:space-between; flex-wrap:wrap; gap:5px 12px; color:#bdc3ce; font-size:12px; margin:0; }
+.duel-round-review { margin:28px 0; }
+.duel-round-verdict { display:flex; flex-wrap:wrap; align-items:center; gap:10px 20px; margin:0 0 18px; color:#c9cbd2; }
+.duel-round-verdict strong { font-size:22px; color:#ffac86; }
+.duel-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.duel-comparison > div { min-width:0; }
+.duel-player-history h3 { color:#f4f0eb; font-size:17px; margin:0 0 16px; overflow-wrap:anywhere; }
+.approved-interface.proximity-interface.duel-interface .duel-comparison .guess-row,.approved-interface.proximity-interface.duel-interface .duel-comparison .list-labels { grid-template-columns:minmax(0,1fr) minmax(90px,.8fr); padding-inline:12px; }
+.duel-empty-history { color:#bfc4ce; padding:16px 0; }
+.duel-history-tabs { display:none; }
+.duel-summary-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.duel-interface .duel-match-review { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:24px 0; }
+.duel-interface .duel-match-review li { padding:0; border:0; min-width:0; }
+.duel-match-review button { display:flex; flex-direction:column; align-items:flex-start; gap:10px; padding:18px; width:100%; height:100%; border:1px solid #454a54; border-radius:12px; text-align:left; background:#202329; color:#c9cbd2; font:inherit; font-size:14px; }
+.duel-match-review button strong { font-size:23px; color:#ffac86; overflow-wrap:anywhere; }
+.duel-review-link { color:#ffb58f!important; font-size:13px; text-decoration:underline; text-underline-offset:4px; }
+.duel-review-counts { font-size:12px; line-height:1.8; overflow-wrap:anywhere; }
+.duel-sync-error { color:#ffd2bb; font-size:13px; }
+.duel-sync-error button { padding:10px; text-decoration:underline; color:inherit; }
+#duel-round-board { scroll-margin-top:24px; }
+@media(max-width:650px) {
+ .duel-live-progress { gap:8px; }
+ .duel-player-progress { padding:12px; }
+ .duel-player-progress > div:first-child { align-items:flex-start; flex-direction:column; gap:8px; }
+ .duel-player-progress strong { font-size:14px; }
+ .duel-player-progress p { flex-direction:column; }
+ .duel-interface .duel-match-review { grid-template-columns:1fr; }
+ .duel-match-review button { display:grid; grid-template-columns:minmax(0,1fr) minmax(90px,.6fr); align-items:start; }
+ .duel-match-review button strong { grid-column:1; grid-row:2; }
+ .duel-match-review button > small { grid-column:2; grid-row:2; }
+ .duel-history-tabs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:18px; }
+ .duel-history-tabs button { min-height:48px; border:1px solid #454a54; border-radius:10px; background:#1c1e22; color:#f4f0eb; overflow-wrap:anywhere; }
+ .duel-history-tabs button[aria-pressed=true] { border-color:#ffac86; color:#ffac86; background:#302620; }
+ .duel-comparison { display:block; }
+ .duel-comparison[data-selected=own] > [data-player=opponent],.duel-comparison[data-selected=opponent] > [data-player=own] { display:none; }
+ .duel-player-history h3 { display:none; }
+ .duel-summary-actions > button { flex:1; }
+}

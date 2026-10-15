@@ -48,6 +48,15 @@ export const duelGuesses = sqliteTable("braise_duel_guesses", {
   requestId: text("request_id").notNull(), word: text("word").notNull(), ordinal: integer("ordinal").notNull(),
   temperature: integer("temperature").notNull(), rank: integer("rank").notNull(), found: integer("found").notNull(), acceptedAt: integer("accepted_at").notNull(),
 }, table => [uniqueIndex("braise_duel_word").on(table.duelId, table.guestId, table.round, table.word), uniqueIndex("braise_duel_request").on(table.duelId, table.guestId, table.requestId), uniqueIndex("braise_duel_ordinal").on(table.duelId, table.guestId, table.round, table.ordinal), check("braise_duel_guess_bounds", sql`${table.round} BETWEEN 0 AND 2 AND ${table.ordinal} BETWEEN 1 AND 30 AND ${table.rank} BETWEEN 1 AND 30000 AND ${table.found} IN (0,1) AND ${table.temperature} BETWEEN -1000000 AND 1000000`)]);
+// Additive storage: historical duel-v1 rows and their constraints stay intact.
+export const duelGuessesV2 = sqliteTable('braise_duel_guesses_v2', {
+  id:text('id').primaryKey(),duelId:text('duel_id').notNull().references(()=>duels.id),guestId:text('guest_id').notNull().references(()=>guests.id),
+  round:integer('round').notNull(),requestId:text('request_id').notNull(),word:text('word').notNull(),ordinal:integer('ordinal').notNull(),
+  temperature:integer('temperature').notNull(),rank:integer('rank').notNull(),found:integer('found').notNull(),acceptedAt:integer('accepted_at').notNull(),
+},table=>[uniqueIndex('braise_duel_v2_word').on(table.duelId,table.guestId,table.round,table.word),uniqueIndex('braise_duel_v2_request').on(table.duelId,table.guestId,table.requestId),uniqueIndex('braise_duel_v2_ordinal').on(table.duelId,table.guestId,table.round,table.ordinal),check('braise_duel_v2_bounds',sql`${table.round} BETWEEN 0 AND 2 AND ${table.ordinal} BETWEEN 1 AND 30 AND ${table.rank} BETWEEN 1 AND 155562 AND ${table.found} IN (0,1) AND ${table.temperature} BETWEEN -1000000 AND 1000000`)]);
+export const duelRematches = sqliteTable('braise_duel_rematches',{
+  duelId:text('duel_id').primaryKey().references(()=>duels.id),parentId:text('parent_id').notNull().references(()=>duels.id),inviteeId:text('invitee_id').notNull().references(()=>guests.id),
+});
 export const circleMembers = sqliteTable("braise_circle_members", {
   id: text("id").primaryKey(), circleId: text("circle_id").notNull().references(() => circles.id),
   guestId: text("guest_id").notNull().references(() => guests.id),

@@ -7,6 +7,22 @@ import classicLexicon from '../data/semantic-v1-index.json';
 import {parseWord2vecDocument,word2vecDocument} from '../lib/word2vec-storage';
 import {word2vecRef} from '../lib/word2vec-contract';
 
+test('hints advance proportionally from a distant rank without fixed top100 jumps',()=>{
+ const ranks=Array.from({length:155562},(_,i)=>i+1),used=new Set([99999]);let best=100000;
+ for(let level=0;level<3;level++){
+  const id=betterHintId(ranks,used,level)!;assert.notEqual(id,null);const rank=ranks[id];
+  assert(rank>=Math.ceil(best*.6));assert(rank<best);assert.equal(rank,Math.floor(best*.75));
+  used.add(id);best=rank;
+ }
+ assert(best>40000);
+});
+
+test('an eligible word outside the moderate hint band is not used as a shortcut',()=>{
+ const ranks=Array.from({length:1000},(_,i)=>i+1);
+ assert.equal(betterHintId(ranks,new Set([999]),0,id=>id===2),null);
+ assert.equal(betterHintId(ranks,new Set([2]),2),1);
+});
+
 test('hint selection only advances, excludes answer/used words, and returns null at rank2',()=>{
   const ranks=Array.from({length:40},(_,i)=>i+1);
   const used=new Set([39]);
