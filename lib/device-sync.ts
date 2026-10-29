@@ -108,9 +108,20 @@ export function deviceUploadRevision(storage:ProfileStorage,snapshot:ProfileSnap
   return JSON.stringify([relevantRevision(storage,snapshot),snapshot.transferBase,snapshot.transferEvidence,live??null]);
 }
 export function unionGame(local:SavedGame,incoming:SavedGame,now:Date):SavedGame{
-  validateGame(local,now);const guesses=[...local.guesses];for(const g of incoming.guesses){const existing=guesses.find(x=>x.word===g.word);if(existing){guesses[guesses.indexOf(existing)]=mergeGuessFacts(existing,g);}else guesses.push({...g,order:Math.max(0,...guesses.map(x=>x.order))+1});}
-  const pins=[...new Set([...local.pins,...incoming.pins])];const hints=Math.max(local.hints,incoming.hints,guesses.filter(g=>g.hint).length);if(pins.length>3||guesses.length>3000||hints>3)fail('La fusion dépasserait la limite des épingles ou essais. Aucun élément supprimé.');
-  return {...local,guesses,pins,hints,startedAt:Math.min(local.startedAt,incoming.startedAt),profileV2StartIndex:guesses.length};
+  validateGame(local,now);validateGame(incoming,now);
+  const localWon=local.guesses.some(g=>g.found),incomingWon=incoming.guesses.some(g=>g.found);
+  let base=local,extension=incoming;
+  if(localWon||incomingWon){
+    if(localWon&&incomingWon&&(local.solvedAt!==undefined&&incoming.solvedAt!==undefined&&local.solvedAt!==incoming.solvedAt||local.completedMode&&incoming.completedMode&&local.completedMode!==incoming.completedMode))fail('Deux fins différentes existent pour cette partie. Les deux copies restent intactes.');
+    // A finished history may contain the other prefix, never acquire a new branch.
+    // Keep the winning history's order instead of appending after its final guess.
+    if(!localWon){base=incoming;extension=local;}
+    assertGameFactsPreserved(extension,base);
+    if(localWon&&incomingWon)assertGameFactsPreserved(base,extension);
+  }
+  const guesses=[...base.guesses];for(const g of extension.guesses){const existing=guesses.find(x=>x.word===g.word);if(existing){guesses[guesses.indexOf(existing)]=mergeGuessFacts(existing,g);}else guesses.push({...g,order:Math.max(0,...guesses.map(x=>x.order))+1});}
+  const pins=[...new Set([...base.pins,...extension.pins])];const hints=Math.max(local.hints,incoming.hints,guesses.filter(g=>g.hint).length);if(pins.length>3||guesses.length>3000||hints>3)fail('La fusion dépasserait la limite des épingles ou essais. Aucun élément supprimé.');
+  return {...base,guesses,pins,hints,startedAt:Math.min(local.startedAt,incoming.startedAt),profileV2StartIndex:guesses.length,...((localWon||incomingWon)&&(base.solvedAt??extension.solvedAt)!==undefined?{solvedAt:base.solvedAt??extension.solvedAt}:{}),...((localWon||incomingWon)&&(base.completedMode??extension.completedMode)?{completedMode:base.completedMode??extension.completedMode}:{})};
 }
 export function inspectDeviceMerge(text:string,storage:ProfileStorage,snapshot:ProfileSnapshot,now=new Date(),live?:LiveDeviceGame|null){
   assertDeviceMemorySaved(storage,snapshot,now,live);

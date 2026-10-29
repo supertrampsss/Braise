@@ -1,8 +1,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {SyncMemory,createDeviceEnvelope,parseDeviceEnvelope,inspectDeviceMerge,applyDeviceMerge} from '../lib/device-sync';
+import {SyncMemory,createDeviceEnvelope,parseDeviceEnvelope,inspectDeviceMerge,applyDeviceMerge,unionGame} from '../lib/device-sync';
 import {loadLocalProfile} from '../lib/profile-storage';
 import {PLAY_CONTEXT_KEY} from '../lib/play-hub';
+import {createLocalBackup,inspectLocalBackup} from '../lib/local-backup';
+import type {SavedGame} from '../lib/game-types';
 const now=new Date('2026-10-12T12:00:00Z');
 class Memory extends SyncMemory {removeItem(k:string){this.values.delete(k);}clear(){this.values.clear();}}
 function game(word='arbre',pins:string[]=[]){return {guesses:[{word,temperature:12,rank:200,found:false,order:1}],pins,hints:0,startedAt:1};}
@@ -42,4 +44,65 @@ test('game fact union preserves known timestamps in either direction, rejects cl
   const a=source(),b=source();a.setItem('braise.v1.game.free-0012',JSON.stringify({...game(),guesses:[{...game().guesses[0],acceptedAt:date}]}));b.setItem('braise.v1.game.free-0012',JSON.stringify({...game(),guesses:[{...game().guesses[0],acceptedAt:date,...changed}]}));
   const snapshot=loadLocalProfile(b),before=[...b.values];assert.throws(()=>inspectDeviceMerge(createDeviceEnvelope(a,loadLocalProfile(a),now),b,snapshot,now),/incompatibles/);assert.deepEqual([...b.values],before);
  }
+});
+
+function finishedGame():SavedGame {
+ return {...game(),guesses:[...game().guesses,{word:'forêt',temperature:100,rank:1,found:true,order:2}],solvedAt:now.getTime()-1000,completedMode:'challenge'};
+}
+test('device merge refuses an active remote fork against a locally won game before any storage write',()=>{
+ const remote=source(),local=source(),key='braise.v1.game.free-0012';
+ remote.setItem(key,JSON.stringify({...game(),guesses:[...game().guesses,{word:'jardin',temperature:20,rank:150,found:false,order:2}]}));
+ local.setItem(key,JSON.stringify(finishedGame()));
+ const text=createDeviceEnvelope(remote,loadLocalProfile(remote),now),snapshot=loadLocalProfile(local),localBefore=[...local.values],remoteBefore=[...remote.values];
+ assert.throws(()=>inspectDeviceMerge(text,local,snapshot,now));
+ assert.deepEqual([...local.values],localBefore);assert.deepEqual([...remote.values],remoteBefore);
+ assert.doesNotThrow(()=>createLocalBackup(local,snapshot,now));
+});
+test('a prepared device merge cannot append a branch when the local game wins after preview',()=>{
+ const remote=source(),local=source(),key='braise.v1.game.free-0012';
+ remote.setItem(key,JSON.stringify(game('jardin')));
+ const text=createDeviceEnvelope(remote,loadLocalProfile(remote),now),snapshot=loadLocalProfile(local),plan=inspectDeviceMerge(text,local,snapshot,now);
+ local.setItem(key,JSON.stringify(finishedGame()));const before=[...local.values];
+ assert.throws(()=>applyDeviceMerge(text,plan.revision,local as unknown as Storage,snapshot,now),/changé/);
+ assert.deepEqual([...local.values],before);assert.doesNotThrow(()=>createLocalBackup(local,snapshot,now));
+});
+test('shared union rejects both fork directions and differing completed histories without mutating either branch',()=>{
+ const won=finishedGame(),fork:SavedGame={...game(),guesses:[...game().guesses,{word:'jardin',temperature:20,rank:150,found:false,order:2}]};
+ for(const [local,incoming] of [[won,fork],[fork,won],[won,{...won,solvedAt:won.solvedAt!+1}],[won,{...won,completedMode:'free' as const}],[won,{...won,guesses:[...won.guesses,{word:'jardin',temperature:20,rank:150,found:false,order:3}]}]] as Array<[SavedGame,SavedGame]>){
+  const before=JSON.stringify([local,incoming]);assert.throws(()=>unionGame(local,incoming,now));assert.equal(JSON.stringify([local,incoming]),before);
+ }
+});
+test('compatible prefix and completed histories retain winning order, known completion dates and metadata',()=>{
+ const won=finishedGame(),prefix=game(),before=JSON.stringify([won,prefix]);
+ for(const [local,incoming] of [[won,prefix],[prefix,won],[{...won,solvedAt:undefined,completedMode:undefined},won]] as Array<[SavedGame,SavedGame]>){
+  const merged=unionGame(local,incoming,now);assert.equal(merged.guesses.length,2);assert.equal(merged.guesses[1].found,true);assert.equal(merged.solvedAt,won.solvedAt);assert.equal(merged.completedMode,won.completedMode);
+ }
+ assert.equal(JSON.stringify([won,prefix]),before);
+ const remote=source(),local=source(),key='braise.v1.game.free-0012';local.setItem(key,JSON.stringify(won));
+ const snapshot=loadLocalProfile(local),text=createDeviceEnvelope(remote,loadLocalProfile(remote),now),plan=inspectDeviceMerge(text,local,snapshot,now);
+ const imported=applyDeviceMerge(text,plan.revision,local as unknown as Storage,snapshot,now),saved=JSON.parse(local.getItem(key)!);
+ assert.deepEqual(saved.guesses,won.guesses);assert.equal(saved.solvedAt,won.solvedAt);assert.equal(saved.completedMode,won.completedMode);
+ assert.doesNotThrow(()=>createLocalBackup(local,imported,now));
+});
+test('device envelopes still refuse remote completed games before any import regardless of the local branch',()=>{
+ const remote=source(),base=JSON.parse(createDeviceEnvelope(remote,loadLocalProfile(remote),now));
+ const text=JSON.stringify({...base,games:[{...base.games[0],game:finishedGame()}]});
+ for(const localGame of [game('jardin'),finishedGame()]){
+  const local=source();local.setItem('braise.v1.game.free-0012',JSON.stringify(localGame));const snapshot=loadLocalProfile(local),before=[...local.values];
+  assert.throws(()=>inspectDeviceMerge(text,local,snapshot,now),/parties en cours/);assert.deepEqual([...local.values],before);
+ }
+});
+
+test('a completed incoming history retains its metadata and pin order through both union and backup import',()=>{
+ const active:SavedGame={...game(),pins:['arbre'],completedMode:'free'};
+ const won:SavedGame={...finishedGame(),pins:['forêt','arbre']},before=JSON.stringify([active,won]);
+ const merged=unionGame(active,won,now);
+ assert.deepEqual(merged.pins,won.pins);assert.equal(merged.completedMode,won.completedMode);assert.equal(merged.solvedAt,won.solvedAt);
+ assert.deepEqual(merged.guesses,won.guesses);assert.equal(JSON.stringify([active,won]),before);
+ const remote=new Memory(),local=new Memory(),key='braise.v1.game.free-0012';
+ remote.setItem(key,JSON.stringify(won));local.setItem(key,JSON.stringify(active));
+ const snapshot=loadLocalProfile(local),text=createLocalBackup(remote,loadLocalProfile(remote),now).text;
+ const localBefore=[...local.values],plan=inspectLocalBackup(text,local,snapshot,now);
+ assert.deepEqual(plan.conflicts,[]);assert.deepEqual([...local.values],localBefore);
+ assert.deepEqual(JSON.parse(plan.staged.getItem(key)!),merged);
 });

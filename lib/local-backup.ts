@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import {
-  SyncMemory, assertDeviceMemorySaved, assertGameFactsPreserved, commitDeviceStaging, contextSchema,
+  SyncMemory, assertDeviceMemorySaved, commitDeviceStaging, contextSchema,
   deviceUploadRevision, parseSavedGame, prepareDeviceProfile, unionGame,
   validateDeviceProfile, validateGame, validId, type LiveDeviceGame,
 } from './device-sync';
@@ -88,15 +88,6 @@ export function createLocalBackup(storage: ProfileStorage, snapshot: ProfileSnap
   return { text, filename: `braiz-sauvegarde-${parisDate(now)}.json`, games: games.length };
 }
 
-/** A closed history cannot absorb another branch after its winning guess. */
-function mergeGame(local: SavedGame, incoming: SavedGame, now: Date): SavedGame {
-  if (!complete(local) && !complete(incoming)) return unionGame(local, incoming, now);
-  if (complete(local) && complete(incoming) && (local.solvedAt !== undefined && incoming.solvedAt !== undefined && local.solvedAt !== incoming.solvedAt || local.completedMode && incoming.completedMode && local.completedMode !== incoming.completedMode)) invalid('Deux fins différentes existent pour cette partie. Les deux copies restent intactes.');
-  const closed = complete(local) ? local : incoming, other = closed === local ? incoming : local;
-  assertGameFactsPreserved(other, closed);
-  if (complete(other)) assertGameFactsPreserved(closed, other);
-  return { ...unionGame(closed, other, now), ...((closed.solvedAt ?? other.solvedAt) !== undefined ? { solvedAt: closed.solvedAt ?? other.solvedAt } : {}), ...(closed.completedMode ?? other.completedMode ? { completedMode: closed.completedMode ?? other.completedMode } : {}) };
-}
 function serializeGame(id: string, game: SavedGame) {
   return JSON.stringify(isWord2vecId(id) ? word2vecDocument(id, game) : publishedV2Date(id) ? dailyV2Document(id, game) : game);
 }
@@ -116,7 +107,7 @@ export function inspectLocalBackup(text: string, storage: ProfileStorage, snapsh
       const local = raw === null ? null : validateItem({ id: item.id, raw, ...(contexts[item.id] ? { context: contexts[item.id] } : {}) }, now);
       row.localGuesses = local?.guesses.length ?? 0;
       if (contexts[item.id] && item.context && JSON.stringify(contexts[item.id]) !== JSON.stringify(item.context)) invalid('Les deux appareils attribuent des contextes différents à cette partie.');
-      const merged = local ? mergeGame(local, incoming, now) : incoming;
+      const merged = local ? unionGame(local, incoming, now) : incoming;
       const content = serializeGame(item.id, { ...merged, profileV2StartIndex: merged.guesses.length });
       if (raw === content) row.status = 'unchanged';
       staged.setItem(key, content);

@@ -1,8 +1,17 @@
 # Registre d’amélioration BRAIZ
 
-État du 29 octobre 2026. Le dossier privé `BRAIZ-Qualification-2026-10-29`, situé deux niveaux au-dessus du dépôt, conserve les preuves et l’état de publication. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 29 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-29-2124`, situé deux niveaux au-dessus du dépôt. Le dossier `BRAIZ-Qualification-2026-10-29` conserve la qualification éditoriale et les vérifications Google/AdSense précédentes. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Saisie rapide : le refus tardif d’un doublon canonique ne marque plus le mot suivant comme invalide. Le refus reste lisible si le champ est inchangé ; aucun essai ni indice consommé.
+- Synchronisation : une branche distante ne peut plus ajouter de mots après une victoire locale. Refus avant mutation en cas de conflit, fusion des préfixes compatibles, dates et métadonnées de fin conservées.
+- La sauvegarde complète et la synchronisation partagent désormais la même garde de fin de partie ; l’ordre des épingles et la priorité de la partie gagnée sont couverts par régression.
+- Deux dialogues sans chemin d’ouverture, leurs imports/fonction exclusifs et dix règles CSS orphelines supprimés. Le mode de défi historique et ses liens restent disponibles.
+- Contrôles ciblés : 37 tests du plateau et 43 tests de sauvegarde/synchronisation réussis. Suite complète : 539 réussites, aucun échec, 3 tests de liens symboliques ignorés faute de privilèges Windows. TypeScript et build réussis. Aucun changement visuel des écrans accessibles ; pas de nouvelle campagne de captures.
+- Aucun changement de rang, score, corpus, partie existante ou publicité. Pas de nouvelle campagne Google/AdSense sans changement d’état observé.
+
+## Lot précédent, qualification et nettoyage
 
 - Qualification éditoriale complète des 475 cibles : 64 voisins relus par cible, 30 400 au total. 361 retenues, 112 réserves, 2 exclusions proposées pour une prochaine édition. Détails et mots dans le dossier privé uniquement. Aucun rang, score, calendrier ou mot d’une partie existante modifié.
 - 57 fichiers UI inutilisés et 14 dépendances directes retirés. Inventaire reproductible : `node scripts/audit-code-usage.mjs`. Voir `CODE-CLEANUP.md` pour les limites du graphe et les lecteurs historiques conservés.

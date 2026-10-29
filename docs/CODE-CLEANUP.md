@@ -20,6 +20,12 @@ Les quatre imports non littéraux ont été relus : reconstruction de l’oracle
 
 La recherche textuelle intégrale a complété le graphe avant retrait des dépendances. Après suppression, il ne reste aucun candidat orphelin dans `components/`, `lib/` ou `hooks/` selon ces points d’entrée. Le rapport des exports sans import externe reste une liste à relire : une fonction peut être utilisée dans son propre module ou appartenir à un contrat conservé. Ce rapport n’est jamais une autorisation automatique de suppression.
 
+## Complément du 29 octobre, lot du soir
+
+Deux branches de dialogue internes à `Game` étaient inatteignables : `challenge` et `privacy` ne figuraient dans aucun appel à `setModal`, dont le setter reste privé au composant. Leurs rendus, la fonction exclusivement appelée par le dialogue de défi, cinq imports d’icônes inutilisés et dix règles CSS sans autre consommateur ont été retirés. Le mode historique `challenge`, ses liens `?defi=`, les sauvegardes et la page de confidentialité restent en place. La classe `modal-note` reste utilisée par les objectifs hebdomadaires.
+
+La protection des parties gagnées est également centralisée dans `unionGame`, utilisée par la synchronisation et la sauvegarde complète. Le wrapper de sauvegarde qui répétait cette garde est retiré après vérification de la priorité des métadonnées de la partie terminée et de l’ordre des épingles.
+
 ## Dépendances retirées
 
 `@base-ui/react`, `@hookform/resolvers`, `@shadcn/react`, `cmdk`, `date-fns`, `embla-carousel-react`, `input-otp`, `react-day-picker`, `react-hook-form`, `react-resizable-panels`, `recharts`, `three`, `vaul`, `@types/three`.

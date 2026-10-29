@@ -1,7 +1,7 @@
 "use client";
 
 import { lazy, Suspense, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
-import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Share2, Target, Users, X } from "lucide-react";
+import { Check, CircleHelp, Clock3, Flame, Infinity as InfinityIcon, Lightbulb, Share2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
@@ -48,7 +48,7 @@ const ExpeditionPicker = lazy(() => import('@/components/expedition-picker').the
 const WinSummary = lazy(() => import('@/components/game-parts/play-hub').then(module => ({default:module.WinSummary})));
 const surfaceLoading = <p role="status" className="surface-loading">Chargement…</p>;
 
-type Modal = "tutorial" | "help" | "challenge" | "privacy" | "share" | null;
+type Modal = "tutorial" | "help" | "share" | null;
 function freshSeed() { return String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647); }
 function archiveDateError(date: string, now = new Date()) {
   const status = archiveDateStatus(date, now);
@@ -518,7 +518,7 @@ export default function Game() {
       }
       if (!samePuzzleRef(data.puzzleRef, puzzle.ref)) throw new Error("La réponse ne correspond pas à cette partie. Rechargez le jeu.");
       if (hint && (data.found || data.rank >= (best?.rank ?? puzzle.vocabularySize) || game.hints >= MAX_CLASSIC_HINTS)) throw new Error('Aucun indice disponible.');
-      if (game.guesses.some(g => g.word === data.word)) { setError(`« ${data.word} » est déjà dans vos essais.`); return; }
+      if (game.guesses.some(g => g.word === data.word)) throw new Error(`« ${data.word} » est déjà dans vos essais.`);
       const acceptedAt = new Date().toISOString();
       const guess: Guess = { word: data.word, temperature: data.temperature, rank: data.rank, found: data.found, order: game.guesses.length + 1, hint, acceptedAt };
       const next = { ...game, guesses: [...game.guesses, guess], hints:game.hints + Number(hint), profileV2StartIndex: game.profileV2StartIndex ?? game.guesses.length, ...(data.found ? { solvedAt: Date.parse(acceptedAt), completedMode: mode } : {}) };
@@ -565,14 +565,6 @@ export default function Game() {
     const text = resultText();
     if (navigator.share) { try { await navigator.share({ title: "BRAIZ", text }); diagnostic("shareNative"); return; } catch (err) { if (err instanceof Error && err.name === "AbortError") return; } }
     await copy(text, "Résultat copié, sans révéler le mot.");
-  }
-  async function createChallenge() {
-    const seed = freshSeed();
-    const url = new URL(window.location.origin); url.searchParams.set("defi", seed);
-    setModal(null); window.history.replaceState(null, "", url);
-    const loaded = await loadPuzzle("challenge", seed);
-    if (!loaded) return;
-    await copy(url.toString(), "Lien du défi copié. Envoyez-le à vos amis !");
   }
 
   return <div className={`app-shell focused-interface foyer-interface reference-interface approved-interface proximity-interface ${flamePaused ? "motion-paused" : ""} cosmetic-${selectedCosmetic}`}>
@@ -679,7 +671,7 @@ export default function Game() {
         }
         return;
       }
-      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol">{modal === "challenge" ? <Users /> : modal === "privacy" ? <LockKeyhole /> : <Flame />}</span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Règles" : modal === "challenge" ? "Passez le mot. Pas la réponse." : modal === "privacy" ? "Votre partie vous appartient." : modal === "share" ? "Partager" : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "Trouvez le mot secret." : modal === "challenge" ? "Créez un lien : chaque personne cherchera exactement le même mot." : modal === "privacy" ? "Le fonctionnement de cette première version." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
+      const target = modalReturnFocus.current; modalReturnFocus.current = null; if (target?.isConnected) { event.preventDefault(); target.focus({ preventScroll:true }); } }}><DialogHeader><span className="modal-symbol"><Flame /></span><DialogTitle>{modal === "tutorial" ? "Un essai pour comprendre" : modal === "help" ? "Règles" : modal === "share" ? "Partager" : ""}</DialogTitle><DialogDescription>{modal === "tutorial" ? "Tutoriel facultatif en trois étapes." : modal === "help" ? "Trouvez le mot secret." : modal === "share" ? "Copiez ce texte pour le partager avec vos amis." : ""}</DialogDescription></DialogHeader>
       {modal === "tutorial" && <PlayTutorial onClose={()=>{
         const owner=document.activeElement;
         if(surface!=="game") navigate("game",false);
@@ -687,8 +679,6 @@ export default function Game() {
         setModal(null);
       }}/>}
       {modal === "help" && <><ol className="rules-list"><li><span>01</span><div><h3>Envoyez un mot.</h3><p>Entrez un mot français : nom, adjectif ou verbe à l’infinitif.</p></div></li><li><span>02</span><div><h3>Suivez la progression.</h3><p>La flamme et le pourcentage gardent votre meilleure progression. Les essais sont classés du plus proche au moins proche.</p></div></li><li><span>03</span><div><h3>Trouvez le mot.</h3><p>Les essais sont illimités. Vous disposez de trois indices : chacun donne un mot mieux placé.</p></div></li></ol><button className="primary-button full-width" onClick={closeHelpAndFocusGame}>Jouer</button><button className="secondary-button full-width" onClick={()=>setModal("tutorial")}>Essayer le tutoriel</button></>}
-      {modal === "challenge" && <><div className="challenge-example"><span>VOUS</span><div><Target size={34} /><b>?</b></div><span>VOS AMIS</span></div><p className="modal-copy">Qui trouvera le mot en le moins d’essais ? Le lien ouvre une partie indépendante pour chacun. Partagez ensuite vos résultats pour comparer.</p><button className="primary-button full-width" disabled={busy || loading} onClick={createChallenge}>Créer et copier le lien<Copy size={17} /></button>{mode === "challenge" && <button className="secondary-button full-width" onClick={() => copy(window.location.href, "Lien du défi copié.")}>Copier le défi actuel<Share2 size={16} /></button>}<p className="modal-note">Pas de compte requis. Aucun classement en direct : chacun conserve sa partie sur son appareil.</p></>}
-      {modal === "privacy" && <div className="legal-copy"><h3>Une sauvegarde dans votre navigateur</h3><p>Les modes personnels conservent vos essais, victoires, pistes et préférences dans ce navigateur. Les onglets y partagent la même progression. L’export de profil ne contient pas les parties en cours ni les épingles. Effacer les données du site efface cette progression locale et ses copies de secours.</p><h3>Transfert et synchronisation facultative</h3><p>L’export de profil contient vos faits personnels validés, dont les mots de vos essais, sans les parties classiques en cours ni leurs épingles. Une synchronisation explicitement confirmée peut envoyer au serveur une copie du profil et des parties classiques en cours, avec leurs mots, scores, indices, épingles et contextes. Elle n’est pas chiffrée de bout en bout ; sa suppression distante se confirme dans le profil. Les parties partagées ont leur propre identité et leurs résultats serveur.</p><h3>Le calcul des mots</h3><p>Les données linguistiques sont mises à disposition par <a href="https://fauconnier.github.io/#data" target="_blank" rel="noopener noreferrer">Jean-Philippe Fauconnier</a>, sous licence <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</p><p>Dans les modes connectés, vos propositions sont envoyées au serveur pour calculer leur proximité. Le pack d’entraînement téléchargé calcule ses parcours finis sur cet appareil. Les résultats personnels ne deviennent pas automatiquement des résultats compétitifs. L’hébergeur peut conserver les journaux techniques nécessaires au service.</p><h3>La publicité</h3><p>Une balise et un fichier ads.txt permettent de vérifier le compte AdSense sans charger le programme publicitaire. Aucun emplacement ni demande d’annonce n’est actuellement activé.</p><h3>Hors connexion</h3><p>Un écran de secours neutre est mis en cache. Vous pouvez aussi télécharger volontairement un pack d’entraînement fini et vérifié : son interface, son lexique et ses parcours permettent de jouer hors connexion. Sa progression reste séparée du profil classique, sur cet appareil. Les pages quotidiennes et privées demandent une connexion ; elles ne sont pas mises en cache avec vos propositions ou résultats.</p></div>}
       {modal === "share" && <><p role="status">La copie automatique n’a pas abouti. Sélectionnez le texte ci-dessous et copiez-le manuellement.</p><textarea className="share-fallback" readOnly value={shareText} onFocus={e => e.currentTarget.select()} aria-label="Texte à copier" /><button className="secondary-button" onClick={() => setModal(null)}>Fermer<Check size={16} /></button></>}
     </DialogContent></Dialog>
   </div>;

@@ -621,6 +621,41 @@ test('three hint actions preserve typed input, save real hint metadata, and stop
   }finally{await act(async()=>tree.unmount());}
   tree=await mount();try{assert.equal(tree.root.findByProps({className:'classic-hint-button'}).props.disabled,true);assert.equal(posts,3);}finally{await act(async()=>tree.unmount());}
 });
+for (const editDuringRequest of [true, false]) test(`a canonical duplicate response ${editDuringRequest ? 'does not mark newer input invalid' : 'explains the duplicate when input is unchanged'}`, async () => {
+  const b = browser(), pending = deferred<Response>();
+  const decomposedWord = 'e\u0301te\u0301';
+  const saved = { startedAt: 1, hints: 0, pins: [], guesses: [{ word: 'été', temperature: 20, rank: 1000, found: false, order: 1 }] };
+  const key = 'braise.v1.game.' + puzzle.id, raw = JSON.stringify(saved);
+  b.storage.setItem(key, raw);
+  let posts = 0;
+  globalThis.fetch = async (_url, options) => {
+    if (options?.method !== 'POST') return Response.json(puzzle);
+    const body = JSON.parse(String(options.body));
+    assert.equal(body.action, 'guess');
+    assert.equal(body.word, decomposedWord);
+    posts++;
+    return pending.promise;
+  };
+  const tree = await mount();
+  try {
+    await act(async () => tree.root.findByProps({ id: 'guess' }).props.onChange({ target: { value: decomposedWord } }));
+    await act(async () => { void tree.root.findByProps({ className: 'guess-form' }).props.onSubmit({ preventDefault() {}, currentTarget: { contains() { return false; } } }); });
+    assert.equal(posts, 1);
+    assert.equal(tree.root.findByProps({ className: 'guess-form' }).props['aria-busy'], true);
+    if (editDuringRequest) await act(async () => tree.root.findByProps({ id: 'guess' }).props.onChange({ target: { value: 'arbre' } }));
+    await act(async () => pending.resolve(Response.json({ ...saved.guesses[0], puzzleRef: puzzle.ref })));
+    const field = tree.root.findByProps({ id: 'guess' });
+    assert.equal(field.props.value, editDuringRequest ? 'arbre' : decomposedWord);
+    assert.equal(field.props['aria-invalid'], !editDuringRequest);
+    assert.equal(text(tree.root.findByProps({ id: 'guess-feedback' })), editDuringRequest ? '' : '« été » est déjà dans vos essais.');
+    assert.equal(tree.root.findByProps({ className: 'guess-form' }).props['aria-busy'], false);
+    assert.equal(tree.root.findByProps({ 'aria-label': 'Envoyer' }).props.disabled, false);
+    assert.equal(tree.root.findAllByProps({ className: 'guess-word' }).length, 1);
+    assert.equal(text(tree.root.findByProps({ className: 'hint-remaining' })), '3');
+    assert.equal(b.storage.getItem(key), raw, 'a duplicate adds neither a guess nor a consumed hint');
+  } finally { await act(async () => tree.unmount()); }
+});
+
 test('a failed hint consumes nothing and an accepted stale hint cannot enter a newly loaded board',async()=>{
   const b=browser();let failure=true;const pending=deferred<Response>();
   globalThis.fetch=async(_url,options)=>options?.method==='POST'?(failure?Response.json({error:'Indisponible.'},{status:503}):pending.promise):Response.json(puzzle);
