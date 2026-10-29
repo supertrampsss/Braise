@@ -10,6 +10,7 @@ import {DuelMatchReview} from './duel-review';
 import {useDuelSync} from './use-duel-sync';
 import {formatRankFr} from '@/lib/proximity-presentation';
 import {readLocal} from '@/lib/legacy-storage';
+import {requestJson} from '@/lib/request-json';
 
 type Session={guest:{id:string;name:string}|null;csrf?:string};
 type DuelList={id:string;hostName:string;opponentName:string|null;role?:string;result?:string|null;created_at?:number;state:string;abandoned?:number;deadline?:number|null;invite_expires?:number;score?:{won:number;lost:number;drawn:number};canAcceptRematch?:boolean;rematchOf?:string|null};
@@ -26,19 +27,22 @@ export default function Duels() {
   const [round,setRound]=useState(0),[word,setWord]=useState(''),[guestName,setGuestName]=useState(''),[received,setReceived]=useState(false);
   const [busy,setBusy]=useState(true),[error,setError]=useState(''),[help,setHelp]=useState(false);
   const [syncError,setSyncError]=useState(''),[shared,setShared]=useState(false);
+  const [shareText,setShareText]=useState('');
   const [now,setNow]=useState(0),[paused,setPaused]=useState(true),[feedback,setFeedback]=useState<Feedback|null>(null);
   const lock=useRef(false),inputRevision=useRef(0),navigationEpoch=useRef(0);
   const factsRevision=useRef(0);
   const creation=useRef<{id:string;token:string;parentId?:string}|null>(null);
   const pending=useRef<{id:string;round:number;revision:number;requestId:string;word:string}|null>(null);
   const feedbackTimer=useRef<ReturnType<typeof setTimeout>|null>(null),helpReturnFocus=useRef<HTMLButtonElement|null>(null);
+  const focusFrame=useRef<number|null>(null);
+  const shareReturnFocus=useRef<HTMLButtonElement|null>(null),shareField=useRef<HTMLTextAreaElement|null>(null);
   const invitation=useInvitation('duel',token,session.guest?.id);
-  function clearFeedback() { if(feedbackTimer.current)clearTimeout(feedbackTimer.current);feedbackTimer.current=null;setFeedback(null); }
+  function cancelReturnFocus() {if(focusFrame.current!==null)cancelAnimationFrame(focusFrame.current);focusFrame.current=null;}
+  function clearFeedback() {cancelReturnFocus();if(feedbackTimer.current)clearTimeout(feedbackTimer.current);feedbackTimer.current=null;setFeedback(null); }
   function clearInvitation() {setReceived(false);setToken('');setInviteInput('');try{sessionStorage.removeItem('braiz.invitation.duel');}catch{}}
   async function api(path:string,body?:unknown,csrf=session.csrf??'',signal?:AbortSignal) {
     const epoch=navigationEpoch.current;
-    const response=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json','X-Braise-CSRF':csrf},body:JSON.stringify(body),signal}:{cache:'no-store',signal});
-    const data=await response.json() as DuelView&Session&{duels:DuelList[];error?:string};
+    const {response,data}=await requestJson<DuelView&Session&{duels:DuelList[];error?:string}>(path,body?{method:'POST',headers:{'Content-Type':'application/json','X-Braise-CSRF':csrf},body:JSON.stringify(body),signal}:{cache:'no-store',signal});
     if(epoch!==navigationEpoch.current)throw new Error('Vue quittée.');
     if(!response.ok)throw new DuelApiError(data.error??'Service indisponible.',response.status);
     return data;
@@ -60,7 +64,14 @@ export default function Duels() {
     if(!creation.current||creation.current.parentId!==parentId)creation.current={id:crypto.randomUUID(),token:[...crypto.getRandomValues(new Uint8Array(32))].map(value=>value.toString(16).padStart(2,'0')).join(''),...(parentId?{parentId}:{})};
     const data=await api('/api/duels',{action:parentId?'rematch':'create',...creation.current},csrf);showView(data);const privateLink=`${location.origin}/duels#invitation=${creation.current.token}`;setLink(privateLink);try{sessionStorage.setItem('braiz.duel.link.'+data.id,privateLink);}catch{}setCopied(false);setShared(false);creation.current=null;pending.current=null;clearFeedback();setRound(0);setWord('');await refresh();
   }
-  async function shareResult(){if(!view)return;try{const text=duelShareText(view);if(navigator.share)await navigator.share({title:'BRAIZ · Duel',text});else{await navigator.clipboard.writeText(text);setShared(true);}}catch(cause){if(!(cause instanceof Error&&cause.name==='AbortError'))setError('Le partage n’a pas abouti. Réessayez.');}}
+  async function shareResult(returnFocus:HTMLButtonElement|null){
+    if(!view)return;
+    const text=duelShareText(view),epoch=navigationEpoch.current;
+    shareReturnFocus.current=returnFocus;
+    if(navigator.share){try{await navigator.share({title:'BRAIZ · Duel',text});return;}catch(cause){if(cause instanceof Error&&cause.name==='AbortError')return;}}
+    try{await navigator.clipboard.writeText(text);if(epoch===navigationEpoch.current)setShared(true);}
+    catch{if(epoch===navigationEpoch.current){cancelReturnFocus();setShareText(text);}}
+  }
   function reviewRound(index:number){changeRound(index);const board=document.getElementById('duel-round-board');board?.scrollIntoView({block:'start'});board?.focus({preventScroll:true});}
   function changeRound(index:number) {if(busy)return;setRound(index);setWord('');inputRevision.current++;pending.current=null;clearFeedback();}
   function updateInvitation(value:string) {
@@ -73,9 +84,19 @@ export default function Duels() {
   function submit(event:FormEvent) {
     event.preventDefault();if(!view||duelRound(view,round,Date.now()).closed||!word.trim()||lock.current)return;
     const revision=inputRevision.current,before=duelRound(view,round,Date.now());
+    const normalized=word.trim().toLocaleLowerCase('fr').normalize('NFC').replace(/’/g,"'");
+    const field=document.getElementById('duel-word') as HTMLInputElement|null,owner=document.activeElement;
+    const restoreFocus=Boolean(field&&owner&&(owner===field||event.currentTarget?.contains(owner)));
+    if(before.guesses.some(guess=>guess.word===normalized)) {
+      setError(`« ${normalized} » est déjà dans vos essais.`);
+      if(restoreFocus)field?.focus({preventScroll:true});
+      return;
+    }
+    cancelReturnFocus();
+    const epoch=navigationEpoch.current;
     void perform(async()=>{
       const old=pending.current;
-      const request=old&&old.id===view.id&&old.round===round&&old.word===word.trim()?old:{id:view.id,round,revision:before.guesses.length,requestId:crypto.randomUUID(),word:word.trim()};
+      const request=old&&old.id===view.id&&old.round===round&&old.word===normalized?old:{id:view.id,round,revision:before.guesses.length,requestId:crypto.randomUUID(),word:normalized};
       pending.current=request;let data:DuelView;
       try{data=await api('/api/duels',{action:'guess',...request});}
       catch(cause){if(cause instanceof DuelApiError&&cause.status===409)pending.current=null;throw cause;}
@@ -86,6 +107,13 @@ export default function Duels() {
         feedbackTimer.current=setTimeout(()=>setFeedback(null),1800);
       }
       if(revision===inputRevision.current)setWord('');
+    }).finally(()=>{
+      if(!restoreFocus||epoch!==navigationEpoch.current)return;
+      focusFrame.current=requestAnimationFrame(()=>{
+        focusFrame.current=null;
+        if(epoch!==navigationEpoch.current||!field?.isConnected||document.getElementById('duel-word')!==field)return;
+        if(document.activeElement===owner||document.activeElement===document.body)field.focus({preventScroll:true});
+      });
     });
   }
   // Browser restoration reads facts and the invitation; it never accepts or plays.
@@ -98,7 +126,7 @@ export default function Duels() {
     if(value){setReceived(true);setJoining(true);setToken(value);setInviteInput(`${location.origin}/duels#invitation=${value}`);history.replaceState(null,'',location.pathname);}
     queueMicrotask(()=>{if(active)void perform(async()=>{const data=await api('/api/session');setSession(data);if(data.guest)await refresh();});});
     const tick=setInterval(()=>setNow(Date.now()),1000);
-    return()=>{active=false;navigationEpoch.current++;clearInterval(tick);if(feedbackTimer.current)clearTimeout(feedbackTimer.current);};
+    return()=>{active=false;navigationEpoch.current++;cancelReturnFocus();clearInterval(tick);if(feedbackTimer.current)clearTimeout(feedbackTimer.current);};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   const outcome=view?duelOutcome(view):null;
@@ -107,7 +135,7 @@ export default function Duels() {
   const joinForm=<form onSubmit={event=>{event.preventDefault();if(!invitation.canAccept())return;void perform(async()=>{showView(await api('/api/duels',{action:'accept',token:token.trim()}));clearInvitation();setLink('');setRound(0);pending.current=null;clearFeedback();await refresh();});}}>{received?<details className="duel-change-link"><summary>Changer de lien</summary>{joinFields}</details>:joinFields}<button className="primary-button" disabled={busy||!invitation.canAccept()}>Rejoindre le duel</button></form>;
   return <div className={`app-shell approved-interface proximity-interface duel-interface ${paused?'motion-paused':''}`}>
     <a className="skip-link" href="#duel-main">Aller au contenu</a>
-    <AppNavigation active="duel" onHelp={returnFocus=>{helpReturnFocus.current=returnFocus;setHelp(true);}}/>
+    <AppNavigation active="duel" onHelp={returnFocus=>{cancelReturnFocus();helpReturnFocus.current=returnFocus;setHelp(true);}}/>
     <main className="main-shell" id="duel-main" tabIndex={-1}>
       <header className="duel-heading"><div><h1>Duel</h1>{view&&<p>{duelNames(view)}</p>}</div><div className="duel-header-actions">{view?.score&&playable&&!view.forfeiter&&<strong className="duel-live-score" aria-label="Score des manches">{view.score.won} — {view.score.lost}</strong>}{view?.deadline&&view.state==='active'&&<p className="duel-deadline">Fin le {dateLabel(view.deadline)}</p>}</div></header>
       {error&&<p className="duel-error" id="duel-error" role="alert">{error}</p>}
@@ -119,16 +147,18 @@ export default function Duels() {
         {view?.state==='pending'&&view.canAcceptRematch&&<section className="duel-card duel-invite"><h2>Revanche proposée par {view.hostName}</h2><p>3 nouveaux mots · 30 essais par manche · 48 h après acceptation</p><button className="primary-button" disabled={busy} onClick={()=>void perform(async()=>{showView(await api('/api/duels',{action:'accept-rematch',id:view.id}));setRound(0);setWord('');pending.current=null;clearFeedback();await refresh();})}>Accepter la revanche</button></section>}
         {view?.state==='pending'&&!view.canAcceptRematch&&<section className="duel-card duel-invite"><h2>{view.rematchOf?'Revanche proposée à '+view.opponentName:'Inviter un adversaire'}</h2>{!view.rematchOf&&link&&<><label htmlFor="duel-link">Lien d’invitation</label><div className="duel-link-row"><input id="duel-link" readOnly value={link} onFocus={event=>event.target.select()}/><button className="primary-button" disabled={busy} onClick={()=>void copyLink()}>{copied?<Check size={18}/>:<Copy size={18}/>} {copied?'Copié':'Copier'}</button></div></>}<p>{view.rematchOf?'En attente de son acceptation.':'En attente de l’adversaire.'}</p>{view.inviteExpires&&<small>Invitation valable jusqu’au {dateLabel(view.inviteExpires)}.</small>}</section>}
         {view&&(view.state==='expired'||view.state==='cancelled')&&<section className="duel-card"><h2>{view.state==='expired'?'Invitation expirée':'Invitation annulée'}</h2><button className="primary-button" disabled={busy} onClick={()=>void perform(create)}>Créer un duel</button></section>}
-        {outcome&&<section className="duel-card duel-summary" aria-labelledby="duel-summary-title"><h2 id="duel-summary-title">{outcome.title}</h2><p className="duel-result-score">{outcome.note}</p>{view!.rounds?<DuelMatchReview view={view!} onRound={reviewRound}/>:!view!.forfeiter&&<ol>{view!.decisions!.map((decision,index)=><li key={index}><span>Manche {index+1}</span><strong>{decision===0?'Égalité':decision===(view!.role==='host'?-1:1)?'Remportée':'Perdue'}</strong></li>)}</ol>}<div className="duel-summary-actions"><button className="primary-button" disabled={busy} onClick={()=>void perform(()=>create(undefined,view!.id))}>Revanche</button><button className="secondary-button" disabled={busy} onClick={()=>void shareResult()}>{shared?'Résultat copié':'Partager le résultat'}</button></div></section>}
+        {outcome&&<section className="duel-card duel-summary" aria-labelledby="duel-summary-title"><h2 id="duel-summary-title">{outcome.title}</h2><p className="duel-result-score">{outcome.note}</p>{view!.rounds?<DuelMatchReview view={view!} onRound={reviewRound}/>:!view!.forfeiter&&<ol>{view!.decisions!.map((decision,index)=><li key={index}><span>Manche {index+1}</span><strong>{decision===0?'Égalité':decision===(view!.role==='host'?-1:1)?'Remportée':'Perdue'}</strong></li>)}</ol>}<div className="duel-summary-actions"><button className="primary-button" disabled={busy} onClick={()=>void perform(()=>create(undefined,view!.id))}>Revanche</button><button className="secondary-button" disabled={busy} onClick={event=>void shareResult(event.currentTarget)}>{shared?'Résultat copié':'Partager le résultat'}</button></div></section>}
         {playable&&<DuelBoard view={view} round={round} now={now} busy={busy} word={word} paused={paused} feedback={feedback} onWord={value=>{inputRevision.current++;setWord(value);setError('');}} onRound={changeRound} onSubmit={submit}/>}
         {view&&(view.state==='active'||view.state==='pending'&&view.role==='host')&&<details className="duel-end"><summary>{view.state==='pending'?'Annuler l’invitation':'Abandonner le duel'}</summary><button className="secondary-button" disabled={busy} onClick={()=>void perform(async()=>{showView(await api('/api/duels',{action:view.state==='pending'?'cancel':'forfeit',id:view.id}));setLink('');clearFeedback();await refresh();})}>Confirmer</button></details>}
         {!received&&<section className="duel-card duel-dashboard"><div className="duel-dashboard-heading"><h2>Mes duels</h2><button className="primary-button" disabled={busy} onClick={()=>void perform(create)}>Créer un duel</button></div>{duels.length>0?<ul>{duels.map(duel=><li key={duel.id}><button className="duel-list-choice" data-duel-id={duel.id} aria-pressed={view?.id===duel.id} disabled={busy} onClick={()=>{if(view?.id!==duel.id)void perform(()=>openDuel(duel.id));}}><strong>{duelNames(duel)}</strong><span>{duel.canAcceptRematch?'Revanche à accepter':duel.result??(duel.abandoned?'Abandonné':statuses[duel.state])}</span>{duel.score&&duel.state==='finished'&&!duel.abandoned&&<b>{duel.score.won} — {duel.score.lost}</b>}{duel.created_at&&<small>Créé le {dateLabel(duel.created_at)}</small>}{duel.deadline&&duel.state==='active'&&<small>Fin le {dateLabel(duel.deadline)}</small>}{duel.state==='finished'&&<span className="duel-review-link">Revoir</span>}</button></li>)}</ul>:<p>Aucun duel pour le moment.</p>}
           <details className="duel-join"><summary>Rejoindre un duel</summary>{joinForm}</details>
+          <a className="duel-identity-link" href="/espace">Sauvegarder mon accès</a>
         </section>}
         {received&&<section className="duel-card duel-received" hidden={["owner","accepted"].includes(invitation.state)}><h2>Rejoindre le duel</h2><p>3 manches · 30 essais par manche · 48 h</p>{joinForm}<button className="secondary-button" disabled={busy} onClick={clearInvitation}>Annuler</button></section>}
       </>}
       {busy&&<p className="duel-loading" role="status">Chargement…</p>}
     </main>
     <Dialog open={help} onOpenChange={setHelp}><DialogContent className="braise-dialog duel-rules" onCloseAutoFocus={event=>{const target=helpReturnFocus.current;helpReturnFocus.current=null;if(target?.isConnected){event.preventDefault();target.focus();}}}><DialogHeader><DialogTitle>Règles du duel</DialogTitle><DialogDescription>Trois mots identiques pour vous deux.</DialogDescription></DialogHeader><ul><li>30 essais par manche, sans indice.</li><li>48 heures à partir de l’acceptation.</li><li>Chacun joue à son rythme. Après la clôture des deux recherches d’une manche, sa solution et les essais des deux joueurs sont visibles.</li><li>Le mot trouvé gagne la manche. Si vous trouvez tous les deux, le moins d’essais l’emporte. Sinon, le meilleur rang gagne.</li><li>Les égalités sont conservées.</li></ul></DialogContent></Dialog>
+    <Dialog open={Boolean(shareText)} onOpenChange={open=>{if(!open)setShareText('');}}><DialogContent className="braise-dialog duel-share" onOpenAutoFocus={event=>{event.preventDefault();shareField.current?.focus();shareField.current?.select();}} onCloseAutoFocus={event=>{const target=shareReturnFocus.current;shareReturnFocus.current=null;if(target?.isConnected){event.preventDefault();target.focus();}}}><DialogHeader><DialogTitle>Partager le résultat</DialogTitle><DialogDescription>Copiez ce texte pour partager votre résultat.</DialogDescription></DialogHeader><textarea ref={shareField} className="share-fallback" readOnly value={shareText} onFocus={event=>event.currentTarget.select()} aria-label="Résultat du duel à copier"/><button type="button" className="secondary-button" onClick={()=>setShareText('')}>Fermer</button></DialogContent></Dialog>
   </div>;
 }

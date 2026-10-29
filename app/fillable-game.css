@@ -1,20 +1,22 @@
 /* Approved large flame and shared receipts for classic boards and Duel. */
+.approved-interface.proximity-interface .main-shell.surface-game,
+.approved-interface.proximity-interface.duel-interface .main-shell { max-width:960px; }
 .approved-interface.proximity-interface .proximity-meter { margin:0 24px 18px; }
 .proximity-interface .proximity-flame-slot { height:254px; display:flex; justify-content:center; align-items:flex-end; }
 .approved-interface.proximity-interface .play-view .proximity-flame { position:relative; left:auto; bottom:auto; transform:none; width:188px; height:240px; margin:0; overflow:visible; mix-blend-mode:normal; background:none; }
 .approved-interface.proximity-interface .play-view:has(.approved-play-surface:focus-within) .proximity-flame { height:240px; }
-.fillable-flame { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 8px 12px #fb773824); transform-origin:50% 96%; animation:flame-flicker 3.8s ease-in-out infinite; }
+.fillable-flame { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 6px 10px #fb77381a); transform-origin:50% 96%; animation:flame-flicker 4.8s ease-in-out infinite; }
 .proximity-flame[data-renderer=fillable-svg]::before,.proximity-flame[data-renderer=fillable-svg]::after { display:none; }
 .flame-fill-mask { transition:none; }
 .proximity-flame[data-reveal-motion=true]:not([data-paused=true]) .flame-fill-mask { transition:transform .45s cubic-bezier(.2,.65,.3,1); }
 .flame-surface { animation:flame-surface-flow 3.2s linear infinite; }
-.flame-ghost { opacity:.12; filter:grayscale(.65); }
+.flame-ghost { opacity:.24; filter:grayscale(1) brightness(.85); }
 .flame-core { transform-origin:90px 240px; animation:flame-core-breathe 2.2s ease-in-out infinite alternate; }
 .proximity-flame:is([data-paused=true],[data-visible=false]) :is(.fillable-flame,.flame-surface,.flame-core) { animation-play-state:paused; }
-@keyframes flame-flicker { 0%,100% { transform:rotate(-1deg) scaleX(.99) scaleY(1); } 24% { transform:rotate(1.2deg) scaleX(1.015) scaleY(.985); } 53% { transform:rotate(-.6deg) scaleX(.985) scaleY(1.018); } 78% { transform:rotate(.8deg) scaleX(1.005) scaleY(.995); } }
+@keyframes flame-flicker { 0%,100% { transform:scaleX(1) scaleY(1); } 24% { transform:scaleX(1.008) scaleY(.995); } 53% { transform:scaleX(.995) scaleY(1.009); } 78% { transform:scaleX(1.003) scaleY(.998); } }
 @keyframes flame-surface-flow { to { transform:translateX(-80px); } }
-@keyframes flame-core-breathe { from { opacity:.88; transform:scaleX(.985) scaleY(.99) skewX(-.7deg); } to { opacity:1; transform:scaleX(1.015) scaleY(1.01) skewX(.7deg); } }
-.proximity-percentage { display:block; margin:6px 0 28px; color:#f4f0eb; font-size:27px; font-weight:650; line-height:1.2; text-align:center; font-variant-numeric:tabular-nums; }
+@keyframes flame-core-breathe { from { opacity:.94; transform:scaleX(.995) scaleY(.995); } to { opacity:1; transform:scaleX(1.005) scaleY(1.005); } }
+.proximity-percentage { display:block; margin:6px 0 22px; color:#f4f0eb; font-size:30px; font-weight:650; line-height:1.2; text-align:center; font-variant-numeric:tabular-nums; }
 .proximity-interface .proximity-track { height:14px; border-radius:8px; mask-image:none; background:#343841; box-shadow:inset 0 1px 3px #0005; }
 .proximity-track > i { position:relative; background:linear-gradient(90deg,#ff805b,#ffa86d,#ffc17a); transition:none; box-shadow:inset 0 1px 0 #fff2; }
 .proximity-track > i::after { content:''; position:absolute; inset:0; background:linear-gradient(105deg,transparent 35%,#fff4 50%,transparent 65%); background-size:240% 100%; animation:proximity-heat-flow 5.2s ease-in-out infinite; }
@@ -28,6 +30,18 @@
 .proximity-interface .proximity-milestones { font-size:12px; height:35px; margin-top:8px; }
 .proximity-interface .milestone-prefix { display:inline; }
 .approved-interface.proximity-interface .guess-area { padding-top:24px; }
+.approved-interface.proximity-interface .guess-form { gap:10px; grid-template-columns:minmax(0,1fr) 112px; }
+.approved-interface.proximity-interface .guess-form[data-hints=true] { grid-template-columns:minmax(0,1fr) 112px auto; }
+.approved-interface.proximity-interface .guess-form input { border-color:#515660; transition:border-color .16s ease,box-shadow .16s ease; }
+.approved-interface.proximity-interface .guess-form input:focus-visible { outline:2px solid #ffae89; outline-offset:2px; box-shadow:0 0 0 5px #ff946a0a; }
+.approved-interface.proximity-interface .classic-hint-button { min-height:48px; min-width:44px; margin:0; padding:10px; border:0; border-radius:10px; gap:6px; color:#b8bdc7; background:transparent; font-size:13px; white-space:nowrap; }
+.approved-interface.proximity-interface .classic-hint-button:hover:not(:disabled) { color:#ffc09e; background:#ff946a0d; }
+.hint-remaining { font-variant-numeric:tabular-nums; font-size:12px; color:#e5d2c7; }
+.braise-dialog .share-fallback { width:100%; background:#202329; border:1px solid #60646e; color:#f4f0eb; border-radius:10px; }
+.braise-dialog .share-fallback:focus-visible { outline:2px solid #ffae89; outline-offset:3px; }
+.approved-interface.proximity-interface .guess-button { transition:background-color .16s ease,transform .12s ease; }
+.approved-interface.proximity-interface .guess-button:active:not(:disabled) { transform:scale(.98); }
+.approved-interface.proximity-interface .input-feedback:empty { padding-top:0; min-height:8px; }
 .approved-interface.proximity-interface .guess-row { border:1px solid #393c43; border-radius:10px; background:#1a1d21; margin:8px 0; padding:16px; }
 .approved-interface.proximity-interface .guess-word strong { font-size:18px; font-weight:550; }
 .approved-interface.proximity-interface .list-labels > span:first-child { font-size:12px; }
@@ -42,17 +56,22 @@
 .approved-interface.proximity-interface .play-view .victory-box .proximity-flame { width:188px; height:240px; margin:0 auto 14px; }
 @media(max-width:650px) {
  .approved-interface.proximity-interface .proximity-meter { margin:0 14px 10px; }
- .proximity-interface .proximity-flame-slot { height:246px; }
- .proximity-percentage { margin-bottom:26px; font-size:25px; }
+ .proximity-interface .proximity-flame-slot { height:238px; }
+ .proximity-percentage { margin-bottom:20px; font-size:28px; }
  .proximity-interface .proximity-track { height:12px; }
  .proximity-interface .proximity-milestones { font-size:11px; }
- .approved-interface.proximity-interface .guess-area { padding-top:20px; }
+ .approved-interface.proximity-interface .guess-area { padding-top:12px; }
+ .approved-interface.proximity-interface .guess-form { grid-template-columns:minmax(0,1fr) 80px; gap:8px; }
+ .approved-interface.proximity-interface .guess-form[data-hints=true] { grid-template-columns:minmax(0,1fr) 80px auto; }
+ .approved-interface.proximity-interface .classic-hint-button { padding:8px 6px; gap:5px; font-size:12px; }
  .approved-interface.proximity-interface .guess-row { padding:14px 10px; }
  .approved-interface.proximity-interface .guess-word strong { font-size:16px; }
  .approved-interface.proximity-interface .guess-score > span { font-size:15px; }
  .accepted-guess-chip { font-size:13px; }
 }
+@media(max-width:360px) { .classic-hint-button .hint-label { display:none; } }
 @media(prefers-reduced-motion:reduce) {
+ .approved-interface.proximity-interface .guess-form input,.approved-interface.proximity-interface .guess-button { transition:none; }
  .fillable-flame,.flame-surface,.flame-core,.proximity-track > i::after,.game-panel.is-record .proximity-track { animation:none; }
  .proximity-track > i::after { display:none; }
  .proximity-flame[data-reveal-motion=true] .flame-fill-mask,.game-panel.is-record .proximity-track > i { transition:none; }

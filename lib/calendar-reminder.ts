@@ -1,5 +1,4 @@
-import { isCalendarDate, parisDate, shiftCalendarDate } from "./calendar";
-import type { ProductEvent } from "./product-events";
+import { isCalendarDate, shiftCalendarDate } from "./calendar";
 
 export const CALENDAR_REMINDER_KEY = "braiz.calendar-reminder.v1";
 export type ReminderOptions = { startDate: string; time: string; timeZone: string; days: number };
@@ -52,10 +51,6 @@ export function calendarReminderFile(reminder: CalendarReminder, cancel = false,
   const description = `Rappel choisi à ${reminder.time} (${reminder.timeZone}), du ${reminder.startDate} au ${reminder.endDate}. ${reminder.days} jours. En cas d’heure doublée, première occurrence. Pour arrêter, supprimez la série dans votre calendrier. Le fichier d’arrêt ne garantit pas sa suppression.`;
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//BRAIZ//Rappel personnel 1//FR", "CALSCALE:GREGORIAN", "BEGIN:VEVENT", `UID:${reminder.uid}`, `DTSTAMP:${now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z")}`, `SEQUENCE:${cancel ? 1 : 0}`, `DTSTART:${reminder.instants[0]}`, "DURATION:PT5M", ...(reminder.instants.length > 1 ? [`RDATE:${reminder.instants.slice(1).join(",")}`] : []), "SUMMARY:Votre mot du jour — BRAIZ", `DESCRIPTION:${escapeCalendarText(description)}`, "URL:https://braiz.io/", "TRANSP:TRANSPARENT", `STATUS:${cancel ? "CANCELLED" : "CONFIRMED"}`, ...(!cancel ? ["BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:PT0S", "DESCRIPTION:Votre mot du jour — BRAIZ", "END:VALARM"] : []), "END:VEVENT", "END:VCALENDAR"];
   return lines.map(foldCalendarLine).join("\r\n") + "\r\n";
-}
-export function reminderEligible(events: readonly ProductEvent[], now = new Date()): boolean {
-  const days = new Set(events.filter(event => ["guessAccepted", "firstGuessAccepted"].includes(event.type) && event.context !== "profile" && Number.isFinite(Date.parse(event.occurredAt)) && Date.parse(event.occurredAt) <= now.getTime()).map(event => parisDate(new Date(event.occurredAt))));
-  return days.size >= 3;
 }
 function validReminder(value: unknown): value is CalendarReminder {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;

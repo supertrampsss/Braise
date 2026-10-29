@@ -43,6 +43,7 @@ import { recordProductEvent, type ProductEventType, type ProductEventContext } f
 import { formatNumberFr } from "@/lib/format-fr";
 import { proximityFill, proximityColor, formatRankFr } from "@/lib/proximity-presentation";
 import { countLabel } from "@/lib/game-copy";
+import { requestJson, RequestTimeoutError } from '@/lib/request-json';
 import "@/components/game-parts/game-parts.css";
 
 type Modal = "tutorial" | "help" | "challenge" | "privacy" | "share" | null;
@@ -243,9 +244,7 @@ export default function Game() {
     try {
       const query = (nextMode === "archive" ? `mode=archive&date=${encodeURIComponent(locator)}` : `mode=${nextMode}&seed=${encodeURIComponent(locator)}`)+(edition?`&edition=${encodeURIComponent(edition)}`:'');
       const admitted=await admitPuzzleLoad(descriptor, async()=>{
-        const response=await fetch(`/api/game?${query}`,{cache:"no-store"});
-        const data=await response.json() as Puzzle & {error?:string;targetIdentity?:string};
-        return {response,data};
+        return requestJson<Puzzle & {error?:string;targetIdentity?:string}>(`/api/game?${query}`,{cache:"no-store"});
       },{started:{request,navigation:loadEpoch},current:()=>({request:requestRef.current,navigation:navigationEpoch.current})},({response,data},admittedDescriptor)=>{
       if (!response.ok) { setLoadRetryable(response.status >= 500); throw new Error(data.error || "Le jeu ne répond pas. Réessayez dans un instant."); }
       if(!classicPuzzleMatchesLoad(data,admittedDescriptor))throw new Error('La version de cette partie ne correspond plus. Rechargez le jeu pour reprendre.');
@@ -301,8 +300,7 @@ export default function Game() {
       const result = await resumeExpedition(id, {
         edition,
         status: async (id, proofs) => {
-          const response = await fetch("/api/expeditions", { method: "POST", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, proofs }) });
-          const data = await response.json() as ExpeditionStatus & { error?: string };
+          const {response,data} = await requestJson<ExpeditionStatus & {error?:string}>("/api/expeditions", { method: "POST", signal: controller.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, proofs }) });
           if (!response.ok) throw new Error(data.error || "Connexion impossible.");
           return data;
         },
@@ -335,8 +333,7 @@ export default function Game() {
       const excluded = readEncountered(localStorage);
       if (!excluded) throw new Error("L’historique de découverte est illisible et a été conservé. Vous pouvez reprendre une partie existante.");
       const encountered = collectDiscoveryHistory(localStorage, profileSnapshot);
-      const response = await fetch("/api/game", { method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"discover",excluded,encountered,replay}) });
-      const data = await response.json() as {error?:string;encountered:string[];exhausted:boolean;puzzle:(Puzzle & {targetIdentity:string}) | null};
+      const {response,data} = await requestJson<{error?:string;encountered:string[];exhausted:boolean;puzzle:(Puzzle & {targetIdentity:string}) | null}>("/api/game", { method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"discover",excluded,encountered,replay}) });
       if(generation !== requestRef.current || epoch !== navigationEpoch.current) return;
       if(!response.ok) throw new Error(data.error || "Découverte indisponible.");
       if(!rememberEncountered(localStorage,data.encountered)) setStorageWarning(true);
@@ -505,8 +502,7 @@ export default function Game() {
     submitting.current = true; setBusy(true); setError("");
     const request = requestRef.current;
     try {
-      const response = await fetch("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: hint ? 'hint' : 'guess', ...(hint ? {hintLevel:game.hints,guesses:game.guesses.map(g=>g.word),bestWord:best?.word} : {}) }) });
-      const data = await response.json() as EvaluationResponse & { error?: string };
+      const {response,data} = await requestJson<EvaluationResponse & {error?:string}>("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: hint ? 'hint' : 'guess', ...(hint ? {hintLevel:game.hints,guesses:game.guesses.map(g=>g.word),bestWord:best?.word} : {}) }) });
       if (request !== requestRef.current) return;
       if (!response.ok) {
         if(response.status === 422) diagnostic("guessRejected");
@@ -542,7 +538,7 @@ export default function Game() {
           (data.found ? victoryRef.current : inputRef.current)?.focus({ preventScroll: true });
         });
       }
-    } catch (err) { if (request === requestRef.current) { if(err instanceof TypeError) diagnostic("networkFailed"); if(inputRevisionRef.current === submittedRevision) setError(err instanceof Error ? err.message : "Connexion impossible. Votre saisie est conservée."); } }
+    } catch (err) { if (request === requestRef.current) { if(err instanceof TypeError || err instanceof RequestTimeoutError) diagnostic("networkFailed"); if(inputRevisionRef.current === submittedRevision) setError(err instanceof Error ? err.message : "Connexion impossible. Votre saisie est conservée."); } }
     finally { if (request === requestRef.current) { submitting.current = false; setBusy(false); } }
   }
 
@@ -624,7 +620,17 @@ export default function Game() {
                   <button className="secondary-button" onClick={shareResult}><Share2 size={17}/>Partager</button>
                 </div>
                 <details onToggle={event=>{if(event.currentTarget.open) diagnostic('summaryOpened');}}><summary>Voir les essais</summary><WinSummary game={game}/></details>
-              </div> : <div className="guess-area"><form onSubmit={submit} className="guess-form" aria-busy={busy}><label className="sr-only" htmlFor="guess">Mot</label><input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} /><button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || discoveryBusy || !input.trim()}>{busy ? <>Analyse…</> : "Envoyer"}</button></form><button type="button" className="classic-hint-button" aria-label={`Indice, ${MAX_CLASSIC_HINTS-game.hints} disponible${MAX_CLASSIC_HINTS-game.hints === 1 ? "" : "s"}`} disabled={!puzzle || busy || loading || discoveryBusy || journeyBusy || game.hints >= MAX_CLASSIC_HINTS || best?.rank === 2} onClick={event=>void submit(event,true)}><Lightbulb size={16}/>Indice · {MAX_CLASSIC_HINTS-game.hints}/{MAX_CLASSIC_HINTS}</button><div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div></div>}
+              </div> : <div className="guess-area">
+                <form onSubmit={submit} className="guess-form" data-hints="true" aria-busy={busy}>
+                  <label className="sr-only" htmlFor="guess">Mot</label>
+                  <input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} />
+                  <button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || discoveryBusy || !input.trim()}>{busy ? "Analyse…" : "Envoyer"}</button>
+                  <button type="button" className="classic-hint-button" title={`Indice · ${MAX_CLASSIC_HINTS-game.hints} restant${MAX_CLASSIC_HINTS-game.hints === 1 ? "" : "s"}`} aria-label={`Indice, ${MAX_CLASSIC_HINTS-game.hints} disponible${MAX_CLASSIC_HINTS-game.hints === 1 ? "" : "s"}`} disabled={!puzzle || busy || loading || discoveryBusy || journeyBusy || game.hints >= MAX_CLASSIC_HINTS || best?.rank === 2} onClick={event=>void submit(event,true)}>
+                    <Lightbulb size={17} aria-hidden="true"/><span className="hint-label">Indice</span><span className="hint-remaining" aria-hidden="true">{MAX_CLASSIC_HINTS-game.hints}</span>
+                  </button>
+                </form>
+                <div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div>
+              </div>}
             </>}
           </div></section>
 

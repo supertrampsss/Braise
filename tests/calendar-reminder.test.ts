@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createCalendarReminder, calendarReminderFile, foldCalendarLine, escapeCalendarText, reminderEligible, readCalendarReminder, writeCalendarReminder } from "../lib/calendar-reminder";
-import type { ProductEvent } from "../lib/product-events";
+import { createCalendarReminder, calendarReminderFile, foldCalendarLine, escapeCalendarText, readCalendarReminder, writeCalendarReminder } from "../lib/calendar-reminder";
 
 const now = new Date("2026-10-12T12:00:00Z");
 const options = { startDate: "2026-10-24", time: "19:00", timeZone: "Europe/Paris", days: 3 };
@@ -46,15 +45,6 @@ test("RFC content uses CRLF, escaped TEXT and UTF8 folding at 75 octets without 
   const content = calendarReminderFile(createCalendarReminder(options, "utf", now), false, now);
   assert.doesNotMatch(content.replace(/\r\n/g, ""), /[\r\n]/);
   for (const part of content.split("\r\n")) assert.ok(new TextEncoder().encode(part).length <= 75);
-});
-test("reminder offer requires three actual accepted-action days, never opens, imports or undated totals", () => {
-  const events: ProductEvent[] = [9, 10, 11].map(day => ({ type: "guessAccepted", context: "daily", occurredAt: `2026-10-${day.toString().padStart(2, "0")}T12:00:00.000Z` }));
-  assert.equal(reminderEligible(events, now), true);
-  assert.equal(reminderEligible(events.slice(0, 2), now), false);
-  assert.equal(reminderEligible([...events.slice(0, 2), events[0]], now), false);
-  assert.equal(reminderEligible(events.map(event => ({ ...event, type: "gameOpened" })), now), false);
-  assert.equal(reminderEligible(events.map(event => ({ ...event, type: "profileImported" })), now), false);
-  assert.equal(reminderEligible(events, new Date("2026-10-10T13:00:00Z")), false);
 });
 test("local reminder receipt restores silently, preserves incompatible storage and cancellation identities", () => {
   const values = new Map<string, string>();

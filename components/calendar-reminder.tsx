@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CALENDAR_REMINDER_KEY, calendarReminderFile, createCalendarReminder, dateInReminderZone, readCalendarReminder, reminderEligible, writeCalendarReminder, type CalendarReminder } from "@/lib/calendar-reminder";
-import { readProductEvents } from "@/lib/product-events";
+import { CALENDAR_REMINDER_KEY, calendarReminderFile, createCalendarReminder, dateInReminderZone, readCalendarReminder, writeCalendarReminder, type CalendarReminder } from "@/lib/calendar-reminder";
 import { formatDateFr } from "@/lib/format-fr";
 
 export function CalendarReminderControl() {
-  const [eligible, setEligible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const [receipt, setReceipt] = useState<CalendarReminder | null>(null);
   const [timeZone, setTimeZone] = useState("Europe/Paris");
@@ -21,9 +20,8 @@ export function CalendarReminderControl() {
         const state = readCalendarReminder(window.localStorage);
         setUnavailable(state.status === "unavailable");
         if (state.status === "ready") setReceipt(state.reminder);
-        const journal = readProductEvents(window.localStorage);
-        setEligible(journal.status === "ready" && reminderEligible(journal.ledger.events));
       } catch { setUnavailable(true); }
+      finally { setLoaded(true); }
     };
     // Read after mount, never request a permission, download or focus during restoration.
     const timer = window.setTimeout(() => { refresh(); setStartDate(dateInReminderZone(new Date(), "Europe/Paris")); }, 0);
@@ -72,14 +70,13 @@ export function CalendarReminderControl() {
     setMessage("Rappel arrêté dans BRAIZ. Supprimez la série « Votre mot du jour — BRAIZ » dans votre calendrier pour arrêter ses alertes.");
   }
 
-  if (!eligible && !receipt && !unavailable) return null;
-  return <section className="calendar-reminder" aria-labelledby="calendar-reminder-title">
-    <h3 id="calendar-reminder-title">Un rappel à votre rythme</h3>
-    <p>Facultatif, après trois jours de jeu observés sur cet appareil. Aucun rappel ni notification activé automatiquement.</p>
+  return <details className="calendar-reminder">
+    <summary>Rappel quotidien</summary>
+    <p>Choisissez l’heure et ajoutez le fichier à votre calendrier. Aucun rappel n’est activé automatiquement.</p>
     <p className="calendar-removal-note">Pour arrêter les alertes, supprimez la série dans votre calendrier. Un arrêt dans BRAIZ ou un fichier d’arrêt ne supprime pas automatiquement un événement externe.</p>
-    {unavailable ? <p role="status">Les données de rappel sont illisibles ou d’une version plus récente. Elles sont conservées ; la création est indisponible.</p> : <>
+    {!loaded ? <p role="status">Chargement…</p> : unavailable ? <p role="status">Les données de rappel sont illisibles ou d’une version plus récente. Elles sont conservées ; la création est indisponible.</p> : <>
       {receipt && <p>Dernier fichier : {receipt.time} · {receipt.timeZone}, du {formatDateFr(receipt.startDate)} au {formatDateFr(receipt.endDate)} ({receipt.days} jours). {receipt.cancelled ? "Arrêté dans BRAIZ." : "Préparé ; ajout au calendrier non vérifié."}</p>}
-      {(!receipt || receipt.cancelled) && eligible && <div className="calendar-form">
+      {(!receipt || receipt.cancelled) && <div className="calendar-form">
         <label>Heure locale<input type="time" value={time} onChange={event => setTime(event.target.value)} /></label>
         <label>Fuseau IANA<input type="text" list="reminder-zones" value={timeZone} onChange={event => setTimeZone(event.target.value)} maxLength={80} placeholder="Europe/Paris" /><datalist id="reminder-zones">{["Europe/Paris", "Europe/London", "America/Montreal", "America/New_York", "Asia/Tokyo", "UTC"].map(zone => <option key={zone} value={zone} />)}</datalist></label>
         <label>Date de début<input type="date" value={startDate} onChange={event => setStartDate(event.target.value)} /></label>
@@ -93,5 +90,5 @@ export function CalendarReminderControl() {
       </div>}
     </>}
     {message && <p role="status">{message}</p>}{error && <p className="transfer-error" role="alert">{error}</p>}
-  </section>;
+  </details>;
 }
