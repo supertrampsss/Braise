@@ -20,3 +20,25 @@
 .guide-main a:focus-visible,.home-guide a:focus-visible,.guide-footer a:focus-visible { outline:2px solid #ffb58f; outline-offset:5px; border-radius:3px; }
 .guide-main,.home-guide { overflow-wrap:anywhere; }
 @media(max-width:480px) { .guide-main { padding:0 18px; font-size:16px; } .guide-intro { font-size:18px; } .home-guide { padding:18px; margin-top:32px; } }
+.metrics-dashboard { max-width:960px; margin:0 auto; padding:32px 24px 64px; color:#d3d6dc; line-height:1.6; overflow-wrap:anywhere; }
+.metrics-dashboard h1 { color:#f4f0eb; font-size:clamp(28px,5vw,40px); line-height:1.2; margin:0 0 16px; }
+.metrics-dashboard h2 { color:#f4f0eb; font-size:22px; margin:32px 0 16px; }
+.metrics-access { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 12px; padding:20px; margin:24px 0; border:1px solid #393c43; border-radius:14px; background:#1c1e22; }
+.metrics-access label { grid-column:1/-1; }
+.metrics-access input { min-width:0; width:100%; min-height:48px; padding:10px 12px; color:#f4f0eb; background:#24272d; border:1px solid #60646e; border-radius:8px; font:inherit; }
+.metrics-dashboard button,.metrics-preferences button { min-height:44px; padding:10px 16px; margin:4px 6px 4px 0; border:1px solid #60646e; border-radius:8px; background:#25282d; color:#f4f0eb; font:inherit; cursor:pointer; }
+.metrics-access button { margin:0; background:#ff946a; border-color:#ff946a; color:#291d18; font-weight:650; }
+.metrics-dashboard button:disabled,.metrics-preferences button:disabled { opacity:.6; cursor:default; }
+.metrics-dashboard :is(input,button,a):focus-visible,.metrics-preferences :is(input,button,a):focus-visible { outline:2px solid #ffb58f; outline-offset:3px; }
+.metrics-kpis { display:flex; flex-wrap:wrap; gap:12px; margin:20px 0; }
+.metrics-kpis > * { border:1px solid #393c43; border-radius:12px; padding:16px; background:#1c1e22; }
+.metrics-dashboard table { border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums; }
+.metrics-dashboard th,.metrics-dashboard td { text-align:left; padding:12px; border-bottom:1px solid #393c43; white-space:nowrap; }
+.metrics-dashboard th { color:#f4f0eb; background:#1c1e22; }
+.metrics-dashboard [role=alert] { color:#ffb894; }
+.metrics-preferences { padding:16px 0; }
+.metrics-preferences label { display:flex; gap:12px; align-items:center; min-height:48px; cursor:pointer; color:#f4f0eb; }
+.metrics-preferences input[type=checkbox] { width:20px; height:20px; accent-color:#ff946a; flex-shrink:0; }
+.metrics-preferences p { max-width:65ch; color:#bdc3cd; font-size:14px; line-height:1.65; }
+.metrics-preferences a { color:#ffb58f; text-underline-offset:3px; }
+@media(max-width:480px) { .metrics-dashboard { padding:24px 16px 48px; } .metrics-access { padding:16px; grid-template-columns:1fr; } .metrics-access button { width:100%; } }

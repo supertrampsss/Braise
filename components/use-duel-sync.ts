@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useRef} from 'react';
 import type {DuelView} from '@/lib/duel-presentation';
-type Config<T>={enabled:boolean;selectedId:string|null;revision:()=>number;busy:()=>boolean;loadList:(signal:AbortSignal)=>Promise<T[]>;loadView:(id:string,signal:AbortSignal)=>Promise<DuelView>;onList:(rows:T[])=>void;onView:(view:DuelView)=>void;onError:(message:string)=>void};
+type Config<T>={enabled:boolean;selectedId:string|null;revision:()=>number;busy:()=>boolean;loadList:(signal:AbortSignal)=>Promise<T>;loadView:(id:string,signal:AbortSignal)=>Promise<DuelView>;onList:(rows:T)=>void;onView:(view:DuelView)=>void;onError:(message:string)=>void};
 
 /** Refresh accepted facts only. It never writes a word, accepts an invitation or emits play effects. */
 export function useDuelSync<T>(config:Config<T>){

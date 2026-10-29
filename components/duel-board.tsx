@@ -10,10 +10,11 @@ import {countLabel} from '@/lib/game-copy';
 import {DuelProgress,DuelRoundReview} from './duel-review';
 import {duelRoundLabel} from '@/lib/duel-presentation';
 
-export function DuelBoard({view,round,now,busy,word,paused,feedback,onWord,onRound,onSubmit}:{
+export function DuelBoard({view,round,now,busy,word,paused,feedback,onWord,onRound,onSubmit,spellingSuggestion,onSpellingSuggestion}:{
   view:DuelView; round:number; now:number; busy:boolean; word:string; paused:boolean;
   feedback:{round:number;ordinal:number;improved:boolean;found:boolean;announcement:string}|null;
   onWord:(word:string)=>void; onRound:(round:number)=>void; onSubmit:(event:FormEvent)=>void;
+  spellingSuggestion?:string|null;onSpellingSuggestion?:()=>void;
 }) {
   const current=duelRound(view,round,now);
   const revealed=view.rounds?.[round]?.revealed===true,answer=view.rounds?.[round]?.answer;
@@ -37,7 +38,7 @@ export function DuelBoard({view,round,now,busy,word,paused,feedback,onWord,onRou
         {!current.closed ? <div className="guess-area"><form className="guess-form" aria-busy={busy} onSubmit={onSubmit}>
           <label className="sr-only" htmlFor="duel-word">Mot</label><input id="duel-word" value={word} onChange={event=>onWord(event.target.value)} placeholder="Mot" maxLength={50} lang="fr" autoComplete="off" autoCapitalize="none" enterKeyHint="send" aria-describedby="duel-error"/>
           <button className="guess-button" disabled={busy||!word.trim()} aria-label={busy?'Analyse en cours':'Envoyer'}>{busy?'Analyse…':'Envoyer'}</button>
-        </form></div> : <div className={`duel-round-end ${current.won?'victory-box':''}`}>
+        </form>{spellingSuggestion&&<button type="button" className="text-action spelling-suggestion" disabled={busy} onClick={onSpellingSuggestion}>Utiliser « {spellingSuggestion} »</button>}</div> : <div className={`duel-round-end ${current.won?'victory-box':''}`}>
           {current.won&&<><FlameScene level={1} rank={1} solved celebrating={Boolean(live?.found)} paused={paused} revealMotion={Boolean(live?.found)}/><span className="victory-eyebrow">Trouvé</span></>}
           {!current.won&&answer&&<span className="victory-eyebrow">Solution</span>}
           <h2 data-flight-word={current.won?current.best?.word:undefined}>{current.won?current.best?.word:answer??(current.expired?'Délai écoulé':'Manche terminée')}</h2>

@@ -371,13 +371,39 @@ for(const kind of ['voyage','collection'] as const) test(`solo ${kind} names its
   }finally{await act(async()=>tree.unmount());}
 });
 
+test('a spelling proposal never submits itself and disappears when the player writes a new word',async()=>{
+  browser();let posts=0;
+  globalThis.fetch=async(_url,options)=>{if(options?.method==='POST'){posts++;return Response.json({error:'Mot inconnu.',suggestion:'oeuf'},{status:422});}return Response.json(puzzle);};
+  const tree=await mount();try{
+    const input=()=>tree.root.findByProps({id:'guess'});
+    await act(async()=>input().props.onChange({target:{value:'œuf'}}));
+    await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
+    assert.equal(posts,1);assert.equal(input().props.value,'œuf');
+    await click(tree,'Utiliser « oeuf »');
+    assert.equal(posts,1);assert.equal(input().props.value,'oeuf');
+    assert.equal(tree.root.findAllByProps({'data-flight-word':'oeuf'}).length,0);
+    await act(async()=>input().props.onChange({target:{value:'œuf'}}));
+    await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
+    await act(async()=>input().props.onChange({target:{value:'arbre'}}));
+    assert.doesNotMatch(text(tree.root),/Utiliser « oeuf »/);assert.equal(posts,2);
+  }finally{await act(async()=>tree.unmount());}
+});
+
+test('a terminal win with no saved unfinished game offers a new game',async()=>{
+  const b=browser();
+  b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
+  globalThis.fetch=async()=>Response.json(puzzle);
+  const tree=await mount();try{assert.ok(button(tree,'Nouvelle partie'));assert.doesNotMatch(text(tree.root),/Reprendre une partie/);}
+  finally{await act(async()=>tree.unmount());}
+});
+
 test('a terminal win keeps continuation available without duplicated explanatory prose',async()=>{
   const b=browser();
   b.storage.setItem(`braise.v1.game.${puzzle.id}`,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
   b.storage.setItem('braise.v1.game.free-043',JSON.stringify({startedAt:2,hints:0,pins:['maison'],guesses:[{word:'maison',order:1,rank:20,temperature:12,found:false}]}));
   globalThis.fetch=async()=>Response.json(puzzle);
   const tree=await mount();
-  try{assert.doesNotMatch(text(tree.root),/Une autre partie commencée vous attend/);assert.doesNotMatch(text(tree.root),/Cette partie commencée attend votre prochain mot/);assert.ok(button(tree,'Continuer à jouer'));}
+  try{assert.doesNotMatch(text(tree.root),/Une autre partie commencée vous attend/);assert.doesNotMatch(text(tree.root),/Cette partie commencée attend votre prochain mot/);assert.ok(button(tree,'Reprendre une partie'));}
   finally{await act(async()=>tree.unmount());}
 });
 
@@ -439,7 +465,7 @@ const importInstant = new Date('2026-10-13T10:00:00Z');
 async function importThroughGame(tree: ReactTestRenderer, file: string) {
   const navigation = tree.root.findByProps({'aria-label': 'Navigation principale'});
   await act(async () => navigation.findAllByType('a').find(node=>text(node)==='Profil')!.props.onClick({button: 0, preventDefault() {}}));
-  const input = tree.root.findByProps({type: 'file'});
+  const input = tree.root.findByProps({'aria-label':'Fichier JSON du profil à importer'});
   await act(async () => input.props.onChange({currentTarget: {files: [{name: 'profil.json', size: Buffer.byteLength(file), text: async () => file}], value: ''}}));
   assert.ok(tree.root.findAll(n => n.type === 'button' && text(n) === 'Confirmer l’import').length, tree.root.findAll(n => n.type === 'section' && n.props.className === 'profile-transfer').map(text).join(' '));
   await click(tree, 'Confirmer l’import');
@@ -497,7 +523,7 @@ for (const version of ['V1','V2'] as const) test(`lexical refusal ${version} kee
     status = 503;await act(async () => tree.root.findByProps({id: 'guess'}).props.onChange({target: {value: 'zzautreaq'}}));
     await act(async () => tree.root.findByProps({className: 'guess-form'}).props.onSubmit({preventDefault() {}, currentTarget: {contains() {return false;}}}));
     assert.equal(tree.root.findByProps({id: 'guess'}).props.value, 'zzautreaq');assert.equal(posts, 2);
-    const ledger = b.storage.getItem(PRODUCT_EVENTS_KEY)!;assert.deepEqual(JSON.parse(ledger).events.map((event: {type: string}) => event.type), ['guessRejected','networkFailed']);assert.doesNotMatch(ledger,/zzabsentqa|zzautreaq|puzzleRef|corpusVersion/);for(const event of JSON.parse(ledger).events) assert.deepEqual(Object.keys(event).sort(), ['context','occurredAt','type']);
+    const ledger = b.storage.getItem(PRODUCT_EVENTS_KEY)!;assert.deepEqual(JSON.parse(ledger).events.map((event: {type: string}) => event.type), ['guessRejected','serviceUnavailable']);assert.doesNotMatch(ledger,/zzabsentqa|zzautreaq|puzzleRef|corpusVersion/);for(const event of JSON.parse(ledger).events) assert.deepEqual(Object.keys(event).sort(), ['context','occurredAt','type']);
   } finally {await act(async () => tree.unmount());}
 });
 

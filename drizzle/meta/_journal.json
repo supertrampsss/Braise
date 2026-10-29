@@ -64,6 +64,13 @@
       "when": 1792055951782,
       "tag": "0008_duel_word2vec",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1793295280783,
+      "tag": "0009_product_metrics",
+      "breakpoints": true
     }
   ]
 }

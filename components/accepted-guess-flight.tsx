@@ -11,9 +11,10 @@ function FlyingChip({flight,onEnd}:{flight:Flight;onEnd:(id:string)=>void}) {
     const motion=chip.current!.animate([
       {opacity:0,transform:'translateY(-6px) scale(.94)',offset:0},
       {opacity:1,transform:'translate(0,0) scale(1)',offset:.15},
+      {opacity:1,transform:'translate(0,0) scale(1)',offset:.44},
       {opacity:1,transform:`translate(${flight.dx}px,${flight.dy}px)`,offset:.8},
       {opacity:0,transform:`translate(${flight.dx}px,${flight.dy}px)`,offset:1},
-    ],{duration:450,easing:'cubic-bezier(.2,.65,.3,1)'});
+    ],{duration:1400,easing:'cubic-bezier(.2,.65,.3,1)'});
     motion.onfinish=()=>onEnd(flight.id);
     return()=>motion.cancel();
   },[flight,onEnd]);
@@ -37,12 +38,20 @@ export function AcceptedGuessFlight({receipt,inputId,paused}:{receipt:GuessRecei
     const target=row.getBoundingClientRect();
     const x=Math.max(8,Math.min(origin.current.right-170,window.innerWidth-178)),y=origin.current.top-44;
     const endX=Math.max(8,target.right-180),endY=Math.min(window.innerHeight-40,target.top+(target.height-32)/2);
-    setFlights(current=>[...current.slice(-2),{...receipt,x,y,dx:endX-x,dy:endY-y}]);
+    setFlights(current=>{
+      const retained=current.slice(-2);
+      const occupied=new Set(retained.map(f=>Math.round((y-f.y)/36)));
+      const lane=[0,1,2].find(value=>!occupied.has(value))??0;
+      const startY=Math.max(8,y-lane*36);
+      return [...retained,{...receipt,x,y:startY,dx:endX-x,dy:endY-startY}];
+    });
   },[receipt,inputId,paused]);
   useLayoutEffect(()=>{
     const media=window.matchMedia('(prefers-reduced-motion: reduce)'),clear=()=>setFlights([]);
     if(paused||media.matches)clear();
-    media.addEventListener('change',clear);return()=>media.removeEventListener('change',clear);
+    const hidden=()=>{if(document.hidden)clear();};
+    media.addEventListener('change',clear);document.addEventListener('visibilitychange',hidden);
+    return()=>{media.removeEventListener('change',clear);document.removeEventListener('visibilitychange',hidden);};
   },[paused]);
   return <div ref={host} className="accepted-guess-flights" aria-hidden="true">{flights.map(flight=><FlyingChip key={flight.id} flight={flight} onEnd={remove}/>)}</div>;
 }

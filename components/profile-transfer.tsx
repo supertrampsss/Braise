@@ -82,15 +82,15 @@ export function ProfileTransfer({ snapshot, onSnapshot }: { snapshot: ProfileSna
 
   const ready = candidate?.preview.status === "ready";
   return <section className="profile-transfer" aria-labelledby="profile-transfer-title">
-    <div className="profile-transfer-heading"><FileCheck2 size={18} aria-hidden="true" /><div><h4 id="profile-transfer-title">Copier votre progression</h4><p>Le profil comprend les faits de progression et leurs mots associés, les récompenses et la préférence de son. Les sauvegardes complètes des parties en cours et les épingles restent sur cet appareil.</p></div></div>
-    <div className="profile-table-scroll" tabIndex={0} role="region" aria-label="Portée du transfert de profil"><table><caption>Ce qui sera transféré</caption><thead><tr><th scope="col">Données</th><th scope="col">Dans ce fichier</th></tr></thead><tbody>
+    <div className="profile-transfer-heading"><FileCheck2 size={18} aria-hidden="true" /><div><h4 id="profile-transfer-title">Copier uniquement mon profil</h4><p>Statistiques, récompenses et préférence de son. Pour reprendre vos parties, utilisez la sauvegarde complète au-dessus.</p></div></div>
+    <details><summary>Détail du fichier de profil</summary><div className="profile-table-scroll" tabIndex={0} role="region" aria-label="Portée du transfert de profil"><table><caption>Ce qui sera transféré</caption><thead><tr><th scope="col">Données</th><th scope="col">Dans ce fichier</th></tr></thead><tbody>
       <tr><th scope="row">Réussites, propositions comptabilisées, objectifs acquis et styles</th><td>Oui · progression personnelle locale</td></tr>
       <tr><th scope="row">Faits de progression et mots associés</th><td>Oui · ordre, date et référence de partie, sans sauvegarde complète reprenable</td></tr>
       <tr><th scope="row">Préférence de son</th><td>Oui</td></tr>
       <tr><th scope="row">Sauvegardes complètes des parties en cours, scores détaillés et épingles</th><td>Non · restent sur cet appareil</td></tr>
       <tr><th scope="row">Pause des animations, rappel calendrier et diagnostic</th><td>Non · restent sur cet appareil</td></tr>
       <tr><th scope="row">Parties partagées, compte et résultats vérifiés par le serveur</th><td>Non · autre espace, aucun classement transféré</td></tr>
-    </tbody></table></div>
+    </tbody></table></div></details>
     <div className="profile-transfer-actions">
       <button type="button" className="secondary-button" onClick={download}><Download size={16} aria-hidden="true" />Télécharger mon profil</button>
       <button ref={importButtonRef} type="button" className="secondary-button" onClick={() => inputRef.current?.click()}><Upload size={16} aria-hidden="true" />Importer un fichier JSON</button>

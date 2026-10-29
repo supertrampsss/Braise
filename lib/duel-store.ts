@@ -3,7 +3,7 @@ import type {WordEvaluation} from './game-contracts';
 import {tokenHash} from './server-security';
 import {compareRound,roundFacts,type DuelGuess} from './duel-rules';
 import {duelTargetWord} from './duel-engine.server';
-import {DUEL_WORD2VEC_RULES,duelOutcome} from './duel-presentation';
+import {DUEL_WORD2VEC_RULES,duelOutcome,type DuelListGroup,type DuelListPage} from './duel-presentation';
 import {WORD2VEC_SIZE} from './word2vec-contract';
 
 type Duel={id:string;host_id:string;opponent_id:string|null;token_hash:string;targets:string;rules:string;state:string;created_at:number;invite_expires:number;deadline:number|null;forfeiter:string|null};
@@ -17,6 +17,18 @@ const SNAPSHOT=`SELECT d.*, (SELECT name FROM braise_guests WHERE id=d.host_id) 
  (SELECT json_group_array(json_object('guest_id',g.guest_id,'round',g.round,'word',g.word,'ordinal',g.ordinal,'temperature',g.temperature/10000.0,'rank',g.rank,'found',g.found)) FROM (SELECT * FROM ${GUESSES} WHERE duel_id=d.id ORDER BY round,ordinal) g) AS facts
  FROM braise_duels d LEFT JOIN braise_duel_rematches rm ON rm.duel_id=d.id`;
 const ACCESS="(d.host_id=? OR d.opponent_id=? OR (d.state='pending' AND rm.invitee_id=?))";
+const LIST_GROUP=`CASE
+ WHEN d.state='pending' AND d.invite_expires>? THEN CASE WHEN rm.invitee_id=? THEN 'play' ELSE 'waiting' END
+ WHEN d.state='active' AND d.deadline>? AND ${complete('d')}<6 THEN
+  CASE WHEN (SELECT count(*) FROM (SELECT round FROM ${GUESSES} WHERE duel_id=d.id AND guest_id=? GROUP BY round HAVING max(found)=1 OR count(*)=30))<3 THEN 'play' ELSE 'waiting' END
+ ELSE 'finished' END`;
+type ListOptions={group?:DuelListGroup|'all';cursor?:string|null};
+function listCursor(value:string|undefined|null,group:string){
+ if(!value)return null;
+ const match=/^(all|play|waiting|finished):([0-9]{1,16}):([a-zA-Z0-9-]{1,80})$/.exec(value);
+ if(!match||match[1]!==group||!Number.isSafeInteger(Number(match[2])))throw new RangeError('Invalid duel cursor');
+ return {createdAt:Number(match[2]),id:match[3]};
+}
 
 function project(row:Snapshot,guest:string,now:number){
  const guesses=JSON.parse(row.facts) as DuelGuess[];
@@ -37,14 +49,28 @@ function project(row:Snapshot,guest:string,now:number){
   deadline:row.deadline,inviteExpires:row.invite_expires,role,forfeiter:row.forfeiter===null?null:row.forfeiter===row.host_id?'host':'opponent',
   guesses:guesses.filter(g=>g.guest_id===guest).map(publicGuess),
   opponentGuesses:guesses.filter(g=>g.guest_id!==guest&&rounds[g.round]?.revealed).map(publicGuess),rounds,decisions,score,
-  rematchOf:row.parent_id,canAcceptRematch:state==='pending'&&row.invitee_id===guest};
+  rematchOf:row.parent_id,canAcceptRematch:state==='pending'&&row.invitee_id===guest,
+  ...(host&&state==='pending'&&!row.parent_id?{invitationVersion:row.token_hash}:{})};
 }
 
 export class DuelStore {
  constructor(private db:D1Database){}
  async list(guest:string,now=Date.now()){
-  const rows=await this.db.prepare(`${SNAPSHOT} WHERE ${ACCESS} ORDER BY d.created_at DESC LIMIT 50`).bind(guest,guest,guest).all<Snapshot>();
-  return rows.results.map(row=>{const view=project(row,guest,now);return {id:row.id,hostName:view.hostName,opponentName:view.opponentName,role:view.role,result:duelOutcome(view)?.title??null,created_at:row.created_at,state:view.state,abandoned:row.state==='forfeit'?1:0,deadline:row.deadline,invite_expires:row.invite_expires,score:view.score,canAcceptRematch:view.canAcceptRematch,rematchOf:row.parent_id};});
+  return (await this.listPage(guest,{},now)).duels;
+ }
+ async listPage(guest:string,options:ListOptions={},now=Date.now()):Promise<DuelListPage>{
+  const group=options.group??'all';if(!['all','play','waiting','finished'].includes(group))throw new RangeError('Invalid duel group');
+  const cursor=listCursor(options.cursor,group);
+  const classified=`SELECT d.id,${LIST_GROUP} AS list_group FROM braise_duels d LEFT JOIN braise_duel_rematches rm ON rm.duel_id=d.id WHERE ${ACCESS}`;
+  const values=[now,guest,now,guest,guest,guest,guest];
+  const [totals,rows]=await Promise.all([
+   this.db.prepare(`SELECT list_group,count(*) AS total FROM (${classified}) GROUP BY list_group`).bind(...values).all<{list_group:DuelListGroup;total:number}>(),
+   this.db.prepare(`WITH classified AS (${classified}) ${SNAPSHOT} WHERE d.id IN (SELECT id FROM classified${group==='all'?'':' WHERE list_group=?'})${cursor?' AND (d.created_at<? OR (d.created_at=? AND d.id<?))':''} ORDER BY d.created_at DESC,d.id DESC LIMIT 51`).bind(...values,...(group==='all'?[]:[group]),...(cursor?[cursor.createdAt,cursor.createdAt,cursor.id]:[])).all<Snapshot>(),
+  ]);
+  const counts:Record<DuelListGroup,number>={play:0,waiting:0,finished:0};for(const value of totals.results)counts[value.list_group]=value.total;
+  const page=rows.results.slice(0,50),last=page.at(-1);
+  const duels=page.map(row=>{const view=project(row,guest,now);return {id:row.id,hostName:view.hostName,opponentName:view.opponentName,role:view.role,result:duelOutcome(view)?.title??null,created_at:row.created_at,state:view.state,abandoned:row.state==='forfeit'?1:0,deadline:row.deadline,invite_expires:row.invite_expires,score:view.score,canAcceptRematch:view.canAcceptRematch,rematchOf:row.parent_id};});
+  return {duels,counts,nextCursor:rows.results.length>50&&last?`${group}:${last.created_at}:${last.id}`:null};
  }
  async get(guest:string,id:string){return this.db.prepare(`${SNAPSHOT} WHERE d.id=? AND ${ACCESS}`).bind(id,guest,guest,guest).first<Snapshot>();}
  async create(session:GuestSession,id:string,token:string,targets:readonly(number|string)[],now=Date.now(),options:{rules?:string;parentId?:string;inviteeId?:string}={}){
@@ -64,6 +90,12 @@ export class DuelStore {
  async accept(session:GuestSession,token:string,now=Date.now()){return this.acceptWhere(session,'token_hash=?',[await tokenHash(token)],now);}
  async acceptRematch(session:GuestSession,id:string,now=Date.now()){
   return this.acceptWhere(session,'d.id=? AND EXISTS (SELECT 1 FROM braise_duel_rematches r WHERE r.duel_id=d.id AND r.invitee_id=?)',[id,session.guest_id],now);
+ }
+ async renewInvitation(session:GuestSession,id:string,previousVersion:string,token:string,now=Date.now()){
+  const nextHash=await tokenHash(token);
+  await this.db.prepare(`UPDATE braise_duels SET token_hash=? WHERE id=? AND host_id=? AND token_hash=? AND state='pending' AND opponent_id IS NULL AND invite_expires>? AND NOT EXISTS (SELECT 1 FROM braise_duel_rematches WHERE duel_id=braise_duels.id) AND ${ACTIVE}`).bind(nextHash,id,session.guest_id,previousVersion,now,session.token_hash,session.guest_id,now).run();
+  // A lost response may be retried with the same replacement; it cannot undo a newer rotation.
+  return Boolean(await this.db.prepare(`SELECT id FROM braise_duels WHERE id=? AND host_id=? AND token_hash=? AND state='pending' AND opponent_id IS NULL AND invite_expires>? AND NOT EXISTS (SELECT 1 FROM braise_duel_rematches WHERE duel_id=braise_duels.id) AND ${ACTIVE}`).bind(id,session.guest_id,nextHash,now,session.token_hash,session.guest_id,now).first());
  }
  async rematch(session:GuestSession,parentId:string,id:string,token:string,targets:string[],now=Date.now()){
   const parent=await this.get(session.guest_id,parentId);if(!parent||!parent.opponent_id||project(parent,session.guest_id,now).state!=='finished')return null;

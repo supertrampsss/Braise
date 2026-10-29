@@ -47,9 +47,11 @@
 .approved-interface.proximity-interface .list-labels > span:first-child { font-size:12px; }
 .approved-interface.proximity-interface .list-labels > span:first-child::after { content:none; }
 .approved-interface.proximity-interface .guess-score > span { font-size:18px; }
-.approved-interface.proximity-interface .guess-row.is-new-guess { animation:accepted-row-land .45s ease-out; }
+.approved-interface.proximity-interface .guess-row.is-new-guess { animation:accepted-row-land 1.8s ease-out; }
 @keyframes accepted-row-land { from { border-color:#ff946a; box-shadow:0 0 12px #ff946a30; } to { border-color:#393c43; box-shadow:0 0 0 transparent; } }
 .accepted-guess-flights { pointer-events:none; }
+.spelling-suggestion { min-height:44px; padding:8px 0; color:#ffb894; }
+.surface-loading { min-height:160px; padding:32px 0; color:#b8bdc7; }
 .accepted-guess-chip { position:fixed; z-index:20; display:inline-block; max-width:min(270px,calc(100vw - 16px)); padding:6px 12px; border:1px solid #ff946a; border-radius:10px; background:#241e1e; color:#ffd2bb; box-shadow:0 0 10px #ff946a38; font-size:14px; line-height:20px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; pointer-events:none; opacity:0; }
 .motion-paused .guess-row.is-new-guess { animation:none!important; }
 .motion-paused .accepted-guess-flights { display:none; }

@@ -15,4 +15,22 @@
 .personal-profile :is(button,summary,input) { min-height: 44px; }.personal-profile :is(button,summary,input,a):focus-visible,.profile-table-scroll:focus-visible { outline: 2px solid #ffad7c; outline-offset: 4px; }
 .calendar-reminder { margin: 18px 0; border: 1px solid #ffffff25; padding: 14px; border-radius: 12px; }.calendar-removal-note { padding: 10px; border-left: 3px solid #ffad7c; }.calendar-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.calendar-form label { display: grid; gap: 6px; font-size: 14px; }.calendar-form input { width: 100%; min-width: 0; border: 1px solid #ffffff40; border-radius: 7px; background: #212520; color: #f0f1e9; padding: 10px; color-scheme: dark; }.calendar-form>p,.calendar-form>button { grid-column: 1/-1; }
 .personal-profile .braiz-diagnostics { padding-top: 12px; margin-top: 20px; border-top: 1px solid #ffffff25; }.personal-profile .braiz-diagnostics button { display: inline-block; padding: 10px; border: 1px solid #ffffff40; border-radius: 8px; margin: 4px; }
+.profile-scope a { color: #ffad7c; text-underline-offset: 3px; }
+.profile-backup { margin-block: 28px; scroll-margin-top: 24px; }
+.profile-backup>h2 { margin-bottom: 14px; }
+.local-backup-transfer,.profile-duel-access { padding: 18px; margin-block: 14px; border: 1px solid #ffffff25; border-radius: 14px; background: #171c20; }
+.personal-profile :is(.local-backup-transfer,.profile-duel-access) h3 { margin: 0 0 8px; }
+.local-backup-transfer p,.profile-duel-access p { font-size: 14px; line-height: 1.6; color: #b7bbb3; }
+.local-backup-transfer .profile-transfer-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-block: 16px; }
+.backup-scope summary { color: #b7bbb3; font-size: 14px; cursor: pointer; }
+.backup-filename { overflow-wrap: anywhere; }
+.local-backup-transfer .import-preview { margin-top: 18px; border-top: 1px solid #ffffff25; padding-top: 16px; }
+.personal-profile .import-preview { border-color: #3a454e; background: #171c20; }
+.personal-profile .import-preview p { color: #b7bbb3; }
+.personal-profile .transfer-error,.personal-profile .transfer-error p { color: #ffb69e; }
+.local-backup-transfer :is(th,td) { vertical-align: top; }
+.local-backup-transfer th small { display: block; margin-top: 5px; font-weight: 400; color: #b7bbb3; }
+.local-backup-transfer .import-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.local-backup-transfer .transfer-error li { margin-block: 8px; overflow-wrap: anywhere; }
+.profile-duel-access a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
 @media(max-width: 520px) { .profile-summary { gap: 8px; padding: 12px; }.profile-summary strong { font-size: 22px; }.profile-summary span { font-size: 12px; }.profile-measurements,.calendar-form { grid-template-columns: 1fr; }.personal-profile :is(th,td) { padding: 8px 5px; }.personal-profile h1 { font-size: 29px; } }

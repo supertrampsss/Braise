@@ -11,6 +11,7 @@ import type { RangeBucket } from '@/lib/semantic-v2-range-r2';
 import { SemanticStorageError } from "@/lib/semantic-storage";
 import type { Mode } from "@/lib/game-types";
 import { MAX_CLASSIC_HINTS } from '@/lib/classic-hints';
+import { lexicalAlternative } from '@/lib/lexical-suggestion';
 
 const headers = { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" };
 const reply = (body: unknown, status = 200) => Response.json(body, { status, headers });
@@ -102,7 +103,11 @@ export async function POST(request: Request) {
     }
     if (body.action !== "guess" || typeof body.word !== "string" || body.word.length > 50 || !/^[\p{L}]+(?:['-][\p{L}]+)*$/u.test(normalizeWord(body.word))) return reply({ error: "Proposez un seul mot français, sans chiffre ni espace." }, 400);
     const evaluation = await resolved.evaluate(body.word);
-    if (evaluation === null) return reply({ error: "Mot inconnu." }, 422);
+    if (evaluation === null) {
+      const alternative = lexicalAlternative(body.word);
+      const suggestion = alternative && await resolved.evaluate(alternative) !== null ? alternative : undefined;
+      return reply({ error: "Mot inconnu.", ...(suggestion ? { suggestion } : {}) }, 422);
+    }
     return reply({ ...evaluation, puzzleRef: publicPuzzle.ref });
   } catch (error) {
     if(error instanceof ClassicEditionConflict)return reply({error:'La référence de cette partie est invalide.'},409);

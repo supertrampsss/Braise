@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
+import { lazy, Suspense, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type SetStateAction } from "react";
 import { Check, CircleHelp, Clock3, Copy, Flame, Infinity as InfinityIcon, Lightbulb, LockKeyhole, Share2, Target, Users, X } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/sonner";
@@ -13,12 +13,9 @@ import {AcceptedGuessFlight} from '@/components/accepted-guess-flight';
 import { MAX_CLASSIC_HINTS } from '@/lib/classic-hints';
 import AdPlacement from "@/components/ad-placement";
 import { deviceBoardRevision, admitDeviceBoardMerge } from "@/lib/device-sync-admission";
-import { ProfilePanel } from "@/components/profile-panel";
 import { COLLECTIONS, collectionProgress } from "@/lib/collections";
-import { CollectionPicker } from "@/components/collection-picker";
 import { EXPEDITIONS, type ExpeditionStatus } from "@/lib/expeditions";
 import { resumeExpedition } from "@/lib/expedition-resume";
-import { ExpeditionPicker } from "@/components/expedition-picker";
 import { type Guess, type Mode, type Puzzle, type SavedGame } from "@/lib/game-types";
 
 import { classicDailyIdentity, classicFreeIdentity, classicEdition, type ClassicEdition } from "@/lib/word2vec-contract";
@@ -33,10 +30,7 @@ import { admitTutorialReturnFocus, type TutorialReturnIntent } from "@/lib/tutor
 import { canWriteGameDocument, writeAdmittedGame, recordAdmittedGameProgress } from "@/lib/game-write-admission";
 import { classicPuzzleMatchesLoad, failedPuzzleUrl, admittedPuzzleUrl, requestedGameSurface, surfaceUrl, retryPuzzleLoad, admitPuzzleLoad, type PuzzleLoad, type GameSurface } from "@/lib/game-navigation";
 import { AppNavigation } from "@/components/app-navigation";
-import { ArchiveCalendar } from "@/components/game-parts/archive-calendar";
 import { PlayTutorial } from "@/components/game-parts/play-tutorial";
-import { WinSummary } from "@/components/game-parts/play-hub";
-import { PartiesPanel } from "@/components/game-parts/parties-panel";
 import { readLocalPlays, rememberPlayContext, resumeSuggestion, type LocalPlay, type PlayContext } from "@/lib/play-hub";
 import { readEncountered, rememberEncountered, collectDiscoveryHistory } from "@/lib/free-discovery";
 import { recordProductEvent, type ProductEventType, type ProductEventContext } from "@/lib/product-events";
@@ -45,6 +39,14 @@ import { proximityFill, proximityColor, formatRankFr } from "@/lib/proximity-pre
 import { countLabel } from "@/lib/game-copy";
 import { requestJson, RequestTimeoutError } from '@/lib/request-json';
 import "@/components/game-parts/game-parts.css";
+
+const ProfilePanel = lazy(() => import('@/components/profile-panel').then(module => ({default:module.ProfilePanel})));
+const ArchiveCalendar = lazy(() => import('@/components/game-parts/archive-calendar').then(module => ({default:module.ArchiveCalendar})));
+const PartiesPanel = lazy(() => import('@/components/game-parts/parties-panel').then(module => ({default:module.PartiesPanel})));
+const CollectionPicker = lazy(() => import('@/components/collection-picker').then(module => ({default:module.CollectionPicker})));
+const ExpeditionPicker = lazy(() => import('@/components/expedition-picker').then(module => ({default:module.ExpeditionPicker})));
+const WinSummary = lazy(() => import('@/components/game-parts/play-hub').then(module => ({default:module.WinSummary})));
+const surfaceLoading = <p role="status" className="surface-loading">Chargement…</p>;
 
 type Modal = "tutorial" | "help" | "challenge" | "privacy" | "share" | null;
 function freshSeed() { return String(crypto.getRandomValues(new Uint32Array(1))[0] % 2147483647); }
@@ -123,6 +125,7 @@ export default function Game() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [spellingSuggestion, setSpellingSuggestion] = useState<string | null>(null);
   const [loadError, setLoadError] = useState("");
   const [loadRetryable, setLoadRetryable] = useState(true);
   const [feedback, setFeedback] = useState<GameEffect | null>(null);
@@ -215,7 +218,7 @@ export default function Game() {
     consumedFeedbackRef.current.add(next.id);
     if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
     setFeedback(next);
-    const duration = next.type === "puzzleWon" ? 1800 : next.type === "bestImproved" ? 1800 : 650;
+    const duration = 1800;
     feedbackTimerRef.current = setTimeout(() => {
       setFeedback(current => consumeGameFeedback(current, next.id));
       feedbackTimerRef.current = null;
@@ -225,6 +228,7 @@ export default function Game() {
   async function loadPuzzle(nextMode: Mode, locator = "", sessionSave?: SavedGame, expedition?: ExpeditionStatus, collection?: string, destination?: GameSurface, edition?:ClassicEdition) {
     if (puzzle) journeyMemory.current.set(puzzle.id, game);
     const request = ++requestRef.current;
+    setSpellingSuggestion(null);
     setJourney(expedition ?? null);
     collection=COLLECTIONS.find(item=>item.id===collection && item.seeds.includes(locator))?.id;
     if(collection&&!edition)try{edition=readLocalPlays(localStorage).find(play=>play.locator===locator&&!play.game.guesses.some(g=>g.found))?.edition;}catch{}
@@ -499,14 +503,17 @@ export default function Game() {
     focusFrameRef.current = null;
     if (!hint && !word) { inputRef.current?.focus(); return; }
     if (!hint && game.guesses.some(g => g.word === word)) { setError(`« ${word} » est déjà dans vos essais.`); inputRef.current?.select(); return; }
-    submitting.current = true; setBusy(true); setError("");
+    submitting.current = true; setBusy(true); setError(""); setSpellingSuggestion(null);
     const request = requestRef.current;
     try {
-      const {response,data} = await requestJson<EvaluationResponse & {error?:string}>("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: hint ? 'hint' : 'guess', ...(hint ? {hintLevel:game.hints,guesses:game.guesses.map(g=>g.word),bestWord:best?.word} : {}) }) });
+      const {response,data} = await requestJson<EvaluationResponse & {error?:string;suggestion?:string}>("/api/game", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode, seed: puzzle.seed, date: mode === "archive" ? puzzle.date : undefined, puzzleId: puzzle.id, puzzleRef: puzzle.ref, word, action: hint ? 'hint' : 'guess', ...(hint ? {hintLevel:game.hints,guesses:game.guesses.map(g=>g.word),bestWord:best?.word} : {}) }) });
       if (request !== requestRef.current) return;
       if (!response.ok) {
-        if(response.status === 422) diagnostic("guessRejected");
-        else if(response.status >= 500) diagnostic("networkFailed");
+        if(response.status === 422) {
+          diagnostic("guessRejected");
+          if(inputRevisionRef.current === submittedRevision && typeof data.suggestion === 'string') setSpellingSuggestion(data.suggestion);
+        }
+        else if(response.status >= 500) diagnostic("serviceUnavailable");
         throw new Error(data.error || "Impossible d’analyser ce mot.");
       }
       if (!samePuzzleRef(data.puzzleRef, puzzle.ref)) throw new Error("La réponse ne correspond pas à cette partie. Rechargez le jeu.");
@@ -538,7 +545,7 @@ export default function Game() {
           (data.found ? victoryRef.current : inputRef.current)?.focus({ preventScroll: true });
         });
       }
-    } catch (err) { if (request === requestRef.current) { if(err instanceof TypeError || err instanceof RequestTimeoutError) diagnostic("networkFailed"); if(inputRevisionRef.current === submittedRevision) setError(err instanceof Error ? err.message : "Connexion impossible. Votre saisie est conservée."); } }
+    } catch (err) { if (request === requestRef.current) { if(err instanceof TypeError || err instanceof RequestTimeoutError) diagnostic(err instanceof RequestTimeoutError?"requestTimedOut":"networkFailed"); if(inputRevisionRef.current === submittedRevision) setError(err instanceof Error ? err.message : "Connexion impossible. Votre saisie est conservée."); } }
     finally { if (request === requestRef.current) { submitting.current = false; setBusy(false); } }
   }
 
@@ -556,7 +563,7 @@ export default function Game() {
   }
   async function shareResult() {
     const text = resultText();
-    if (navigator.share) { try { await navigator.share({ title: "BRAIZ", text }); return; } catch (err) { if (err instanceof Error && err.name === "AbortError") return; } }
+    if (navigator.share) { try { await navigator.share({ title: "BRAIZ", text }); diagnostic("shareNative"); return; } catch (err) { if (err instanceof Error && err.name === "AbortError") return; } }
     await copy(text, "Résultat copié, sans révéler le mot.");
   }
   async function createChallenge() {
@@ -579,7 +586,7 @@ export default function Game() {
     }} onHelp={returnFocus=>{modalReturnFocus.current=returnFocus;setModal("help");diagnostic("helpOpened");}} />
 
     <main id="braise-main" tabIndex={-1} className={`main-shell surface-${surface}`}>
-      {surface === "modes" && <>
+      {surface === "modes" && <Suspense fallback={surfaceLoading}>
         <PartiesPanel plays={localPlays} disabled={busy || loading || journeyBusy || discoveryBusy} onResume={play=>void resumePlay(play)}>
         <section className="parties-archives" id="parties-archives" aria-label="Choisir une archive">
           <form className="archive-form" onSubmit={openArchive}>
@@ -590,8 +597,8 @@ export default function Game() {
           <ArchiveCalendar max={archiveMax} selected={archiveDraft} plays={localPlays} disabled={busy || loading} onOpen={date=>{setArchiveDraft(date);navigate("game");void loadPuzzle("archive",date).then(loaded=>{if(loaded) diagnostic("gameOpened","archive");});}}/>
         </section>
         </PartiesPanel>
-      </>}
-      {surface === "profile" && (profileSnapshot && now ? <ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onDeviceSync={receiveDeviceSync} deviceSyncGuard={deviceSyncGuard} onBack={() => navigate("game")} /> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
+      </Suspense>}
+      {surface === "profile" && (profileSnapshot && now ? <Suspense fallback={surfaceLoading}><ProfilePanel snapshot={profileSnapshot} ritual={ritual} now={new Date(now).toISOString()} busy={busy || loading} flamePaused={flamePaused} onSound={saveSound} onAnimations={toggleAnimations} onCosmetic={selectCosmetic} onSnapshot={setProfileSnapshot} onDeviceSync={receiveDeviceSync} deviceSyncGuard={deviceSyncGuard} onBack={() => navigate("game")} /></Suspense> : <section className="reference-profile"><h1>Votre progression</h1><p role="status">Chargement du profil…</p></section>)}
 
       <div hidden={surface !== "game"} className={`play-view ${journey ? "voyage-play" : ""}`}>
       {currentCollection && <div className="voyage-game-heading"><button className="text-action" onClick={()=>navigate("voyage")}>Collections</button><h1>{currentCollection.title}</h1><p>Énigme {currentCollection.seeds.indexOf(puzzle?.seed ?? "")+1} sur {currentCollection.seeds.length}</p></div>}
@@ -616,20 +623,21 @@ export default function Game() {
                 <h2 ref={victoryRef} tabIndex={-1} data-flight-word={best?.word} aria-label={`Mot trouvé : ${best?.word}`}>{best?.word}</h2>
                 <p>{countLabel(game.guesses.length,'essai')} · {countLabel(game.hints,'indice')}</p>
                 <div className="victory-actions">
-                  <button className="primary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? 'Chargement…' : journey ? journey.completed + 1 < journey.length ? 'Épreuve suivante' : 'Terminer le chapitre' : discoveryBusy ? 'Recherche…' : 'Continuer à jouer'}</button>
+                  <button className="primary-button" disabled={journeyBusy || discoveryBusy} onClick={()=>void nextActivity()}>{journeyBusy ? 'Chargement…' : journey ? journey.completed + 1 < journey.length ? 'Épreuve suivante' : 'Terminer le chapitre' : discoveryBusy ? 'Recherche…' : suggestedPlay ? 'Reprendre une partie' : 'Nouvelle partie'}</button>
                   <button className="secondary-button" onClick={shareResult}><Share2 size={17}/>Partager</button>
                 </div>
-                <details onToggle={event=>{if(event.currentTarget.open) diagnostic('summaryOpened');}}><summary>Voir les essais</summary><WinSummary game={game}/></details>
+                <details onToggle={event=>{if(event.currentTarget.open) diagnostic('summaryOpened');}}><summary>Voir les essais</summary><Suspense fallback={surfaceLoading}><WinSummary game={game}/></Suspense></details>
               </div> : <div className="guess-area">
                 <form onSubmit={submit} className="guess-form" data-hints="true" aria-busy={busy}>
                   <label className="sr-only" htmlFor="guess">Mot</label>
-                  <input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} />
+                  <input id="guess" ref={inputRef} value={input} onChange={e => { inputRevisionRef.current += 1; setInput(e.target.value); setError(""); setSpellingSuggestion(null); }} placeholder="Mot" lang="fr" autoComplete="off" autoCorrect="on" autoCapitalize="none" spellCheck={true} enterKeyHint="send" maxLength={50} aria-describedby="guess-feedback" aria-invalid={Boolean(error)} disabled={loading || discoveryBusy} />
                   <button type="submit" className="guess-button" aria-label={busy ? "Analyse en cours" : "Envoyer"} disabled={!puzzle || loading || busy || journeyBusy || discoveryBusy || !input.trim()}>{busy ? "Analyse…" : "Envoyer"}</button>
                   <button type="button" className="classic-hint-button" title={`Indice · ${MAX_CLASSIC_HINTS-game.hints} restant${MAX_CLASSIC_HINTS-game.hints === 1 ? "" : "s"}`} aria-label={`Indice, ${MAX_CLASSIC_HINTS-game.hints} disponible${MAX_CLASSIC_HINTS-game.hints === 1 ? "" : "s"}`} disabled={!puzzle || busy || loading || discoveryBusy || journeyBusy || game.hints >= MAX_CLASSIC_HINTS || best?.rank === 2} onClick={event=>void submit(event,true)}>
                     <Lightbulb size={17} aria-hidden="true"/><span className="hint-label">Indice</span><span className="hint-remaining" aria-hidden="true">{MAX_CLASSIC_HINTS-game.hints}</span>
                   </button>
                 </form>
                 <div className={`input-feedback ${error ? "error" : ""}`} id="guess-feedback" aria-live="polite">{error || (loading ? "Chargement du mot…" : null)}</div>
+                {spellingSuggestion && <button type="button" className="text-action spelling-suggestion" onClick={()=>{inputRevisionRef.current++;setInput(spellingSuggestion);setSpellingSuggestion(null);setError("");inputRef.current?.focus();}}>Utiliser « {spellingSuggestion} »</button>}
               </div>}
             </>}
           </div></section>
@@ -645,7 +653,7 @@ export default function Game() {
       <div className="reset-note" hidden={Boolean(journey)}><Clock3 size={14} /><span>{mode === "daily" ? <>Prochain mot dans <b>{countdownLabel}</b><small>Minuit, heure de Paris</small></> : mode === "archive" ? <>Cette archive reste disponible<button disabled={busy} onClick={() => loadPuzzle("daily")}>Revenir au mot du jour </button></> : <>Envie d’une autre piste ?<button disabled={busy} onClick={() => void discover()}>Découvrir un autre mot </button></>}</span></div>
       </div>
       </div>
-      {EXTRA_MODES_ENABLED && surface === "voyage" && <section className="explore-view reference-voyage" aria-labelledby="explore-heading">
+      {EXTRA_MODES_ENABLED && surface === "voyage" && <Suspense fallback={surfaceLoading}><section className="explore-view reference-voyage" aria-labelledby="explore-heading">
         <button className="reference-back" onClick={() => navigate("modes")}>Tous les modes</button>
         <section className="explore-group" aria-label="Voyage">
       <ExpeditionPicker disabled={busy || loading || journeyBusy} journey={journey} currentStageSolved={Boolean(journey?.seed && journey.seed === puzzle?.seed && solved)} error={journeyError} onContinue={id => void openJourney(id,"gameResumed")} />
@@ -656,7 +664,7 @@ export default function Game() {
 
           <a className="explore-link" href="/laboratoire"><span><strong>Laboratoire</strong><small>L’intrus et Deux braises</small></span></a></div>
         </section>
-      </section>}
+      </section></Suspense>}
       {(storageWarning || profileSnapshot && ["partial", "corrupt", "unsupported", "conflict", "memory-only"].includes(profileSnapshot.status)) && <p className="storage-warning" role="status" aria-live="polite" aria-atomic="true">{profileSnapshot?.status === "unsupported" ? "Cette sauvegarde provient d’une version plus récente de BRAIZ. Elle n’a pas été modifiée." : profileSnapshot?.status === "corrupt" ? "La sauvegarde locale est illisible. Les données existantes ont été conservées sans être remplacées." : profileSnapshot?.status === "conflict" ? "Deux anciennes sauvegardes différentes ont été détectées. Elles ont été conservées sans fusion automatique." : profileSnapshot?.status === "partial" ? "Une partie de votre ancienne sauvegarde n’a pas pu être reprise. Les éléments valides restent disponibles." : "La sauvegarde est indisponible dans ce navigateur. Vous pouvez continuer à jouer, mais votre progression risque d’être perdue en quittant ou en rechargeant cette page."}</p>}
       <AdPlacement />
       <footer className="site-footer"><button className="footer-brand" type="button" onClick={() => navigate("game")}>braiz.</button><div><a href="/a-propos">À propos</a><a href="/confidentialite">Confidentialité</a></div></footer>

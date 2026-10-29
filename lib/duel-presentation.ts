@@ -5,12 +5,19 @@ export type DuelRoundView = {own:DuelRoundFacts;opponent:DuelRoundFacts|null;rev
 export const DUEL_ATTEMPTS = 30;
 export const DUEL_ROUNDS = [0, 1, 2] as const;
 export type DuelGuessView = { round: number; word: string; ordinal: number; temperature: number; rank: number; found: number };
+export type DuelListGroup = 'play' | 'waiting' | 'finished';
+export const DUEL_LIST_GROUPS = [
+  {id:'play',label:'À jouer'}, {id:'waiting',label:'En attente'}, {id:'finished',label:'Terminés'},
+] as const;
+export type DuelListItem = {id:string;hostName:string;opponentName:string|null;role?:string;result?:string|null;created_at?:number;state:string;abandoned?:number;deadline?:number|null;invite_expires?:number;score?:{won:number;lost:number;drawn:number};canAcceptRematch?:boolean;rematchOf?:string|null};
+export type DuelListPage = {duels:DuelListItem[];nextCursor:string|null;counts:Record<DuelListGroup,number>};
 export type DuelView = {
   id: string; hostName: string; opponentName: string | null; inviteExpires: number;
   state: string; deadline: number | null; role: string; forfeiter: string | null;
   decisions: number[] | null; guesses: DuelGuessView[];
   rules?:string; vocabularySize?:number; opponentGuesses?:DuelGuessView[]; rounds?:DuelRoundView[];
   score?:{won:number;lost:number;drawn:number}; rematchOf?:string|null; canAcceptRematch?:boolean;
+  invitationVersion?:string;
 };
 export function duelRound(view: DuelView, round: number, now: number) {
   const guesses = view.guesses.filter(guess => guess.round === round);

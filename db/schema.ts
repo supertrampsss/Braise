@@ -1,4 +1,4 @@
-import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { check, index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
 export const guests = sqliteTable("braise_guests", {
@@ -97,3 +97,11 @@ export const circleGoals = sqliteTable('braise_circle_goals', {
   id:text('id').primaryKey(), circleId:text('circle_id').notNull().references(()=>circles.id),
   week:text('week').notNull(), target:integer('target').notNull(),updatedAt:integer('updated_at').notNull(),
 }, table=>[uniqueIndex('braise_circle_goal_week').on(table.circleId,table.week),check('braise_circle_goal_target',sql`${table.target} BETWEEN 0 AND 20`)]);
+
+// Optional first-party measurement. No foreign key to a player, session, puzzle or duel.
+export const metricConsents = sqliteTable('braiz_metric_consents', {
+  tokenHash: text('token_hash').primaryKey().notNull(), grantedAt: integer('granted_at').notNull(), expiresAt: integer('expires_at').notNull(), revoked: integer('revoked').notNull().default(0),
+}, table => [index('braiz_metric_consent_expiry').on(table.expiresAt), check('braiz_metric_consent_revoked', sql`${table.revoked} IN (0,1)`)]);
+export const metricEvents = sqliteTable('braiz_metric_events', {
+  tokenHash: text('token_hash').notNull().references(() => metricConsents.tokenHash, { onDelete: 'cascade' }), eventId: text('event_id').notNull(), day: text('day').notNull(), type: text('type').notNull(), context: text('context').notNull(), receivedAt: integer('received_at').notNull(),
+}, table => [primaryKey({ columns: [table.tokenHash, table.eventId] }), index('braiz_metric_event_day').on(table.day, table.type, table.context), index('braiz_metric_event_browser_day').on(table.tokenHash, table.day)]);

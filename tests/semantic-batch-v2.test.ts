@@ -14,6 +14,9 @@ import { captureEditorialEvidence } from '../scripts/editorial-evidence-v2.mjs';
 import { checkRuntimeArchive } from '../scripts/semantic-runtime-archive.mjs';
 import { qualifySemanticBatch, parseBatchArgs } from '../scripts/qualify-semantic-batch-v2.mjs';
 
+// Retry transient Windows deletion errors in fixtures only; persistent cleanup errors still fail.
+const temporaryCleanup = { recursive: true, force: true, maxRetries: 5, retryDelay: 100 };
+
 async function fixture() {
   const root = await mkdtemp(join(tmpdir(), 'braise-batch-'));
   const source = join(root, 'source.vec'), corpusDir = join(root, 'c'), targetsDir = join(root, 't'), archiveDir = join(root, 'a'), evidenceDir = join(root, 'e'), checkpointDir = join(root, 'p');
@@ -31,7 +34,7 @@ test('canonical directories accept actual Windows spelling but reject ancestor j
     if (process.platform === 'win32') assert.equal((await canonicalDirectoryWithoutLinks(join(root, 'ACTUAL', 'CHILD'))).toLowerCase(), (await realpath(join(root, 'actual', 'child'))).toLowerCase());
     await symlink(join(root, 'actual'), join(root, 'alias'), process.platform === 'win32' ? 'junction' : 'dir');
     await assert.rejects(canonicalDirectoryWithoutLinks(join(root, 'alias', 'child')), /symbolic links/);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test('bounded batches preserve every canonical page and evidence before eviction; restart revalidates', async () => {
@@ -51,7 +54,7 @@ test('bounded batches preserve every canonical page and evidence before eviction
     const archive = await checkRuntimeArchive({ ...f, targetId: 0 });
     await writeFile(join(archive.root, archive.objects.find((o: { path: string }) => o.path.startsWith('pages/')).path), 'corrupt');
     await assert.rejects(qualifySemanticBatch({ ...f, targetIds: [0] }), /archive object mismatch/);
-  } finally { await rm(f.root, { recursive: true, force: true }); }
+  } finally { await rm(f.root, temporaryCleanup); }
 });
 
 test('archive failure and callback corruption never delete the independently verified target', async () => {
@@ -71,7 +74,7 @@ test('archive failure and callback corruption never delete the independently ver
     await assert.rejects(evictSemanticTarget({ corpusDir: f.corpusDir, outputDir: f.targetsDir, targetId: 0, beforeEviction: async () => { throw new Error('archive interrupted'); } }), /archive interrupted/);
     assert.deepEqual(await readFile(join(dir, 'active.json')), activeBytes);
     assert.ok((await readdir(dir)).includes('active.json'));
-  } finally { await rm(f.root, { recursive: true, force: true }); }
+  } finally { await rm(f.root, temporaryCleanup); }
 });
 
 test('batch CLI rejects ambiguous arguments and does not expose quota overrides', () => {
@@ -92,7 +95,7 @@ test('runtime archive remains immutable across a later failed capture and reject
     assert.equal((await checkRuntimeArchive({ ...f, targetId: 0 })).inventorySha256, previous.inventorySha256);
     await assert.rejects(captureEditorialEvidence({ ...f, archiveDir: join(f.targetsDir, f.corpus.manifest.corpusId, 'targets', 'archive'), targetId: 1, evictAfterArchive: true }), /separate from target staging/);
     await assert.rejects(qualifySemanticBatch({ ...f, checkpointDir: join(f.targetsDir, f.corpus.manifest.corpusId, 'targets', 'checkpoints'), targetIds: [1] }), /outside target staging/);
-  } finally { await rm(f.root, { recursive: true, force: true }); }
+  } finally { await rm(f.root, temporaryCleanup); }
 });
 
 test('full-entropy short verifier SQLite filename supports the reproduced 261-character path', async () => {
@@ -104,7 +107,7 @@ test('full-entropy short verifier SQLite filename supports the reproduced 261-ch
     assert.equal(join(outputDir, tail).length, 261);
     await buildSemanticTarget({ corpusDir: f.corpusDir, outputDir, targetId: 0 });
     assert.equal((await evictSemanticTarget({ corpusDir: f.corpusDir, outputDir, targetId: 0 })).evicted, true);
-  } finally { await rm(f.root, { recursive: true, force: true }); }
+  } finally { await rm(f.root, temporaryCleanup); }
 });
 
 test('self-consistent forged archive hashes and checkpoint never replace independent numerical verification', async () => {
@@ -143,5 +146,5 @@ test('self-consistent forged archive hashes and checkpoint never replace indepen
     await writeFile(join(f.checkpointDir, '0000000000.json'), JSON.stringify(checkpoint));
     assert.equal((await checkRuntimeArchive({ ...f, targetId: 0 })).inventorySha256, inventorySha256);
     await assert.rejects(qualifySemanticBatch({ ...f, targetIds: [0] }), /Target score mismatch/);
-  } finally { await rm(f.root, { recursive: true, force: true }); }
+  } finally { await rm(f.root, temporaryCleanup); }
 });

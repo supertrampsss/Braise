@@ -1,8 +1,9 @@
-/** Local support ledger. No network, tracking identity, user text or game reference. */
+import { emitMetric } from './metrics-client';
+/** Local support ledger. A separate, explicit opt-in can measure new allowlisted actions. */
 export const PRODUCT_EVENTS_KEY = "braiz.diagnostics.v1";
 export const PRODUCT_EVENTS_CAP = 100;
 export const PRODUCT_EVENTS_MAX_BYTES = 32768;
-export const PRODUCT_EVENT_TYPES = ["gameOpened", "firstGuessAccepted", "guessAccepted", "guessRejected", "networkFailed", "hintUsed", "puzzleWon", "gameResumed", "gameLeft", "helpOpened", "summaryOpened", "shareCopied", "nextActivityOpened", "profileExported", "profileImported", "refusedWordReported", "offlinePackDownloaded", "offlinePackOpened"] as const;
+export const PRODUCT_EVENT_TYPES = ["gameOpened", "firstGuessAccepted", "guessAccepted", "guessRejected", "networkFailed", "hintUsed", "puzzleWon", "gameResumed", "gameLeft", "helpOpened", "summaryOpened", "shareCopied", "nextActivityOpened", "profileExported", "profileImported", "refusedWordReported", "offlinePackDownloaded", "offlinePackOpened", "shareNative", "duelCreated", "duelJoined", "duelCompleted", "duelRematchCreated", "serviceUnavailable", "requestTimedOut"] as const;
 export const PRODUCT_EVENT_CONTEXTS = ["daily", "archive", "free", "challenge", "collection", "expedition", "intruder", "two-braises", "circle", "duel", "studio", "training", "offline", "profile"] as const;
 export type ProductEventType = typeof PRODUCT_EVENT_TYPES[number];
 export type ProductEventContext = typeof PRODUCT_EVENT_CONTEXTS[number];
@@ -36,7 +37,7 @@ export function recordProductEvent(storage: DiagnosticStorage, type: ProductEven
   if (!validEvent(event)) return false;
   const raw = JSON.stringify({ version: 1, events: [...state.ledger.events, event].slice(-PRODUCT_EVENTS_CAP) });
   if (size(raw) > PRODUCT_EVENTS_MAX_BYTES) return false;
-  try { storage.setItem(PRODUCT_EVENTS_KEY, raw); return true; } catch { return false; }
+  try { storage.setItem(PRODUCT_EVENTS_KEY, raw); emitMetric(storage, type, context); return true; } catch { return false; }
 }
 /** Produces a file only when the player explicitly requests an export. */
 export function exportProductDiagnostics(storage: DiagnosticStorage, now = new Date()): string | null {

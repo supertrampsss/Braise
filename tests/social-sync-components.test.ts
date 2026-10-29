@@ -5,7 +5,7 @@ import {act,create,type ReactTestRenderer,type ReactTestInstance} from 'react-te
 import {DeviceSync} from '../components/device-sync';
 import Circles from '../components/circles';
 import Duels from '../components/duels';
-import {SyncMemory,parseDeviceEnvelope} from '../lib/device-sync';
+import {SyncMemory,parseDeviceEnvelope,createDeviceEnvelope} from '../lib/device-sync';
 import {loadLocalProfile,setLocalSound,recordLocalGameProgress} from '../lib/profile-storage';
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true});
 class Memory extends SyncMemory {refuse=false;setItem(k:string,v:string){if(this.refuse)throw new Error('quota');super.setItem(k,v);}removeItem(k:string){this.values.delete(k);}clear(){this.values.clear();}}
@@ -126,6 +126,24 @@ test('confirmation rechecks the prepared local revision, current board and live 
    if(change==='profile'){storage.refuse=true;snapshot=setLocalSound(true,'2026-10-01T12:00:00.000Z','new-after-preview',storage,snapshot);await act(async()=>tree.update(render()));}
    if(change==='busy')revision=null;if(change==='navigation')revision='another-board';
    await click(tree,'Confirmer l’envoi');assert.equal(puts,0);assert.equal(buttons(tree,'Confirmer l’envoi').length,0);assert.equal(tree.root.findAllByProps({role:'alert'}).length,1);
+  }finally{await act(async()=>tree.unmount());}
+ }
+});
+
+test('remote merge preview and confirmation refuse an unsaved current board without reloading it',async()=>{
+ for(const phase of ['preview','confirmation']){
+  const saved={guesses:[{word:'arbre',rank:200,temperature:12,found:false,order:1}],pins:[] as string[],hints:0,startedAt:1};
+  const unsaved={...saved,guesses:[...saved.guesses,{word:'jardin',rank:42,temperature:35,found:false,order:2}]};
+  const storage=new Memory();storage.setItem('braise.v1.game.free-0012',JSON.stringify(saved));browser(storage,'');
+  const source=new Memory();source.setItem('braise.v1.game.free-99',JSON.stringify(saved));const payload=createDeviceEnvelope(source,loadLocalProfile(source));
+  const snapshot=loadLocalProfile(storage),before=[...storage.values];let live=phase==='preview'?unsaved:saved,reads=0,tree!:ReactTestRenderer;
+  globalThis.fetch=async url=>reply(url==='/api/session'?{guest:{name:'A'},csrf:'csrf'}:{revision:1,payload});
+  const guard={revision:()=> 'same-board',admit:()=>assert.fail('must reject before admission'),currentGame:()=>{reads++;return{id:'free-0012',game:live};}};
+  await act(async()=>{tree=create(createElement(DeviceSync,{snapshot,mergeGuard:guard,onSnapshot:()=>assert.fail('must not reload the disk board')}));});
+  try{
+   await click(tree,'Configurer la synchronisation facultative');await click(tree,'Aperçu de la copie distante');
+   if(phase==='confirmation'){live=unsaved;await click(tree,'Confirmer la fusion locale');}else assert.equal(buttons(tree,'Confirmer la fusion locale').length,0);
+   assert.match(text(tree.root.findByProps({role:'alert'})),/partie en mémoire.*incomplète/);assert.deepEqual([...storage.values],before);assert.ok(reads>=(phase==='preview'?1:2));assert.equal(live.guesses.length,2);
   }finally{await act(async()=>tree.unmount());}
  }
 });

@@ -17,6 +17,9 @@ async function fileSymlink(t: import("node:test").TestContext, target: string, p
 }
 
 const sha256 = (value: Buffer) => createHash("sha256").update(value).digest("hex");
+// Windows may briefly keep an emptied temp directory pending deletion after SQLite closes.
+// Retry only cleanup through Node's bounded native backoff; persistent errors still fail.
+const temporaryCleanup = { recursive: true, force: true, maxRetries: 5, retryDelay: 100 };
 
 test("the restore plan uses isolated ignored staging paths and never enables a download implicitly", () => {
   const root = resolve(tmpdir(), "braise-restore-plan");
@@ -47,7 +50,7 @@ test("a source is accepted only with exact size, hash and a regular non-symlink 
       if (!await fileSymlink(subtest, path, link)) return;
       await assert.rejects(verifyPinnedFile(link, pin), /non-symlink/);
     });
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("the pinned downloader resumes a partial file, validates it, installs atomically and is idempotent", async () => {
@@ -68,7 +71,7 @@ test("the pinned downloader resumes a partial file, validates it, installs atomi
     assert.deepEqual(await readFile(destination), source); await assert.rejects(stat(`${destination}.part`), /ENOENT/);
     const second = await downloadPinnedSource(destination, { pin, fetchImpl: fetchImpl as typeof fetch });
     assert.equal(second.downloaded, false); assert.equal(calls.length, 1);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("the downloader preserves an incomplete partial file and releases its lock for a later resume", async () => {
@@ -80,7 +83,7 @@ test("the downloader preserves an incomplete partial file and releases its lock 
     await assert.rejects(downloadPinnedSource(destination, { pin, fetchImpl: fetchImpl as typeof fetch }), /incomplete/);
     assert.equal((await stat(`${destination}.part`)).size, 4);
     await assert.rejects(stat(`${destination}.download.lock`), /ENOENT/);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("the downloader refuses a symbolic partial without touching its target", async t => {
@@ -91,7 +94,7 @@ test("the downloader refuses a symbolic partial without touching its target", as
     const source = Buffer.from("source"); const pin = { url: "https://pinned.test/source.vec", bytes: source.length, sha256: sha256(source) };
     await assert.rejects(downloadPinnedSource(destination, { pin, fetchImpl: (async () => new Response(source)) as typeof fetch }), /non-symlink/);
     assert.equal(await readFile(victim, "utf8"), "à conserver");
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("the downloader rejects an oversized stream, cancels it and never exceeds the pin", async () => {
@@ -107,7 +110,7 @@ test("the downloader rejects an oversized stream, cancels it and never exceeds t
     assert.equal(cancelled, true);
     assert.ok((await stat(`${destination}.part`)).size <= pin.bytes);
     await assert.rejects(stat(`${destination}.download.lock`), /ENOENT/);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("a server ignoring Range replaces the partial instead of appending", async () => {
@@ -124,7 +127,7 @@ test("a server ignoring Range replaces the partial instead of appending", async 
     assert.ok("resumedAt" in result);
     assert.equal(result.resumedAt, 0);
     assert.deepEqual(await readFile(destination), source);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("an inconsistent resume response preserves the partial and releases the lock", async () => {
@@ -137,7 +140,7 @@ test("an inconsistent resume response preserves the partial and releases the loc
     await assert.rejects(downloadPinnedSource(destination, { pin, fetchImpl: fetchImpl as typeof fetch }), /resume range is inconsistent/);
     assert.deepEqual(await readFile(`${destination}.part`), partial);
     await assert.rejects(stat(`${destination}.download.lock`), /ENOENT/);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("the downloader cannot be redirected through a partial-path swap during fetch", async t => {
@@ -156,7 +159,7 @@ test("the downloader cannot be redirected through a partial-path swap during fet
     await assert.rejects(downloadPinnedSource(destination, { pin, fetchImpl: fetchImpl as typeof fetch }), /changed before atomic installation/);
     assert.equal(await readFile(victim, "utf8"), "à conserver");
     await assert.rejects(stat(destination), /ENOENT/);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
 
 test("the orchestrator refuses a renamed source before any build work", async () => {
@@ -167,5 +170,5 @@ test("the orchestrator refuses a renamed source before any build work", async ()
       evidenceDir: join(root, "evidence"), cataloguePath: join(root, "catalogue.json"),
     }), /filename must remain wiki\.fr\.vec/);
     await assert.rejects(stat(join(root, "corpus")), /ENOENT/);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally { await rm(root, temporaryCleanup); }
 });
