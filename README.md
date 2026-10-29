@@ -1,87 +1,68 @@
 # BRAIZ
 
-Correction du 13 octobre 2026 : plateau simplifié, indices automatiques retirés, associations du modèle sans sélection éditoriale de voisins. Voir [le détail et la portée de cette correction](docs/SEMANTIC-SIMPLIFICATION.md).
+Jeu web français de proximité sémantique, accessible directement sur [braiz.io](https://braiz.io). Le joueur cherche un mot secret ; chaque proposition reçoit son classement réel dans le corpus.
 
-Jeu web français de proximité sémantique. Version de test BRAIZ : mot quotidien, archives, partie libre, profil local et partage sans spoiler. Domaine : braiz.io. Les modes avancés sont conservés dans le code mais non proposés au public (`lib/release.ts`). Les clés historiques `braise.*` restent compatibles.
+Ce document décrit le code du dépôt au 29 octobre 2026. L'état d'un compte externe ou d'un déploiement se vérifie séparément.
+
+## Parcours actuels
+
+La navigation principale tient dans un burger : Mot du jour, Partie libre, Archives, Duel, Profil et Règles.
+
+- Le quotidien change à minuit à Paris. Les archives reprennent une date passée dans son édition d'origine.
+- La partie libre utilise une graine reproductible. La flamme et la jauge suivent le meilleur classement ; le pourcentage est leur remplissage visuel.
+- Les plateaux classiques courants proposent au plus trois indices : un mot réellement mieux classé, choisi en fonction du meilleur essai.
+- Le duel oppose deux personnes sur trois mots, avec 30 essais par manche, sans indice, dans les 48 heures après acceptation. Les solutions et essais adverses se dévoilent une fois les recherches correspondantes closes.
+- Le profil conserve la progression et propose une sauvegarde locale complète. L'accès aux duels et la synchronisation serveur passent par l'identité de l'appareil.
+
+Les routes avancées restent activées par `lib/release.ts` : entraînement, laboratoire, cercles, studio et intégration. Elles ne sont pas toutes présentes dans la navigation principale.
+
+## Moteur courant et compatibilité
+
+Les nouvelles éditions classiques utilisent Word2Vec depuis le 13 octobre 2026 : **155 562 entrées source, 500 dimensions et 475 cibles**. Les scores proviennent du cosinus des vecteurs ; aucun voisin ajouté ni score de remplacement ne corrige les associations du modèle.
+
+Les quotidiens choisissent parmi les 475 cibles. Les graines libres conservent les 120 emplacements historiques, évalués dans le corpus Word2Vec complet. La sélection ne garantit pas l'absence de répétition.
+
+Les objets BWS2 sont servis par le binding `ASSETS`, vérifiés avant lecture et chargés côté serveur. Un mot absent est refusé sans essai ajouté. Une suggestion orthographique explicite peut être proposée après vérification ; le joueur doit la choisir puis l'envoyer.
+
+Les lecteurs `classic-v1` et `classic-v2`, leurs données et leurs identités restent disponibles pour les anciennes parties. Une reprise ne convertit jamais leurs scores en Word2Vec. Contrat, reconstruction et licences : [Word2Vec](docs/WORD2VEC.md), [données historiques](docs/DATA-LICENSE.md).
 
 ## Développement
 
-- Stack : React, TypeScript, Vinext, Cloudflare Workers, composants Radix/Shadcn fournis.
-- Installation : `npm run install:ci`.
-- Vérification du moteur et de l'API : `npm test`.
-- Vérification TypeScript : `npm run typecheck`.
-- Construction : `npm run build`.
+Node.js 22.13 ou supérieur. Le lockfile npm fait référence ; les scripts Node gèrent Windows et Linux.
 
-Les commandes de développement, construction, démarrage et vérification sont portables Windows/Linux via Node. Le socle de la revue complète (matrice de disponibilité, bindings réels, intégration, diagnostic local et limites de qualification) est documenté dans `docs/FULL-REVIEW-FOUNDATIONS.md`.
+| Commande | Usage |
+| --- | --- |
+| `npm run install:ci` | Installer les dépendances figées |
+| `npm run dev` | Démarrer le développement |
+| `npm run typecheck` | Vérifier TypeScript |
+| `npm test` | Exécuter les tests du projet |
+| `npm run check` | TypeScript puis tests |
+| `npm run lint` | Contrôler le code avec ESLint |
+| `npm run build` | Vérifier les segments historiques puis construire le Site |
+| `npm run start` | Démarrer via le lanceur du projet |
+| `npm run db:generate` | Générer les migrations Drizzle |
+| `node scripts/audit-code-usage.mjs` | Inventorier les imports et candidats inutilisés, sans suppression |
 
-Le déploiement Sites utilise l'identité existante de `.openai/hosting.json`. Le dépôt source lié à cette identité doit recevoir le commit exact avant de sauvegarder et déployer une version. Ne pas recréer le Site pour une mise à jour.
+React, TypeScript et Vinext utilisent les conventions App Router et Cloudflare Workers. La configuration [Sites](.openai/hosting.json) conserve l'identité du projet, D1 `DB` et R2 `SEMANTIC_DATA`. Les assets sont servis par `ASSETS`. Réutiliser cette identité et le commit source exact pour chaque publication.
 
-## Moteur
+## Données, mesure et publicité
 
-30 000 entrées françaises filtrées, 120 cibles courantes. Scores réels issus de fastText Wikipedia français, 300 dimensions, pré-calculés par similarité cosinus et quantifiés à 1/10 000. Le serveur expose une proposition à la fois ; le gros corpus n'est pas envoyé au chargement du jeu.
+Le profil et les parties classiques sont sauvegardés localement. La sauvegarde portable inclut les parties en cours et terminées ; l'ancien export de profil reste distinct. Chaque import affiche un aperçu, exige une confirmation et refuse les conflits. Les secrets d'accès aux duels sont exclus du fichier.
 
-La matrice V1 est compilée en 120 segments binaires immuables par `npm run semantic:shards`. Scores, rangs et ordre sont pré-calculés, puis chaque objet est contrôlé par empreinte avant usage. Le cache serveur est borné en octets et en lectures simultanées. Le Worker ne contient plus la matrice encodée. Les assets restent le transport provisoire tant que le binding R2 réel n'est pas configuré et qualifié.
+La synchronisation serveur existe via D1. Les lecteurs historiques et les faits de progression sont conservés sans crédit supplémentaire à la restauration.
 
-Le rang porte sur le dictionnaire de Braise. Certaines formes rares ou fléchies peuvent manquer. Les mots absents sont refusés explicitement, sans score inventé. Les cibles se répètent après 120 quotidiens ; le mode libre peut rencontrer des répétitions.
+Le diagnostic reste local par défaut. La mesure produit de première partie exige un consentement explicite ; elle n'envoie ni mots, ni solutions, ni classements, ni identifiants de duel. Son tableau opérateur requiert un jeton autorisé et non expiré.
 
-`data/semantic-fr.json` contient les données dérivées, sous CC BY-SA 3.0, avec attribution et transformations. Voir `docs/DATA-LICENSE.md`. Une copie est proposée à `/semantic-data.json` pour la transparence de réutilisation. Elle dévoile la collection de cibles : ne pas utiliser cette V1 pour une compétition dotée ou un classement anti-triche.
-
-Reconstruction : installer Python et NumPy, puis lancer `python scripts/build-semantic-data.py`. Le script télécharge seulement les 50 000 premières lignes du modèle et conserve son cache brut dans `work/semantic`, ignoré par Git. Le fichier reproductible final est écrit dans `data`.
-
-Le pipeline local B1b prépare le futur corpus complet sans modifier V1. `npm run semantic:v2:build -- --source <fichier.vec> --output work/semantic-v2` lit le fichier jusqu'à EOF, normalise les vecteurs avec une méthode stable, déduplique exactement sur disque et produit des segments BRV2 immuables. Les lignes, segments et buffers sont bornés. Une interruption conserve uniquement les segments validés et peut reprendre avec la même empreinte de source et la même configuration. Un verrou abandonné demande l'identifiant exact inscrit dans `.build.lock` et l'option `--recover-lock-owner` ; un processus encore actif ne peut pas être remplacé.
-
-`npm run semantic:v2:verify -- --source <fichier.vec> --output work/semantic-v2` relit indépendamment toute la source et tous les segments, contrôle chaque association mot/vecteur, les exclusions, les empreintes et l'inventaire sémantique. Le pointeur `active.json` n'est créé qu'après cette vérification. Le corpus français complet a depuis été ingéré et vérifié localement. La génération et la revue des cibles, puis la qualification R2/Worker, restent nécessaires avant activation produit.
-
-`npm run semantic:v2:restore` orchestre une reprise reproductible dans les chemins ignorés sous `work/`. Par défaut, il exige la source locale `work/source/wiki.fr.vec`. L'option explicite `--download` reprend uniquement l'URL fastText figée, sans accepter d'URL fournie par l'appelant. Avant toute adoption, la commande contrôle le fichier par descripteur, sa taille de 3 027 096 151 octets et son SHA-256, puis reconstruit et vérifie séparément BRV2, BPI2 et le catalogue éditorial contre les empreintes B1E. Elle ne publie et n'active jamais V2.
-
-Le lot B1c ajoute la génération locale d'une cible arbitraire : `npm run semantic:v2:target:build -- --corpus work/semantic-v2 --output work/semantic-targets-v2 --target-id <id>`. Il calcule le cosinus réel sur les vecteurs float32, quantifie selon un contrat figé, puis écrit des pages bornées de scores int16, rangs uint32 et ordre stable uint32. `npm run semantic:v2:target:verify` recalcule exhaustivement la cible avant son activation locale. Un quota global, fixé à huit cibles par défaut, empêche le staging de devenir une matrice quadratique durable. Les interruptions réservent leur place et peuvent reprendre sans adopter une queue non checkpointée.
-
-Le lot B1d ajoute l'index de présence exact `BPI2`. `npm run semantic:v2:index:build -- --corpus work/semantic-v2 --output work/semantic-targets-v2` reprend chaque identité BRV2, la range dans deux niveaux de préfixes SHA-256 et n'active l'index local qu'après vérification exhaustive de la bijection mot-identifiant. `npm run semantic:v2:index:verify` contrôle tous les objets ; la lecture ponctuelle ne charge qu'une racine bornée, une page de préfixe et une feuille bornée. La canonisation reste celle de BRV2 et ne réutilise jamais les alias approximatifs V1.
-
-`npm run semantic:v2:target:evict -- --corpus work/semantic-v2 --output work/semantic-targets-v2 --target-id <id>` vérifie une cible complète avant son retrait. Génération, vérification et éviction partagent un verrou lecteur/mutateur. Le renommage atomique et le journal reprenable empêchent une suppression interrompue de libérer ou de recréer silencieusement un emplacement.
-
-Ces commandes restent des outils de staging. La source fastText française complète a été ingérée et vérifiée localement : 1 013 881 entrées admises sur 1 152 449 lignes, 248 segments, index exact complet. Huit colonnes réelles respectant le quota ont été préparées et contrôlées. Les empreintes et mesures sont figées dans `docs/program/B1E-MEASUREMENTS.json`. Le transfert durable et la qualification R2/Worker restent nécessaires avant activation produit.
-
-Le chantier B2 conserve 400 cibles courantes relues lexicalement par des agents dans un catalogue de travail inactif. Revue lexicale, qualité des voisinages, indices, colonne numérique et approbation sont des statuts distincts. `npm run semantic:v2:evidence:capture -- --corpus <corpus> --targets <staging> --evidence <preuves> --target-id <id>` archive une preuve immuable de 64 voisins seulement après vérification exhaustive de la colonne. `npm run semantic:v2:evidence:expand -- --corpus <corpus> --evidence <preuves> --target-id <id> --parent-sha256 <empreinte>` étend une ancienne preuve de 12 voisins depuis le corpus, y compris après éviction de sa colonne, sans modifier le dossier historique. `npm run semantic:v2:evidence:verify -- --corpus <corpus> --evidence <preuves> --target-id <id> --expected-sha256 <empreinte>` recalcule le voisinage et l'histogramme directement depuis le corpus. L'index conserve toutes les révisions et la résolution d'une décision utilise toujours son empreinte exacte. Le dossier des preuves doit rester hors du staging des cibles. Les commandes de catalogue exigent `--evidence <preuves>` et distinguent une colonne présente d'une preuve archivée. Un calendrier V2 ne peut être produit qu'avec 365 approbations liées à l'empreinte exacte de leur preuve et reste inactif jusqu'à la bascule explicite.
-
-## État et publicité
-
-Les parties, les pistes, le son et les victoires sont locaux au navigateur. Le profil V2 reprend la progression V1 après une copie de secours vérifiée et ses événements convergent entre les onglets du même navigateur. Un export JSON lisible permet de copier manuellement le profil, ses récompenses et ses préférences vers un autre appareil ; l’import prévisualise la fusion, exige une confirmation et ne déplace pas les parties en cours ni les épingles. Les archives ouvrent les mots passés depuis le lancement, avec la même partie sauvegardée que le quotidien correspondant. Une réussite tardive reste une archive et ne réécrit pas la série historique. Trois objectifs repartent chaque lundi à l’heure de Paris et débloquent des styles permanents, sans visionnage publicitaire ni avantage de jeu. Aucun compte ni synchronisation automatique multi-appareil. Cet historique reste personnel et non compétitif. Les défis partagent une seed et se comparent par leurs résultats, sans classement en direct.
-
-Sans configuration commerciale, la décision publicitaire reste `skip/not-configured` : aucun emplacement vide ni annonce n’est affiché. Le script réel de vérification du domaine AdSense est conservé et charge un service tiers ; aucun consentement n’est simulé. Le diagnostic de support reste local, anonyme, limité aux 100 dernières actions raccordées, sans mots ni scores, exporté seulement sur demande. Un lancement commercial nécessite une configuration et une politique de consentement réelles.
-
-La version initiale est publiée en accès privé. Les liens de défis deviendront librement accessibles après ouverture de l'audience du Site ou déploiement public approprié.
+La diffusion publicitaire est inactive : `AD_RUNTIME_CONFIG = null`. L'adaptateur existe, mais la validation du compte, les emplacements réels et l'intégration du consentement restent des prérequis distincts. Voir [l'état AdSense](docs/ADSENSE-READINESS.md).
 
 ## Documentation
 
-- `docs/PRODUCT.md` : brainstorming, boucle, monétisation, scénarios et priorités.
-- `docs/ARCHITECTURE.md` : contrats de données et invariants.
-- `docs/DATA-LICENSE.md` : source et licence des données.
+- [Architecture actuelle et invariants](docs/ARCHITECTURE.md)
+- [Duels : invitations, listes et pagination](docs/DUEL-DASHBOARD-DELIVERY.md)
+- [Sauvegarde portable et synchronisation](docs/PORTABLE-BACKUP-DELIVERY.md)
+- [Revue éditoriale du catalogue](docs/EDITORIAL-QUALITY.md)
+- [Nettoyage du code et preuves de suppression](docs/CODE-CLEANUP.md)
+- [Registre de revue et points encore ouverts](docs/CONTINUOUS-REVIEW.md)
+- [Programme historique B0 à B10](docs/program/BRAISE-PLAN.md), [baseline V1](docs/program/BASELINE.json) et [pipeline V2](docs/program/B1E-DELIVERY.md)
 
-## Vérification
-
-Tests automatisés du calendrier Paris (y compris changements d'heure), rotation des 120 cibles, victoire, score sémantique, indices, validation API et séries. Construction de production et vérification TypeScript. Aucun test visuel dans un navigateur n'a été effectué lors de la création.
-
-## Programme des dix évolutions
-
-- `docs/program/BRAISE-PLAN.md` : plan intégré, douze missions, dépendances et critères de livraison.
-- `docs/program/GOAL.md` : contrat de reprise autonome et conditions d’arrêt.
-- `docs/program/EXECUTION.json` : état vérifiable du programme.
-- `docs/program/BASELINE.json` : référence du corpus et des identités V1 à préserver.
-- `docs/program/B0-DELIVERY.md` : compatibilité V1 implémentée, preuves et limites de validation.
-- `docs/program/B1A-DELIVERY.md` : segmentation du moteur implémentée, qualification R2 encore requise.
-- `docs/program/B1B-CORPUS-DIRECTIVE.md` : exigence de dictionnaire complet et critères d'acceptation du futur corpus.
-- `docs/program/B1C-DELIVERY.md` : générateur paginé d'une cible BRV2, classement exact et staging global borné.
-- `docs/program/B1D-DELIVERY.md` : index lexical exact BPI2 et éviction coordonnée du cache de cibles.
-- `docs/program/B2B-DELIVERY.md` : preuves éditoriales durables, cycle d'éviction réel et réutilisation du quota.
-- `docs/program/B2C-DELIVERY.md` : premier lot de huit rotations réelles, revues et rendement éditorial mesuré.
-- `docs/program/B2D-DELIVERY.md` : preuves étendues à 64 voisins, historique infalsifiable et réexamen des sept rejets.
-- `docs/program/B3-DELIVERY.md` : design vivant, événements accessibles et socle publicitaire inactif.
-- `docs/program/B4A-DELIVERY.md` : profil local V2, migration sauvegardée et convergence entre onglets.
-- `docs/program/B4B-DELIVERY.md` : archives jouables, calendrier Paris contrôlé et progression non rétroactive.
-- `docs/program/B4C-DELIVERY.md` : objectifs hebdomadaires réels et styles permanents dédupliqués.
-- `docs/program/B4D-DELIVERY.md` : export lisible, aperçu d’import et fusion locale contrôlée.
-
-Le calendrier et les seeds V1 sont désormais isolés du futur catalogue. Les références de partie versionnées sont exposées et contrôlées par l'API, avec maintien des requêtes V1 sans référence. Les lecteurs de sauvegarde utilisés par l'interface sont couverts par des fixtures synthétiques aux scores réels.
-
-Pour reconstruire l'oracle historique, lancer `node scripts/capture-v1-fixtures.mjs`, puis `npm test`. Il repart du commit V1 conservé dans Git. Pour la comparaison mémoire locale, lancer ensuite `node scripts/measure-v1.mjs`. Elle écrit `docs/program/B1A-MEASUREMENTS.json`. Les mesures Node ne valent pas validation de la limite mémoire du Worker.
+Les documents du programme conservent les décisions et mesures de leur date. Ils ne décrivent pas à eux seuls la version actuelle. Les commandes `semantic:v2:*` restent des outils de reconstruction, de preuve et de staging ; elles ne remplacent pas automatiquement le moteur courant.

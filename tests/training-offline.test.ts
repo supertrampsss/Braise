@@ -95,9 +95,9 @@ test("installation and status never download a pack; exact total includes all sh
   const status = await h.message("status");
   assert.equal(status.ready, false); assert.equal(status.bytes, manifest.totalBytes);
   assert.deepEqual(h.requests, ["/offline"]);
-  assert.deepEqual([...h.storage.get("braise-offline-v2")!.keys()], ["/offline.html"]);
+  assert.deepEqual([...h.storage.get("braise-offline-v3")!.keys()], ["/offline.html"]);
   assert.equal(manifest.totalBytes, manifest.assets.reduce((n, a) => n + a.bytes, 0) + readFileSync("public/training/manifest.json").byteLength);
-  assert.deepEqual([...h.storage.keys()], ["braise-offline-v2"]);
+  assert.deepEqual([...h.storage.keys()], ["braise-offline-v3"]);
   assert.equal(h.activations, 0);
 });
 
@@ -184,7 +184,7 @@ test("partial cache-write failure cannot activate the waiting worker or replace 
   h.failPut(manifest.assets[1].path);
   assert.match(String((await h.message("download")).error), /quota-test/);
   assert.equal(h.activations, 0);
-  assert.deepEqual([...h.storage.keys()], ["braise-offline-v2", name]);
+  assert.deepEqual([...h.storage.keys()], ["braise-offline-v3", name]);
   h.offline(); assert.match(await (await h.request("/entrainement"))!.text(), /training-root/);
 });
 
@@ -211,7 +211,7 @@ test("worker never caches or intercepts daily/auth APIs, mutations, arbitrary sc
   assert.equal(await h.request("/private.js", "cors"), undefined);
   assert.equal(await h.request("/entrainement", "navigate", "POST"), undefined);
   h.offline();
-  assert.match(await (await h.request("/?surface=profile"))!.text(), /connexion fait une pause/);
+  assert.match(await (await h.request("/?surface=profile"))!.text(), /Vous êtes hors connexion/);
   assert.deepEqual(h.requests.filter(path => path.startsWith("/api/")), ["/api/training/screen"]);
   for (const cache of h.storage.values()) assert.ok([...cache.keys()].every(path => !path.startsWith("/api/")));
   for (const [name, entries] of h.storage) if (name.startsWith("braiz-training-")) assert.ok([...entries.keys()].every(path => path.startsWith("/training/")));
@@ -229,11 +229,11 @@ test("failed download preserves an older complete version usable offline and rej
   h.offline(); assert.match(await (await h.request("/entrainement"))!.text(), /training-root/);
   const future = { ...old, schema: 9 };
   await cache.put("/training/installed.json", Response.json(future));
-  assert.match(await (await h.request("/entrainement"))!.text(), /connexion fait une pause/);
+  assert.match(await (await h.request("/entrainement"))!.text(), /Vous êtes hors connexion/);
   assert.deepEqual(await h.storage.get(oldName)!.get("/training/installed.json")!.clone().json(), future);
   // Explicit removal works without a readable manifest or network.
   assert.equal((await h.message("remove")).ready, false);
-  assert.ok(!h.storage.has(oldName)); assert.ok(h.storage.has("braise-offline-v2"));
+  assert.ok(!h.storage.has(oldName)); assert.ok(h.storage.has("braise-offline-v3"));
 });
 
 test("cached score corruption is rejected, not silently used, and deletion preserves unrelated stores", async () => {
@@ -245,5 +245,5 @@ test("cached score corruption is rejected, not silently used, and deletion prese
   await assert.rejects(h.request(info.path, "cors"), /network/);
   assert.equal(await h.storage.get(name)!.get(info.path)!.clone().text(), "corrupt");
   assert.match(String((await h.message("download", "old-pack")).error), /mise à jour/);
-  await h.message("remove"); assert.ok(h.storage.has("unrelated")); assert.ok(h.storage.has("braise-offline-v2"));
+  await h.message("remove"); assert.ok(h.storage.has("unrelated")); assert.ok(h.storage.has("braise-offline-v3"));
 });

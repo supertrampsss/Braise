@@ -1,6 +1,10 @@
 # Qualité éditoriale des mots
 
-Le moteur Word2Vec, ses rangs et les parties déjà datées restent immuables. La polysémie est autorisée : les associations culinaires et fiscales d’assiette sont celles du modèle.
+État vérifié au 29 octobre 2026 : **475 cibles relues, 361 retenues, 112 en réserve et 2 exclusions proposées pour une prochaine édition**. La revue couvre 64 voisins par cible, soit 30 400 positions, avec 1 900 exemples justificatifs à leur rang exact.
+
+Il s'agit d'une revue par assistant des colonnes figées, ni d'un recalcul complet depuis les vecteurs source ni d'une étude de joueurs. Les mots, décisions individuelles et preuves restent dans le dossier privé `BRAIZ-Qualification-2026-10-29`. Ce bilan remplace les anciens états de revue partielle.
+
+Le moteur Word2Vec, ses rangs et les parties déjà datées restent immuables. La polysémie est autorisée ; aucun voisinage n'est corrigé artificiellement. Les réserves et exclusions proposées ne sont pas activées dans l'édition actuelle.
 
 ## Revue reproductible
 
@@ -18,7 +22,7 @@ Pour chaque cible, examiner :
 4. Les trois indices restent dosés par rapport au meilleur essai réel. Le voisinage affiché dans ce dossier ne devient jamais une liste de voisins imposée au moteur.
 5. Les retours joueurs sont examinés avec le contexte qu’ils choisissent de transmettre. La mesure d’usage ne collecte jamais leurs mots.
 
-La décision de chaque ligne reste « pending-human-review » tant qu’une revue n’a pas été faite. Une future exclusion ou extension nécessite une nouvelle édition, un calendrier distinct et la conservation des lecteurs historiques. Les colonnes déjà servies ne sont jamais retouchées.
+Le statut « pending-human-review » de l'extraction automatique ne remplace pas les décisions de la revue par assistant du 29 octobre. Il n'atteste pas non plus une validation humaine. Une future exclusion ou extension nécessite une nouvelle édition, un calendrier distinct et la conservation des lecteurs historiques. Les colonnes déjà servies ne sont jamais retouchées.
 
 ## Graphies avec ligature
 
@@ -26,4 +30,4 @@ Après un refus, BRAIZ peut proposer une graphie en oe seulement si le moteur de
 
 ## Fréquence opérationnelle
 
-Revoir ce dossier avant toute nouvelle édition ou extension de la partie libre, et relire les cibles signalées par les joueurs. Aucun verdict éditorial global ni amélioration de satisfaction n’est affirmé sans ces observations.
+Revoir ce dossier avant toute nouvelle édition ou extension de la partie libre, et relire les cibles signalées par les joueurs. Le bilan actuel ne prouve aucune amélioration de satisfaction ni de rétention. Le [registre de revue](CONTINUOUS-REVIEW.md) conserve les limites et suites utiles.

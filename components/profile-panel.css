@@ -1,9 +1,9 @@
 .personal-profile { max-width: 680px; margin-inline: auto; }
 .personal-profile .profile-scope { font-size: 14px; line-height: 1.6; margin: 0 0 22px; color: #b7bbb3; }
 .profile-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 22px; padding: 18px; border: 1px solid #ffffff25; border-radius: 16px; }
-.profile-summary>div { display: grid; gap: 6px; }
+.profile-summary>div { display: grid; align-content: start; gap: 6px; }
 .profile-summary strong { font-size: 26px; color: #f0f1e9; }
-.profile-summary span,.profile-summary p,.profile-details p,.calendar-reminder p { color: #b7bbb3; font-size: 14px; line-height: 1.6; }
+.profile-summary>div>span,.profile-summary p,.profile-details p,.calendar-reminder p { color: #b7bbb3; font-size: 14px; line-height: 1.6; }
 .profile-summary p { grid-column: 1/-1; margin: 4px 0 0; }
 .personal-profile h2 { font-size: 21px; }.personal-profile h3 { font-size: 18px; margin-block: 22px 10px; }
 .profile-details>summary { margin-bottom: 12px; }.profile-details:not([open])>summary { margin-bottom: 0; }
@@ -33,4 +33,4 @@
 .local-backup-transfer .import-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .local-backup-transfer .transfer-error li { margin-block: 8px; overflow-wrap: anywhere; }
 .profile-duel-access a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
-@media(max-width: 520px) { .profile-summary { gap: 8px; padding: 12px; }.profile-summary strong { font-size: 22px; }.profile-summary span { font-size: 12px; }.profile-measurements,.calendar-form { grid-template-columns: 1fr; }.personal-profile :is(th,td) { padding: 8px 5px; }.personal-profile h1 { font-size: 29px; } }
+@media(max-width: 520px) { .profile-summary { gap: 8px; padding: 12px; }.profile-summary strong { font-size: 22px; }.profile-summary>div>span { font-size: 12px; }.profile-measurements,.calendar-form { grid-template-columns: 1fr; }.personal-profile :is(th,td) { padding: 8px 5px; }.personal-profile h1 { font-size: 29px; } }

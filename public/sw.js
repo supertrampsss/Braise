@@ -1,5 +1,5 @@
 /* Neutral fallback is automatic; training files are cached only by explicit download. */
-const CACHE = "braise-offline-v2";
+const CACHE = "braise-offline-v3";
 const FALLBACK = "/offline.html";
 // ASSETS serves clean HTML URLs. Keep the historical logical cache key, but
 // request its one known canonical transport directly; never follow redirects.

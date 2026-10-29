@@ -35,7 +35,9 @@ export function ProfilePanel({ snapshot, ritual, now, busy, flamePaused, onSound
     <p className="profile-scope">Enregistrée sur cet appareil. <a href="#profile-backup">Sauvegarder ou transférer</a></p>
     {!snapshot.persisted && <p className="transfer-error" role="alert">La sauvegarde locale est indisponible. Téléchargez une copie avant de quitter la page.</p>}
     <section className="profile-summary" aria-label="Résumé de progression">
-      <div><strong>{formatNumberFr(statistics.totalWins)}</strong><span>{statistics.totalWins === 1 ? "mot trouvé" : "mots trouvés"}</span></div><div><strong>{formatNumberFr(statistics.dailyStreak)}</strong><span>{statistics.dailyStreak === 1 ? "jour" : "jours"} de série quotidienne</span></div><div><strong>{formatNumberFr(statistics.medianTries)}</strong><span>essais médians par réussite</span></div>
+      <div><strong>{formatNumberFr(statistics.totalWins)}</strong><span>{statistics.totalWins === 1 ? "mot trouvé" : "mots trouvés"}</span></div>
+      <div><strong>{formatNumberFr(statistics.dailyStreak)}</strong><span>{statistics.dailyStreak === 1 ? "jour" : "jours"} de série quotidienne</span></div>
+      <div><strong>{statistics.medianTries == null ? <><span aria-hidden="true">n/d</span><span className="sr-only">Non disponible</span></> : formatNumberFr(statistics.medianTries)}</strong><span>essais médians par réussite</span></div>
     </section>
     {ritual && <details className="reference-setting profile-details"><summary>Objectifs de la semaine</summary><WeeklyRitualCard projection={ritual} /></details>}
     <details className="reference-setting profile-details"><summary>Réussites et statistiques détaillées</summary>
