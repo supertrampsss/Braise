@@ -102,7 +102,7 @@ export default function Duels() {
     catch{if(epoch===navigationEpoch.current){cancelReturnFocus();setShareText(text);}}
   }
   function reviewRound(index:number){changeRound(index);const board=document.getElementById('duel-round-board');board?.scrollIntoView({block:'start'});board?.focus({preventScroll:true});}
-  function changeRound(index:number) {if(busy)return;setRound(index);setWord('');inputRevision.current++;pending.current=null;clearFeedback();}
+  function changeRound(index:number) {if(busy)return;setRound(index);setWord('');setError('');inputRevision.current++;pending.current=null;clearFeedback();}
   function updateInvitation(value:string) {
     setInviteInput(value);const next=invitationToken(value);setToken(next);
     try{if(/^[a-f0-9]{64}$/.test(next))sessionStorage.setItem('braiz.invitation.duel',next);else sessionStorage.removeItem('braiz.invitation.duel');}catch{}

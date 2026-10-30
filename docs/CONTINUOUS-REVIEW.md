@@ -1,8 +1,15 @@
 # Registre d’amélioration BRAIZ
 
-État du 29 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-29-2124`, situé deux niveaux au-dessus du dépôt. Le dossier `BRAIZ-Qualification-2026-10-29` conserve la qualification éditoriale et les vérifications Google/AdSense précédentes. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-0224`, situé deux niveaux au-dessus du dépôt. Le dossier `BRAIZ-Qualification-2026-10-29` conserve la qualification éditoriale et les vérifications Google/AdSense précédentes. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Duel : le changement de manche efface l’erreur de la manche quittée. Une nouvelle erreur reste visible, les mots refusés ne consomment aucun essai.
+- Clavier : activer le logo avec le burger fermé ne bloque plus le retour du focus au bouton après ouverture puis fermeture du menu avec Échap. Le transfert du focus vers une destination ou l’aide reste préservé.
+- Lot limité à ces deux défauts reproduits. Le serveur, les sauvegardes, les lecteurs historiques et les calculs ne changent pas. Aucun code retiré sans preuve d’inutilité ; aucun achat ni changement publicitaire.
+- 49 tests ciblés de plateau, duel et navigation réussis ; les 4 tests de navigation ont été rejoués après correction du typage de leur harness. TypeScript et build réussis. Recette navigateur réelle : retour du focus après Échap, destination Profil et ouverture/fermeture de l’aide confirmés. Preuves et publication dans le dernier dossier privé. Les contrôles Google/AdSense n’ont pas été rejoués sans nouveau signal.
+
+## Lot précédent, saisie et synchronisation
 
 - Saisie rapide : le refus tardif d’un doublon canonique ne marque plus le mot suivant comme invalide. Le refus reste lisible si le champ est inchangé ; aucun essai ni indice consommé.
 - Synchronisation : une branche distante ne peut plus ajouter de mots après une victoire locale. Refus avant mutation en cas de conflit, fusion des préfixes compatibles, dates et métadonnées de fin conservées.

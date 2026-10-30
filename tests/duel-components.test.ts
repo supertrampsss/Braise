@@ -25,6 +25,28 @@ test('a refused word stays in the field, adds no trial and a retry preserves the
  browser();const calls=route(initial,async()=>Response.json({error:'Mot absent du dictionnaire.'},{status:422}));const tree=await mount();
  try{await word(tree,'inconnu');for(let i=0;i<2;i++)await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){}}));assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'inconnu');assert.match(text(tree.root),/Mot absent du dictionnaire/);assert.match(text(tree.root),/2\/30 essais/);const mutations=calls.filter(call=>call.body?.action==='guess');assert.equal(mutations.length,2);assert.equal(mutations[0].body?.requestId,mutations[1].body?.requestId);}finally{await act(async()=>tree.unmount());}
 });
+test('switching rounds clears a previous rejection but keeps a new rejection visible',async()=>{
+ browser();const calls=route(initial,async()=>Response.json({error:'Mot absent du dictionnaire.'},{status:422}));const tree=await mount();
+ try{
+  await word(tree,'premierinconnu');
+  await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){}}));
+  assert.equal(text(tree.root.findByProps({id:'duel-error'})),'Mot absent du dictionnaire.');
+  const rounds=tree.root.findByProps({'aria-label':'Choisir la manche'}).findAllByType('button');
+  await act(async()=>rounds[1].props.onClick());
+  assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'');
+  assert.equal(tree.root.findAllByProps({id:'duel-error'}).length,0);
+  assert.match(text(tree.root),/0\/30 essais/);
+  assert.equal(calls.filter(call=>call.body?.action==='guess').length,1);
+  await word(tree,'secondinconnu');
+  await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){}}));
+  assert.equal(text(tree.root.findByProps({id:'duel-error'})),'Mot absent du dictionnaire.');
+  assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'secondinconnu');
+  assert.equal(tree.root.findByProps({className:'guess-form'}).props['aria-busy'],false);
+  assert.match(text(tree.root),/0\/30 essais/);
+  assert.deepEqual(calls.filter(call=>call.body?.action==='guess').map(call=>call.body?.round),[0,1]);
+ }finally{await act(async()=>tree.unmount());}
+});
+
 test('switching rounds restores only that round and never replays a win celebration or a proposal',async()=>{
  browser();const data={...initial,guesses:[...initial.guesses,{round:1,word:'assiette',ordinal:1,rank:1,temperature:100,found:1}]};const calls=route(data);const tree=await mount(data);
  try{const buttons=tree.root.findByProps({'aria-label':'Choisir la manche'}).findAllByType('button');await act(async()=>buttons[1].props.onClick());assert.equal(tree.root.findAllByProps({id:'duel-word'}).length,0);assert.deepEqual(tree.root.findAllByProps({className:'guess-word'}).map(node=>text(node)),['assiette']);assert.equal(tree.root.findByProps({'data-renderer':'fillable-svg'}).props['data-celebrating'],false);await act(async()=>buttons[0].props.onClick());assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'');assert.equal(calls.filter(call=>call.body).length,0);}finally{await act(async()=>tree.unmount());}

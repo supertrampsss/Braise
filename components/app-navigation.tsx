@@ -27,7 +27,7 @@ export function AppNavigation({active='play',modeName,backHref='/',onNavigate,on
   const [open,setOpen]=useState(false);
   function choose(destination:AppDestination|'play',event:MouseEvent<HTMLAnchorElement>) {
     if(destination!=='duel' && onNavigate && !event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey && event.button===0) {
-      event.preventDefault(); navigationChosen.current=true; setOpen(false); onNavigate(destination);
+      event.preventDefault(); navigationChosen.current=open; setOpen(false); onNavigate(destination);
     }
   }
   return <header className="braiz-navigation">
