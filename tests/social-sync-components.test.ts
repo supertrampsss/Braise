@@ -94,6 +94,62 @@ test('real upload button reconciles latest pending memory preferences and concur
  }finally{await act(async()=>tree.unmount());}
 });
 
+for(const endpoint of ['/api/session','/api/circles'])for(const phase of ['headers','body'])test(`circles: initial ${endpoint} ${phase} timeout permits read-only retry and keeps the invitation`,async(t)=>{
+ t.mock.timers.enable({apis:['setTimeout']});browser();let stalled=true;const calls:Array<{path:string;method:string}>=[];
+ globalThis.fetch=async(url,options)=>{
+  const path=String(url);calls.push({path,method:options?.method??'GET'});
+  if(path==='/api/invitations')return reply({state:'ready',expiresAt:Date.now()+60000});
+  if(stalled&&path===endpoint)return stalledResponse(options,phase);
+  return reply(path==='/api/session'?{guest:{id:'guest-a',name:'A'},csrf:'csrf'}:{circles:[{id:'owned',name:'Amis',owner_id:'guest-a'}]});
+ };
+ let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Circles));});
+ try{
+  await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS));assert.match(text(tree.root),/Connexion trop lente/);
+  assert.equal(tree.root.findAllByProps({id:'circle-guest'}).length,0);assert.doesNotMatch(text(tree.root),/Aucun cercle rejoint/);
+  assert.notEqual(buttons(tree,'Réessayer le chargement')[0].props.disabled,true);
+  const total=calls.length;await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS*2));assert.equal(calls.length,total);
+  stalled=false;await click(tree,'Réessayer le chargement');assert.equal(buttons(tree,'Amis').length,1);
+  assert.equal(tree.root.findAllByProps({role:'alert'}).length,0);assert.equal(buttons(tree,'Rejoindre explicitement')[0].props.disabled,false);
+  assert.equal(sessionStorage.getItem('braiz.invitation.circle'),token);
+  assert.equal(calls.filter(call=>call.method==='POST'&&call.path!=='/api/invitations').length,0);
+ }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
+});
+
+test('circles: an accepted invitation cannot resume before a failed initial load is recovered',async()=>{
+ browser();let failed=true;const reads:string[]=[];
+ globalThis.fetch=async(url)=>{const path=String(url);reads.push(path);if(path==='/api/invitations')return reply({state:'accepted',destination:{kind:'circle',id:'owned'}});if(path==='/api/session')return failed?Response.json({error:'Indisponible'},{status:503}):reply({guest:{id:'guest-a',name:'A'},csrf:'csrf'});if(path.includes('?id='))return reply({circle:{id:'owned',name:'Amis',owner_id:'guest-a'},members:[],challenges:[],results:[]});return reply({circles:[]});};
+ let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Circles));});
+ try{
+  assert.equal(buttons(tree,'Reprendre mon cercle')[0].props.disabled,true);assert.equal(tree.root.findAllByProps({id:'circle-guest'}).length,0);
+  failed=false;await click(tree,'Réessayer le chargement');await click(tree,'Reprendre mon cercle');
+  assert.ok(reads.includes('/api/circles?id=owned'));assert.equal(buttons(tree,'Ouvrir le défi de cette semaine').length,1);
+ }finally{await act(async()=>tree.unmount());}
+});
+
+for(const phase of ['headers','body'])test(`circles: lost create ${phase} response keeps the same request identity for manual retry`,async(t)=>{
+ t.mock.timers.enable({apis:['setTimeout']});browser(new Memory(),'');let stalled=true;const writes:Array<{id:string;name:string}>=[];
+ const records=new Map<string,{id:string;name:string;owner_id:string}>();
+ globalThis.fetch=async(url,options)=>{
+  if(url==='/api/session')return reply({guest:{id:'guest-a',name:'A'},csrf:'csrf'});
+  if(options?.method==='POST'){
+   assert.equal(new Headers(options.headers).get('X-Braise-CSRF'),'csrf');const body=JSON.parse(String(options.body));assert.equal(body.action,'create');writes.push(body);
+   records.set(body.id,{id:body.id,name:body.name,owner_id:'guest-a'});return stalled?stalledResponse(options,phase):reply({id:body.id});
+  }
+  if(String(url).includes('?id='))return reply({circle:records.values().next().value,members:[],challenges:[],results:[]});
+  return reply({circles:[...records.values()]});
+ };
+ let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Circles));});
+ try{
+  await input(tree,'circle-name','Amis');await act(async()=>form(tree,'circle-name').props.onSubmit({preventDefault(){}}));
+  await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS));assert.match(text(tree.root),/Connexion trop lente/);
+  assert.equal(buttons(tree,'Créer un cercle')[0].props.disabled,false);assert.equal(tree.root.findByProps({id:'circle-name'}).props.value,'Amis');
+  await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS*2));assert.equal(writes.length,1);
+  stalled=false;await act(async()=>form(tree,'circle-name').props.onSubmit({preventDefault(){}}));
+  assert.equal(writes.length,2);assert.equal(writes[0].id,writes[1].id);assert.equal(records.size,1);
+  assert.equal(tree.root.findAllByProps({role:'alert'}).length,0);assert.equal(buttons(tree,'Ouvrir le défi de cette semaine').length,1);
+ }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
+});
+
 for(const [kind,Component,guestInput,tokenInput,accept,resume] of [
  ['circle',Circles,'circle-guest','circle-token','Rejoindre explicitement','Reprendre mon cercle'],
  ['duel',Duels,'duel-guest','duel-token','Rejoindre le duel','Reprendre mon duel'],

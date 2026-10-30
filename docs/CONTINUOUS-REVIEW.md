@@ -1,8 +1,15 @@
 # Registre d’amélioration BRAIZ
 
-État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-2242`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-31-0037`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Cercles : six blocages réseau reproduits, pendant la lecture initiale ou après une création déjà enregistrée sans réponse reçue. Le transport existant limite maintenant l'attente à 15 secondes par requête, corps compris.
+- L'identité et la liste doivent être lues avant d'afficher leurs commandes. Une relance du chargement est disponible après erreur ; elle ne crée ni identité ni cercle et conserve l'invitation. Aucun POST automatique ; la création relancée manuellement conserve son identifiant pour éviter un doublon.
+- 37 tests ciblés réussis, dont sept nouveaux ; TypeScript et construction réussis. Attente, erreur et relance confirmées dans un navigateur local isolé. Capture d'image indisponible, états accessibles conservés dans le dossier privé.
+- Aucun changement de moteur, API serveur, sauvegarde ou lecteur historique. Lecture ciblée de l'enregistrement hors connexion et du transfert de profil sans autre défaut confirmé. Aucun nouveau nettoyage ni contrôle SEO/performance justifié ; annonces inactives et blocages externes inchangés.
+
+## Lot précédent, synchronisation facultative
 
 - Synchronisation facultative : six blocages réseau reproduits avant correction, pendant la lecture de l'identité ou de la copie, puis après un envoi ou une suppression déjà appliqués par le serveur mais sans réponse reçue.
 - Le transport existant limite chaque requête à 15 secondes, corps JSON compris. La configuration attend les lectures confirmées avant d'annoncer une identité ou une copie absente. Les commandes redeviennent disponibles après échec ; aucune écriture n'est répétée automatiquement. Une relecture permet de vérifier l'état distant réel.
