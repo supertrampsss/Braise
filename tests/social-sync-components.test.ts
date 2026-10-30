@@ -20,6 +20,63 @@ const token='a'.repeat(64),otherToken='b'.repeat(64);
 // Protocol tests keep the menu closed; pointer and keyboard navigation are checked in the real browser.
 function browser(storage=new Memory(),invite=token){Object.assign(globalThis,{requestAnimationFrame:()=>0,cancelAnimationFrame(){},window:{matchMedia(){return {matches:true,addEventListener(){},removeEventListener(){}};},addEventListener(){},removeEventListener(){}},document:{addEventListener(){},removeEventListener(){},getElementById(){return null;}},localStorage:storage,sessionStorage:new Memory(),location:{hash:invite?'#invitation='+invite:'',pathname:'/duels',origin:'https://braiz.io'},history:{replaceState(){}}});}
 
+function stalledResponse(options:RequestInit|undefined,phase:string){
+ const pending=()=>new Promise<never>((_resolve,reject)=>options?.signal?.addEventListener('abort',()=>reject(new DOMException('Aborted','AbortError')),{once:true}));
+ return phase==='headers'?pending():Object.assign(reply({}),{json:pending});
+}
+
+for(const endpoint of ['/api/session','/api/sync'])for(const phase of ['headers','body'])test(`sync setup recovers from stalled ${endpoint} ${phase} without misreporting identity or saved copies`,async(t)=>{
+ t.mock.timers.enable({apis:['setTimeout']});const storage=new Memory();browser(storage,'');const snapshot=loadLocalProfile(storage),before=[...storage.values];let stalled=true;
+ const calls:Array<{path:string;method:string}>=[];
+ globalThis.fetch=async(url,options)=>{const path=String(url);calls.push({path,method:options?.method??'GET'});if(stalled&&path===endpoint)return stalledResponse(options,phase);return reply(path==='/api/session'?{guest:{name:'A'},csrf:'csrf'}:{revision:-1,payload:null});};
+ let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(DeviceSync,{snapshot,onSnapshot:()=>assert.fail('setup must not change local facts')}));});
+ try{
+  await click(tree,'Configurer la synchronisation facultative');
+  await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS));
+  assert.match(text(tree.root),/Connexion trop lente/);
+  assert.equal(buttons(tree,'Configurer la synchronisation facultative').length,1);
+  assert.equal(buttons(tree,'Configurer la synchronisation facultative')[0].props.disabled,false);
+  assert.doesNotMatch(text(tree.root),/Créez ou récupérez votre identité|Aucune copie personnelle distante/);
+  const total=calls.length;await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS*2));assert.equal(calls.length,total);
+  stalled=false;await click(tree,'Configurer la synchronisation facultative');
+  assert.equal(buttons(tree,'Préparer l’envoi de cet appareil')[0].props.disabled,false);
+  assert.equal(tree.root.findAllByProps({role:'alert'}).length,0);
+  assert.ok(calls.every(call=>call.method==='GET'));assert.deepEqual([...storage.values],before);
+ }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
+});
+
+for(const method of ['PUT','DELETE'])test(`a lost ${method} sync response releases controls without retrying a completed server write`,async(t)=>{
+ t.mock.timers.enable({apis:['setTimeout']});const storage=new Memory();browser(storage,'');const snapshot=loadLocalProfile(storage),before=[...storage.values];
+ const payload=createDeviceEnvelope(storage,snapshot);let remote={revision:method==='PUT'?-1:0,payload:method==='PUT'?null:payload},stall=true;
+ const writes:Array<{method:string;revision:number}>=[];
+ globalThis.fetch=async(url,options)=>{
+  if(url==='/api/session')return reply({guest:{name:'A'},csrf:'csrf'});
+  if(options?.method==='PUT'||options?.method==='DELETE'){
+   const body=JSON.parse(String(options.body));writes.push({method:options.method,revision:body.revision});assert.equal(body.revision,remote.revision);
+   remote={revision:remote.revision+1,payload:options.method==='DELETE'?null:body.payload};
+   return stall?stalledResponse(options,'body'):reply(remote);
+  }
+  return reply(remote);
+ };
+ let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(DeviceSync,{snapshot,onSnapshot:()=>assert.fail('no local merge requested')}));});
+ try{
+  await click(tree,'Configurer la synchronisation facultative');
+  if(method==='PUT')await click(tree,'Préparer l’envoi de cet appareil');
+  await click(tree,method==='PUT'?'Confirmer l’envoi':'Confirmer la suppression distante');
+  await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS));
+  assert.match(text(tree.root),/Connexion trop lente/);
+  assert.equal(buttons(tree,'Préparer l’envoi de cet appareil')[0].props.disabled,false);
+  assert.doesNotMatch(text(tree.root),/Copie distante enregistrée|Votre copie personnelle distante est supprimée/);
+  await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS*2));assert.equal(writes.length,1);
+  stall=false;await click(tree,'Aperçu de la copie distante');assert.equal(writes.length,1);
+  if(method==='PUT'){
+   await click(tree,'Préparer l’envoi de cet appareil');assert.equal(writes.length,1);await click(tree,'Confirmer l’envoi');
+   assert.deepEqual(writes.map(write=>write.revision),[-1,0]);assert.match(text(tree.root),/Copie distante enregistrée/);
+  }else assert.match(text(tree.root),/Aucune copie à fusionner/);
+  assert.deepEqual([...storage.values],before);
+ }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
+});
+
 test('real upload button reconciles latest pending memory preferences and concurrent disk facts without local writes',async()=>{
  const storage=new Memory();browser(storage,'');let snapshot=loadLocalProfile(storage);let release!:(r:Response)=>void;let wait=false;let sent='';
  globalThis.fetch=async(url,options)=>{if(url==='/api/session')return reply({guest:{name:'A'},csrf:'csrf'});if(options?.method==='PUT'){sent=JSON.parse(options.body as string).payload;return reply({revision:0,payload:sent});}if(wait)return new Promise(resolve=>release=resolve);return reply({revision:-1,payload:null});};

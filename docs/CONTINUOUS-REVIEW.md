@@ -1,8 +1,15 @@
 # Registre d’amélioration BRAIZ
 
-État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-1835`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-2242`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Synchronisation facultative : six blocages réseau reproduits avant correction, pendant la lecture de l'identité ou de la copie, puis après un envoi ou une suppression déjà appliqués par le serveur mais sans réponse reçue.
+- Le transport existant limite chaque requête à 15 secondes, corps JSON compris. La configuration attend les lectures confirmées avant d'annoncer une identité ou une copie absente. Les commandes redeviennent disponibles après échec ; aucune écriture n'est répétée automatiquement. Une relecture permet de vérifier l'état distant réel.
+- 44 tests ciblés réussis ; TypeScript et construction réussis. Recette locale dans le navigateur : attente, erreur, bouton libéré, relance manuelle et identité vérifiée. La capture d'image est indisponible ; les états accessibles sont conservés dans le dossier privé. Aucun compte réel utilisé pour cette simulation.
+- Aucun changement de style, moteur, score, rang, API serveur, sauvegarde ou lecteur historique. Aucun retrait de code supplémentaire justifié ; annonces inactives et blocages externes inchangés.
+
+## Lot précédent, invitations
 
 - Invitations : la vérification pouvait rester bloquée sans relance lorsqu'une réponse réseau ou son corps JSON n'arrivait pas. Quatre cas reproduits avant correction, sur duels et cercles.
 - Le composant partagé utilise le transport existant avec un délai de 15 secondes. Le lien est conservé ; la relance est manuelle et ne rejoint jamais une partie. Les gardes de changement de lien/identité et les contrôles d'expiration restent appliqués.

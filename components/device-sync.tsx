@@ -2,21 +2,30 @@
 import { useEffect,useLayoutEffect,useRef,useState } from 'react';
 import { applyDeviceMerge,deviceUploadRevision,prepareDeviceUpload,inspectDeviceMerge,type LiveDeviceGame } from '@/lib/device-sync';
 import { type ProfileSnapshot } from '@/lib/profile-storage';
+import { requestJson } from '@/lib/request-json';
 type Remote={revision:number;payload:string|null};
+type Session={guest:{name:string}|null;csrf?:string};
 type PreparedUpload={text:string;revision:number;localRevision:string;boardRevision:string|null};
 type Candidate={text:string;revision:number;localRevision:string;boardRevision:string|null;games:number;activities:number};
 export type DeviceSyncGuard={revision:()=>string|null;admit:(revision:string|null)=>boolean;currentGame?:()=>LiveDeviceGame|null};
 export function DeviceSync({snapshot,onSnapshot,disabled=false,mergeGuard}:{snapshot:ProfileSnapshot;onSnapshot:(s:ProfileSnapshot)=>void;disabled?:boolean;mergeGuard?:DeviceSyncGuard}){
   const [enabled,setEnabled]=useState(false),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
-  const [session,setSession]=useState<{guest:{name:string}|null;csrf?:string}|null>(null),[remote,setRemote]=useState<Remote|null>(null),[candidate,setCandidate]=useState<Candidate|null>(null),[upload,setUpload]=useState<PreparedUpload|null>(null);
+  const [session,setSession]=useState<Session|null>(null),[remote,setRemote]=useState<Remote|null>(null),[candidate,setCandidate]=useState<Candidate|null>(null),[upload,setUpload]=useState<PreparedUpload|null>(null);
   const uploadRef=useRef<PreparedUpload|null>(null);
   function replaceUpload(value:PreparedUpload|null){uploadRef.current=value;setUpload(value);}
   const latest=useRef({snapshot,onSnapshot,disabled,mergeGuard});useLayoutEffect(()=>{latest.current={snapshot,onSnapshot,disabled,mergeGuard};});
   const epoch=useRef(0),lock=useRef(false);useEffect(()=>()=>{epoch.current++;},[]);
-  async function call(method='GET',body?:unknown){const response=await fetch('/api/sync',{method,cache:'no-store',headers:{'Content-Type':'application/json','X-Braise-CSRF':session?.csrf??''},...(body?{body:JSON.stringify(body)}:{})});const data=await response.json() as Remote & {error?:string};if(!response.ok)throw new Error(data.error??'Service indisponible.');return data as Remote;}
+  async function call(method='GET',body?:unknown){const {response,data}=await requestJson<Remote & {error?:string}>('/api/sync',{method,cache:'no-store',headers:{'Content-Type':'application/json','X-Braise-CSRF':session?.csrf??''},...(body?{body:JSON.stringify(body)}:{})});if(!response.ok)throw new Error(data.error??'Service indisponible.');return data;}
   async function run(action:(current:()=>boolean)=>Promise<void>){if(lock.current)return;lock.current=true;const revision=epoch.current;const current=()=>revision===epoch.current;setBusy(true);setError('');setMessage('');try{await action(current);}catch(cause){if(current())setError(cause instanceof Error?cause.message:'Service indisponible.');}finally{lock.current=false;if(current())setBusy(false);}}
+  async function configure(current:()=>boolean){
+    const {response,data}=await requestJson<Session>('/api/session',{cache:'no-store'});
+    if(!response.ok)throw new Error('Identité indisponible.');
+    if(!current())return;
+    const copy=data.guest?await call():null;
+    if(current()){setSession(data);setRemote(copy);setEnabled(true);}
+  }
   return <section className="profile-transfer" aria-labelledby="sync-title"><h4 id="sync-title">Retrouver mes parties sur un autre appareil</h4><p>Facultatif. Une copie personnelle comprend profil, mots proposés, scores locaux, épingles et contextes des parties classiques en cours enregistrées localement. Aucun résultat compétitif n’est créé. Les secrets de connexion et de récupération ne sont pas copiés. Cette copie n’est pas chiffrée de bout en bout.</p>
-    {!enabled?<button className="secondary-button" type="button" disabled={disabled} onClick={()=>{setEnabled(true);void run(async current=>{const response=await fetch('/api/session',{cache:'no-store'});if(!response.ok)throw new Error('Identité indisponible.');const value=await response.json() as {guest:{name:string}|null;csrf?:string};if(!current())return;setSession(value);if(value.guest){const copy=await call();if(current())setRemote(copy);}});}}>Configurer la synchronisation facultative</button>:<>
+    {!enabled?<button className="secondary-button" type="button" disabled={busy||disabled} onClick={()=>void run(configure)}>Configurer la synchronisation facultative</button>:<>
       <p>Aucun transfert automatique : chaque envoi ou fusion exige votre confirmation. Maximum : 1 000 parties, 3 000 essais par partie, 1 Mio ; dépassement refusé sans troncature.</p>
       {!session?.guest?<p>Créez ou récupérez votre identité dans <a href="/espace">Votre espace</a>, puis revenez ici. Un code de récupération retrouve la même identité et déconnecte les anciens appareils.</p>:<><p>Identité : {session.guest.name}. {remote?.payload?'Une copie personnelle distante existe.':'Aucune copie personnelle distante.'}</p>
       <div className="profile-transfer-actions"><button type="button" className="secondary-button" disabled={busy||disabled} onClick={()=>void run(async current=>{
