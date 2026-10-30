@@ -1,8 +1,15 @@
 # Registre d’amélioration BRAIZ
 
-État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-1638`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-1835`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Invitations : la vérification pouvait rester bloquée sans relance lorsqu'une réponse réseau ou son corps JSON n'arrivait pas. Quatre cas reproduits avant correction, sur duels et cercles.
+- Le composant partagé utilise le transport existant avec un délai de 15 secondes. Le lien est conservé ; la relance est manuelle et ne rejoint jamais une partie. Les gardes de changement de lien/identité et les contrôles d'expiration restent appliqués.
+- 24 tests ciblés réussis, dont quatre cas nouveaux ; TypeScript et construction réussis après correction du typage de la simulation réseau. Journaux et preuve de publication dans le dossier privé. Aucun changement de présentation, API, calendrier, moteur, sauvegarde ou publicité.
+- Lecture du calendrier d'archives, de l'entraînement historique et de la synchronisation personnelle sans autre défaut confirmé. Aucun retrait de code ni nouvelle campagne SEO/performance justifiés.
+
+## Lot précédent, partage des duels
 
 - Partage des duels : cinq régressions reproduites avant correction. Une réponse tardive pouvait ouvrir le texte du duel précédent, afficher « Résultat copié » sur le suivant, survivre à un aller-retour entre duels, copier après fermeture de la page ou ouvrir un second dialogue au-dessus des règles.
 - Une révision propre au partage invalide ces réponses au changement de duel et à l'ouverture des règles. La navigation existante protège la sortie de page. L'actualisation automatique du même duel conserve le partage courant ; une copie déjà demandée au système ne peut pas être annulée rétroactivement.

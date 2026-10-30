@@ -1,5 +1,6 @@
 'use client';
 import {useEffect,useState} from 'react';
+import {requestJson} from '@/lib/request-json';
 type Kind='circle'|'duel';
 type Value={state:'ready'|'accepted'|'owner'|'expired'|'revoked'|'excluded'|'full'|'unknown';name?:string;expiresAt?:number;destination?:{kind:Kind;id:string}};
 const labels:Record<string,string>={ready:'Invitation disponible : votre confirmation sera nécessaire.',accepted:'Vous avez déjà accepté cette invitation.',owner:'Vous êtes à l’origine de cette invitation.',expired:'Cette invitation a expiré. Demandez un nouveau lien à son auteur.',revoked:'Cette invitation a été révoquée. Demandez un nouveau lien à son auteur.',excluded:'Votre accès à ce cercle a été retiré. Contactez son propriétaire.',full:'Cette invitation ne peut plus accueillir de participant. Demandez une nouvelle invitation.',unknown:'Invitation introuvable. Vérifiez le lien reçu.',pending:'Vérification de l’invitation…',invalid:'Le code d’invitation doit comporter 64 caractères.',error:'Vérification indisponible. Réessayez avant de continuer.'};
@@ -11,8 +12,8 @@ export function useInvitation(kind:Kind,token:string,identity?:string){
  // Reset during this render, before children can commit actions for a reselected token.
  if(seenKey!==key){setSeenKey(key);setResult(null);}
  useEffect(()=>{if(!/^[a-f0-9]{64}$/.test(token))return;const controller=new AbortController();void(async()=>{try{
-   const response=await fetch('/api/invitations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind,token}),signal:controller.signal});
-   const data=await response.json() as Value & {error?:string};if(!response.ok)throw new Error(data.error??'Vérification indisponible.');
+   const {response,data}=await requestJson<Value & {error?:string}>('/api/invitations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind,token}),signal:controller.signal});
+   if(!response.ok)throw new Error(data.error??'Vérification indisponible.');
    if(!['ready','accepted','owner','expired','revoked','excluded','full','unknown'].includes(data.state)||(data.state==='ready'&&(!Number.isFinite(data.expiresAt)||data.expiresAt!<=Date.now()))||(['accepted','owner'].includes(data.state)&&(!data.destination||data.destination.kind!==kind||typeof data.destination.id!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(data.destination.id))))throw new Error('Invitation à actualiser.');
    if(!controller.signal.aborted)setResult({key,value:data});
  }catch(cause){if(!controller.signal.aborted)setResult({key,error:cause instanceof Error?cause.message:'Vérification indisponible.'});}})();return()=>controller.abort();},[kind,token,identity,key]);

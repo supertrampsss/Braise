@@ -7,6 +7,7 @@ import Circles from '../components/circles';
 import Duels from '../components/duels';
 import {SyncMemory,parseDeviceEnvelope,createDeviceEnvelope} from '../lib/device-sync';
 import {loadLocalProfile,setLocalSound,recordLocalGameProgress} from '../lib/profile-storage';
+import {REQUEST_TIMEOUT_MS} from '../lib/request-json';
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true});
 class Memory extends SyncMemory {refuse=false;setItem(k:string,v:string){if(this.refuse)throw new Error('quota');super.setItem(k,v);}removeItem(k:string){this.values.delete(k);}clear(){this.values.clear();}}
 const reply=(body:unknown)=>Response.json(body);
@@ -40,6 +41,38 @@ for(const [kind,Component,guestInput,tokenInput,accept,resume] of [
  ['circle',Circles,'circle-guest','circle-token','Rejoindre explicitement','Reprendre mon cercle'],
  ['duel',Duels,'duel-guest','duel-token','Rejoindre le duel','Reprendre mon duel'],
 ] as const){
+ for(const phase of ['headers','body'])test(`${kind}: a stalled invitation ${phase} allows explicit retry without consuming the invitation`,async(t)=>{
+  t.mock.timers.enable({apis:['setTimeout']});browser();let stalled=true;
+  const calls:Array<{path:string;method:string}>=[];
+  globalThis.fetch=async(url,options)=>{
+   const path=String(url);calls.push({path,method:options?.method??'GET'});
+   if(path==='/api/invitations'){
+    if(!stalled)return reply({state:'ready',expiresAt:Date.now()+60000});
+    const pending=()=>new Promise<never>((_resolve,reject)=>options?.signal?.addEventListener('abort',()=>reject(new DOMException('Aborted','AbortError')),{once:true}));
+    return phase==='headers'?pending():Object.assign(reply({}),{json:pending});
+   }
+   return reply(path==='/api/session'?{guest:{id:'guest-a',name:'A'},csrf:'csrf'}:{circles:[],duels:[]});
+  };
+  let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Component));});
+  try{
+   const inspections=calls.filter(call=>call.path==='/api/invitations').length;
+   await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS-1));
+   assert.match(text(tree.root),/Vérification de l’invitation…/);assert.equal(buttons(tree,accept)[0].props.disabled,true);
+   await act(async()=>t.mock.timers.tick(1));
+   assert.equal(buttons(tree,'Réessayer la vérification').length,1);
+   assert.match(text(tree.root),/Connexion trop lente/);assert.equal(buttons(tree,accept)[0].props.disabled,true);
+   assert.equal(sessionStorage.getItem(`braiz.invitation.${kind}`),token);
+   await act(async()=>form(tree,tokenInput).props.onSubmit({preventDefault(){}}));
+   await act(async()=>t.mock.timers.tick(REQUEST_TIMEOUT_MS*2));
+   assert.equal(calls.filter(call=>call.path==='/api/invitations').length,inspections);
+   assert.equal(calls.filter(call=>call.method==='POST'&&call.path!=='/api/invitations').length,0);
+   stalled=false;await click(tree,'Réessayer la vérification');
+   assert.equal(calls.filter(call=>call.path==='/api/invitations').length,inspections+1);
+   assert.equal(buttons(tree,accept)[0].props.disabled,false);
+   assert.equal(sessionStorage.getItem(`braiz.invitation.${kind}`),token);
+   assert.equal(calls.filter(call=>call.method==='POST'&&call.path!=='/api/invitations').length,0);
+  }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
+ });
  test(`${kind}: unavailable and pending inspections cannot create a guest or accept; exit retains normal entry`,async()=>{
   for(const identified of [false,true])for(const state of ['expired','revoked','full','unknown','excluded','unrecognized']){
    browser();const calls:Array<{url:string;method:string}>=[];let release!:(r:Response)=>void;
