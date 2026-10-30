@@ -549,10 +549,6 @@ export default function Game() {
     finally { if (request === requestRef.current) { submitting.current = false; setBusy(false); } }
   }
 
-  async function copy(text: string, feedback: string) {
-    try { await navigator.clipboard.writeText(text); diagnostic("shareCopied"); toast.success(feedback); }
-    catch { setShareText(text); setModal("share"); }
-  }
   function resultText() {
     const journey = game.guesses.filter(g => !g.hint).filter((_, i, all) => i % Math.max(1, Math.ceil(all.length / 8)) === 0).slice(0, 8).map(g => g.found ? "🟩" : g.rank <= 100 ? "🟥" : g.rank <= 1000 ? "🟧" : g.rank <= 5000 ? "🟨" : "🟦").join("");
     const url = new URL(window.location.origin);
@@ -562,9 +558,13 @@ export default function Game() {
     return `🔥 BRAIZ ${mode === "daily" ? `du ${puzzle?.date}` : mode === "archive" ? `· Archive du ${puzzle?.date}` : "· Défi"}\n${solved ? "Trouvé" : "En piste"} en ${game.guesses.length} essai${game.guesses.length === 1 ? "" : "s"} · ${game.hints ? `${game.hints} indice${game.hints === 1 ? "" : "s"}` : "sans indice"}\n${journey}${solved && !journey.endsWith("🟩") ? "🟩" : ""}\nVotre tour ! ${url.toString()}`;
   }
   async function shareResult() {
+    const request=requestRef.current,navigation=navigationEpoch.current;
+    const current=()=>request===requestRef.current&&navigation===navigationEpoch.current;
     const text = resultText();
-    if (navigator.share) { try { await navigator.share({ title: "BRAIZ", text }); diagnostic("shareNative"); return; } catch (err) { if (err instanceof Error && err.name === "AbortError") return; } }
-    await copy(text, "Résultat copié, sans révéler le mot.");
+    if (navigator.share) { try { await navigator.share({ title: "BRAIZ", text }); if(current()) diagnostic("shareNative"); return; } catch (err) { if (err instanceof Error && err.name === "AbortError") return; } }
+    if(!current())return;
+    try { await navigator.clipboard.writeText(text); if(current()) { diagnostic("shareCopied"); toast.success("Résultat copié, sans révéler le mot."); } }
+    catch { if(current()&&modalRef.current===null) { setShareText(text); setModal("share"); } }
   }
 
   return <div className={`app-shell focused-interface foyer-interface reference-interface approved-interface proximity-interface ${flamePaused ? "motion-paused" : ""} cosmetic-${selectedCosmetic}`}>

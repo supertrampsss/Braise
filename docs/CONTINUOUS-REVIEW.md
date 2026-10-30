@@ -1,8 +1,16 @@
 # Registre d’amélioration BRAIZ
 
-État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-SEO-2026-10-30`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-Heartbeat-2026-10-30-0224` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-1433`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Partage de résultat : un refus tardif du presse-papiers pouvait ouvrir le dialogue de copie manuelle après une navigation vers le profil. Un refus tardif du partage natif pouvait aussi lancer une copie automatique de l’ancien résultat après cette navigation. Les deux comportements ont été reproduits avant correction.
+- Les suites asynchrones du partage vérifient désormais la partie et la navigation qui les ont déclenchées. Une réponse obsolète n’ouvre plus de dialogue, ne déclenche plus de copie de secours ni de notification. Un dialogue de règles ouvert entre-temps n’est pas remplacé par le refus tardif de copie.
+- Le partage courant, sa copie manuelle de secours et l’annulation native restent disponibles. La copie déjà demandée au navigateur ne peut pas être annulée rétroactivement ; seuls ses effets tardifs dans l’interface sont ignorés.
+- Aucun changement de contenu partagé, score, rang, sauvegarde, lecteur historique, moteur ou publicité. Contrôles et identifiants de publication dans le dossier privé.
+- 41 tests du plateau réussis, dont les quatre nouveaux cas de partage ; TypeScript et construction réussis. Aucun changement visuel ni nouvelle mesure de performance revendiquée.
+
+## Lot précédent, SEO et flamme
 
 - SEO : les neuf pages du sitemap étaient déjà rendues côté serveur, indexables, avec une H1, des titres/descriptions distincts et des canoniques. Aucun lien cassé parmi leurs liens HTML internes et les quatre sources externes contrôlées. Pas de migration SSR nécessaire.
 - Les FAQ visibles alimentent désormais un balisage FAQPage identique ; les trois guides éditoriaux reçoivent Article sans auteur ni dates inventés. Les fils d’Ariane deviennent une navigation accessible, également visible dans le guide Duel. Un exemple de polysémie complète le guide de proximité.

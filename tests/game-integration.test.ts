@@ -84,6 +84,56 @@ async function mount(strict = false) { let tree!: ReactTestRenderer; await act(a
 async function menu(tree:ReactTestRenderer,label:string) { const item=tree.root.findByProps({'aria-label':'Navigation principale'}).findAllByType('a').find(node=>text(node)===label);assert.ok(item);await act(async()=>item.props.onClick({button:0,preventDefault(){}})); }
 async function click(tree: ReactTestRenderer, label: string) { await act(async () => button(tree, label).props.onClick({ currentTarget: {} })); }
 
+for (const transport of ['clipboard', 'native'] as const) test(`a late ${transport} rejection after navigation cannot open sharing or copy an old result`, async () => {
+  const b=browser(), pending=deferred<void>(); let clipboardCalls=0;
+  b.storage.setItem('braise.v1.game.'+puzzle.id,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
+  globalThis.fetch=async()=>Response.json(puzzle);
+  const denied=async()=>{await pending.promise;throw new Error('Sharing denied');};
+  Object.defineProperty(globalThis,'navigator',{configurable:true,value:{
+    ...(transport==='native'?{share:denied}:{}),
+    clipboard:{writeText:async()=>{clipboardCalls++;if(transport==='clipboard')await denied();}},
+  }});
+  const tree=await mount();let completion:Promise<void>|undefined;
+  try {
+    await act(async()=>{completion=button(tree,'Partager').props.onClick();});
+    await menu(tree,'Profil');
+    const ledgerAfterNavigation=b.storage.getItem(PRODUCT_EVENTS_KEY);
+    await act(async()=>{pending.resolve();await completion;});
+    assert.equal(tree.root.findAllByProps({'aria-label':'Texte à copier'}).length,0);
+    assert.equal(clipboardCalls,transport==='clipboard'?1:0);
+    assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY),ledgerAfterNavigation);
+  } finally { pending.resolve();await completion;await act(async()=>tree.unmount()); }
+});
+
+test('a native share cancellation leaves the current result unchanged without copying',async()=>{
+  const b=browser();let copies=0;
+  b.storage.setItem('braise.v1.game.'+puzzle.id,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
+  globalThis.fetch=async()=>Response.json(puzzle);
+  Object.defineProperty(globalThis,'navigator',{configurable:true,value:{share:async()=>{throw new DOMException('Cancelled','AbortError');},clipboard:{writeText:async()=>{copies++;}}}});
+  const tree=await mount();try {
+    await click(tree,'Partager');
+    assert.equal(copies,0);
+    assert.equal(tree.root.findAllByProps({'aria-label':'Texte à copier'}).length,0);
+    assert.equal(b.storage.getItem(PRODUCT_EVENTS_KEY),null);
+    assert.match(text(tree.root),/secret-answer/);
+  } finally {await act(async()=>tree.unmount());}
+});
+
+test('a late clipboard failure cannot replace rules opened in the meantime',async()=>{
+  const b=browser(),pending=deferred<void>();
+  b.storage.setItem('braise.v1.game.'+puzzle.id,JSON.stringify({startedAt:1,hints:0,pins:[],guesses:[{word:'secret-answer',order:1,rank:1,temperature:100,found:true}]}));
+  globalThis.fetch=async()=>Response.json(puzzle);
+  Object.defineProperty(globalThis,'navigator',{configurable:true,value:{clipboard:{writeText:async()=>{await pending.promise;throw new Error('Denied');}}}});
+  const tree=await mount();let completion:Promise<void>|undefined;
+  try {
+    await act(async()=>{completion=button(tree,'Partager').props.onClick();});
+    await act(async()=>tree.root.find(node=>typeof node.type==='function'&&typeof node.props.onHelp==='function').props.onHelp(null));
+    await act(async()=>{pending.resolve();await completion;});
+    assert.match(text(tree.root),/Suivez la progression/);
+    assert.equal(tree.root.findAllByProps({'aria-label':'Texte à copier'}).length,0);
+  } finally {pending.resolve();await completion;await act(async()=>tree.unmount());}
+});
+
 test('Mot du jour opens the daily board from a free game and preserves both saved histories',async()=>{
   const b=browser(undefined,'https://braiz.test/?libre=042');
   const daily={...getLegacyPuzzle('daily').publicPuzzle,resetAt:'2099-01-01T00:00:00Z'};
