@@ -1,8 +1,17 @@
 # Registre d’amélioration BRAIZ
 
-État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-0224`, situé deux niveaux au-dessus du dépôt. Le dossier `BRAIZ-Qualification-2026-10-29` conserve la qualification éditoriale et les vérifications Google/AdSense précédentes. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-SEO-2026-10-30`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-Heartbeat-2026-10-30-0224` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- SEO : les neuf pages du sitemap étaient déjà rendues côté serveur, indexables, avec une H1, des titres/descriptions distincts et des canoniques. Aucun lien cassé parmi leurs liens HTML internes et les quatre sources externes contrôlées. Pas de migration SSR nécessaire.
+- Les FAQ visibles alimentent désormais un balisage FAQPage identique ; les trois guides éditoriaux reçoivent Article sans auteur ni dates inventés. Les fils d’Ariane deviennent une navigation accessible, également visible dans le guide Duel. Un exemple de polysémie complète le guide de proximité.
+- Performance : premier test mobile simulé (390 × 844, 1,6 Mbit/s, 150 ms, CPU ×4, cache et service worker contournés) : LCP 3,092 s, chargement 4,554 s, CLS 0,0054. Ce test ponctuel ne constitue pas une mesure terrain au 75e percentile.
+- La flamme affichée utilise une variante WebP de 768 × 960, 72 006 octets contre 137 010, avec préchargement prioritaire. Son gabarit, sa transparence et son remplissage restent conservés. L’ancienne URL demeure disponible pour les clients historiques.
+- Neuf tests ciblés SEO/flamme réussis. TypeScript réussi. Construction, publication et mesures finales consignées dans le dossier privé pour conserver l’identifiant réel de la version publiée.
+- Blocages nouveaux : le connecteur Search Console renvoie un abonnement expiré ; la session navigateur Google est utilisée par la personne, aucune nouvelle soumission effectuée. Le sitemap était déjà traité avec succès au dernier contrôle. `www.braiz.io` ne résout pas en DNS ; l’apex fonctionne, un accès à la zone est nécessaire pour raccorder l’alias. Les coordonnées de l’auteur restent à fournir explicitement. Aucun backlink acquis ni annonce activée.
+
+## Lot précédent, duel et clavier
 
 - Duel : le changement de manche efface l’erreur de la manche quittée. Une nouvelle erreur reste visible, les mots refusés ne consomment aucun essai.
 - Clavier : activer le logo avec le burger fermé ne bloque plus le retour du focus au bouton après ouverture puis fermeture du menu avec Échap. Le transfert du focus vers une destination ou l’aide reste préservé.

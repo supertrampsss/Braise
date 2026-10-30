@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { PROJECT_ROOT } from "./run-site.mjs";
 
 process.chdir(PROJECT_ROOT);
-const names = ["foundations", "advertising", "embed", "semantic-corpus-v2", "semantic-shards", "semantic-canonical-gzip", "two-braises"];
+const names = ["foundations", "site-seo", "advertising", "embed", "semantic-corpus-v2", "semantic-shards", "semantic-canonical-gzip", "two-braises"];
 const outdir = "work/tests-foundations";
 await mkdir(outdir, { recursive: true });
 const outputs = names.map(name => `${outdir}/${name}.test.mjs`);

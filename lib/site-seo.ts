@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { Guide } from './site-content';
 import { PUBLIC_ORIGIN } from './release';
 
 export const HOME_TITLE = 'BRAIZ : jeu de mots du jour gratuit en français';
@@ -32,4 +33,19 @@ export function breadcrumbSchema(path: string, heading: string) {
     { '@type': 'ListItem', position: 1, name: 'BRAIZ', item: `${PUBLIC_ORIGIN}/` },
     { '@type': 'ListItem', position: 2, name: heading, item: `${PUBLIC_ORIGIN}${path}` },
   ] };
+}
+
+export function faqSchema(items: Guide['faq']) {
+  return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map(item => ({
+    '@type': 'Question', name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })) };
+}
+
+export function articleSchema(guide: Guide) {
+  return { '@context': 'https://schema.org', '@type': 'Article',
+    '@id': `${PUBLIC_ORIGIN}${guide.path}#article`, mainEntityOfPage: `${PUBLIC_ORIGIN}${guide.path}`,
+    headline: guide.heading, description: guide.description, inLanguage: 'fr',
+    publisher: { '@type': 'Organization', name: 'BRAIZ', url: `${PUBLIC_ORIGIN}/` },
+  };
 }

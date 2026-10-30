@@ -1,5 +1,6 @@
 export type Guide = {
   path: string; title: string; heading: string; description: string; intro: string;
+  kind?: 'article';
   action?: { href: string; label: string };
   sections: { heading: string; paragraphs: string[] }[];
   faq: { question: string; answer: string }[];
@@ -8,7 +9,7 @@ export type Guide = {
 // Public documentation only: no target words, saved games or private identities.
 export const GUIDES: Guide[] = [
   {
-    path: '/jeu-de-mots-semantique', title: 'Jeu de mots sémantique en français : le guide',
+    path: '/jeu-de-mots-semantique', kind: 'article', title: 'Jeu de mots sémantique en français : le guide',
     heading: 'Qu’est-ce qu’un jeu de mots sémantique ?',
     description: 'Découvrez le principe des jeux de mots sémantiques : trouver un mot secret grâce à la proximité de sens, puis essayer BRAIZ gratuitement.',
     intro: 'Un jeu de mots sémantique consiste à trouver un mot secret en proposant des mots proches par le sens. BRAIZ permet de jouer en français avec un mot du jour commun à tous, des parties libres et des duels.',
@@ -26,7 +27,7 @@ export const GUIDES: Guide[] = [
     ],
   },
   {
-    path: '/comment-jouer', title: 'Comment jouer à BRAIZ : règles et indices', heading: 'Comment jouer à BRAIZ',
+    path: '/comment-jouer', kind: 'article', title: 'Comment jouer à BRAIZ : règles et indices', heading: 'Comment jouer à BRAIZ',
     description: 'Les règles de BRAIZ : envoyer un mot français, suivre la flamme, comparer les essais et utiliser jusqu’à trois indices pour trouver le mot secret.',
     intro: 'Dans BRAIZ, trouvez le mot secret en envoyant des mots français. La flamme conserve votre meilleure progression et l’historique classe les essais du plus proche au moins proche.',
     action: { href: '/', label: 'Jouer au mot du jour' },
@@ -43,13 +44,14 @@ export const GUIDES: Guide[] = [
     ],
   },
   {
-    path: '/proximite', title: 'Proximité, pourcentage et classement dans BRAIZ', heading: 'Comprendre la proximité dans BRAIZ',
+    path: '/proximite', kind: 'article', title: 'Proximité, pourcentage et classement dans BRAIZ', heading: 'Comprendre la proximité dans BRAIZ',
     description: 'À quoi correspondent la flamme, le pourcentage et les rangs de BRAIZ ? Comprenez les repères Top 5 000, Top 1 000, Top 100 et Top 10.',
     intro: 'Dans BRAIZ, le classement indique la place d’un mot par rapport au mot secret. Le pourcentage représente le remplissage de la flamme à partir du meilleur classement de la partie.',
     sections: [
       { heading: 'Deux lectures du même progrès', paragraphs: ['L’historique donne le classement exact de chaque essai. La flamme en propose une lecture visuelle : elle monte lorsqu’un nouveau mot dépasse votre meilleur essai.', 'L’échelle réserve de la place aux derniers progrès. Ses repères sont : Top 5 000 à 20 %, Top 1 000 à 40 %, Top 100 à 60 %, Top 10 à 80 %, puis 100 % lorsque le mot est trouvé. Entre ces repères, le remplissage avance progressivement.'] },
       { heading: 'Et avant le Top 5 000 ?', paragraphs: ['La progression commence aussi pour les mots situés au-delà du Top 5 000. Leur remplissage se situe dans la première partie de la jauge, en fonction de leur rang et de la taille du lexique de l’édition.', 'Le pourcentage est un repère de progression, pas une probabilité de gagner ni la proportion de mots éliminés. Les arrondis peuvent donner le même pourcentage à deux rangs différents : l’historique garde leur classement exact.'] },
       { heading: 'Pourquoi certaines associations surprennent', paragraphs: ['Le modèle rapproche des mots employés dans des contextes comparables dans ses textes d’entraînement. Il ne se limite pas aux synonymes : objets, actions, lieux et expressions peuvent se croiser.', 'Un mot possède parfois plusieurs sens. Une association qui semble évidente pour une personne peut être moins représentée dans les textes du modèle. Le classement est un résultat du calcul, pas un jugement sur votre raisonnement.'] },
+      { heading: 'Tester les différents sens d’un mot', paragraphs: ['Prenons « banc » : il peut désigner un siège ou un groupe de poissons. Pour explorer ces sens, essayez « siège » et « parc », puis « poisson » et « mer ». Comparez les classements obtenus avant de poursuivre une piste.', 'Si les deux pistes restent éloignées, essayez un troisième contexte plutôt que de multiplier les synonymes.'] },
       { heading: 'Comparer des pistes', paragraphs: ['Quand plusieurs mots d’un domaine restent éloignés, essayez un autre contexte. Si un mot progresse nettement, testez ensuite des actions, des objets ou des lieux liés à cette idée.', 'Les archives et les duels peuvent conserver une édition historique du modèle. Les rangs sont cohérents à l’intérieur d’une partie ; comparer des pourcentages entre deux mots secrets ne mesure pas leur difficulté de façon absolue.'] },
     ],
     faq: [

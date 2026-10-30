@@ -1,14 +1,16 @@
 "use client";
 import {useEffect,useId,useRef,useState,type CSSProperties} from 'react';
+import {preload} from 'react-dom';
 import {flameLevel} from '@/lib/flame-presentation';
 import {formatRankFr} from '@/lib/proximity-presentation';
 
-const flameArt='/art/braiz-natural-flame-v1.webp';
+const flameArt='/art/braiz-natural-flame-768.webp';
 
 /** Shared fillable flame. Only accepted best proximity changes its level. */
 export default function FlameScene({level:proximity,rank,celebrating,paused,solved=false,revealMotion=false}:{
   level:number;rank:number|null;celebrating:boolean;paused:boolean;solved?:boolean;revealMotion?:boolean;
 }) {
+  preload(flameArt,{as:'image',type:'image/webp',fetchPriority:'high'});
   const host=useRef<HTMLDivElement>(null),id='braiz-fill-'+useId().replace(/:/g,'');
   const [visible,setVisible]=useState(true);
   const [motionAllowed,setMotionAllowed]=useState(false);
