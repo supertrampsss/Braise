@@ -1,4 +1,6 @@
 <title>BRAIZ nouvelle braise</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -124,6 +126,7 @@ function jouer(brut,estIndice=false){
  compter($('dd'),0,t);
  if(record){compter($('temp'),affiche,t,900);affiche=t;$('best-mot').textContent=best.w;$('best-rang').textContent=best.r<=1000?`${best.r}e`:`${fmt(best.t)}°`;
   document.querySelectorAll('.paliers span').forEach(s=>s.classList.toggle('on',best.r<=Number(s.dataset.p)));}
+ if(record&&matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(frame);
  if(r===1){gagne=true;document.body.classList.add('victoire');etincelles(40);}
  else if(record&&essais.length>1)etincelles(8);
  rendreListe(e);
@@ -134,14 +137,15 @@ $('indice').addEventListener('click',()=>{if(essais.length<5){$('err').textConte
 /* Flamme : particules additives, révélées du bas vers le haut selon la meilleure température.
    Une réponse moins proche ne la fait jamais redescendre. Arrêt hors écran et en mouvement réduit. */
 const cv=$('flamme'),g=cv.getContext('2d'),W=cv.width,H=cv.height;let niveau=0,parts=[],sparks=[],vu=true;
-function etincelles(n){for(let i=0;i<n;i++)sparks.push({x:W/2+(Math.random()-.5)*80,y:H*.72,vx:(Math.random()-.5)*2.2,vy:-2-Math.random()*4,l:1});}
+function etincelles(n){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<n;i++)sparks.push({x:W/2+(Math.random()-.5)*80,y:H*.72,vx:(Math.random()-.5)*2.2,vy:-2-Math.random()*4,l:1});}
 function frame(){
  const reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
  niveau+=((gagne?1:Math.min(.92,Math.max(.06,cible/70)))-niveau)*.04;
  g.globalCompositeOperation='source-over';g.clearRect(0,0,W,H);
  const n=Math.round(20+niveau*70);
  for(let i=0;i<(reduit?0:3);i++)if(parts.length<n)parts.push({x:W/2+(Math.random()-.5)*110*(.5+niveau*.6),y:H*.86,r:28+Math.random()*38*(.6+niveau),v:1.4+Math.random()*2.2*(.5+niveau),l:1,ph:Math.random()*6});
- if(reduit&&!parts.length)for(let i=0;i<n;i++)parts.push({x:W/2+(Math.random()-.5)*90,y:H*.86-Math.random()*H*.5*niveau,r:30+Math.random()*30,v:0,l:.4+Math.random()*.6,ph:i});
+ // Mouvement réduit : flamme fixe et déterministe, recalculée seulement quand la meilleure piste change.
+ if(reduit){niveau=gagne?1:Math.min(.92,Math.max(.06,cible/70));parts=[];sparks=[];const h=k=>{const x=Math.sin(k*12.9898)*43758.5453;return x-Math.floor(x);};for(let i=0;i<n;i++)parts.push({x:W/2+(h(i)-.5)*90,y:H*.86-h(i+99)*H*.5*niveau,r:30+h(i+7)*30,v:0,l:.4+h(i+3)*.6,ph:i});}
  g.globalCompositeOperation='lighter';
  const t=performance.now()/1000;
  parts=parts.filter(p=>p.l>0);
@@ -163,5 +167,5 @@ document.addEventListener('visibilitychange',()=>{const avant=vu;vu=!document.hi
 // État d'exemple : une partie en cours, pour que la page montre le jeu dès l'ouverture.
 ['maison','temps','salon','chaleur'].forEach(w=>jouer(w));affiche=cible;$('temp').textContent=fmt(cible);niveau=cible/70;
 requestAnimationFrame(frame);
-setInterval(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches){parts=[];requestAnimationFrame(frame);}},1500);
+
 </script>
