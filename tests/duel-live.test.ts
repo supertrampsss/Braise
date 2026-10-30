@@ -6,6 +6,8 @@ import Duels from '../components/duels';
 import {duelShareText,type DuelView} from '../lib/duel-presentation';
 import {REQUEST_TIMEOUT_MS} from '../lib/request-json';
 import {Dialog} from '../components/ui/dialog';
+import {AppNavigation} from '../components/app-navigation';
+import {PRODUCT_EVENTS_KEY} from '../lib/product-events';
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true});
 function text(node:ReactTestInstance):string{return node.children.map(c=>typeof c==='string'?c:text(c)).join('');}
 const base:DuelView={id:'d',hostName:'Alice',opponentName:'Basile',role:'host',state:'active',inviteExpires:Date.now()+86400000,deadline:Date.now()+172800000,forfeiter:null,decisions:null,guesses:[{round:0,word:'chemin',ordinal:1,rank:61,temperature:1,found:0}]};
@@ -13,6 +15,56 @@ const completed:DuelView={...base,state:'finished',decisions:[-1,0,1],vocabulary
 function browser(){const memory=new Map();const storage={getItem:(key:string)=>memory.get(key)??null,setItem:(key:string,value:string)=>memory.set(key,value),removeItem:(key:string)=>memory.delete(key)};Object.assign(globalThis,{window:{matchMedia:()=>({matches:true,addEventListener(){},removeEventListener(){}})},document:{hidden:false,addEventListener(){},removeEventListener(){},getElementById(){return null;}},localStorage:storage,sessionStorage:storage,location:{origin:'https://braiz.test',pathname:'/duels',hash:''},history:{replaceState(){}},requestAnimationFrame:()=>0,cancelAnimationFrame(){}});}
 async function mount(){let tree!:ReactTestRenderer;await act(async()=>{tree=create(createElement(Duels));});await act(async()=>tree.root.findByProps({'data-duel-id':'d'}).props.onClick());return tree;}
 function mockApi(getView:()=>DuelView,mutation?:(body:Record<string,unknown>,options?:RequestInit)=>Promise<Response>,poll?:(options?:RequestInit)=>Promise<Response>){const calls:Array<{path:string;body?:Record<string,unknown>}>=[];let reads=0;globalThis.fetch=async(url,options)=>{const path=String(url),body=options?.body?JSON.parse(String(options.body)):undefined;calls.push({path,body});if(body)return mutation?mutation(body,options):Response.json(getView());if(path==='/api/session')return Response.json({guest:{id:'a',name:'Alice'},csrf:'csrf'});if(path.includes('?id=')){reads++;return reads>1&&poll?poll(options):Response.json(getView());}return Response.json({duels:[{id:'d',hostName:'Alice',opponentName:'Basile',state:getView().state}]});};return calls;}
+
+for(const resolution of ['refused','copied','return-to-first'])test(`a late ${resolution} share cannot affect another duel selection`,async()=>{
+ const original=Object.getOwnPropertyDescriptor(globalThis,'navigator');browser();let release!:()=>void;
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:{clipboard:{writeText:()=>new Promise<void>((resolve,reject)=>{release=()=>resolution==='copied'?resolve():reject(new Error('Clipboard unavailable'));})}}});
+ const other={...completed,id:'other',opponentName:'Camille'};
+ globalThis.fetch=async url=>{const path=String(url);if(path==='/api/session')return Response.json({guest:{id:'a',name:'Alice'},csrf:'csrf'});if(path.includes('?id='))return Response.json(path.endsWith('other')?other:completed);return Response.json({duels:[completed,other]});};
+ const tree=await mount();try{
+  await act(async()=>tree.root.findAll(node=>node.type==='button'&&text(node)==='Partager le résultat')[0].props.onClick({currentTarget:null}));
+  await act(async()=>tree.root.findByProps({'data-duel-id':'other'}).props.onClick());
+  if(resolution==='return-to-first')await act(async()=>tree.root.findByProps({'data-duel-id':'d'}).props.onClick());
+  const before=localStorage.getItem(PRODUCT_EVENTS_KEY);await act(async()=>release());
+  assert.equal(tree.root.findAllByType(Dialog).find(node=>node.props.children.props.className==='braise-dialog duel-share')!.props.open,false);
+  assert.equal(tree.root.findAll(node=>node.type==='button'&&text(node)==='Résultat copié').length,0);
+  assert.equal(localStorage.getItem(PRODUCT_EVENTS_KEY),before);
+ }finally{await act(async()=>tree.unmount());if(original)Object.defineProperty(globalThis,'navigator',original);else Reflect.deleteProperty(globalThis,'navigator');}
+});
+
+test('leaving duels prevents a delayed native-share refusal from copying the old result',async()=>{
+ const original=Object.getOwnPropertyDescriptor(globalThis,'navigator');browser();let rejectShare!:(cause:Error)=>void,copies=0;
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:{share:()=>new Promise<void>((_resolve,reject)=>{rejectShare=reject;}),clipboard:{writeText:async()=>{copies++;}}}});
+ mockApi(()=>completed);const tree=await mount();try{
+  await act(async()=>tree.root.findAll(node=>node.type==='button'&&text(node)==='Partager le résultat')[0].props.onClick({currentTarget:null}));
+  await act(async()=>tree.unmount());const before=localStorage.getItem(PRODUCT_EVENTS_KEY);
+  await act(async()=>rejectShare(new Error('Unavailable')));assert.equal(copies,0);assert.equal(localStorage.getItem(PRODUCT_EVENTS_KEY),before);
+ }finally{await act(async()=>tree.unmount());if(original)Object.defineProperty(globalThis,'navigator',original);else Reflect.deleteProperty(globalThis,'navigator');}
+});
+
+test('a clipboard refusal does not open a second dialog over duel rules',async()=>{
+ const original=Object.getOwnPropertyDescriptor(globalThis,'navigator');browser();let rejectCopy!:(cause:Error)=>void;
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:{clipboard:{writeText:()=>new Promise<void>((_resolve,reject)=>{rejectCopy=reject;})}}});
+ mockApi(()=>completed);const tree=await mount();try{
+  await act(async()=>tree.root.findAll(node=>node.type==='button'&&text(node)==='Partager le résultat')[0].props.onClick({currentTarget:null}));
+  await act(async()=>tree.root.findByType(AppNavigation).props.onHelp(null));
+  await act(async()=>rejectCopy(new Error('Unavailable')));
+  const dialogs=tree.root.findAllByType(Dialog);
+  assert.equal(dialogs.find(node=>node.props.children.props.className==='braise-dialog duel-rules')!.props.open,true);
+  assert.equal(dialogs.find(node=>node.props.children.props.className==='braise-dialog duel-share')!.props.open,false);
+ }finally{await act(async()=>tree.unmount());if(original)Object.defineProperty(globalThis,'navigator',original);else Reflect.deleteProperty(globalThis,'navigator');}
+});
+
+test('a background refresh of the same duel preserves a pending explicit share',async(t)=>{
+ t.mock.timers.enable({apis:['setInterval','setTimeout']});const original=Object.getOwnPropertyDescriptor(globalThis,'navigator');browser();let release!:()=>void;
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:{clipboard:{writeText:()=>new Promise<void>(resolve=>{release=resolve;})}}});
+ const calls=mockApi(()=>completed);const tree=await mount();try{
+  await act(async()=>tree.root.findAll(node=>node.type==='button'&&text(node)==='Partager le résultat')[0].props.onClick({currentTarget:null}));
+  await act(async()=>t.mock.timers.tick(8000));assert.equal(calls.filter(call=>call.path.includes('?id=')).length,2);
+  await act(async()=>release());assert.equal(tree.root.findAll(node=>node.type==='button'&&text(node)==='Résultat copié').length,1);
+  assert.match(localStorage.getItem(PRODUCT_EVENTS_KEY)??'',/shareCopied/);
+ }finally{await act(async()=>tree.unmount());t.mock.timers.reset();if(original)Object.defineProperty(globalThis,'navigator',original);else Reflect.deleteProperty(globalThis,'navigator');}
+});
 
 test('finished duels expose solutions, both searches, per-round reasons and a spoiler-free share action',async()=>{
  browser();mockApi(()=>completed);const tree=await mount();try{const value=text(tree.root);assert(value.includes('port'));assert(value.includes('sentier'));assert(value.includes('Meilleure proximité'));assert(tree.root.findAll(node=>node.type==='button'&&text(node)==='Partager le résultat').length);const shared=duelShareText(completed);for(const word of ['port','peur','bonheur','sentier','chemin'])assert(!shared.includes(word));}finally{await act(async()=>tree.unmount());}

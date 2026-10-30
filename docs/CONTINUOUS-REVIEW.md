@@ -1,8 +1,15 @@
 # Registre d’amélioration BRAIZ
 
-État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-1433`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 30 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-30-1638`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
+
+- Partage des duels : cinq régressions reproduites avant correction. Une réponse tardive pouvait ouvrir le texte du duel précédent, afficher « Résultat copié » sur le suivant, survivre à un aller-retour entre duels, copier après fermeture de la page ou ouvrir un second dialogue au-dessus des règles.
+- Une révision propre au partage invalide ces réponses au changement de duel et à l'ouverture des règles. La navigation existante protège la sortie de page. L'actualisation automatique du même duel conserve le partage courant ; une copie déjà demandée au système ne peut pas être annulée rétroactivement.
+- 29 tests ciblés réussis, dont six cas nouveaux ; TypeScript et construction réussis. Journaux et preuve de publication dans le dossier privé. Aucun changement visuel, sémantique, de sauvegarde, d'API ou de publicité ; aucun nouveau contrôle SEO/performance sans nouveau signal.
+- Lecture ciblée des transferts de profil/sauvegarde et de l'actualisation des duels sans autre défaut confirmé. Aucun nettoyage supplémentaire justifié dans ce lot.
+
+## Lot précédent, partage du plateau
 
 - Partage de résultat : un refus tardif du presse-papiers pouvait ouvrir le dialogue de copie manuelle après une navigation vers le profil. Un refus tardif du partage natif pouvait aussi lancer une copie automatique de l’ancien résultat après cette navigation. Les deux comportements ont été reproduits avant correction.
 - Les suites asynchrones du partage vérifient désormais la partie et la navigation qui les ont déclenchées. Une réponse obsolète n’ouvre plus de dialogue, ne déclenche plus de copie de secours ni de notification. Un dialogue de règles ouvert entre-temps n’est pas remplacé par le refus tardif de copie.

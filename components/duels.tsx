@@ -41,7 +41,7 @@ export default function Duels() {
   const [spellingSuggestion,setSpellingSuggestion]=useState<string|null>(null);
   const [now,setNow]=useState(0),[paused,setPaused]=useState(true),[feedback,setFeedback]=useState<Feedback|null>(null);
   const lock=useRef(false),inputRevision=useRef(0),navigationEpoch=useRef(0);
-  const factsRevision=useRef(0);
+  const factsRevision=useRef(0),shareRevision=useRef(0);
   const creation=useRef<{id:string;token:string;parentId?:string}|null>(null);
   const renewal=useRef<{id:string;token:string;previousVersion:string}|null>(null),loadedPages=useRef(1);
   const pending=useRef<{id:string;round:number;revision:number;requestId:string;word:string}|null>(null);
@@ -59,7 +59,12 @@ export default function Duels() {
     if(!response.ok)throw new DuelApiError(data.error??'Service indisponible.',response.status,typeof data.suggestion==='string'?data.suggestion:undefined);
     return data;
   }
-  function showView(data:DuelView) {factsRevision.current++;if(view?.id!==data.id||view.invitationVersion!==data.invitationVersion)setLink('');setView(data);setDuels(items=>items.map(item=>item.id===data.id?{...item,state:data.state,hostName:data.hostName,opponentName:data.opponentName,role:data.role,result:duelOutcome(data)?.title,deadline:data.deadline,abandoned:data.forfeiter?1:0,score:data.score,canAcceptRematch:data.canAcceptRematch}:item));}
+  function showView(data:DuelView) {
+    factsRevision.current++;
+    if(view?.id!==data.id){shareRevision.current++;setShareText('');setShared(false);}
+    if(view?.id!==data.id||view.invitationVersion!==data.invitationVersion)setLink('');
+    setView(data);setDuels(items=>items.map(item=>item.id===data.id?{...item,state:data.state,hostName:data.hostName,opponentName:data.opponentName,role:data.role,result:duelOutcome(data)?.title,deadline:data.deadline,abandoned:data.forfeiter?1:0,score:data.score,canAcceptRematch:data.canAcceptRematch}:item));
+  }
   async function listPage(group:DuelListGroup,cursor:string|null=null,signal?:AbortSignal){return api('/api/duels?group='+group+(cursor?'&cursor='+encodeURIComponent(cursor):''),undefined,undefined,signal);}
   async function loadList(group=listGroup,pages=loadedPages.current,signal?:AbortSignal):Promise<DuelListPage>{
     const first=await listPage(group,null,signal);let next=first.nextCursor??null,rows=first.duels;
@@ -95,11 +100,13 @@ export default function Duels() {
   }
   async function shareResult(returnFocus:HTMLButtonElement|null){
     if(!view)return;
-    const text=duelShareText(view),epoch=navigationEpoch.current;
+    const text=duelShareText(view),epoch=navigationEpoch.current,revision=++shareRevision.current;
+    const current=()=>epoch===navigationEpoch.current&&revision===shareRevision.current;
     shareReturnFocus.current=returnFocus;
-    if(navigator.share){try{await navigator.share({title:'BRAIZ · Duel',text});diagnostic('shareNative');return;}catch(cause){if(cause instanceof Error&&cause.name==='AbortError')return;}}
-    try{await navigator.clipboard.writeText(text);if(epoch===navigationEpoch.current){setShared(true);diagnostic('shareCopied');}}
-    catch{if(epoch===navigationEpoch.current){cancelReturnFocus();setShareText(text);}}
+    if(navigator.share){try{await navigator.share({title:'BRAIZ · Duel',text});if(current())diagnostic('shareNative');return;}catch(cause){if(cause instanceof Error&&cause.name==='AbortError')return;}}
+    if(!current())return;
+    try{await navigator.clipboard.writeText(text);if(current()){setShared(true);diagnostic('shareCopied');}}
+    catch{if(current()){cancelReturnFocus();setShareText(text);}}
   }
   function reviewRound(index:number){changeRound(index);const board=document.getElementById('duel-round-board');board?.scrollIntoView({block:'start'});board?.focus({preventScroll:true});}
   function changeRound(index:number) {if(busy)return;setRound(index);setWord('');setError('');inputRevision.current++;pending.current=null;clearFeedback();}
@@ -167,7 +174,7 @@ export default function Duels() {
   const renewControl=view?.invitationVersion?<><p>Le lien précédent sera invalidé.</p><button type="button" className="secondary-button" disabled={busy} onClick={()=>void perform(renewInvitation)}>Créer un nouveau lien</button></>:null;
   return <div className={`app-shell approved-interface proximity-interface duel-interface ${paused?'motion-paused':''}`}>
     <a className="skip-link" href="#duel-main">Aller au contenu</a>
-    <AppNavigation active="duel" onHelp={returnFocus=>{cancelReturnFocus();helpReturnFocus.current=returnFocus;setHelp(true);}}/>
+    <AppNavigation active="duel" onHelp={returnFocus=>{shareRevision.current++;cancelReturnFocus();helpReturnFocus.current=returnFocus;setHelp(true);}}/>
     <main className="main-shell" id="duel-main" tabIndex={-1}>
       <header className="duel-heading"><div><h1>Duel</h1>{view&&<p>{duelNames(view)}</p>}</div><div className="duel-header-actions">{view?.score&&playable&&!view.forfeiter&&<strong className="duel-live-score" aria-label="Score des manches">{view.score.won} — {view.score.lost}</strong>}{view?.deadline&&view.state==='active'&&<p className="duel-deadline">Fin le {dateLabel(view.deadline)}</p>}</div></header>
       {error&&<p className="duel-error" id="duel-error" role="alert">{error}</p>}
