@@ -1,6 +1,6 @@
 # Registre d’amélioration BRAIZ
 
-État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-Heartbeat-2026-10-31-0037`, situé deux niveaux au-dessus du dépôt. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-GitHub-2026-10-31`, situé deux niveaux au-dessus du dépôt : consolidation des sources dans GitHub main, avec l'historique Sites et les contributions GitHub conservés. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) avant toute nouvelle modification ou publication. Le dernier correctif produit reste documenté dans `BRAIZ-Heartbeat-2026-10-31-0037`. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
 
 ## Dernier lot contrôlé
 

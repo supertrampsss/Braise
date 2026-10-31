@@ -2,7 +2,9 @@
 
 Jeu web français de proximité sémantique, accessible directement sur [braiz.io](https://braiz.io). Le joueur cherche un mot secret ; chaque proposition reçoit son classement réel dans le corpus.
 
-Ce document décrit le code du dépôt au 29 octobre 2026. L'état d'un compte externe ou d'un déploiement se vérifie séparément.
+Le dépôt de référence est [supertrampsss/Braise](https://github.com/supertrampsss/Braise), branche `main`. Il contient le code courant, les données de jeu distribuées, les tests et l'historique complet importé de Sites. OpenAI Sites reste l'hébergeur du site existant. Procédure : [sources et publication](docs/SOURCE-OF-TRUTH.md).
+
+Consolidation des sources au 31 octobre 2026, à partir de la version de production 60. L'état d'un compte externe ou d'un déploiement se vérifie séparément.
 
 ## Parcours actuels
 

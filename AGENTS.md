@@ -1,5 +1,7 @@
 # Braise
 
+- Dépôt de référence : https://github.com/supertrampsss/Braise, branche main. Avant de modifier, récupérer cette branche et intégrer ses changements sans écraser les contributions existantes. Sites sert à héberger et publier, jamais à conserver seul une nouvelle version du code.
+- Avant toute publication Sites, committer et pousser la source complète dans GitHub main, puis exécuter `node scripts/verify-github-source.mjs`. Le commit envoyé à Sites doit être exactement celui vérifié dans GitHub. Si la publication nécessite un nouveau commit, le reporter d'abord dans GitHub et revérifier. Ne pas forcer main ni publier si les sources divergent.
 - Langue produit : français. Garder le jeu immédiatement accessible, sans page marketing préalable.
 - Lire README.md et docs/ARCHITECTURE.md avant une modification du moteur.
 - Ne jamais inventer un score sémantique, un classement ou des joueurs actifs.
