@@ -6,7 +6,9 @@ import "./p1-game.css";
 import "./parties.css";
 import "./fillable-game.css";
 import "./guides.css";
+import "./brasier.css";
 import { OfflineRegistration } from "@/components/offline-registration";
+import { EmberField } from "@/components/ember-field";
 import { MetricsLifecycle } from "@/components/metrics-lifecycle";
 import { PUBLIC_ORIGIN } from "@/lib/release";
 import { ADSENSE_PUBLISHER, HOME_DESCRIPTION, HOME_TITLE } from '@/lib/site-seo';
@@ -19,6 +21,6 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg", apple: [{url:"/icons/apple-touch-icon.png",sizes:"180x180",type:"image/png"}] },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="fr"><body>{children}<OfflineRegistration /><MetricsLifecycle /></body></html>;
+  return <html lang="fr"><body><EmberField />{children}<OfflineRegistration /><MetricsLifecycle /></body></html>;
 }
 
