@@ -31,10 +31,10 @@ export function EmberField() {
       raf = 0;
       const dt = Math.min(.05, (now - last) / 1000); last = now;
       const h = chaleur(); ambiance += (h - ambiance) * Math.min(1, dt * 2);
-      // Braises ambiantes : quelques-unes à froid, une nuée quand le mot est proche.
-      const voulues = 10 + ambiance * 110;
+      // Quelques braises seulement : un fond qui respire, pas un feu d'artifice.
+      const voulues = 3 + ambiance * 14;
       const ambiantes = braises.filter(b => b.duree > 3).length;
-      if (ambiantes < voulues && Math.random() < dt * (4 + ambiance * 40)) braises.push(naitre(Math.random() * W, H + 10, 0, false));
+      if (ambiantes < voulues && Math.random() < dt * (1 + ambiance * 4)) braises.push(naitre(Math.random() * W, H + 10, 0, false));
       g.clearRect(0, 0, W, H);
       g.globalCompositeOperation = 'lighter';
       for (let i = braises.length - 1; i >= 0; i--) {
@@ -43,7 +43,7 @@ export function EmberField() {
         b.vx += (Math.sin(now / 900 + b.chaud * 9) * 14 - b.vx * .6) * dt;
         b.vy += (b.duree > 3 ? -6 : 60) * dt; // les gerbes retombent, les braises flottent
         b.x += b.vx * dt; b.y += b.vy * dt;
-        const p = b.vie / b.duree, alpha = Math.sin(Math.PI * Math.min(1, p)) * (b.duree > 3 ? .35 + ambiance * .45 : .95);
+        const p = b.vie / b.duree, alpha = Math.sin(Math.PI * Math.min(1, p)) * (b.duree > 3 ? .16 + ambiance * .18 : .7);
         const r = b.r * (1 + (1 - p) * .6);
         const c = b.chaud > .7 ? '255,224,160' : b.chaud > .3 ? '255,160,70' : '255,106,40';
         if (b.duree <= 3) {
@@ -64,7 +64,7 @@ export function EmberField() {
     const gerbe = (e: Event) => {
       if (enPause()) return;
       const { x, y, power } = (e as CustomEvent<EmberBurst>).detail;
-      const n = Math.round(18 + power * 70);
+      const n = Math.round(6 + power * 24);
       for (let i = 0; i < n && braises.length < 600; i++) braises.push(naitre(x + (Math.random() - .5) * 40, y, power, true));
       relancer();
     };

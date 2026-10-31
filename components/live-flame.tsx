@@ -32,22 +32,22 @@ export function LiveFlame({ level, pulse, pulsePower = .3, record = false, glory
     const s = state.current; s.target = level; s.gloryTarget = glory ? 1 : 0; s.paused = paused;
   });
 
-  // Poussée à chaque essai accepté ; un record lance aussi une gerbe d'étincelles.
+  // Poussée à chaque essai accepté.
   const dernierPulse = useRef(pulse);
   useEffect(() => {
     if (pulse == null || pulse === dernierPulse.current) return;
     dernierPulse.current = pulse;
     const s = state.current;
-    s.surge = Math.min(1, Math.max(s.surge, .25 + pulsePower * .75 + (record ? .25 : 0)));
-    const rect = canvas.current?.getBoundingClientRect();
-    if (rect && (record || pulsePower > .55)) emitEmberBurst({ x: rect.left + rect.width / 2, y: rect.top + rect.height * .62, power: record ? .6 + pulsePower * .4 : pulsePower * .5 });
+    // Une poussée discrète : la flamme se redresse un instant, sans gerbe d'étincelles.
+    s.surge = Math.min(.45, Math.max(s.surge, .08 + pulsePower * .25 + (record ? .1 : 0)));
   }, [pulse, pulsePower, record]);
+  // Seule une victoire qui vient d'être acceptée lâche quelques étincelles.
   // La gerbe de victoire ne part que pour une victoire qui vient d'être acceptée,
   // jamais pour une partie gagnée restaurée (rechargement, retour d'une autre surface).
   useEffect(() => {
     if (!celebrate || paused) return;
     const rect = canvas.current?.getBoundingClientRect();
-    if (rect) emitEmberBurst({ x: rect.left + rect.width / 2, y: rect.top + rect.height * .55, power: 1.4 });
+    if (rect) emitEmberBurst({ x: rect.left + rect.width / 2, y: rect.top + rect.height * .55, power: .5 });
   }, [celebrate, paused]);
 
   useEffect(() => {
