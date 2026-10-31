@@ -1,6 +1,14 @@
 # Registre d’amélioration BRAIZ
 
-État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-GitHub-2026-10-31`, situé deux niveaux au-dessus du dépôt : consolidation des sources dans GitHub main, avec l'historique Sites et les contributions GitHub conservés. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) avant toute nouvelle modification ou publication. Le dernier correctif produit reste documenté dans `BRAIZ-Heartbeat-2026-10-31-0037`. Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents. Vérifier la version active du Site existant avant toute nouvelle modification.
+État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-Publication-2026-10-31`, situé deux niveaux au-dessus du dépôt. Il documente la publication transitoire 61 et la sortie de Sites à préparer. `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+
+## Dernière publication et transition
+
+- Version 61 publiée sur demande explicite depuis GitHub `c280af6a197197d668a5336e96d6ae22c25f8601`, avec les PR 3 et 4 : flamme WebGL, braises et présentation Le Brasier. Aucune modification applicative ajoutée lors de la publication.
+- 578 tests réussis, aucun échec, trois cas de liens symboliques ignorés faute de privilèges Windows ; TypeScript et construction réussis. Garde GitHub réussie, archive et version enregistrées depuis le même commit.
+- Contrôle en production : rendu WebGL, nouveau menu, navigation en partie libre et acceptation d'un mot. Prévisualisation locale non validée en raison du runtime Cloudflare. Pas de nouvelle mesure de performance terrain ni de recette exhaustive mobile revendiquée.
+- L'utilisateur veut sortir de Sites. L'automatisation conserve les corrections dans GitHub et ne publie plus automatiquement via Sites. Compte Cloudflare du propriétaire à connecter, accès DNS et transfert cohérent D1/R2 à préparer. La version 61 demeure disponible ; aucune base, session, donnée de jeu ou configuration publicitaire déplacée.
+- Les consignes du dépôt sont alignées sur cette décision. Cette mise à jour documentaire n'est pas un nouveau déploiement ; les contrôles applicatifs précédents ne sont pas rejoués sans modification du produit.
 
 ## Dernier lot contrôlé
 

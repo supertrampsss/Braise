@@ -1,6 +1,7 @@
 # Braise
 
-- Dépôt de référence : https://github.com/supertrampsss/Braise, branche main. Avant de modifier, récupérer cette branche et intégrer ses changements sans écraser les contributions existantes. Sites sert à héberger et publier, jamais à conserver seul une nouvelle version du code.
+- Dépôt de référence : https://github.com/supertrampsss/Braise, branche main. Avant de modifier, récupérer cette branche et intégrer ses changements sans écraser les contributions existantes. Sites héberge encore la version transitoire, jamais la seule copie d'une nouvelle source.
+- Décision du 31 octobre 2026 : préparer la sortie d'OpenAI Sites, conformément à `docs/HOSTING-MIGRATION.md`. Plus de publication automatique Sites ; une nouvelle publication Sites exige une demande explicite de l'utilisateur. Tant que la nouvelle chaîne n'est pas prête, conserver les corrections vérifiées dans GitHub et les signaler comme non déployées. Préserver le Site existant et ses données jusqu'à validation de la migration.
 - Avant toute publication Sites, committer et pousser la source complète dans GitHub main, puis exécuter `node scripts/verify-github-source.mjs`. Le commit envoyé à Sites doit être exactement celui vérifié dans GitHub. Si la publication nécessite un nouveau commit, le reporter d'abord dans GitHub et revérifier. Ne pas forcer main ni publier si les sources divergent.
 - Langue produit : français. Garder le jeu immédiatement accessible, sans page marketing préalable.
 - Lire README.md et docs/ARCHITECTURE.md avant une modification du moteur.
