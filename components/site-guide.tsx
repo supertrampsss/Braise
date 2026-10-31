@@ -44,13 +44,13 @@ export function SiteGuide({ guide }: { guide: Guide }) {
   </div>;
 }
 
+/** Le pied de l'accueil : une phrase, une ligne de liens. Les guides restent au plan du site. */
 export function HomeGuide() {
-  return <section className="home-guide" aria-labelledby="home-guide-title">
-    <h2 id="home-guide-title">Un mot secret à trouver chaque jour</h2>
-    <p>BRAIZ est un jeu de mots gratuit en français : envoyez des propositions et cherchez le mot secret grâce à leur proximité de sens.</p>
-    <p>Le mot du jour est commun à tous. Pour continuer, lancez une <a href="/?mode=free">partie libre</a>, ouvrez les <a href="/?surface=archives">archives</a> ou invitez une personne en <a href="/duels">duel</a>.</p>
-    <GuideLinks /><JsonLd value={websiteSchema()} />
-  </section>;
+  return <footer className="home-guide" aria-label="À propos de BRAIZ">
+    <p>Un mot secret par jour, à trouver par le sens. Gratuit, en français.</p>
+    <nav aria-label="Liens du site"><a href="/comment-jouer">Règles</a><a href="/archives">Archives</a><a href="/duels">Duel</a><a href="/a-propos">À propos</a><a href="/confidentialite">Confidentialité</a></nav>
+    <JsonLd value={websiteSchema()} />
+  </footer>;
 }
 
 export function DuelGuide() {

@@ -14,7 +14,7 @@ function FlyingChip({flight,onEnd}:{flight:Flight;onEnd:(id:string)=>void}) {
       {opacity:1,transform:'translate(0,0) scale(1)',offset:.44},
       {opacity:1,transform:`translate(${flight.dx}px,${flight.dy}px)`,offset:.8},
       {opacity:0,transform:`translate(${flight.dx}px,${flight.dy}px)`,offset:1},
-    ],{duration:1400,easing:'cubic-bezier(.2,.65,.3,1)'});
+    ],{duration:800,easing:'cubic-bezier(.2,.65,.3,1)'});
     motion.onfinish=()=>onEnd(flight.id);
     return()=>motion.cancel();
   },[flight,onEnd]);
