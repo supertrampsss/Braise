@@ -1,17 +1,17 @@
 "use client";
 
 import { useRef, useState, type MouseEvent } from 'react';
-import { Menu } from 'lucide-react';
+import { CalendarDays, Flame, Infinity as InfinityIcon, Menu, Swords, UserRound, BookOpen } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 
 export type AppSurface = 'play' | 'explore' | 'profile';
 export type AppDestination = 'daily' | 'free' | 'archives' | 'duel' | 'profile';
 export const APP_NAVIGATION = [
-  { destination:'daily', href:'/', label:'Mot du jour' },
-  { destination:'free', href:'/?mode=free', label:'Partie libre' },
-  { destination:'archives', href:'/?surface=archives', label:'Archives' },
-  { destination:'duel', href:'/duels', label:'Duel' },
-  { destination:'profile', href:'/?surface=profile', label:'Profil' },
+  { destination:'daily', href:'/', label:'Mot du jour', detail:'Le même mot pour tous, jusqu’à minuit', Icon:Flame },
+  { destination:'free', href:'/?mode=free', label:'Partie libre', detail:'Un mot au hasard, sans limite', Icon:InfinityIcon },
+  { destination:'archives', href:'/?surface=archives', label:'Archives', detail:'Rejouer les jours passés', Icon:CalendarDays },
+  { destination:'duel', href:'/duels', label:'Duel', detail:'Trois mots contre un ami', Icon:Swords },
+  { destination:'profile', href:'/?surface=profile', label:'Profil', detail:'Votre progression et votre sauvegarde', Icon:UserRound },
 ] as const;
 
 export function navigationBackHref(href:string) {
@@ -39,10 +39,10 @@ export function AppNavigation({active='play',modeName,backHref='/',onNavigate,on
         if(navigationChosen.current) { event.preventDefault(); navigationChosen.current=false; }
       }}>
         <nav aria-label="Navigation principale"><DropdownMenuGroup>
-          {APP_NAVIGATION.map(item=><DropdownMenuItem key={item.destination} asChild><a href={item.href} aria-current={active===item.destination?'page':undefined} onClick={event=>choose(item.destination,event)}>{item.label}</a></DropdownMenuItem>)}
+          {APP_NAVIGATION.map(({destination,href,label,detail,Icon})=><DropdownMenuItem key={destination} asChild><a href={href} aria-current={active===destination?'page':undefined} onClick={event=>choose(destination,event)}><Icon className="menu-icon" size={20} aria-hidden="true"/><span className="menu-text" data-detail={detail}>{label}</span></a></DropdownMenuItem>)}
         </DropdownMenuGroup></nav>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Native navigation also serves the standalone Worker modes. */}
-        <DropdownMenuSeparator/>{onHelp ? <DropdownMenuItem onSelect={()=>{navigationChosen.current=true;setOpen(false);onHelp(trigger.current);}}>Règles</DropdownMenuItem> : <DropdownMenuItem asChild><a href="/?regles=1">Règles</a></DropdownMenuItem>}
+        <DropdownMenuSeparator/>{onHelp ? <DropdownMenuItem className="menu-rules" onSelect={()=>{navigationChosen.current=true;setOpen(false);onHelp(trigger.current);}}><BookOpen className="menu-icon" size={18} aria-hidden="true"/>Règles</DropdownMenuItem> : <DropdownMenuItem asChild className="menu-rules"><a href="/?regles=1"><BookOpen className="menu-icon" size={18} aria-hidden="true"/>Règles</a></DropdownMenuItem>}
       </DropdownMenuContent>
     </DropdownMenu></div>
   </header>;

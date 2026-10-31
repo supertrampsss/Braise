@@ -4,6 +4,15 @@ Version de test public : marque **BRAIZ**, domaine **braiz.io**. Voyage, Entre a
 
 Consulter ce contrat pour une modification visuelle. Les corrections explicites d’Antoine et ses maquettes choisies priment. Ce document décrit la direction actuelle ; il ne vaut pas validation visuelle du navigateur.
 
+## Le Brasier (31 octobre 2026, demande d’Antoine)
+
+La flamme doit être spectaculaire et le feu devient l’identité de tout le site. Ceci remplace la jauge « silhouette grise remplie » décrite plus bas.
+
+- `components/live-flame.tsx` + `lib/live-flame-shader.ts` : flamme procédurale WebGL. Sa hauteur et son intensité suivent la meilleure proximité acceptée (elle ne redescend jamais) ; chaque essai accepté la fait monter brièvement, proportionnellement à sa proximité ; un record lance une gerbe d’étincelles ; la victoire l’embrase. L’affiche SVG reste le rendu serveur, le repli sans WebGL et l’état en mouvement réduit.
+- `components/ember-field.tsx` : braises qui montent derrière tout le site ; leur nombre suit `--braiz-heat`, fixée par la flamme. Gerbes sur l’événement `braiz:burst`. Rien en mouvement réduit ni onglet masqué.
+- `app/brasier.css` (chargé en dernier) : nuit chaude réchauffée par `--braiz-heat`, pourcentage en dégradé de feu, bouton Envoyer en fusion, essais colorés par leur chaleur, menu en panneau avec description de chaque destination.
+- Les effets restent de la présentation : ils ne lisent que des réponses acceptées de la partie courante et n’écrivent rien dans les sauvegardes.
+
 ## Identité et hiérarchie
 
 Un fond encre, une vraie flamme large, une action principale. La flamme reste le centre expressif. Le texte, les réglages et les commandes restent sobres. Garder la famille Foyer choisie, avec une flamme plutôt qu’une pierre. Les autres concepts des planches ne sont pas des thèmes à mélanger.
