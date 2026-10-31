@@ -1,13 +1,20 @@
 # Registre d’amélioration BRAIZ
 
-État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-Publication-2026-10-31`, situé deux niveaux au-dessus du dépôt. Il documente la publication transitoire 61 et la sortie de Sites à préparer. `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-Publication-2026-10-31-8fa556f`, situé deux niveaux au-dessus du dépôt. Il documente la publication explicite de la version 62. `BRAIZ-Publication-2026-10-31` conserve la publication 61 et la préparation de sortie de Sites ; `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
 
 ## Dernière publication et transition
+
+- Version 62 publiée sur demande explicite depuis le commit exact `8fa556f80bf820a01b5883ec198d10738c3c0302`, avec les PR 5 et 6 : présentation plus discrète, flamme dessinée et haut de plateau compact. Aucun changement supplémentaire de source pendant la publication.
+- 78 tests ciblés réussis, aucun échec ni cas ignoré ; TypeScript, construction et garde GitHub réussis. Corpus V1 et 120 segments figés vérifiés par le build. Même source pour l'archive, la version enregistrée et le déploiement.
+- Contrôle en production : rendu drawn et canvas 2D présents, anciens canvas WebGL et braises absents, mot du jour chargé et saisie disponible. Capture et identifiants réels dans le dernier dossier privé. Aucun nouvel essai ajouté lors de ce contrôle ; pas de nouvelle mesure terrain ni de recette mobile exhaustive.
+- Le Site reste disponible en version 62. Cette demande explicite n'a pas réactivé les publications automatiques Sites. Migration d'hébergement, accès et transfert D1/R2 restent à préparer ; annonces inactives.
+
+## Publication précédente et décision d'hébergement
 
 - Version 61 publiée sur demande explicite depuis GitHub `c280af6a197197d668a5336e96d6ae22c25f8601`, avec les PR 3 et 4 : flamme WebGL, braises et présentation Le Brasier. Aucune modification applicative ajoutée lors de la publication.
 - 578 tests réussis, aucun échec, trois cas de liens symboliques ignorés faute de privilèges Windows ; TypeScript et construction réussis. Garde GitHub réussie, archive et version enregistrées depuis le même commit.
 - Contrôle en production : rendu WebGL, nouveau menu, navigation en partie libre et acceptation d'un mot. Prévisualisation locale non validée en raison du runtime Cloudflare. Pas de nouvelle mesure de performance terrain ni de recette exhaustive mobile revendiquée.
-- L'utilisateur veut sortir de Sites. L'automatisation conserve les corrections dans GitHub et ne publie plus automatiquement via Sites. Compte Cloudflare du propriétaire à connecter, accès DNS et transfert cohérent D1/R2 à préparer. La version 61 demeure disponible ; aucune base, session, donnée de jeu ou configuration publicitaire déplacée.
+- L'utilisateur veut sortir de Sites. L'automatisation conserve les corrections dans GitHub et ne publie plus automatiquement via Sites. Compte Cloudflare du propriétaire à connecter, accès DNS et transfert cohérent D1/R2 à préparer. Cette décision n'a déplacé aucune base, session, donnée de jeu ou configuration publicitaire.
 - Les consignes du dépôt sont alignées sur cette décision. Cette mise à jour documentaire n'est pas un nouveau déploiement ; les contrôles applicatifs précédents ne sont pas rejoués sans modification du produit.
 
 ## Dernier lot contrôlé
