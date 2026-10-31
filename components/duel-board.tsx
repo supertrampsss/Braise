@@ -33,7 +33,7 @@ export function DuelBoard({view,round,now,busy,word,paused,feedback,onWord,onRou
       <AcceptedGuessFlight key={view.id+':'+round} inputId="duel-word" paused={paused} receipt={live&&accepted?{id:view.id+':'+round+':'+live.ordinal,word:accepted.word,rank:accepted.rank,found:live.found}:null}/>
       <div className="game-topline"><span className="sr-only">Manche {round+1}</span><span className="game-trials">{current.guesses.length}/{DUEL_ATTEMPTS} essais</span></div>
       <p className="sr-only" role="status" aria-live="polite">{live?.announcement??''}</p>
-      {!current.won&&<ProximityMeter rank={current.best?.rank??null} vocabularySize={vocabularySize} solved={false} celebrating={false} paused={paused} revealMotion={Boolean(live?.improved)}/>}
+      {!current.won&&<ProximityMeter rank={current.best?.rank??null} vocabularySize={vocabularySize} solved={false} celebrating={false} paused={paused} revealMotion={Boolean(live?.improved)} bestWord={current.best?.word ?? null}/>}
       <div className="approved-play-surface">
         {!current.closed ? <div className="guess-area"><form className="guess-form" aria-busy={busy} onSubmit={onSubmit}>
           <label className="sr-only" htmlFor="duel-word">Mot</label><input id="duel-word" value={word} onChange={event=>onWord(event.target.value)} placeholder="Mot" maxLength={50} lang="fr" autoComplete="off" autoCapitalize="none" enterKeyHint="send" aria-describedby="duel-error"/>

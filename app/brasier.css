@@ -1,16 +1,14 @@
 /* BRAIZ · Le Brasier (31 octobre 2026).
-   Le feu est l'identité de tout le site : une nuit chaude, des braises qui montent derrière le
-   contenu (EmberField), une flamme vivante au centre du jeu (LiveFlame). `--braiz-heat` (0..1),
-   fixée par la flamme, réchauffe le fond quand on approche du mot. Chargé en dernier. */
+   Une nuit chaude et une flamme dessinée (DrawnFlame) : trois aplats nets, sans lueur ni
+   étincelles. Le haut du plateau est compact pour garder le meilleur mot et le dernier essai
+   visibles sans défiler. Chargé en dernier. */
 :root{--braiz-heat:0;--b-nuit:#0b0807;--b-nuit-2:#140d0a;--b-cendre:#a39a90;--b-ivoire:#f6efe6;--b-braise:#ff6a2b;--b-orange:#ff8f3c;--b-or:#ffc46b;--b-blanc:#fff3dc;
   --b-feu:linear-gradient(135deg,#ff4d1f 0%,#ff8f3c 45%,#ffc46b 100%);--b-ease:cubic-bezier(.2,.8,.2,1)}
 html{background:var(--b-nuit)}
 html body{background:
-  radial-gradient(120% 70% at 50% 108%,rgb(255 106 43 / calc(.05 + var(--braiz-heat) * .12)) 0%,transparent 60%),
+  radial-gradient(120% 70% at 50% 108%,#ff6a2b0f 0%,transparent 60%),
   radial-gradient(80% 50% at 50% -10%,#2a130b80 0%,transparent 70%),var(--b-nuit);
   background-attachment:fixed;color:var(--b-ivoire);min-height:100svh;transition:background .8s}
-.ember-field{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-html body>:not(.ember-field){position:relative;z-index:1}
 html[lang] .app-shell,html[lang] .foyer-interface,html[lang] .reference-friends{background:transparent!important}
 
 /* En-tête : la marque comme une braise, le menu comme un tison. */
@@ -38,16 +36,28 @@ html[lang] .game-panel{background:none!important;border:0!important;box-shadow:n
 html[lang] .game-topline{display:flex!important;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 0;font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--b-cendre)}
 html[lang] .game-topline .game-kicker{color:var(--b-or)}
 html[lang] .game-topline .edition,html[lang] .game-topline .daily-pill,html[lang] .game-topline .game-trials{border:1px solid #ffffff14;border-radius:999px;padding:6px 10px;background:#ffffff06}
-html[lang] .proximity-flame-slot{height:clamp(150px,24svh,240px);margin:4px auto 0;position:relative}
-html[lang] .proximity-flame-slot .foyer-scene{height:100%!important;mix-blend-mode:normal}
-html[lang] .foyer-scene[data-renderer=live-webgl]{isolation:isolate}
-html[lang] .proximity-meter .approved-flame,html[lang] .play-view .approved-flame{width:100%!important;max-width:none!important}
-html[lang] .live-flame{position:absolute;left:50%;top:0;width:min(420px,100%);height:100%;transform:translateX(-50%);display:block;opacity:.82}
-html[lang] .proximity-percentage{margin:0 0 14px!important;font:700 clamp(38px,9vw,52px)/1 system-ui,-apple-system,"Segoe UI",sans-serif!important;letter-spacing:-.05em;background:var(--b-feu);-webkit-background-clip:text;background-clip:text;color:transparent!important;filter:drop-shadow(0 4px 24px #ff6a2b55);font-variant-numeric:tabular-nums}
+/* En-tête compact : flamme | pourcentage et meilleur mot, puis la jauge. */
+html[lang] .proximity-meter{margin-top:12px!important}
+html[lang] .proximity-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:18px;margin-bottom:14px}
+html[lang] .proximity-flame-slot{width:72px!important;height:92px!important;margin:0!important;position:relative!important;display:block!important}
+html[lang] .proximity-flame-slot .proximity-flame{position:absolute!important;inset:0!important;left:0!important;bottom:auto!important;width:100%!important;height:100%!important;transform:none!important;margin:0!important;mix-blend-mode:normal!important;overflow:visible}
+html[lang] .proximity-flame::before,html[lang] .proximity-flame::after{display:none!important}
+html[lang] .drawn-flame{display:block;width:100%;height:100%}
+html[lang] .victory-box .proximity-flame,html[lang] .duel-round-result .proximity-flame,html[lang] .is-won .foyer-scene{width:96px!important;height:124px!important;margin:0 auto 10px!important;position:relative!important;left:auto!important;transform:none!important}
+html[lang] .proximity-figures{display:flex;flex-direction:column;gap:6px;min-width:0}
+html[lang] .proximity-best{font:500 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--b-cendre);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[lang] .proximity-best b{font:650 17px system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:0;text-transform:none;color:var(--b-ivoire);margin:0 4px}
+html[lang] .proximity-best em{font-style:normal;color:var(--b-or);letter-spacing:.04em}
+html[lang] .proximity-percentage{margin:0!important;text-align:left!important;font:700 clamp(36px,7vw,46px)/1 system-ui,-apple-system,"Segoe UI",sans-serif!important;letter-spacing:-.05em;background:var(--b-feu);-webkit-background-clip:text;background-clip:text;color:transparent!important;filter:drop-shadow(0 4px 24px #ff6a2b55);font-variant-numeric:tabular-nums}
 html[lang] .proximity-interface .proximity-track,html[lang] .proximity-track{height:10px!important;border-radius:999px!important;background:#ffffff10!important;mask-image:none!important;box-shadow:inset 0 0 0 1px #ffffff0d}
 html[lang] .proximity-track>i{border-radius:999px;background:linear-gradient(90deg,#c2381a,#ff6a2b 40%,#ff9a45 70%,#ffd27d)!important;box-shadow:none}
-html[lang] .proximity-milestones{color:var(--b-cendre)!important;font-size:11px!important;letter-spacing:0}
-html[lang] .game-panel.is-record .proximity-percentage{animation:record-chaleur .8s var(--b-ease)}
+html[lang] .proximity-milestones{color:var(--b-cendre)!important;font-size:11px!important;letter-spacing:0;height:30px!important;margin-top:6px!important}
+/* Le dernier essai, juste sous le champ : son numéro, le mot, son rang. */
+html[lang] .last-guess{display:flex;align-items:baseline;gap:10px;margin:10px 4px 0;font-size:15px}
+html[lang] .last-guess span{font:500 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--b-cendre)}
+html[lang] .last-guess b{font-weight:650;color:var(--b-ivoire)}
+html[lang] .last-guess em{font-style:normal;margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;color:var(--row-color)}
+html[lang] .game-panel.is-record .proximity-percentage{animation:record-chaleur .8s var(--b-ease);transform-origin:left center}
 @keyframes record-chaleur{0%{transform:scale(1)}35%{transform:scale(1.04)}100%{transform:scale(1)}}
 
 /* Saisie : un champ sombre qui s'embrase au focus, un bouton en fusion. */
@@ -80,7 +90,6 @@ html[lang] .is-new-guess{animation:essai-arrive .5s var(--b-ease) both}
 /* Victoire : le mot sort du feu. */
 html[lang] .victory-box h2{font:900 clamp(40px,11vw,76px)/1 system-ui,-apple-system,"Segoe UI",sans-serif!important;letter-spacing:.02em!important;text-transform:uppercase;background:var(--b-feu);-webkit-background-clip:text;background-clip:text;color:transparent!important;filter:drop-shadow(0 0 30px #ff6a2b88)}
 html[lang] .victory-eyebrow{color:var(--b-or)!important;font:600 13px ui-monospace,Menlo,monospace!important;letter-spacing:.3em!important;text-transform:uppercase}
-html[lang] .is-won .foyer-scene{height:clamp(280px,44svh,460px)!important}
 html[lang] .primary-button{background:var(--b-feu)!important;color:#1d0b04!important;font-weight:800!important;border-radius:16px!important;box-shadow:none!important}
 html[lang] .secondary-button{color:var(--b-ivoire)!important}
 
@@ -99,7 +108,8 @@ html[lang] .home-guide a:hover{color:var(--b-ivoire)}
 
 @media (max-width:520px){
   html[lang] .braiz-navigation{padding:14px 16px}
-  html[lang] .proximity-flame-slot{height:clamp(140px,22svh,200px)}
+  html[lang] .proximity-flame-slot{width:60px!important;height:76px!important}
+  html[lang] .proximity-head{gap:14px;margin-bottom:10px}
   html[lang] .guess-button{min-width:92px}
 }
 @media (prefers-reduced-motion:reduce){

@@ -78,7 +78,7 @@ test('automatic refresh updates accepted facts without clearing the field or rep
  t.mock.timers.enable({apis:['setInterval','setTimeout']});browser();let data={...base};const calls=mockApi(()=>data);const tree=await mount();try{
   await act(async()=>tree.root.findByProps({id:'duel-word'}).props.onChange({target:{value:'institut'}}));
   data={...base,guesses:[...base.guesses,{round:0,word:'route',ordinal:2,rank:50,temperature:1,found:0}]};
-  await act(async()=>t.mock.timers.tick(8000));assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'institut');assert(text(tree.root).includes('route'));assert.equal(calls.filter(c=>c.body).length,0);assert.equal(tree.root.findByProps({'data-renderer':'fillable-svg'}).props['data-reveal-motion'],false);
+  await act(async()=>t.mock.timers.tick(8000));assert.equal(tree.root.findByProps({id:'duel-word'}).props.value,'institut');assert(text(tree.root).includes('route'));assert.equal(calls.filter(c=>c.body).length,0);assert.equal(tree.root.findByProps({'data-renderer':'drawn'}).props['data-reveal-motion'],false);
   Object.assign(document,{hidden:true});const before=calls.length;await act(async()=>t.mock.timers.tick(16000));assert.equal(calls.length,before);
  }finally{await act(async()=>tree.unmount());t.mock.timers.reset();}
 });
