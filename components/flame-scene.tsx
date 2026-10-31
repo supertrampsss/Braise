@@ -44,7 +44,7 @@ export default function FlameScene({level:proximity,rank,celebrating,paused,solv
   const animate=motionAllowed&&visible&&!paused;
   return <div ref={host} className="foyer-scene approved-flame proximity-flame" role="img" aria-label={solved?'Mot trouvé':rank===null?'Proximité : aucun essai':`Proximité : ${formatRankFr(rank)}`}
     data-paused={paused} data-visible={visible} data-solved={solved} data-reveal-motion={revealMotion} data-celebrating={celebrating&&solved} data-renderer={vivante?'live-webgl':'fillable-svg'} style={{'--flame-level':level} as CSSProperties}>
-    {vivante&&<LiveFlame level={level} pulse={pulse} pulsePower={pulsePower} record={record} glory={solved} paused={paused} onUnsupported={()=>setEchec(true)}/>}
+    {vivante&&<LiveFlame level={level} pulse={pulse} pulsePower={pulsePower} record={record} glory={solved} celebrate={celebrating&&solved} paused={paused} onUnsupported={()=>setEchec(true)}/>}
     {!vivante&&<svg className="fillable-flame" viewBox="0 0 180 240" aria-hidden="true">
       <defs>
         <filter id={id+'-heat'} x="-10%" y="-10%" width="120%" height="120%" colorInterpolationFilters="sRGB">

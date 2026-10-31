@@ -19,6 +19,8 @@ export function EmberField() {
     const braises: Braise[] = [];
     const dpr = Math.min(1.5, devicePixelRatio || 1);
     const taille = () => { W = innerWidth; H = innerHeight; el.width = W * dpr; el.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); };
+    // Le réglage « Animations en pause » du profil vaut aussi pour les braises.
+    const enPause = () => reduit.matches || document.hidden || Boolean(document.querySelector('.motion-paused'));
     const chaleur = () => Number(document.documentElement.dataset.heat ?? 0) || 0;
     const naitre = (x: number, y: number, force: number, gerbe: boolean): Braise => {
       const a = gerbe ? -Math.PI / 2 + (Math.random() - .5) * 1.9 : -Math.PI / 2 + (Math.random() - .5) * .5;
@@ -56,20 +58,21 @@ export function EmberField() {
         }
       }
       g.globalCompositeOperation = 'source-over';
-      if (!document.hidden && !reduit.matches) raf = requestAnimationFrame(image);
+      if (!enPause()) raf = requestAnimationFrame(image); else { g.clearRect(0, 0, W, H); braises.length = 0; }
     };
-    const relancer = () => { if (reduit.matches || document.hidden) { cancelAnimationFrame(raf); raf = 0; g.clearRect(0, 0, W, H); braises.length = 0; return; } if (!raf) { last = performance.now(); raf = requestAnimationFrame(image); } };
+    const relancer = () => { if (enPause()) { cancelAnimationFrame(raf); raf = 0; g.clearRect(0, 0, W, H); braises.length = 0; return; } if (!raf) { last = performance.now(); raf = requestAnimationFrame(image); } };
     const gerbe = (e: Event) => {
-      if (reduit.matches) return;
+      if (enPause()) return;
       const { x, y, power } = (e as CustomEvent<EmberBurst>).detail;
       const n = Math.round(18 + power * 70);
       for (let i = 0; i < n && braises.length < 600; i++) braises.push(naitre(x + (Math.random() - .5) * 40, y, power, true));
       relancer();
     };
     taille(); relancer();
+    const veille = setInterval(() => { if (!raf) relancer(); }, 1000);
     addEventListener('resize', taille); document.addEventListener('visibilitychange', relancer); reduit.addEventListener('change', relancer);
     addEventListener('braiz:burst', gerbe);
-    return () => { cancelAnimationFrame(raf); removeEventListener('resize', taille); document.removeEventListener('visibilitychange', relancer); reduit.removeEventListener('change', relancer); removeEventListener('braiz:burst', gerbe); };
+    return () => { clearInterval(veille); cancelAnimationFrame(raf); removeEventListener('resize', taille); document.removeEventListener('visibilitychange', relancer); reduit.removeEventListener('change', relancer); removeEventListener('braiz:burst', gerbe); };
   }, []);
   return <canvas ref={canvas} className="ember-field" aria-hidden="true" />;
 }

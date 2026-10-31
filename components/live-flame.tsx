@@ -20,8 +20,8 @@ export function setAmbientHeat(heat: number) {
  * `pulse` (identifiant d'un essai accepté) provoque une poussée proportionnelle à `pulsePower`.
  * Renvoie false via `onUnsupported` quand WebGL manque : l'appelant garde son repli.
  */
-export function LiveFlame({ level, pulse, pulsePower = .3, record = false, glory = false, paused, onUnsupported }: {
-  level: number; pulse?: string | number | null; pulsePower?: number; record?: boolean; glory?: boolean;
+export function LiveFlame({ level, pulse, pulsePower = .3, record = false, glory = false, celebrate = false, paused, onUnsupported }: {
+  level: number; pulse?: string | number | null; pulsePower?: number; record?: boolean; glory?: boolean; celebrate?: boolean;
   paused: boolean; onUnsupported?: () => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -42,11 +42,13 @@ export function LiveFlame({ level, pulse, pulsePower = .3, record = false, glory
     const rect = canvas.current?.getBoundingClientRect();
     if (rect && (record || pulsePower > .55)) emitEmberBurst({ x: rect.left + rect.width / 2, y: rect.top + rect.height * .62, power: record ? .6 + pulsePower * .4 : pulsePower * .5 });
   }, [pulse, pulsePower, record]);
+  // La gerbe de victoire ne part que pour une victoire qui vient d'être acceptée,
+  // jamais pour une partie gagnée restaurée (rechargement, retour d'une autre surface).
   useEffect(() => {
-    if (!glory) return;
+    if (!celebrate || paused) return;
     const rect = canvas.current?.getBoundingClientRect();
     if (rect) emitEmberBurst({ x: rect.left + rect.width / 2, y: rect.top + rect.height * .55, power: 1.4 });
-  }, [glory]);
+  }, [celebrate, paused]);
 
   useEffect(() => {
     const el = canvas.current; if (!el) return;
