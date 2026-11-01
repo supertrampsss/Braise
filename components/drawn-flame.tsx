@@ -11,7 +11,7 @@ const COULEURS = ['#e2441c', '#ff8a2e', '#ffd58a'] as const;
 
 export function dessinerFlamme(g: CanvasRenderingContext2D, w: number, h: number, t: number, niveau: number, souffle: number) {
   const c = Math.max(0, Math.min(1, niveau));
-  const cx = w / 2, base = h * .96, H = h * (.4 + c * .55) * (1 + souffle * .1), L = Math.min(w * .42, h * (.2 + c * .1));
+  const cx = w / 2, base = h * .96, H = h * (.78 + c * .18) * (1 + souffle * .04), L = Math.min(w * .42, h * (.2 + c * .1));
   const forme = (k: number, couleur: string, dec: number) => {
     const hh = H * k, ll = L * k, o = Math.sin(t * 1.2 + dec) * ll * .18, o2 = Math.sin(t * 1.7 + dec + 1) * ll * .14;
     g.beginPath(); g.moveTo(cx - ll, base - hh * .18);
