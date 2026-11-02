@@ -1,22 +1,35 @@
 # Registre d’amélioration BRAIZ
 
-État du 2 novembre 2026. Le dernier dossier privé est `BRAIZ-Favicon-2026-11-02`, situé deux niveaux au-dessus du dépôt. Il documente la nouvelle icône et le push incluant la PR 7, sans publication. `BRAIZ-Review-2026-11-02-c840252` conserve les vérifications de la PR 7. `BRAIZ-Publication-2026-10-31-8fa556f` conserve la publication explicite de la version 62. `BRAIZ-Publication-2026-10-31` conserve la publication 61 et la préparation de sortie de Sites ; `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+État du 2 novembre 2026. Le dernier dossier privé est `BRAIZ-Correction-Pourcentage-2026-11-02`, situé deux niveaux au-dessus du dépôt. Il documente la correction du pourcentage coupé, ses captures et son résultat de publication. `BRAIZ-Publication-2026-11-02-4ee9a90` conserve la publication explicite de la version 63, avec PR 7 et favicon ; `BRAIZ-Favicon-2026-11-02` et `BRAIZ-Review-2026-11-02-c840252` en conservent la préparation. Les livraisons précédentes restent conservées. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md).
 
-## Icône du navigateur, non publiée
+## Pourcentage tronqué : correction
+
+- Défaut signalé par l'utilisateur après publication 63 et reproduit avec le composant réel : la hauteur de ligne de 0,8 limitait la zone du dégradé et coupait le bas des glyphes. Elle passe à 1,1, sans changer la taille de police ni les calculs de proximité.
+- Contrôle local isolé avec le composant et les feuilles construites : chiffres et pourcentage complets sur ordinateur, à 390 et à 320 pixels CSS ; 16 % et 94 % restent sur une ligne et séparés de la flamme à 320 pixels. Captures et mesures dans le dossier privé. Ces valeurs sont des fixtures locales, aucune partie réelle n'a été modifiée.
+- TypeScript et construction réussis. Aucune suite de jeu répétée pour ce changement CSS, aucun score, rang, lecteur ou stockage modifié. La correction s'applique au composant partagé des plateaux et des duels.
+- Publication manuelle dans la continuité de la demande utilisateur ; source complète poussée dans GitHub avant Sites. Commit, version et résultat réels consignés dans le dossier privé. Les publications automatiques Sites restent désactivées.
+
+## Publication 63
+
+- Commit exact `4ee9a905b3130e761301abdb290f9a475abb07f7`, version 63 publiée avec succès sur le Site existant et braiz.io à la demande explicite de l'utilisateur.
+- PR 7 observée en production : pourcentage à gauche, flamme dessinée à droite, ligne Meilleur absente. Favicon SVG, PNG 48, Apple Touch et manifeste servis en HTTP 200 avec des octets identiques aux fichiers vérifiés. Aucune partie ni donnée privée modifiée.
+- Le contrôle initial n'avait pas identifié la coupure du bas des chiffres, signalée ensuite par l'utilisateur et traitée dans le lot ci-dessus.
+
+## Préparation de l'icône, publiée ensuite en version 63
 
 - Demande utilisateur clarifiée : repousser la PR 7 et actualiser le favicon. La PR 7 est déjà dans main ; sa branche contient le même code applicatif. Aucune contribution n'a été écrasée ni fusion artificielle créée.
 - Le favicon reprend désormais les trois aplats et les courbes de la flamme dessinée du jeu. Versions SVG, PNG 48/192/512, Apple Touch et maskable régénérées. Les liens du manifeste et des métadonnées portent une nouvelle version de cache ; l'identité de l'application installée est conservée.
 - Dimensions et rendu de l'icône vérifiés, TypeScript et construction réussis. Les 78 tests de la PR 7 avaient déjà réussi lors du contrôle précédent ; aucune suite de jeu répétée pour ce seul changement d'icônes.
-- Source poussée et garde GitHub exécutée, identifiant final dans le dossier privé. Aucun déploiement Sites effectué : cette icône et la PR 7 attendent encore une mise en ligne. Aucun changement des parties, scores, données privées ou publicités.
+- Source poussée et garde GitHub exécutée, identifiant final dans le dossier privé. La publication séparée a ensuite livré cette icône et la PR 7 en version 63. Aucun changement des parties, scores, données privées ou publicités.
 
-## Contribution intégrée, non publiée
+## Préparation de la PR 7, publiée ensuite en version 63
 
 - PR 7 déjà fusionnée dans GitHub main : `c84025218fe812693e175f769025b486f1d846c3`. Les deux copies locales ont été avancées sans réécriture d'historique. Pourcentage à gauche, flamme à droite et retrait du meilleur mot répété dans l'en-tête, sur le plateau et les duels.
 - 78 tests ciblés réussis, aucun échec ni cas ignoré ; TypeScript, construction et garde GitHub réussis. Les modifications portent sur cinq fichiers de présentation ; aucun moteur, score, rang ou lecteur historique modifié.
 - Aucun défaut confirmé nécessitant une correction supplémentaire pendant cette revue. Pas de nouvelle recette visuelle ou mobile indépendante, ni de mesure de performance terrain. Les captures mentionnées dans la PR ne sont pas des preuves produites pendant ce contrôle.
-- Aucune publication Sites demandée par « push merge » : cette contribution reste non déployée par ce chat. Dernière production documentée : version 62, source `8fa556f80bf820a01b5883ec198d10738c3c0302`. Les accès et le transfert D1/R2 nécessaires à la migration restent à préparer ; annonces inactives.
+- La demande « push merge » n'avait pas publié cette contribution. La demande explicite suivante a conduit à la version 63. Les accès et le transfert D1/R2 nécessaires à la migration restent à préparer ; annonces inactives.
 
-## Dernière publication et transition
+## Publication 62 et transition
 
 - Version 62 publiée sur demande explicite depuis le commit exact `8fa556f80bf820a01b5883ec198d10738c3c0302`, avec les PR 5 et 6 : présentation plus discrète, flamme dessinée et haut de plateau compact. Aucun changement supplémentaire de source pendant la publication.
 - 78 tests ciblés réussis, aucun échec ni cas ignoré ; TypeScript, construction et garde GitHub réussis. Corpus V1 et 120 segments figés vérifiés par le build. Même source pour l'archive, la version enregistrée et le déploiement.
