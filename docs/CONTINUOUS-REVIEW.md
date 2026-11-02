@@ -1,6 +1,13 @@
 # Registre d’amélioration BRAIZ
 
-État du 31 octobre 2026. Le dernier dossier privé est `BRAIZ-Publication-2026-10-31-8fa556f`, situé deux niveaux au-dessus du dépôt. Il documente la publication explicite de la version 62. `BRAIZ-Publication-2026-10-31` conserve la publication 61 et la préparation de sortie de Sites ; `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+État du 2 novembre 2026. Le dernier dossier privé est `BRAIZ-Review-2026-11-02-c840252`, situé deux niveaux au-dessus du dépôt. Il documente la récupération et la vérification de la PR 7, sans publication. `BRAIZ-Publication-2026-10-31-8fa556f` conserve la publication explicite de la version 62. `BRAIZ-Publication-2026-10-31` conserve la publication 61 et la préparation de sortie de Sites ; `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+
+## Contribution intégrée, non publiée
+
+- PR 7 déjà fusionnée dans GitHub main : `c84025218fe812693e175f769025b486f1d846c3`. Les deux copies locales ont été avancées sans réécriture d'historique. Pourcentage à gauche, flamme à droite et retrait du meilleur mot répété dans l'en-tête, sur le plateau et les duels.
+- 78 tests ciblés réussis, aucun échec ni cas ignoré ; TypeScript, construction et garde GitHub réussis. Les modifications portent sur cinq fichiers de présentation ; aucun moteur, score, rang ou lecteur historique modifié.
+- Aucun défaut confirmé nécessitant une correction supplémentaire pendant cette revue. Pas de nouvelle recette visuelle ou mobile indépendante, ni de mesure de performance terrain. Les captures mentionnées dans la PR ne sont pas des preuves produites pendant ce contrôle.
+- Aucune publication Sites demandée par « push merge » : cette contribution reste non déployée par ce chat. Dernière production documentée : version 62, source `8fa556f80bf820a01b5883ec198d10738c3c0302`. Les accès et le transfert D1/R2 nécessaires à la migration restent à préparer ; annonces inactives.
 
 ## Dernière publication et transition
 
