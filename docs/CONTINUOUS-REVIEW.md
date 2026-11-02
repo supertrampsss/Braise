@@ -1,6 +1,13 @@
 # Registre d’amélioration BRAIZ
 
-État du 2 novembre 2026. Le dernier dossier privé est `BRAIZ-Review-2026-11-02-c840252`, situé deux niveaux au-dessus du dépôt. Il documente la récupération et la vérification de la PR 7, sans publication. `BRAIZ-Publication-2026-10-31-8fa556f` conserve la publication explicite de la version 62. `BRAIZ-Publication-2026-10-31` conserve la publication 61 et la préparation de sortie de Sites ; `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+État du 2 novembre 2026. Le dernier dossier privé est `BRAIZ-Favicon-2026-11-02`, situé deux niveaux au-dessus du dépôt. Il documente la nouvelle icône et le push incluant la PR 7, sans publication. `BRAIZ-Review-2026-11-02-c840252` conserve les vérifications de la PR 7. `BRAIZ-Publication-2026-10-31-8fa556f` conserve la publication explicite de la version 62. `BRAIZ-Publication-2026-10-31` conserve la publication 61 et la préparation de sortie de Sites ; `BRAIZ-GitHub-2026-10-31` conserve les preuves de consolidation des deux historiques. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md). Les dossiers `BRAIZ-SEO-2026-10-30` et `BRAIZ-Qualification-2026-10-29` conservent les contrôles SEO et Google/AdSense précédents.
+
+## Icône du navigateur, non publiée
+
+- Demande utilisateur clarifiée : repousser la PR 7 et actualiser le favicon. La PR 7 est déjà dans main ; sa branche contient le même code applicatif. Aucune contribution n'a été écrasée ni fusion artificielle créée.
+- Le favicon reprend désormais les trois aplats et les courbes de la flamme dessinée du jeu. Versions SVG, PNG 48/192/512, Apple Touch et maskable régénérées. Les liens du manifeste et des métadonnées portent une nouvelle version de cache ; l'identité de l'application installée est conservée.
+- Dimensions et rendu de l'icône vérifiés, TypeScript et construction réussis. Les 78 tests de la PR 7 avaient déjà réussi lors du contrôle précédent ; aucune suite de jeu répétée pour ce seul changement d'icônes.
+- Source poussée et garde GitHub exécutée, identifiant final dans le dossier privé. Aucun déploiement Sites effectué : cette icône et la PR 7 attendent encore une mise en ligne. Aucun changement des parties, scores, données privées ou publicités.
 
 ## Contribution intégrée, non publiée
 

@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 const source=await readFile(new URL('../public/favicon.svg',import.meta.url));
 const output=new URL('../public/icons/',import.meta.url);
 await mkdir(output,{recursive:true});
-for(const size of [192,512]){
+for(const size of [48,192,512]){
   await sharp(source).resize(size,size).flatten({background:'#151718'}).png().toFile(fileURLToPath(new URL(`icon-${size}.png`,output)));
 }
 for(const [name,size,inset] of [['maskable-512.png',512,64],['apple-touch-icon.png',180,8]]){
