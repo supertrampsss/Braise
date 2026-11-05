@@ -7,7 +7,7 @@
 - Défaut signalé par l'utilisateur après publication 63 et reproduit avec le composant réel : la hauteur de ligne de 0,8 limitait la zone du dégradé et coupait le bas des glyphes. Elle passe à 1,1, sans changer la taille de police ni les calculs de proximité.
 - Contrôle local isolé avec le composant et les feuilles construites : chiffres et pourcentage complets sur ordinateur, à 390 et à 320 pixels CSS ; 16 % et 94 % restent sur une ligne et séparés de la flamme à 320 pixels. Captures et mesures dans le dossier privé. Ces valeurs sont des fixtures locales, aucune partie réelle n'a été modifiée.
 - TypeScript et construction réussis. Aucune suite de jeu répétée pour ce changement CSS, aucun score, rang, lecteur ou stockage modifié. La correction s'applique au composant partagé des plateaux et des duels.
-- Publication manuelle dans la continuité de la demande utilisateur ; source complète poussée dans GitHub avant Sites. Commit, version et résultat réels consignés dans le dossier privé. Les publications automatiques Sites restent désactivées.
+- Version 64 publiée sur braiz.io depuis `27a04d34fb44565cde89f67ae2cc08945273b9d5`, sur demande de l’utilisateur. Déploiement réussi et affichage vérifié ; preuves dans le dossier privé.
 
 ## Publication 63
 
@@ -127,6 +127,8 @@
 
 ## Règle de boucle
 
-Une observation concrète, une correction bornée, les contrôles nécessaires, une vérification visuelle si l’interface change, puis publication sur le même Site. Garder les parties et lecteurs historiques. Ne pas fabriquer de trafic, d’avis, de rangs ou de mesures. N’ajouter ni texte marketing ni animation sans besoin observé.
+Pour chaque défaut constaté, vérifier la correction, y compris à l’écran si l’interface change. Pousser le commit dans GitHub `main`, puis exécuter `node scripts/verify-github-source.mjs`. Tant que la chaîne de déploiement du propriétaire n’est pas prête, consigner le lot comme non déployé. Publier sur Sites uniquement sur demande explicite de l’utilisateur, selon la [procédure de publication](SOURCE-OF-TRUTH.md).
+
+Garder les parties et lecteurs historiques. Ne pas fabriquer de trafic, d’avis, de rangs ou de mesures. N’ajouter ni texte marketing ni animation sans besoin observé.
 
 Ne pas répéter une campagne complète de tests sans changement ou doute nouveau. Ne pas supprimer des outils CLI, lecteurs historiques ou imports dynamiques sur la seule base d’un graphe TypeScript. Ne pas transformer une liste d’exports candidats en suppression automatique. Mettre à jour ce registre lorsqu’un nouveau problème confirmé est traité.
