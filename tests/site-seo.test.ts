@@ -4,7 +4,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Faq, JsonLd, SiteGuide, DuelGuide } from '../components/site-guide';
 import { GUIDES, DUEL_GUIDE } from '../lib/site-content';
-import { PRIVATE_METADATA, publicMetadata } from '../lib/site-seo';
+import { guideMetadata, PRIVATE_METADATA, publicMetadata } from '../lib/site-seo';
 import { PUBLIC_ORIGIN } from '../lib/release';
 
 function schemas(html: string) {
@@ -78,4 +78,31 @@ test('public metadata remains indexable, unique and canonical while private spac
     assert.equal(metadata.alternates?.canonical, guide.path);
   }
   assert.deepEqual(PRIVATE_METADATA.robots, { index: false, follow: true });
+});
+
+test('guide titles identify BRAIZ once while retaining canonical and social metadata', () => {
+  for (const guide of GUIDES) {
+    const metadata = guideMetadata(guide);
+    assert.equal((String(metadata.title).match(/\bBRAIZ\b/gi) ?? []).length, 1, guide.path);
+    assert.equal(metadata.openGraph?.title, metadata.title);
+    assert.equal(metadata.twitter?.title, metadata.title);
+    assert.equal(metadata.alternates?.canonical, guide.path);
+  }
+});
+
+test('the rules render a complete start path and contextual links without JavaScript or invented scores', () => {
+  const guide = GUIDES.find(item => item.path === '/comment-jouer')!;
+  const html = renderToStaticMarkup(createElement(SiteGuide, { guide }));
+  const quickStart = html.match(/<section class="guide-start"[\s\S]*?<\/section>/)?.[0] ?? '';
+  assert.equal((quickStart.match(/<li>/g) ?? []).length, 3);
+  assert.match(html, /class="guide-breadcrumb"[^>]*><a[^>]*href="\/"[^>]*>BRAIZ<\/a>/);
+  assert.match(quickStart, /Le rang 1 correspond au mot secret/);
+  assert.match(html, /Ce n’est ni une probabilité de gagner ni la proportion de mots éliminés/);
+  assert.match(html, /Dernier|dernier essai/);
+  for (const path of ['/proximite', '/partie-libre', '/archives', '/duels']) {
+    assert.ok(guide.sections.some(section => section.links?.some(link => link.href === path)), path);
+    assert.ok(html.includes(`href="${path}"`));
+  }
+  assert.equal((html.match(/class="guide-action" href="\/"/g) ?? []).length, 2);
+  assert.equal(schemas(html).some(value => value['@type'] === 'HowTo'), false);
 });

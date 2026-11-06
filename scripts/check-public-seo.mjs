@@ -4,9 +4,10 @@ import { writeFile } from 'node:fs/promises';
 const origin=process.argv[2]??'http://127.0.0.1:5186';
 const canonicalOrigin='https://braiz.io';
 const paths=['/','/jeu-de-mots-semantique','/comment-jouer','/proximite','/partie-libre','/archives','/duels','/a-propos','/confidentialite'];
-const privatePaths=['/studio','/streamer','/laboratoire','/laboratoire/deux-braises','/cercles','/integration','/espace','/embed','/entrainement'];
+const privatePaths=['/studio','/streamer','/laboratoire','/laboratoire/deux-braises','/cercles','/integration','/espace','/embed','/entrainement','/observatoire'];
 const titles=new Set();
-const report={origin,checkedAt:new Date().toISOString(),pages:[],files:[],privatePages:[],notFound:null};
+const report={origin,checkedAt:new Date().toISOString(),pages:[],files:[],privatePages:[],discovery:{},notFound:null};
+const links=new Map();
 function attributes(tag) {return Object.fromEntries([...tag.matchAll(/([:\w-]+)=["']([^"']*)["']/g)].map(match=>[match[1],match[2]]));}
 function metas(html) {return [...html.matchAll(/<meta\b[^>]*>/g)].map(match=>attributes(match[0]));}
 async function fetchChecked(path) {
@@ -33,8 +34,11 @@ for(const path of paths) {
   const schemas=[...body.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(match=>JSON.parse(match[1]));
   assert(schemas.length>0,path+' JSON-LD');
   assert.equal((body.match(/<h1\b/g)??[]).length,1,path+' H1 count');
+  const document=body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
+  const targets=[...document.matchAll(/<a\b[^>]*>/g)].map(match=>attributes(match[0]).href).filter(Boolean)
+    .map(href=>new URL(href,canonicalOrigin+path)).filter(url=>url.origin===canonicalOrigin&&paths.includes(url.pathname)).map(url=>url.pathname);
+  links.set(path,[...new Set(targets)]);
   if(path==='/') {
-    for(const linked of paths.filter(item=>item!=='/')) assert(body.includes('href="'+linked+'"'),linked+' crawlable from home');
     assert(schemas.some(schema=>schema['@type']==='WebSite'));
     assert(schemas.some(schema=>schema['@type']==='WebApplication'));
   } else {
@@ -43,6 +47,14 @@ for(const path of paths) {
   }
   report.pages.push({path,status:response.status,title,canonical:canonical[0].href,schemas:schemas.map(schema=>schema['@type'])});
 }
+// Follow real server-rendered links: a guide can be discovered through the rules
+// page without expanding the deliberately compact game footer.
+const discovered=new Map([['/',0]]),pending=['/'];
+for(const path of pending)for(const target of links.get(path)??[])if(!discovered.has(target)){
+  discovered.set(target,discovered.get(path)+1);pending.push(target);
+}
+for(const path of paths)assert(discovered.has(path),path+' discoverable through public HTML links');
+report.discovery=Object.fromEntries(discovered);
 const sitemap=(await fetchChecked('/sitemap.xml')).body;
 const locations=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]).sort();
 assert.deepEqual(locations,paths.map(path=>canonicalOrigin+path).sort(),'sitemap public coverage');
