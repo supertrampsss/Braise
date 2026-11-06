@@ -25,6 +25,10 @@
 .duel-interface .duel-identity { max-width:520px; margin:24px auto; }
 .duel-identity-link { display:inline-block; padding:12px 0 0; color:#c9cbd2; font-size:13px; }
 .duel-link-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; margin-top:8px; }
+.duel-invitation-actions { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+.duel-invitation-actions button { flex:1 1 160px; }
+.duel-invitation-link label { display:block; margin-bottom:8px; }
+.duel-invitation-feedback { margin:8px 0 0; font-size:14px; }
 .duel-invite > .secondary-button { display:flex; margin-top:20px; }
 .duel-interface .duel-invite { max-width:780px; margin:0 auto 24px; }
 .duel-interface .duel-invite input { font-size:14px; }

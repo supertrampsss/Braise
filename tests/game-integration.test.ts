@@ -718,3 +718,21 @@ test('a failed hint consumes nothing and an accepted stale hint cannot enter a n
     assert.equal(b.storage.getItem('braise.v1.game.'+puzzle.id),null);
   }finally{await act(async()=>tree.unmount());}
 });
+
+
+test('the first instruction stays beside the input and the best clue stays distinct from a worse last guess',async()=>{
+  browser();let guesses=0;
+  globalThis.fetch=async(_url,options)=>options?.method==='POST'?Response.json({word:++guesses===1?'arbre':'maison',temperature:20,rank:guesses===1?61:5980,found:false,puzzleRef:puzzle.ref}):Response.json(puzzle);
+  const tree=await mount();try{
+    assert.match(text(tree.root.findByProps({id:'guess-instruction'})),/proches par le sens/);
+    assert.match(tree.root.findByProps({id:'guess'}).props['aria-describedby'],/guess-instruction/);
+    assert.match(text(tree.root.findByProps({className:'proximity-best-word'})),/Aucun essai/);
+    for(const word of ['arbre','maison']){
+      await act(async()=>tree.root.findByProps({id:'guess'}).props.onChange({target:{value:word}}));
+      await act(async()=>tree.root.findByProps({className:'guess-form'}).props.onSubmit({preventDefault(){},currentTarget:{contains(){return false;}}}));
+    }
+    assert.match(text(tree.root.findByProps({className:'proximity-best-word'})),/arbre61e/);
+    assert.match(text(tree.root.findByProps({className:'last-guess'})),/maison/);
+    assert.doesNotMatch(text(tree.root.findByProps({className:'last-guess'})),/arbre/);
+  }finally{await act(async()=>tree.unmount());}
+});
