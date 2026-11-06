@@ -33,10 +33,10 @@ export function DuelBoard({view,round,now,busy,word,paused,feedback,onWord,onRou
       <AcceptedGuessFlight key={view.id+':'+round} inputId="duel-word" paused={paused} receipt={live&&accepted?{id:view.id+':'+round+':'+live.ordinal,word:accepted.word,rank:accepted.rank,found:live.found}:null}/>
       <div className="game-topline"><span className="sr-only">Manche {round+1}</span><span className="game-trials">{current.guesses.length}/{DUEL_ATTEMPTS} essais</span></div>
       <p className="sr-only" role="status" aria-live="polite">{live?.announcement??''}</p>
-      {!current.won&&<ProximityMeter rank={current.best?.rank??null} vocabularySize={vocabularySize} solved={false} celebrating={false} paused={paused} revealMotion={Boolean(live?.improved)}/>}
+      {!current.won&&<ProximityMeter word={current.best?.word} rank={current.best?.rank??null} vocabularySize={vocabularySize} solved={false} celebrating={false} paused={paused} revealMotion={Boolean(live?.improved)}/>}
       <div className="approved-play-surface">
-        {!current.closed ? <div className="guess-area"><form className="guess-form" aria-busy={busy} onSubmit={onSubmit}>
-          <label className="sr-only" htmlFor="duel-word">Mot</label><input id="duel-word" value={word} onChange={event=>onWord(event.target.value)} placeholder="Mot" maxLength={50} lang="fr" autoComplete="off" autoCapitalize="none" enterKeyHint="send" aria-describedby="duel-error"/>
+        {!current.closed ? <div className="guess-area"><p className="guess-instruction" id="duel-instruction">Trouvez le mot secret en proposant des mots proches par le sens.</p><form className="guess-form" aria-busy={busy} onSubmit={onSubmit}>
+          <label className="sr-only" htmlFor="duel-word">Mot</label><input id="duel-word" value={word} onChange={event=>onWord(event.target.value)} placeholder="Mot" maxLength={50} lang="fr" autoComplete="off" autoCapitalize="none" enterKeyHint="send" aria-describedby="duel-instruction duel-error"/>
           <button className="guess-button" disabled={busy||!word.trim()} aria-label={busy?'Analyse en cours':'Envoyer'}>{busy?'Analyse…':'Envoyer'}</button>
         </form>{spellingSuggestion&&<button type="button" className="text-action spelling-suggestion" disabled={busy} onClick={onSpellingSuggestion}>Utiliser « {spellingSuggestion} »</button>}</div> : <div className={`duel-round-end ${current.won?'victory-box':''}`}>
           {current.won&&<><FlameScene level={1} rank={1} solved celebrating={Boolean(live?.found)} paused={paused} revealMotion={Boolean(live?.found)}/><span className="victory-eyebrow">Trouvé</span></>}

@@ -101,3 +101,9 @@ test('a late unknown-word response does not mark the next typed word invalid or 
   assert.equal(button(tree,'Utiliser « oeuf »'),undefined);assert.doesNotMatch(text(tree.root),/Mot absent du dictionnaire/);
  }finally{await act(async()=>tree.unmount());}
 });
+
+
+test('a created invitation is waiting for an opponent, never marked as sent',async()=>{
+ browser();globalThis.fetch=async url=>Response.json(String(url)==='/api/session'?{guest:{id:'a',name:'Alice'},csrf:'csrf'}:page(['invitation'],null,'pending'));
+ const tree=await mount();try{assert.match(text(tree.root.findByProps({'data-duel-id':'invitation'})),/En attente d’un adversaire/);assert.doesNotMatch(text(tree.root),/Invitation envoyée/);}finally{await act(async()=>tree.unmount());}
+});

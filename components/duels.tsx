@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useRef,useState,type FormEvent} from 'react';
-import {Copy,Check,Swords} from 'lucide-react';
+import {Swords} from 'lucide-react';
+import {DuelInvitationLink} from './duel-invitation-link';
 import {InvitationStatus,useInvitation} from './invitation-status';
 import {AppNavigation} from './app-navigation';
 import {DuelBoard} from './duel-board';
@@ -16,7 +17,7 @@ import {recordProductEvent,type ProductEventType} from '@/lib/product-events';
 type Session={guest:{id:string;name:string}|null;csrf?:string};
 type Feedback={round:number;ordinal:number;improved:boolean;found:boolean;announcement:string};
 function dateLabel(value:number) { return new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Paris'}).format(value); }
-const statuses:Record<string,string>={active:'En cours',pending:'Invitation envoyée',expired:'Invitation expirée',cancelled:'Invitation annulée',finished:'Terminé',forfeit:'Abandonné'};
+const statuses:Record<string,string>={active:'En cours',pending:'En attente d’un adversaire',expired:'Invitation expirée',cancelled:'Invitation annulée',finished:'Terminé',forfeit:'Abandonné'};
 function duelNames(duel:{hostName:string;opponentName:string|null;role?:string}){return duel.role==='opponent'?duel.opponentName+' vs '+duel.hostName:duel.hostName+(duel.opponentName?' vs '+duel.opponentName:' · invitation');}
 function diagnostic(type:ProductEventType){try{recordProductEvent(localStorage,type,'duel');}catch{}}
 function invitationSecret(){return [...crypto.getRandomValues(new Uint8Array(32))].map(value=>value.toString(16).padStart(2,'0')).join('');}
@@ -33,7 +34,7 @@ export default function Duels() {
   const [joining,setJoining]=useState(false),[session,setSession]=useState<Session>({guest:null});
   const [view,setView]=useState<DuelView|null>(null),[duels,setDuels]=useState<DuelListItem[]>([]);
   const [listGroup,setListGroup]=useState<DuelListGroup>('play'),[nextCursor,setNextCursor]=useState<string|null>(null),[listCounts,setListCounts]=useState<DuelListPage['counts']|null>(null);
-  const [token,setToken]=useState(''),[inviteInput,setInviteInput]=useState(''),[link,setLink]=useState(''),[copied,setCopied]=useState(false);
+  const [token,setToken]=useState(''),[inviteInput,setInviteInput]=useState(''),[link,setLink]=useState('');
   const [round,setRound]=useState(0),[word,setWord]=useState(''),[guestName,setGuestName]=useState(''),[received,setReceived]=useState(false);
   const [busy,setBusy]=useState(true),[error,setError]=useState(''),[help,setHelp]=useState(false);
   const [syncError,setSyncError]=useState(''),[shared,setShared]=useState(false);
@@ -88,14 +89,14 @@ export default function Duels() {
   }
   async function create(csrf?:string,parentId?:string) {
     if(!creation.current||creation.current.parentId!==parentId)creation.current={id:crypto.randomUUID(),token:invitationSecret(),...(parentId?{parentId}:{})};
-    const data=await api('/api/duels',{action:parentId?'rematch':'create',...creation.current},csrf);showView(data);const privateLink=`${location.origin}/duels#invitation=${creation.current.token}`;setLink(privateLink);try{sessionStorage.setItem('braiz.duel.link.'+data.id,privateLink);}catch{}setCopied(false);setShared(false);creation.current=null;pending.current=null;clearFeedback();setRound(0);setWord('');diagnostic(parentId?'duelRematchCreated':'duelCreated');await refresh();
+    const data=await api('/api/duels',{action:parentId?'rematch':'create',...creation.current},csrf);showView(data);const privateLink=`${location.origin}/duels#invitation=${creation.current.token}`;setLink(privateLink);try{sessionStorage.setItem('braiz.duel.link.'+data.id,privateLink);}catch{}setShared(false);creation.current=null;pending.current=null;clearFeedback();setRound(0);setWord('');diagnostic(parentId?'duelRematchCreated':'duelCreated');await refresh();
   }
   async function renewInvitation(){
     if(!view?.invitationVersion)return;
     if(!renewal.current||renewal.current.id!==view.id)renewal.current={id:view.id,previousVersion:view.invitationVersion,token:invitationSecret()};
     const request=renewal.current;let data:DuelView;
     try{data=await api('/api/duels',{action:'renew-invitation',...request});}catch(cause){if(cause instanceof DuelApiError&&cause.status===409){renewal.current=null;setLink('');}throw cause;}
-    const privateLink=`${location.origin}/duels#invitation=${request.token}`;showView(data);setLink(privateLink);setCopied(false);renewal.current=null;
+    const privateLink=`${location.origin}/duels#invitation=${request.token}`;showView(data);setLink(privateLink);renewal.current=null;
     try{sessionStorage.setItem('braiz.duel.link.'+data.id,privateLink);}catch{}
   }
   async function shareResult(returnFocus:HTMLButtonElement|null){
@@ -113,9 +114,6 @@ export default function Duels() {
   function updateInvitation(value:string) {
     setInviteInput(value);const next=invitationToken(value);setToken(next);
     try{if(/^[a-f0-9]{64}$/.test(next))sessionStorage.setItem('braiz.invitation.duel',next);else sessionStorage.removeItem('braiz.invitation.duel');}catch{}
-  }
-  async function copyLink() {
-    try{await navigator.clipboard.writeText(link);setCopied(true);}catch{setError('Sélectionnez le lien pour le copier.');}
   }
   function submit(event:FormEvent) {
     event.preventDefault();if(!view||duelRound(view,round,Date.now()).closed||!word.trim()||lock.current)return;
@@ -184,7 +182,7 @@ export default function Duels() {
       {!session.guest&&joining&&(!token||invitation.state==='ready')&&<section className="duel-card duel-identity"><h2>{token?'Rejoindre le duel':'Créer un duel'}</h2><form onSubmit={event=>{event.preventDefault();if(token&&!invitation.canAccept())return;void perform(async()=>{const data=await api('/api/session',{name:guestName});setSession(data);if(token)await refresh();else await create(data.csrf);});}}><label htmlFor="duel-guest">Pseudonyme</label><input id="duel-guest" maxLength={24} value={guestName} placeholder="Pseudonyme" disabled={busy} onChange={event=>setGuestName(event.target.value)}/><button className="primary-button" disabled={busy||!guestName.trim()}>{token?'Continuer':'Créer le duel'}</button></form><a className="duel-identity-link" href="/espace">Retrouver mon identité</a></section>}
       {session.guest&&<>
         {view?.state==='pending'&&view.canAcceptRematch&&<section className="duel-card duel-invite"><h2>Revanche proposée par {view.hostName}</h2><p>3 nouveaux mots · 30 essais par manche · 48 h après acceptation</p><button className="primary-button" disabled={busy} onClick={()=>void perform(async()=>{showView(await api('/api/duels',{action:'accept-rematch',id:view.id}));diagnostic('duelJoined');setRound(0);setWord('');pending.current=null;clearFeedback();await refresh();})}>Accepter la revanche</button></section>}
-        {view?.state==='pending'&&!view.canAcceptRematch&&<section className="duel-card duel-invite"><h2>{view.rematchOf?'Revanche proposée à '+view.opponentName:'Inviter un adversaire'}</h2>{!view.rematchOf&&link&&<><label htmlFor="duel-link">Lien d’invitation</label><div className="duel-link-row"><input id="duel-link" readOnly value={link} onFocus={event=>event.target.select()}/><button className="primary-button" disabled={busy} onClick={()=>void copyLink()}>{copied?<Check size={18}/>:<Copy size={18}/>} {copied?'Copié':'Copier'}</button></div></>}{!view.rematchOf&&(link?<details className="duel-renew-link"><summary>Remplacer le lien</summary>{renewControl}</details>:<div className="duel-renew-link">{renewControl}</div>)}<p>{view.rematchOf?'En attente de son acceptation.':'En attente de l’adversaire.'}</p>{view.inviteExpires&&<small>Invitation valable jusqu’au {dateLabel(view.inviteExpires)}.</small>}</section>}
+        {view?.state==='pending'&&!view.canAcceptRematch&&<section className="duel-card duel-invite"><h2>{view.rematchOf?'Revanche proposée à '+view.opponentName:'Inviter un adversaire'}</h2>{!view.rematchOf&&link&&<DuelInvitationLink key={link} link={link} disabled={busy}/>}{!view.rematchOf&&(link?<details className="duel-renew-link"><summary>Remplacer le lien</summary>{renewControl}</details>:<div className="duel-renew-link">{renewControl}</div>)}<p>{view.rematchOf?'En attente de son acceptation.':'En attente de l’adversaire.'}</p>{view.inviteExpires&&<small>Invitation valable jusqu’au {dateLabel(view.inviteExpires)}.</small>}</section>}
         {view&&(view.state==='expired'||view.state==='cancelled')&&<section className="duel-card"><h2>{view.state==='expired'?'Invitation expirée':'Invitation annulée'}</h2><button className="primary-button" disabled={busy} onClick={()=>void perform(create)}>Créer un duel</button></section>}
         {outcome&&<section className="duel-card duel-summary" aria-labelledby="duel-summary-title"><h2 id="duel-summary-title">{outcome.title}</h2><p className="duel-result-score">{outcome.note}</p>{view!.rounds?<DuelMatchReview view={view!} onRound={reviewRound}/>:!view!.forfeiter&&<ol>{view!.decisions!.map((decision,index)=><li key={index}><span>Manche {index+1}</span><strong>{decision===0?'Égalité':decision===(view!.role==='host'?-1:1)?'Remportée':'Perdue'}</strong></li>)}</ol>}<div className="duel-summary-actions"><button className="primary-button" disabled={busy} onClick={()=>void perform(()=>create(undefined,view!.id))}>Revanche</button><button className="secondary-button" disabled={busy} onClick={event=>void shareResult(event.currentTarget)}>{shared?'Résultat copié':'Partager le résultat'}</button></div></section>}
         {playable&&<DuelBoard view={view} round={round} now={now} busy={busy} word={word} paused={paused} feedback={feedback} onWord={value=>{inputRevision.current++;setWord(value);setError('');setSpellingSuggestion(null);}} onRound={changeRound} onSubmit={submit} spellingSuggestion={spellingSuggestion} onSpellingSuggestion={()=>{if(!spellingSuggestion)return;inputRevision.current++;setWord(spellingSuggestion);setError('');setSpellingSuggestion(null);pending.current=null;document.getElementById('duel-word')?.focus();}}/>}
