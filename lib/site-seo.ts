@@ -17,6 +17,11 @@ export function publicMetadata(path: string, title: string, description: string)
 
 export const PRIVATE_METADATA: Metadata = { robots: { index: false, follow: true } };
 
+export function guideMetadata(guide: Guide): Metadata {
+  const title = /\bBRAIZ\b/i.test(guide.title) ? guide.title : `${guide.title} · BRAIZ`;
+  return publicMetadata(guide.path, title, guide.description);
+}
+
 export function websiteSchema() {
   return { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${PUBLIC_ORIGIN}/#website`,
     name: 'BRAIZ', url: `${PUBLIC_ORIGIN}/`, inLanguage: 'fr', description: HOME_DESCRIPTION };

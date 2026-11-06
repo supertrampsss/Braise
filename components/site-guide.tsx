@@ -36,9 +36,10 @@ export function SiteGuide({ guide }: { guide: Guide }) {
       <Breadcrumb heading={guide.heading} />
       <h1>{guide.heading}</h1><p className="guide-intro">{guide.intro}</p>
       {guide.action && <a className="guide-action" href={guide.action.href}>{guide.action.label}</a>}
-      {guide.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</section>)}
+      {guide.steps && <section className="guide-start" aria-labelledby="guide-start-title"><h2 id="guide-start-title">Votre première partie, en trois étapes</h2><ol role="list">{guide.steps.map(step => <li key={step.heading}><h3>{step.heading}</h3><p>{step.text}</p></li>)}</ol></section>}
+      {guide.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}{section.links && <nav className="guide-section-links" aria-label={section.heading}>{section.links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>}</section>)}
       {guide.path === '/a-propos' && <p className="guide-sources">Sources : <a href="https://fauconnier.github.io/#data">modèles de Jean-Philippe Fauconnier</a> · <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> · <a href="https://fasttext.cc/docs/en/pretrained-vectors.html">fastText</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</p>}
-      <Faq items={guide.faq} /><GuideLinks current={guide.path} /><JsonLd value={breadcrumbSchema(guide.path, guide.heading)} />
+      <Faq items={guide.faq} />{guide.steps && guide.action && <a className="guide-action" href={guide.action.href}>{guide.action.label}</a>}<GuideLinks current={guide.path} /><JsonLd value={breadcrumbSchema(guide.path, guide.heading)} />
       {guide.kind === 'article' && <JsonLd value={articleSchema(guide)} />}
     </main><SiteFooter />
   </div>;

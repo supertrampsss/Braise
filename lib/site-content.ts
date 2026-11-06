@@ -2,7 +2,8 @@ export type Guide = {
   path: string; title: string; heading: string; description: string; intro: string;
   kind?: 'article';
   action?: { href: string; label: string };
-  sections: { heading: string; paragraphs: string[] }[];
+  steps?: { heading: string; text: string }[];
+  sections: { heading: string; paragraphs: string[]; links?: { href: string; label: string }[] }[];
   faq: { question: string; answer: string }[];
 };
 
@@ -27,19 +28,26 @@ export const GUIDES: Guide[] = [
     ],
   },
   {
-    path: '/comment-jouer', kind: 'article', title: 'Comment jouer à BRAIZ : règles et indices', heading: 'Comment jouer à BRAIZ',
-    description: 'Les règles de BRAIZ : envoyer un mot français, suivre la flamme, comparer les essais et utiliser jusqu’à trois indices pour trouver le mot secret.',
-    intro: 'Dans BRAIZ, trouvez le mot secret en envoyant des mots français. La flamme conserve votre meilleure progression et l’historique classe les essais du plus proche au moins proche.',
+    path: '/comment-jouer', kind: 'article', title: 'Comment jouer à BRAIZ : règles, rangs et indices', heading: 'Comment jouer à BRAIZ',
+    description: 'Trouvez le mot secret de BRAIZ : découvrez les règles, le sens des rangs et du pourcentage, les trois indices et les façons de reprendre une partie.',
+    intro: 'Trouvez le mot secret en proposant des mots proches par le sens. Vous pouvez commencer directement dans votre navigateur, sur téléphone ou ordinateur.',
     action: { href: '/', label: 'Jouer au mot du jour' },
+    steps: [
+      { heading: 'Proposez un mot', text: 'Saisissez un mot français courant, puis appuyez sur Envoyer. Explorez une idée : un objet, un lieu, une action.' },
+      { heading: 'Lisez son rang', text: 'Plus le rang est petit, plus votre proposition est proche. Le rang 1 correspond au mot secret.' },
+      { heading: 'Précisez votre piste', text: 'Essayez des mots liés à votre meilleure proposition. La jauge garde votre meilleur résultat, même après un essai moins proche.' },
+    ],
     sections: [
       { heading: 'Envoyer un mot', paragraphs: ['Saisissez votre proposition dans le champ « Mot », puis choisissez « Envoyer » ou appuyez sur Entrée. Commencez par un nom, un adjectif ou un verbe à l’infinitif.', 'Un mot accepté rejoint l’historique avec son classement. Si le lexique ne reconnaît pas une proposition, elle ne devient pas un essai accepté : vous pouvez la corriger dans le champ.'] },
-      { heading: 'Comparer les essais', paragraphs: ['Le mot le mieux placé reste en haut de la liste. Un classement plus petit indique une proposition plus proche ; le rang 1 correspond au mot secret.', 'La flamme suit votre meilleur essai. Vous pouvez donc essayer une autre piste sans perdre la progression déjà atteinte. Les essais sont illimités dans les parties classiques.'] },
+      { heading: 'Comprendre le rang et le pourcentage', paragraphs: ['« Votre meilleure piste » affiche votre meilleur mot et son rang. Le dernier essai apparaît séparément sous le champ : il ne remplace la meilleure piste que s’il est mieux classé. L’historique conserve toutes les propositions acceptées.', 'Le pourcentage indique le remplissage de la jauge. Ce n’est ni une probabilité de gagner ni la proportion de mots éliminés. Les repères Top 5 000, Top 1 000, Top 100 et Top 10 aident à lire la progression ; 100 % est réservé au mot trouvé.', 'Vous pouvez essayer une autre idée sans perdre votre meilleur résultat. Les essais sont illimités dans les parties classiques.'], links: [{ href: '/proximite', label: 'Comprendre les repères de proximité' }] },
       { heading: 'Utiliser les trois indices', paragraphs: ['Une partie classique propose au maximum trois indices. Chacun ajoute un mot encore inutilisé et modérément mieux placé que votre meilleur essai : le gain dépend de votre rang actuel, sans vous propulser directement parmi les tout premiers. Un indice ne révèle pas la réponse.', 'L’indice apparaît dans les essais et son utilisation est conservée dans la partie. Lorsqu’il ne reste que le mot secret devant votre meilleur essai, aucun nouvel indice n’est proposé. Le duel se joue sans indice.'] },
+      { heading: 'Choisir votre prochaine partie', paragraphs: ['Le mot du jour est commun à tous et change à minuit, heure de Paris. En partie libre, cherchez un autre mot sans attendre. Les archives permettent de retrouver un défi quotidien passé.', 'Pour jouer à deux, créez un duel : trois manches identiques, 30 essais par manche et aucun indice. Chacun joue à son rythme pendant les 48 heures qui suivent l’acceptation.'], links: [{ href: '/partie-libre', label: 'Jouer en partie libre' }, { href: '/archives', label: 'Retrouver une archive' }, { href: '/duels', label: 'Inviter un ami en duel' }] },
       { heading: 'Retrouver une partie', paragraphs: ['Les parties personnelles se sauvegardent dans le navigateur. Revenir sur le même appareil permet de reprendre les essais déjà acceptés. Effacer les données du site peut supprimer cette progression.', 'Dans le profil, « Sauvegarder mes parties » télécharge une copie de votre progression et des parties classiques en cours. Sur un autre navigateur, importez cette copie : un aperçu précise les données à fusionner et les conflits éventuels avant votre confirmation.', 'L’accès aux duels se récupère séparément depuis votre espace. Une synchronisation en ligne facultative est également disponible dans le profil.'] },
     ],
     faq: [
       { question: 'Y a-t-il un nombre d’essais maximal ?', answer: 'Les parties classiques ont des essais illimités. En duel, chaque personne dispose de 30 essais par manche.' },
       { question: 'Pourquoi ma flamme ne redescend-elle pas ?', answer: 'Elle conserve le meilleur résultat de la partie. Un nouvel essai moins proche ne remplace pas ce meilleur résultat.' },
+      { question: 'Les mots doivent-ils être des synonymes ?', answer: 'Non. Le classement rapproche des mots utilisés dans des contextes comparables. Un lieu, un objet et une action peuvent donc former une piste utile sans être synonymes.' },
       { question: 'Les indices sont-ils obligatoires ?', answer: 'Non. Vous pouvez résoudre une partie sans utiliser d’indice.' },
     ],
   },
@@ -47,6 +55,7 @@ export const GUIDES: Guide[] = [
     path: '/proximite', kind: 'article', title: 'Proximité, pourcentage et classement dans BRAIZ', heading: 'Comprendre la proximité dans BRAIZ',
     description: 'À quoi correspondent la flamme, le pourcentage et les rangs de BRAIZ ? Comprenez les repères Top 5 000, Top 1 000, Top 100 et Top 10.',
     intro: 'Dans BRAIZ, le classement indique la place d’un mot par rapport au mot secret. Le pourcentage représente le remplissage de la flamme à partir du meilleur classement de la partie.',
+    action: { href: '/', label: 'Tester un mot dans BRAIZ' },
     sections: [
       { heading: 'Deux lectures du même progrès', paragraphs: ['L’historique donne le classement exact de chaque essai. La flamme en propose une lecture visuelle : elle monte lorsqu’un nouveau mot dépasse votre meilleur essai.', 'L’échelle réserve de la place aux derniers progrès. Ses repères sont : Top 5 000 à 20 %, Top 1 000 à 40 %, Top 100 à 60 %, Top 10 à 80 %, puis 100 % lorsque le mot est trouvé. Entre ces repères, le remplissage avance progressivement.'] },
       { heading: 'Et avant le Top 5 000 ?', paragraphs: ['La progression commence aussi pour les mots situés au-delà du Top 5 000. Leur remplissage se situe dans la première partie de la jauge, en fonction de leur rang et de la taille du lexique de l’édition.', 'Le pourcentage est un repère de progression, pas une probabilité de gagner ni la proportion de mots éliminés. Les arrondis peuvent donner le même pourcentage à deux rangs différents : l’historique garde leur classement exact.'] },
@@ -129,7 +138,7 @@ export const DUEL_GUIDE = {
   heading: 'Le duel de mots, à votre rythme',
   intro: 'Deux personnes cherchent les mêmes trois mots secrets dans BRAIZ. Chacune dispose de 30 essais par manche, sans indice, et joue à son rythme pendant les 48 heures qui suivent l’acceptation.',
   faq: [
-    { question: 'Comment inviter une personne ?', answer: 'Créez un duel avec votre pseudonyme, puis copiez son lien d’invitation et transmettez-le à votre adversaire. La partie démarre après son acceptation.' },
+    { question: 'Comment inviter une personne ?', answer: 'Créez un duel avec votre pseudonyme, puis choisissez « Inviter un ami » pour partager le lien, ou « Copier le lien » pour le transmettre vous-même. La partie reste en attente jusqu’à l’acceptation de votre adversaire.' },
     { question: 'Faut-il être connecté en même temps ?', answer: 'Non. Le duel est asynchrone : chacun peut jouer ses manches pendant la période de 48 heures.' },
     { question: 'Comment une manche est-elle départagée ?', answer: 'Trouver le mot l’emporte. Si les deux personnes le trouvent, le nombre d’essais décide ; sinon, le meilleur classement décide. Une égalité reste une égalité.' },
     { question: 'Voit-on les mots de l’adversaire ?', answer: 'Pendant une manche encore jouable, vous voyez sa progression sans ses mots. Dès que les deux recherches sont closes, vous pouvez consulter ses essais et la solution. À la fin du duel, toutes les manches sont consultables.' },

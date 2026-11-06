@@ -13,6 +13,14 @@
 .guide-links a,.guide-footer a { display:inline-flex; min-height:44px; align-items:center; }
 .guide-faq { margin-top:40px; }
 .guide-sources { font-size:15px; }
+.guide-start ol { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; padding:0; list-style:none; counter-reset:guide-step; }
+.guide-start li { counter-increment:guide-step; padding:20px; border:1px solid #ffb27a2e; border-radius:14px; background:#ffffff04; }
+.guide-start li::before { content:counter(guide-step,decimal-leading-zero); color:#ffb58f; font-size:14px; font-variant-numeric:tabular-nums; }
+.guide-start h3 { margin:8px 0; }
+.guide-start p { font-size:15px; line-height:1.6; }
+.guide-section-links { display:flex; flex-wrap:wrap; gap:8px 24px; }
+.guide-section-links a { display:inline-flex; align-items:center; min-height:44px; }
+@media(max-width:640px) { .guide-start ol { grid-template-columns:1fr; gap:10px; } .guide-start li { padding:16px 18px; } }
 .guide-footer { max-width:800px; margin:0 auto; padding:24px; display:flex; flex-wrap:wrap; gap:12px 28px; color:#b5bbc5; }
 .home-guide { max-width:800px; margin:48px auto; padding:24px; font-size:16px; line-height:1.75; color:#bdc3cd; }
 .home-guide > h2 { margin-top:0; font-size:22px; }
