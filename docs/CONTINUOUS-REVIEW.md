@@ -1,6 +1,13 @@
 # Registre d’amélioration BRAIZ
 
-État du 2 novembre 2026. Le dernier dossier privé est `BRAIZ-Correction-Pourcentage-2026-11-02`, situé deux niveaux au-dessus du dépôt. Il documente la correction du pourcentage coupé, ses captures et son résultat de publication. `BRAIZ-Publication-2026-11-02-4ee9a90` conserve la publication explicite de la version 63, avec PR 7 et favicon ; `BRAIZ-Favicon-2026-11-02` et `BRAIZ-Review-2026-11-02-c840252` en conservent la préparation. Les livraisons précédentes restent conservées. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md).
+État du 6 novembre 2026. Le dernier dossier privé est `BRAIZ-Review-2026-11-06-7bfec5a`, situé deux niveaux au-dessus du dépôt. Il documente la revue de la PR 8 intégrée dans main et le retrait de ses styles devenus inutilisés. La dernière publication vérifiée reste la version 64, documentée dans `BRAIZ-Correction-Pourcentage-2026-11-02`. Les livraisons précédentes restent conservées. Appliquer [SOURCE-OF-TRUTH.md](SOURCE-OF-TRUTH.md) et [HOSTING-MIGRATION.md](HOSTING-MIGRATION.md).
+
+## PR 8 intégrée dans GitHub, en attente de déploiement
+
+- Fusion GitHub `7bfec5a4878df9855594e3fe615c78c7aaffcb0d`, récupérée sans réécriture d’historique. La contribution ajoute une consigne de saisie, réaffiche le meilleur mot et son rang près de la jauge, et propose le partage natif ou la copie du lien d’invitation. L’état d’une invitation créée indique l’attente d’un adversaire.
+- Deux règles `.duel-link-row` sont devenues inutilisées après le remplacement du formulaire d’invitation. Leur retrait repose sur la suppression du dernier élément correspondant dans la PR et sur la recherche de toutes les références suivies par Git.
+- 80 tests ciblés réussis, aucun échec ni cas ignoré, TypeScript et construction réussis. Le build final après retrait des styles est conservé dans le dossier privé avec la vérification GitHub. Les contrôles visuels et la suite complète décrits dans la PR proviennent de son auteur. Aucune nouvelle recette visuelle indépendante n’a été effectuée pendant cette revue.
+- Ce lot est conservé dans GitHub en attendant la chaîne de déploiement du propriétaire. Les accès Cloudflare/DNS et le transfert cohérent D1/R2 restent à préparer. AdSense reste inactif.
 
 ## Pourcentage tronqué : correction
 

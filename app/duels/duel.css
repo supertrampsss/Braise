@@ -24,7 +24,6 @@
 .duel-start .primary-button { margin-top:16px; }
 .duel-interface .duel-identity { max-width:520px; margin:24px auto; }
 .duel-identity-link { display:inline-block; padding:12px 0 0; color:#c9cbd2; font-size:13px; }
-.duel-link-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; margin-top:8px; }
 .duel-invitation-actions { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
 .duel-invitation-actions button { flex:1 1 160px; }
 .duel-invitation-link label { display:block; margin-bottom:8px; }
@@ -86,7 +85,6 @@
  .duel-dashboard ul { grid-template-columns:1fr; }
  .duel-dashboard-heading { align-items:flex-start; }
  .duel-dashboard-heading .primary-button { padding:10px; font-size:12px; }
- .duel-link-row { grid-template-columns:minmax(0,1fr); }
 }
 .duel-live-score { color:#ffac86; font-size:28px; white-space:nowrap; font-variant-numeric:tabular-nums; }
 .duel-live-progress { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 20px; }
