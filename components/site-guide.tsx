@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { AppNavigation } from './app-navigation';
 import { DUEL_GUIDE, GUIDES, type Guide } from '@/lib/site-content';
 import { articleSchema, breadcrumbSchema, faqSchema, websiteSchema } from '@/lib/site-seo';
@@ -22,7 +23,7 @@ export function Faq({ items }: { items: { question: string; answer: string }[] }
 }
 
 function Breadcrumb({ heading }: { heading: string }) {
-  return <nav className="guide-breadcrumb" aria-label="Fil d’Ariane"><a href="/">BRAIZ</a><span aria-hidden="true"> / </span><span aria-current="page">{heading}</span></nav>;
+  return <nav className="guide-breadcrumb" aria-label="Fil d’Ariane"><Link href="/">BRAIZ</Link><span aria-hidden="true"> / </span><span aria-current="page">{heading}</span></nav>;
 }
 
 export function SiteFooter() {

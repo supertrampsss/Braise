@@ -95,6 +95,7 @@ test('the rules render a complete start path and contextual links without JavaSc
   const html = renderToStaticMarkup(createElement(SiteGuide, { guide }));
   const quickStart = html.match(/<section class="guide-start"[\s\S]*?<\/section>/)?.[0] ?? '';
   assert.equal((quickStart.match(/<li>/g) ?? []).length, 3);
+  assert.match(html, /class="guide-breadcrumb"[^>]*><a[^>]*href="\/"[^>]*>BRAIZ<\/a>/);
   assert.match(quickStart, /Le rang 1 correspond au mot secret/);
   assert.match(html, /Ce n’est ni une probabilité de gagner ni la proportion de mots éliminés/);
   assert.match(html, /Dernier|dernier essai/);
